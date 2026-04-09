@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>단지ON — DMC파크뷰자이</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -183,18 +184,19 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .sub-sec-label{font-size:12px;font-weight:700;color:var(--gray-400);margin:14px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--gray-200);}
 
 .back-btn{font-size:13px;color:var(--gray-400);background:none;border:none;cursor:pointer;margin-bottom:16px;}
+/* 관리비 서브탭 */
+.fee-tab.active{color:var(--navy)!important;border-bottom-color:var(--navy)!important;}
+.fee-page{display:none;}
+.fee-page.active{display:block;}
+.stat-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.stat-card2{background:var(--white);border-radius:14px;border:1px solid var(--gray-200);padding:14px;box-shadow:var(--shadow-sm);}
+.sl{font-size:11px;color:var(--gray-400);font-weight:600;margin-bottom:6px;}
+.sv{font-size:22px;font-weight:800;color:var(--gray-800);letter-spacing:-0.02em;}
+.su{font-size:13px;font-weight:400;color:var(--gray-400);}
+.ss{font-size:11px;margin-top:4px;}
+.down{color:var(--green);}
+.up2{color:var(--red);}
 .loading-placeholder{padding:16px;color:var(--gray-400);font-size:13px;text-align:center;}
-
-/* 수리·하자 관련 업체 미니카드 */
-.rbiz{background:var(--navy-bg);border:1px solid #BDD0F0;border-radius:10px;padding:10px 12px;margin-top:8px;}
-.rbiz-title{font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.04em;margin-bottom:6px;}
-.rbiz-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid rgba(21,101,192,0.1);}
-.rbiz-item:last-child{border-bottom:none;padding-bottom:0;}
-.rbiz-item:first-child{padding-top:0;}
-.rbiz-info{}
-.rbiz-name{font-size:12px;font-weight:700;color:var(--gray-800);}
-.rbiz-price{font-size:10px;color:var(--gray-400);margin-top:1px;}
-.rbiz-call{flex-shrink:0;font-size:11px;font-weight:700;color:#fff;background:var(--navy);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit;}
 </style>
 </head>
 <body>
@@ -325,27 +327,169 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
     <!-- ═══ 관리비 ═══ -->
     <div class="page" id="page-fee">
-      <div class="sec" style="padding-top:20px;">
-        <div class="sec-title">💰 관리비</div>
-        <div class="sec-sub">항목 설명 · 이의제기 · 장기수선충당금</div>
-        <div class="card">
-          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">주요 항목 설명</div>
-          <div class="irow"><span class="i-label">일반관리비</span><div class="i-val"><div class="i-main">관리 인건비 등</div><div class="i-note">매달 고정</div></div></div>
-          <div class="irow"><span class="i-label">청소비·경비비</span><div class="i-val"><div class="i-main">공용공간 유지</div></div></div>
-          <div class="irow"><span class="i-label">승강기유지비</span><div class="i-val"><div class="i-main">엘리베이터 유지</div><div class="i-note">세대당 별도</div></div></div>
-          <div class="irow"><span class="i-label">커뮤니티이용료</span><div class="i-val"><div class="i-main">수영장·헬스장 등</div><div class="i-note">별도 고지서</div></div></div>
-          <div class="irow"><span class="i-label">장기수선충당금</span><div class="i-val"><div class="i-main">노후 시설 보수 적립</div><div class="i-note">이사 시 환급 가능</div></div></div>
+      <!-- 관리비 서브탭 -->
+      <div style="display:flex;background:var(--white);border-bottom:1px solid var(--gray-200);overflow-x:auto;scrollbar-width:none;position:sticky;top:164px;z-index:90;">
+        <button class="fee-tab active" onclick="goFeeTab(0,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">이번 달</button>
+        <button class="fee-tab" onclick="goFeeTab(1,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">월별 추이</button>
+        <button class="fee-tab" onclick="goFeeTab(2,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">항목 분석</button>
+        <button class="fee-tab" onclick="goFeeTab(3,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">전년 비교</button>
+        <button class="fee-tab" onclick="goFeeTab(4,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">FAQ</button>
+      </div>
+
+      <!-- 서브탭 0: 이번 달 -->
+      <div class="fee-page active" id="fee0">
+        <div class="sec" style="padding-top:16px;">
+          <div class="stat-grid2">
+            <div class="stat-card2"><div class="sl">2026년 2월 총계</div><div class="sv">166<span class="su">억</span></div><div class="ss down">▼ 전월 대비 22.9억 감소</div></div>
+            <div class="stat-card2"><div class="sl">세대당 평균</div><div class="sv">38.7<span class="su">만원</span></div><div class="ss down">▼ 전월(44만) 대비 감소</div></div>
+          </div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">2026년 2월 구성</div>
+            <div style="height:180px;position:relative;"><canvas id="feeDonut"></canvas></div>
+            <div style="margin-top:12px;">
+              <div class="irow"><div class="i-label"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1B3A6B;margin-right:7px;"></span>개별세대사용료</div><div class="i-val"><div class="i-main">102.9억</div><div class="i-note">61.9%</div></div></div>
+              <div class="irow"><div class="i-label"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#2E75B6;margin-right:7px;"></span>공동주택관리비</div><div class="i-val"><div class="i-main">44.5억</div><div class="i-note">26.7%</div></div></div>
+              <div class="irow"><div class="i-label"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#9DC3E6;margin-right:7px;"></span>관리기구운영비</div><div class="i-val"><div class="i-main">18.8억</div><div class="i-note">11.3%</div></div></div>
+            </div>
+          </div>
+          <div class="sec-label">이번 달 특이사항</div>
+          <div class="notice" style="background:var(--green-bg);border:1px solid #A9D6BD;"><span class="n-icon">📉</span><div><div class="n-text" style="color:var(--green);"><strong>난방비 큰 폭 감소</strong> — 전월 대비 221억 감소. 2월 기온 소폭 상승 및 설 연휴 효과로 사용량 감소.</div></div></div>
+          <div class="notice" style="background:var(--amber-bg);border:1px solid #F0C078;"><span class="n-icon">👷</span><div><div class="n-text" style="color:var(--amber);"><strong>인건비 증가</strong> — 전월 대비 11억 증가. 명절 수당 및 설 상여 반영으로 추정.</div></div></div>
+          <div class="notice" style="background:var(--navy-bg);border:1px solid #BDD0F0;"><span class="n-icon">🔒</span><div><div class="n-text" style="color:var(--navy);"><strong>장기수선충당금 고정</strong> — 매월 84,603,800원 적립. 세대당 19,675원. 이사 시 임차인 청구 가능.</div></div></div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">세대당 주요 항목 (2026.02)</div>
+            <div class="irow"><div class="i-label">🔥 난방비+급탕비</div><div class="i-val"><div class="i-main">121,404원</div><div class="i-note">전체 31.4%</div></div></div>
+            <div class="irow"><div class="i-label">⚡ 전기료</div><div class="i-val"><div class="i-main">89,284원</div><div class="i-note">전체 23.1%</div></div></div>
+            <div class="irow"><div class="i-label">🛡️ 경비비</div><div class="i-val"><div class="i-main">39,925원</div><div class="i-note">전체 10.3%</div></div></div>
+            <div class="irow"><div class="i-label">🧹 청소비</div><div class="i-val"><div class="i-main">24,764원</div><div class="i-note">전체 6.4%</div></div></div>
+            <div class="irow"><div class="i-label">🏗️ 장기수선충당금</div><div class="i-val"><div class="i-main">19,675원</div><div class="i-note">매월 고정</div></div></div>
+            <div class="irow"><div class="i-label">💧 수도료</div><div class="i-val"><div class="i-main">17,740원</div><div class="i-note">전체 4.6%</div></div></div>
+          </div>
         </div>
-        <div class="card">
-          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">자주 묻는 질문</div>
-          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">관리비가 갑자기 올랐어요</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">계절 냉난방비, 엘리베이터 수리비, 커뮤니티 이용료 정산이 원인일 수 있어요. 관리사무소에 세부 내역 요청하세요.</div></div></div>
-          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">커뮤니티 이용료가 이상해요</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">커뮤니티센터 이용료는 별도 고지서로 나와요. 이의제기는 관리사무소(02-931-8360)로 문의하세요.</div></div></div>
-          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">이사 가면 장기수선충당금 돌려받나요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">세입자가 납부했다면 집주인에게 청구 가능해요. 관리사무소에서 납부확인서 발급받으세요.</div></div></div>
-          <div class="faq-item" style="border-bottom:none;padding-bottom:0;"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">관리비 이의제기는 어떻게 하나요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">관리사무소에 서면 또는 방문으로 이의신청. 30일 이내 처리 의무가 있어요.</div></div></div>
+      </div>
+
+      <!-- 서브탭 1: 월별 추이 -->
+      <div class="fee-page" id="fee1">
+        <div class="sec" style="padding-top:16px;">
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">월별 총 관리비</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-bottom:12px;">4,300세대 전체 기준 (억원)</div>
+            <div style="height:200px;position:relative;"><canvas id="feeTotal"></canvas></div>
+          </div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">세대당 평균 관리비</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-bottom:12px;">월별 세대당 평균 (만원)</div>
+            <div style="height:200px;position:relative;"><canvas id="feePerHouse"></canvas></div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;">
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+              <thead><tr style="background:var(--navy);">
+                <th style="padding:10px 12px;color:#fff;text-align:left;font-weight:700;">월</th>
+                <th style="padding:10px 8px;color:#fff;text-align:right;font-weight:700;">총계(억)</th>
+                <th style="padding:10px 8px;color:#fff;text-align:right;font-weight:700;">세대당(만)</th>
+                <th style="padding:10px 8px;color:#fff;text-align:right;font-weight:700;">전월比</th>
+              </tr></thead>
+              <tbody>
+                <tr><td style="padding:8px 12px;font-weight:600;">2025.01</td><td style="padding:8px;text-align:right;">180.7</td><td style="padding:8px;text-align:right;">42.0</td><td style="padding:8px;text-align:right;color:var(--gray-400);">—</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 12px;font-weight:600;">2025.02</td><td style="padding:8px;text-align:right;">174.6</td><td style="padding:8px;text-align:right;">40.6</td><td style="padding:8px;text-align:right;color:var(--green);">▼3.4%</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600;">2025.03</td><td style="padding:8px;text-align:right;">144.9</td><td style="padding:8px;text-align:right;">33.7</td><td style="padding:8px;text-align:right;color:var(--green);">▼17.0%</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 12px;font-weight:600;">2025.04</td><td style="padding:8px;text-align:right;">133.7</td><td style="padding:8px;text-align:right;">31.1</td><td style="padding:8px;text-align:right;color:var(--green);">▼7.7%</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600;">2025.05</td><td style="padding:8px;text-align:right;">125.0</td><td style="padding:8px;text-align:right;">29.1</td><td style="padding:8px;text-align:right;color:var(--green);">▼6.5%</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 12px;font-weight:600;">2025.06</td><td style="padding:8px;text-align:right;">125.6</td><td style="padding:8px;text-align:right;">29.2</td><td style="padding:8px;text-align:right;color:var(--red);">▲0.5%</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600;">2025.07</td><td style="padding:8px;text-align:right;">133.5</td><td style="padding:8px;text-align:right;">31.0</td><td style="padding:8px;text-align:right;color:var(--red);">▲6.3%</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 12px;font-weight:600;">2025.08</td><td style="padding:8px;text-align:right;">148.4</td><td style="padding:8px;text-align:right;">34.5</td><td style="padding:8px;text-align:right;color:var(--red);">▲11.2%</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600;">2025.09</td><td style="padding:8px;text-align:right;">131.4</td><td style="padding:8px;text-align:right;">30.6</td><td style="padding:8px;text-align:right;color:var(--green);">▼11.5%</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 12px;font-weight:600;">2025.10</td><td style="padding:8px;text-align:right;">123.3</td><td style="padding:8px;text-align:right;">28.7</td><td style="padding:8px;text-align:right;color:var(--green);">▼6.3%</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600;">2025.11</td><td style="padding:8px;text-align:right;">139.6</td><td style="padding:8px;text-align:right;">32.5</td><td style="padding:8px;text-align:right;color:var(--red);">▲13.2%</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 12px;font-weight:600;">2025.12</td><td style="padding:8px;text-align:right;">167.3</td><td style="padding:8px;text-align:right;">38.9</td><td style="padding:8px;text-align:right;color:var(--red);">▲19.9%</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600;">2026.01</td><td style="padding:8px;text-align:right;">189.1</td><td style="padding:8px;text-align:right;">44.0</td><td style="padding:8px;text-align:right;color:var(--red);">▲13.0%</td></tr>
+                <tr style="background:var(--navy-bg);"><td style="padding:8px 12px;font-weight:800;color:var(--navy);">2026.02</td><td style="padding:8px;text-align:right;font-weight:700;">166.2</td><td style="padding:8px;text-align:right;font-weight:700;">38.7</td><td style="padding:8px;text-align:right;color:var(--green);">▼12.1%</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="card" style="background:var(--navy-bg);border-color:#BDD0F0;">
-          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 관리비 문의</div>
-          <div style="font-size:13px;color:var(--gray-600);">관리사무소 <strong>02-931-8360</strong> (평일 09:00~18:00)</div>
+      </div>
+
+      <!-- 서브탭 2: 항목 분석 -->
+      <div class="fee-page" id="fee2">
+        <div class="sec" style="padding-top:16px;">
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">🔥 난방비+급탕비 추이</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-bottom:12px;">겨울·여름 계절 요인이 가장 큰 변동 원인 (세대당, 만원)</div>
+            <div style="height:190px;position:relative;"><canvas id="feeHeating"></canvas></div>
+          </div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">⚡ 전기료 추이</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-bottom:12px;">여름(7~8월) 냉방으로 급증 (세대당, 만원)</div>
+            <div style="height:190px;position:relative;"><canvas id="feeElectric"></canvas></div>
+          </div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">고정 항목 (매월 거의 변동 없음)</div>
+            <div class="irow"><div class="i-label">🏗️ 장기수선충당금</div><div class="i-val"><div class="i-main">19,675원</div><div class="i-note">14개월 전 기간 동일</div></div></div>
+            <div class="irow"><div class="i-label">🛗 승강기유지비</div><div class="i-val"><div class="i-main">2,865원</div><div class="i-note">2025.02 이후 고정</div></div></div>
+            <div class="irow"><div class="i-label">🛡️ 경비비</div><div class="i-val"><div class="i-main">37,802~40,178원</div><div class="i-note">±3% 이내</div></div></div>
+            <div class="irow"><div class="i-label">🧹 청소비</div><div class="i-val"><div class="i-main">24,710~26,980원</div><div class="i-note">±4% 이내</div></div></div>
+          </div>
+          <div class="notice" style="background:var(--red-bg);border:1px solid #F5B7B1;"><span class="n-icon">❄️</span><div><div class="n-text" style="color:var(--red);"><strong>겨울(12~2월)</strong> — 난방비 세대당 12~17만원. 전체의 30~40% 차지.</div></div></div>
+          <div class="notice" style="background:var(--blue-bg);border:1px solid #BBDEFB;"><span class="n-icon">☀️</span><div><div class="n-text" style="color:var(--blue);"><strong>여름(7~8월)</strong> — 냉방 전기료 세대당 11~15만원으로 연중 최고.</div></div></div>
+          <div class="notice" style="background:var(--green-bg);border:1px solid #A9D6BD;"><span class="n-icon">🌸</span><div><div class="n-text" style="color:var(--green);"><strong>봄·가을(4~5월, 10월)</strong> — 세대당 28~31만원. 연중 가장 저렴.</div></div></div>
+        </div>
+      </div>
+
+      <!-- 서브탭 3: 전년 비교 -->
+      <div class="fee-page" id="fee3">
+        <div class="sec" style="padding-top:16px;">
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">2025 vs 2026 비교 (1~2월)</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-bottom:12px;">단위: 억원</div>
+            <div style="height:190px;position:relative;"><canvas id="feeYoy"></canvas></div>
+          </div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">전년 동월 대비</div>
+            <div class="irow"><div class="i-label">2026.01 vs 2025.01</div><div class="i-val"><div class="i-main" style="color:var(--red);">+8.4억 ▲4.7%</div><div class="i-note">189.1억 vs 180.7억</div></div></div>
+            <div class="irow"><div class="i-label">2026.02 vs 2025.02</div><div class="i-val"><div class="i-main" style="color:var(--green);">-8.4억 ▼4.8%</div><div class="i-note">166.2억 vs 174.6억</div></div></div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;">
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+              <thead><tr style="background:var(--navy);">
+                <th style="padding:10px 12px;color:#fff;text-align:left;font-weight:700;">항목</th>
+                <th style="padding:10px 8px;color:#fff;text-align:right;font-weight:700;">2025.02</th>
+                <th style="padding:10px 8px;color:#fff;text-align:right;font-weight:700;">2026.02</th>
+                <th style="padding:10px 8px;color:#fff;text-align:right;font-weight:700;">증감</th>
+              </tr></thead>
+              <tbody>
+                <tr><td style="padding:8px 12px;font-weight:600;">난방+급탕</td><td style="padding:8px;text-align:right;">14.0만</td><td style="padding:8px;text-align:right;">12.1만</td><td style="padding:8px;text-align:right;color:var(--green);">▼13%</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 12px;font-weight:600;">전기료</td><td style="padding:8px;text-align:right;">9.0만</td><td style="padding:8px;text-align:right;">8.9만</td><td style="padding:8px;text-align:right;color:var(--green);">▼1%</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600;">경비비</td><td style="padding:8px;text-align:right;">3.85만</td><td style="padding:8px;text-align:right;">3.99만</td><td style="padding:8px;text-align:right;color:var(--red);">▲4%</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 12px;font-weight:600;">청소비</td><td style="padding:8px;text-align:right;">2.49만</td><td style="padding:8px;text-align:right;">2.48만</td><td style="padding:8px;text-align:right;">≈동일</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600;">인건비</td><td style="padding:8px;text-align:right;">3.44만</td><td style="padding:8px;text-align:right;">3.97만</td><td style="padding:8px;text-align:right;color:var(--red);">▲15%</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 12px;font-weight:600;">장기수선</td><td style="padding:8px;text-align:right;">1.97만</td><td style="padding:8px;text-align:right;">1.97만</td><td style="padding:8px;text-align:right;">고정</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="notice" style="background:var(--navy-bg);border:1px solid #BDD0F0;"><span class="n-icon">📊</span><div><div class="n-text" style="color:var(--navy);">난방비는 감소했지만 인건비·경비비 등 <strong>고정비가 점진적 증가</strong> 추세. 향후 관리비 기저 상승 가능성 있음.</div></div></div>
+        </div>
+      </div>
+
+      <!-- 서브탭 4: FAQ -->
+      <div class="fee-page" id="fee4">
+        <div class="sec" style="padding-top:16px;">
+          <div class="card">
+            <div class="faq-item"><div class="faq-t" style="font-weight:700;">관리비가 왜 매달 달라요?</div></div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.7;padding-bottom:12px;border-bottom:1px solid var(--gray-100);">가장 큰 원인은 <strong>난방비와 전기료</strong>예요. 겨울(12~2월)엔 난방비가 세대당 12~17만원으로 급증하고, 여름(7~8월)엔 냉방 전기료가 11~15만원으로 올라요. 봄·가을(4~5월, 10월)이 연중 가장 저렴합니다.</div>
+            <div class="faq-item"><div class="faq-t" style="font-weight:700;">장기수선충당금은 뭐고, 돌려받을 수 있나요?</div></div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.7;padding-bottom:12px;border-bottom:1px solid var(--gray-100);">노후 공용 시설 수선을 위해 매달 세대당 <strong>19,675원</strong> 고정 납부해요. 세입자(임차인)가 납부한 경우, 이사 시 집주인(임대인)에게 청구 가능합니다. 관리사무소에서 납부확인서 발급받으세요.</div>
+            <div class="faq-item"><div class="faq-t" style="font-weight:700;">커뮤니티 이용료는 어디서 나오나요?</div></div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.7;padding-bottom:12px;border-bottom:1px solid var(--gray-100);">수영장·헬스장·골프 등 커뮤니티시설 이용료는 관리비 고지서와 별도로 <strong>커뮤니티센터 전용 고지서</strong>로 나와요.</div>
+            <div class="faq-item"><div class="faq-t" style="font-weight:700;">관리비 이의제기는 어떻게 하나요?</div></div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.7;padding-bottom:12px;border-bottom:1px solid var(--gray-100);">관리사무소(02-931-8360)에 방문하거나 서면으로 이의신청하면 돼요. 법적으로 30일 이내 처리 의무가 있습니다.</div>
+            <div class="faq-item"><div class="faq-t" style="font-weight:700;">난방비가 갑자기 많이 나왔어요</div></div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">우리 단지는 지역난방 방식이에요. 세대 사용량에 비례 부과됩니다. 작년 같은 달과 크게 차이나면 관리사무소에 검침 확인 요청하세요.</div>
+          </div>
+          <div class="card" style="background:var(--navy-bg);border-color:#BDD0F0;">
+            <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 관리비 문의</div>
+            <div style="font-size:13px;color:var(--gray-600);">관리사무소 <strong>02-931-8360</strong> (평일 09:00~18:00)</div>
+          </div>
         </div>
       </div>
     </div>
@@ -425,7 +569,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div class="citem" onclick="filterLocal(this,'edu')"><div class="c-wrap">📚</div><div class="c-lbl">학원</div></div>
           <div class="citem" onclick="filterLocal(this,'kids')"><div class="c-wrap">👶</div><div class="c-lbl">키즈</div></div>
           <div class="citem" onclick="filterLocal(this,'cafe')"><div class="c-wrap">☕</div><div class="c-lbl">카페</div></div>
-          <div class="citem" onclick="filterLocal(this,'pharmacy')"><div class="c-wrap">💊</div><div class="c-lbl">약국</div></div>
         </div>
         <div id="local-list">
           <!-- 기본 콘텐츠 -->
@@ -470,7 +613,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
               <div class="w-title">윗집 누수로 천장에서 물이 새요</div>
               <div class="w-desc" style="margin-bottom:8px;">① 관리사무소(02-931-8360) 즉시 신고<br>② 공용 배관 문제 → 관리사무소 처리<br>③ 세대 배관 문제 → 윗집 세대 책임<br>④ 사진 찍어두기 (분쟁 시 증거)</div>
               <span class="w-tag" style="background:var(--red-bg);color:var(--red);">즉시 신고 필수</span>
-              <div class="rbiz" id="rbiz-repair-leak"></div>
             </div>
           </div>
           <!-- 보일러 -->
@@ -479,25 +621,14 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="w-body">
               <div class="w-title">보일러 고장 — 누가 고쳐주나요?</div>
               <div class="w-desc" style="margin-bottom:8px;">세대 내 보일러 본체 → 세대 책임<br>공용 배관·열공급 → 관리사무소 처리<br>애매하면 먼저 관리사무소(02-931-8360)에 확인</div>
-              <div class="rbiz" id="rbiz-repair-boiler"></div>
             </div>
           </div>
-          <!-- 결로·도배 -->
+          <!-- 결로 -->
           <div class="witem">
             <div class="w-icon" style="background:var(--gray-100);">🌫️</div>
             <div class="w-body">
               <div class="w-title">벽에 결로·곰팡이가 생겼어요</div>
-              <div class="w-desc" style="margin-bottom:8px;">입주 10년 이하 → 하자보수 청구 가능<br>관리사무소에 하자보수 신청서 제출<br>10년 초과 → 원칙적으로 세대 자체 수리<br>곰팡이 제거 후 도배 교체 필요 시 아래 업체 이용</div>
-              <div class="rbiz" id="rbiz-wallpaper"></div>
-            </div>
-          </div>
-          <!-- 에어컨 청소 -->
-          <div class="witem">
-            <div class="w-icon" style="background:var(--blue-bg);">❄️</div>
-            <div class="w-body">
-              <div class="w-title">에어컨에서 냄새·곰팡이가 나요</div>
-              <div class="w-desc" style="margin-bottom:8px;">필터 교체 후에도 냄새 지속 → 전문 분해 청소 필요<br>여름 전 청소하면 전기요금·성능 모두 개선</div>
-              <div class="rbiz" id="rbiz-aircon"></div>
+              <div class="w-desc" style="margin-bottom:8px;">입주 10년 이하 → 하자보수 청구 가능<br>관리사무소에 하자보수 신청서 제출<br>10년 초과 → 원칙적으로 세대 자체 수리</div>
             </div>
           </div>
           <!-- 엘리베이터 -->
@@ -647,32 +778,9 @@ function goBack(){
 // DB에서 업체 불러와서 기본 콘텐츠 위에 덮어쓰기
 async function loadBiz(){
   const {data}=await sb.from('businesses').select('*').eq('status','active').order('review_count',{ascending:false});
-  if(!data||!data.length) return;
+  if(!data||!data.length) return; // 데이터 없으면 기본 콘텐츠 유지
   allBiz=data;
   renderBiz(allBiz);
-  renderRepairBiz();
-}
-
-function renderRepairBiz(){
-  const fill=(id, cats)=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    const items=allBiz.filter(b=>cats.includes(b.category));
-    if(!items.length){el.style.display='none';return;}
-    el.innerHTML=`<div class="rbiz-title">📋 관련 업체</div>`+
-      items.map(b=>`
-        <div class="rbiz-item">
-          <div class="rbiz-info">
-            <div class="rbiz-name">${b.name}</div>
-            <div class="rbiz-price">${b.price_range||''}</div>
-          </div>
-          ${b.phone?`<button class="rbiz-call" onclick="location.href='tel:${b.phone}'">📞 전화</button>`:''}
-        </div>`).join('');
-  };
-  fill('rbiz-repair-leak',['repair']);
-  fill('rbiz-repair-boiler',['repair']);
-  fill('rbiz-wallpaper',['wallpaper']);
-  fill('rbiz-aircon',['aircon_clean']);
 }
 function renderBiz(data){
   if(!data.length) return;
@@ -750,6 +858,54 @@ document.getElementById('searchInput').addEventListener('input',function(){
 // 초기 로드 — DB 있으면 덮어쓰기, 없으면 기본 콘텐츠 유지
 loadBiz();
 loadLocal();
+
+// ── 관리비 서브탭 ─────────────────────────────────────────────
+function goFeeTab(idx,btn){
+  document.querySelectorAll('.fee-tab').forEach(b=>{b.style.color='var(--gray-400)';b.style.borderBottomColor='transparent';});
+  document.querySelectorAll('.fee-page').forEach(p=>p.classList.remove('active'));
+  btn.style.color='var(--navy)';btn.style.borderBottomColor='var(--navy)';
+  document.getElementById('fee'+idx).classList.add('active');
+  if(idx===0&&!window._fC0) {window._fC0=true;setTimeout(initFeeDonut,50);}
+  if(idx===1&&!window._fC1) {window._fC1=true;setTimeout(initFeeTrend,50);}
+  if(idx===2&&!window._fC2) {window._fC2=true;setTimeout(initFeeItems,50);}
+  if(idx===3&&!window._fC3) {window._fC3=true;setTimeout(initFeeYoy,50);}
+}
+const FM=['25.01','25.02','25.03','25.04','25.05','25.06','25.07','25.08','25.09','25.10','25.11','25.12','26.01','26.02'];
+const FT=[180.7,174.6,144.9,133.7,125.0,125.6,133.5,148.4,131.4,123.3,139.6,167.3,189.1,166.2];
+const FP=[42.0,40.6,33.7,31.1,29.1,29.2,31.0,34.5,30.6,28.7,32.5,38.9,44.0,38.7];
+const FH=[15.2,14.0,9.3,5.5,4.0,2.6,2.1,1.8,2.0,3.7,7.6,13.5,17.3,12.1];
+const FE=[9.1,9.0,6.9,7.6,7.1,8.4,11.6,14.9,11.0,7.2,7.5,7.8,9.1,8.9];
+const CN='#1B3A6B',CB='#2E75B6',CL='#9DC3E6',CR='#C0392B',CA='#D97706';
+const BO={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10},color:'#9A9A97'}},y:{grid:{color:'#F0F0EF'},ticks:{font:{size:10},color:'#9A9A97'}}}};
+function initFeeDonut(){
+  const el=document.getElementById('feeDonut');if(!el)return;
+  new Chart(el,{type:'doughnut',data:{labels:['개별세대','공동주택','관리기구'],datasets:[{data:[61.9,26.7,11.3],backgroundColor:[CN,CB,CL],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false}}}});
+}
+function initFeeTrend(){
+  const e1=document.getElementById('feeTotal'),e2=document.getElementById('feePerHouse');
+  if(!e1||!e2)return;
+  new Chart(e1,{type:'bar',data:{labels:FM,datasets:[{data:FT,backgroundColor:FM.map((_,i)=>i>=12?CN:CL),borderRadius:4,borderSkipped:false}]},options:BO});
+  new Chart(e2,{type:'line',data:{labels:FM,datasets:[{data:FP,borderColor:CN,backgroundColor:'rgba(27,58,107,0.08)',borderWidth:2.5,pointRadius:3,pointBackgroundColor:CN,tension:0.3,fill:true}]},options:BO});
+}
+function initFeeItems(){
+  const e1=document.getElementById('feeHeating'),e2=document.getElementById('feeElectric');
+  if(!e1||!e2)return;
+  new Chart(e1,{type:'line',data:{labels:FM,datasets:[{data:FH,borderColor:CR,backgroundColor:'rgba(192,57,43,0.08)',borderWidth:2.5,pointRadius:3,pointBackgroundColor:CR,tension:0.3,fill:true}]},options:BO});
+  new Chart(e2,{type:'line',data:{labels:FM,datasets:[{data:FE,borderColor:CA,backgroundColor:'rgba(217,119,6,0.08)',borderWidth:2.5,pointRadius:3,pointBackgroundColor:CA,tension:0.3,fill:true}]},options:BO});
+}
+function initFeeYoy(){
+  const el=document.getElementById('feeYoy');if(!el)return;
+  new Chart(el,{type:'bar',data:{labels:['1월','2월'],datasets:[{label:'2025년',data:[180.7,174.6],backgroundColor:CL,borderRadius:4},{label:'2026년',data:[189.1,166.2],backgroundColor:CN,borderRadius:4}]},options:{...BO,plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:12,padding:10}}}}});
+}
+// 관리비 탭 진입 시 이번달 차트 자동 초기화
+const _origGoTab=goTab;
+function goTab(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(tabIdx[id]!==undefined) document.querySelectorAll('.tab-btn')[tabIdx[id]].classList.add('active');
+  if(id==='fee'&&!window._fC0){window._fC0=true;setTimeout(initFeeDonut,80);}
+}
 </script>
 </body>
 </html>
