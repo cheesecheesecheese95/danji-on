@@ -1,556 +1,150 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>단지ON — 헤리움 메트로폴리스</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #1B3A6B; --navy-light: #2952A3; --navy-bg: #EEF3FB;
+  --orange: #D94F1E; --orange-bg: #FEF0EB;
+  --green: #1A6E3C; --green-bg: #E6F4ED;
+  --amber: #A0620A; --amber-bg: #FEF6E6;
+  --gray-50: #F8F8F8; --gray-100: #F0F0EF; --gray-200: #E0E0DE;
+  --gray-400: #9A9A97; --gray-600: #5A5A57; --gray-800: #2C2C2A;
+  --white: #FFFFFF; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.07);
+}
+html, body {
+  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', -apple-system, sans-serif;
+  font-size: 15px; color: var(--gray-800); background: var(--gray-50);
+  min-height: 100vh; -webkit-font-smoothing: antialiased;
+}
+.app { max-width: 430px; margin: 0 auto; background: var(--gray-50); min-height: 100vh; }
 
-  :root {
-    --navy: #1B3A6B;
-    --navy-light: #2952A3;
-    --navy-bg: #EEF3FB;
-    --orange: #D94F1E;
-    --orange-bg: #FEF0EB;
-    --green: #1A6E3C;
-    --green-bg: #E6F4ED;
-    --amber: #A0620A;
-    --amber-bg: #FEF6E6;
-    --gray-50: #F8F8F8;
-    --gray-100: #F0F0EF;
-    --gray-200: #E0E0DE;
-    --gray-400: #9A9A97;
-    --gray-600: #5A5A57;
-    --gray-800: #2C2C2A;
-    --white: #FFFFFF;
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
-  }
+/* HEADER */
+.header { background: var(--navy); padding: 20px 20px 16px; position: sticky; top: 0; z-index: 100; }
+.header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.apt-name { font-size: 13px; color: rgba(255,255,255,0.65); }
+.apt-title { font-size: 18px; color: #fff; font-weight: 700; margin-top: 1px; }
+.header-badge { font-size: 11px; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); }
+.search-wrap { position: relative; }
+.search-input { width: 100%; background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.2); border-radius: var(--radius-md); padding: 11px 16px 11px 40px; font-size: 14px; color: #fff; font-family: inherit; outline: none; }
+.search-input::placeholder { color: rgba(255,255,255,0.5); }
+.search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 17px; height: 17px; opacity: 0.6; }
 
-  html, body {
-    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', -apple-system, sans-serif;
-    font-size: 15px;
-    color: var(--gray-800);
-    background: var(--gray-50);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
+/* TAB NAV */
+.tab-nav { background: var(--white); border-bottom: 1px solid var(--gray-200); display: flex; overflow-x: auto; scrollbar-width: none; position: sticky; top: 113px; z-index: 99; }
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-btn { flex: 1; min-width: 80px; padding: 14px 8px; font-size: 13px; font-weight: 500; color: var(--gray-400); background: none; border: none; border-bottom: 2.5px solid transparent; cursor: pointer; font-family: inherit; white-space: nowrap; display: flex; flex-direction: column; align-items: center; gap: 3px; transition: color 0.15s, border-color 0.15s; }
+.tab-icon { font-size: 16px; }
+.tab-btn.active { color: var(--navy); border-bottom-color: var(--navy); }
 
-  .app {
-    max-width: 430px;
-    margin: 0 auto;
-    background: var(--gray-50);
-    min-height: 100vh;
-  }
+/* CONTENT */
+.tab-content { display: none; padding: 16px; }
+.tab-content.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
-  /* ── HEADER ── */
-  .header {
-    background: var(--navy);
-    padding: 20px 20px 16px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .apt-name {
-    font-size: 13px;
-    color: rgba(255,255,255,0.65);
-    font-weight: 400;
-    letter-spacing: 0.02em;
-  }
-  .apt-title {
-    font-size: 18px;
-    color: #fff;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin-top: 1px;
-  }
-  .header-badge {
-    font-size: 11px;
-    background: rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.9);
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.2);
-  }
+/* SECTION TITLE */
+.section-title { font-size: 12px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.06em; text-transform: uppercase; margin: 20px 0 10px; }
+.section-title:first-child { margin-top: 4px; }
 
-  .search-wrap {
-    position: relative;
-  }
-  .search-input {
-    width: 100%;
-    background: rgba(255,255,255,0.12);
-    border: 1.5px solid rgba(255,255,255,0.2);
-    border-radius: var(--radius-md);
-    padding: 11px 16px 11px 40px;
-    font-size: 14px;
-    color: #fff;
-    font-family: inherit;
-    outline: none;
-    transition: background 0.2s, border-color 0.2s;
-  }
-  .search-input::placeholder { color: rgba(255,255,255,0.5); }
-  .search-input:focus { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.4); }
-  .search-icon {
-    position: absolute;
-    left: 13px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 17px;
-    height: 17px;
-    opacity: 0.6;
-  }
+/* CARD */
+.card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200); padding: 16px; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
 
-  /* ── TAB NAV ── */
-  .tab-nav {
-    background: var(--white);
-    border-bottom: 1px solid var(--gray-200);
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    position: sticky;
-    top: 113px;
-    z-index: 99;
-  }
-  .tab-nav::-webkit-scrollbar { display: none; }
-  .tab-btn {
-    flex: 1;
-    min-width: 80px;
-    padding: 14px 8px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--gray-400);
-    background: none;
-    border: none;
-    border-bottom: 2.5px solid transparent;
-    cursor: pointer;
-    font-family: inherit;
-    transition: color 0.15s, border-color 0.15s;
-    white-space: nowrap;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-  }
-  .tab-icon { font-size: 16px; }
-  .tab-btn.active { color: var(--navy); border-bottom-color: var(--navy); }
+/* EMERGENCY GRID */
+.emergency-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.emergency-btn { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 16px 14px; text-align: left; cursor: pointer; font-family: inherit; box-shadow: var(--shadow-sm); text-decoration: none; display: block; transition: transform 0.1s; }
+.emergency-btn:active { transform: scale(0.97); }
+.emergency-btn.urgent { background: var(--orange-bg); border-color: #F4B8A4; }
+.emergency-btn .e-icon { font-size: 22px; display: block; margin-bottom: 8px; }
+.emergency-btn .e-label { font-size: 13px; font-weight: 600; color: var(--gray-800); display: block; margin-bottom: 3px; }
+.emergency-btn .e-sub { font-size: 11px; color: var(--gray-400); }
+.emergency-btn.urgent .e-label { color: var(--orange); }
 
-  /* ── CONTENT ── */
-  .tab-content { display: none; padding: 16px; }
-  .tab-content.active { display: block; }
+/* CONTACT ROW */
+.contact-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
+.contact-row:last-child { border-bottom: none; padding-bottom: 0; }
+.contact-row:first-child { padding-top: 0; }
+.contact-label { font-size: 14px; color: var(--gray-600); }
+.contact-number { font-size: 15px; font-weight: 600; color: var(--navy); text-decoration: none; }
+.contact-note { font-size: 11px; color: var(--gray-400); margin-top: 1px; }
+.call-btn { display: inline-flex; align-items: center; gap: 5px; background: var(--navy); color: #fff; border: none; border-radius: 20px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; margin-left: 10px; text-decoration: none; }
 
-  /* ── SECTION TITLE ── */
-  .section-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--gray-400);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin: 20px 0 10px;
-  }
-  .section-title:first-child { margin-top: 4px; }
+/* WIKI */
+.wiki-item { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--gray-100); cursor: pointer; }
+.wiki-item:last-child { border-bottom: none; padding-bottom: 0; }
+.wiki-item:first-child { padding-top: 0; }
+.wiki-icon-wrap { width: 40px; height: 40px; border-radius: 10px; background: var(--navy-bg); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.wiki-body { flex: 1; }
+.wiki-title { font-size: 14px; font-weight: 600; color: var(--gray-800); margin-bottom: 3px; }
+.wiki-desc { font-size: 12px; color: var(--gray-400); line-height: 1.5; }
+.wiki-tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-top: 6px; }
+.tag-fixed { background: var(--navy-bg); color: var(--navy); }
 
-  /* ── CARD BASE ── */
-  .card {
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--gray-200);
-    padding: 16px;
-    margin-bottom: 10px;
-    box-shadow: var(--shadow-sm);
-  }
+/* BIZ CARD */
+.biz-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200); padding: 16px; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
+.biz-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.biz-name { font-size: 15px; font-weight: 700; color: var(--gray-800); }
+.biz-category { font-size: 11px; font-weight: 600; color: var(--navy); background: var(--navy-bg); padding: 3px 9px; border-radius: 20px; }
+.biz-rating { display: flex; align-items: center; gap: 4px; margin-bottom: 8px; }
+.stars { color: #F5A623; font-size: 13px; }
+.rating-score { font-size: 13px; font-weight: 600; }
+.review-count { font-size: 12px; color: var(--gray-400); }
+.biz-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.biz-tag { font-size: 11px; color: var(--gray-600); background: var(--gray-100); padding: 3px 9px; border-radius: 20px; }
+.biz-price { font-size: 13px; color: var(--gray-600); margin-bottom: 12px; }
+.biz-price strong { color: var(--gray-800); }
+.biz-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--gray-100); }
+.verified-badge { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--green); font-weight: 600; }
+.action-btns { display: flex; gap: 8px; }
+.btn-outline { font-size: 12px; font-weight: 600; color: var(--navy); background: none; border: 1.5px solid var(--navy); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-family: inherit; }
+.btn-fill { font-size: 12px; font-weight: 600; color: #fff; background: var(--navy); border: none; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-family: inherit; }
 
-  /* ── EMERGENCY QUICK BUTTONS ── */
-  .emergency-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .emergency-btn {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius-lg);
-    padding: 16px 14px;
-    text-align: left;
-    cursor: pointer;
-    font-family: inherit;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.1s, box-shadow 0.1s;
-    text-decoration: none;
-    display: block;
-  }
-  .emergency-btn:active { transform: scale(0.97); }
-  .emergency-btn.urgent {
-    background: var(--orange-bg);
-    border-color: #F4B8A4;
-  }
-  .emergency-btn .e-icon {
-    font-size: 22px;
-    display: block;
-    margin-bottom: 8px;
-  }
-  .emergency-btn .e-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--gray-800);
-    display: block;
-    margin-bottom: 3px;
-  }
-  .emergency-btn .e-sub {
-    font-size: 11px;
-    color: var(--gray-400);
-  }
-  .emergency-btn.urgent .e-label { color: var(--orange); }
+/* LOCAL */
+.place-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200); padding: 16px; margin-bottom: 10px; box-shadow: var(--shadow-sm); display: flex; gap: 14px; align-items: flex-start; }
+.place-thumb { width: 52px; height: 52px; border-radius: var(--radius-sm); background: var(--gray-100); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.place-body { flex: 1; }
+.place-name { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 3px; }
+.place-cat { display: inline-block; font-size: 11px; font-weight: 600; color: var(--amber); background: var(--amber-bg); padding: 2px 8px; border-radius: 20px; margin-bottom: 6px; }
+.place-desc { font-size: 12px; color: var(--gray-400); line-height: 1.5; }
+.place-meta { display: flex; gap: 10px; margin-top: 6px; align-items: center; flex-wrap: wrap; }
+.place-dist { font-size: 11px; color: var(--gray-400); }
+.resident-review { font-size: 11px; color: var(--green); font-weight: 600; background: var(--green-bg); padding: 2px 8px; border-radius: 20px; }
 
-  /* ── CONTACT CARD ── */
-  .contact-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--gray-100);
-  }
-  .contact-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .contact-row:first-child { padding-top: 0; }
-  .contact-label { font-size: 14px; color: var(--gray-600); }
-  .contact-info { text-align: right; }
-  .contact-number {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--navy);
-    text-decoration: none;
-  }
-  .contact-note {
-    font-size: 11px;
-    color: var(--gray-400);
-    margin-top: 1px;
-  }
-  .call-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: var(--navy);
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 6px 12px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    margin-left: 10px;
-    text-decoration: none;
-  }
+/* FILTER */
+.filter-row { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 12px; }
+.filter-row::-webkit-scrollbar { display: none; }
+.chip { flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--gray-200); background: var(--white); color: var(--gray-600); cursor: pointer; font-family: inherit; }
+.chip.active { background: var(--navy); color: #fff; border-color: var(--navy); }
 
-  /* ── WIKI ITEM ── */
-  .wiki-item {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--gray-100);
-    cursor: pointer;
-  }
-  .wiki-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .wiki-item:first-child { padding-top: 0; }
-  .wiki-icon-wrap {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: var(--navy-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  .wiki-body { flex: 1; }
-  .wiki-title { font-size: 14px; font-weight: 600; color: var(--gray-800); margin-bottom: 3px; }
-  .wiki-desc { font-size: 12px; color: var(--gray-400); line-height: 1.5; }
-  .wiki-tag {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-top: 6px;
-  }
-  .tag-fixed { background: var(--navy-bg); color: var(--navy); }
-  .tag-updated { background: var(--green-bg); color: var(--green); }
+/* CAT SCROLL */
+.cat-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; margin-bottom: 14px; }
+.cat-scroll::-webkit-scrollbar { display: none; }
+.cat-item { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+.cat-icon-wrap { width: 52px; height: 52px; border-radius: 14px; background: var(--white); border: 1.5px solid var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: var(--shadow-sm); }
+.cat-item.active .cat-icon-wrap { border-color: var(--navy); background: var(--navy-bg); }
+.cat-label { font-size: 11px; font-weight: 500; color: var(--gray-600); text-align: center; }
+.cat-item.active .cat-label { color: var(--navy); font-weight: 700; }
 
-  /* ── BUSINESS CARD ── */
-  .biz-card {
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--gray-200);
-    padding: 16px;
-    margin-bottom: 10px;
-    box-shadow: var(--shadow-sm);
-  }
-  .biz-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-  .biz-name { font-size: 15px; font-weight: 700; color: var(--gray-800); }
-  .biz-category {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--navy);
-    background: var(--navy-bg);
-    padding: 3px 9px;
-    border-radius: 20px;
-  }
-  .biz-rating {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-bottom: 8px;
-  }
-  .stars { color: #F5A623; font-size: 13px; }
-  .rating-score { font-size: 13px; font-weight: 600; color: var(--gray-800); }
-  .review-count { font-size: 12px; color: var(--gray-400); }
-  .biz-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-  .biz-tag {
-    font-size: 11px;
-    color: var(--gray-600);
-    background: var(--gray-100);
-    padding: 3px 9px;
-    border-radius: 20px;
-  }
-  .biz-price {
-    font-size: 13px;
-    color: var(--gray-600);
-    margin-bottom: 12px;
-  }
-  .biz-price strong { color: var(--gray-800); }
-  .biz-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid var(--gray-100);
-  }
-  .verified-badge {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    color: var(--green);
-    font-weight: 600;
-  }
-  .action-btns { display: flex; gap: 8px; }
-  .btn-outline {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--navy);
-    background: none;
-    border: 1.5px solid var(--navy);
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-family: inherit;
-  }
-  .btn-fill {
-    font-size: 12px;
-    font-weight: 600;
-    color: #fff;
-    background: var(--navy);
-    border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-family: inherit;
-  }
+/* NOTICE */
+.notice-banner { background: var(--amber-bg); border: 1px solid #F5D08A; border-radius: var(--radius-md); padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; margin-bottom: 16px; }
+.notice-icon { font-size: 16px; flex-shrink: 0; }
+.notice-text { font-size: 13px; color: var(--amber); line-height: 1.5; }
 
-  /* ── LOCAL PLACE CARD ── */
-  .place-card {
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--gray-200);
-    padding: 16px;
-    margin-bottom: 10px;
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-  }
-  .place-thumb {
-    width: 52px;
-    height: 52px;
-    border-radius: var(--radius-sm);
-    background: var(--gray-100);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-  }
-  .place-body { flex: 1; }
-  .place-name { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 3px; }
-  .place-cat {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--amber);
-    background: var(--amber-bg);
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-bottom: 6px;
-  }
-  .place-desc { font-size: 12px; color: var(--gray-400); line-height: 1.5; }
-  .place-meta { display: flex; gap: 10px; margin-top: 6px; align-items: center; flex-wrap: wrap; }
-  .place-dist {
-    font-size: 11px;
-    color: var(--gray-400);
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-  .resident-review {
-    font-size: 11px;
-    color: var(--green);
-    font-weight: 600;
-    background: var(--green-bg);
-    padding: 2px 8px;
-    border-radius: 20px;
-  }
+/* STEP */
+.step-list { margin-top: 6px; }
+.step-item { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; }
+.step-num { width: 22px; height: 22px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.step-text { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
 
-  /* ── FILTER CHIPS ── */
-  .filter-row {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-bottom: 4px;
-    margin-bottom: 12px;
-  }
-  .filter-row::-webkit-scrollbar { display: none; }
-  .chip {
-    flex-shrink: 0;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1.5px solid var(--gray-200);
-    background: var(--white);
-    color: var(--gray-600);
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s;
-  }
-  .chip.active {
-    background: var(--navy);
-    color: #fff;
-    border-color: var(--navy);
-  }
-
-  /* ── NOTICE BANNER ── */
-  .notice-banner {
-    background: var(--amber-bg);
-    border: 1px solid #F5D08A;
-    border-radius: var(--radius-md);
-    padding: 12px 14px;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    margin-bottom: 16px;
-  }
-  .notice-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-  .notice-text { font-size: 13px; color: var(--amber); line-height: 1.5; }
-  .notice-text strong { font-weight: 700; }
-
-  /* ── STEP CARD (for procedures) ── */
-  .step-list { margin-top: 6px; }
-  .step-item {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    padding: 8px 0;
-  }
-  .step-num {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--navy);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .step-text { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
-  .step-text strong { color: var(--gray-800); font-weight: 600; }
-
-  /* ── SCROLLABLE CATEGORIES ── */
-  .cat-scroll {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    scrollbar-width: none;
-    margin-bottom: 14px;
-  }
-  .cat-scroll::-webkit-scrollbar { display: none; }
-  .cat-item {
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-  }
-  .cat-icon-wrap {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    background: var(--white);
-    border: 1.5px solid var(--gray-200);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    box-shadow: var(--shadow-sm);
-    transition: border-color 0.15s;
-  }
-  .cat-item.active .cat-icon-wrap { border-color: var(--navy); background: var(--navy-bg); }
-  .cat-label {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--gray-600);
-    text-align: center;
-  }
-  .cat-item.active .cat-label { color: var(--navy); font-weight: 700; }
-
-  /* ── EMPTY STATE ── */
-  .empty { text-align: center; padding: 40px 20px; color: var(--gray-400); font-size: 14px; }
-
-  /* ── BOTTOM NAV (fixed ≠ fixed positioning, uses margin) ── */
-  .bottom-padding { height: 20px; }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .tab-content.active { animation: fadeIn 0.2s ease; }
-
-  /* ── UTILITY ── */
-  .flex-between { display: flex; justify-content: space-between; align-items: center; }
-  .mt-4 { margin-top: 4px; }
-  .mt-8 { margin-top: 8px; }
+/* LOADING / EMPTY */
+.loading { text-align: center; padding: 40px 20px; color: var(--gray-400); font-size: 14px; }
+.empty { text-align: center; padding: 40px 20px; color: var(--gray-400); font-size: 14px; }
+.bottom-padding { height: 20px; }
 </style>
 </head>
 <body>
@@ -575,170 +169,45 @@
 
   <!-- TAB NAV -->
   <div class="tab-nav">
-    <button class="tab-btn active" data-tab="emergency">
-      <span class="tab-icon">🚨</span>긴급도움
-    </button>
-    <button class="tab-btn" data-tab="wiki">
-      <span class="tab-icon">📋</span>단지위키
-    </button>
-    <button class="tab-btn" data-tab="recommend">
-      <span class="tab-icon">⭐</span>생활추천
-    </button>
-    <button class="tab-btn" data-tab="local">
-      <span class="tab-icon">📍</span>우리동네
-    </button>
+    <button class="tab-btn active" data-tab="emergency"><span class="tab-icon">🚨</span>긴급도움</button>
+    <button class="tab-btn" data-tab="wiki"><span class="tab-icon">📋</span>단지위키</button>
+    <button class="tab-btn" data-tab="recommend"><span class="tab-icon">⭐</span>생활추천</button>
+    <button class="tab-btn" data-tab="local"><span class="tab-icon">📍</span>우리동네</button>
   </div>
 
-  <!-- ────────────────────────────────────────── -->
   <!-- TAB 1: 긴급도움 -->
-  <!-- ────────────────────────────────────────── -->
   <div class="tab-content active" id="tab-emergency">
-
     <div class="notice-banner" style="margin-top:16px;">
       <span class="notice-icon">❄️</span>
-      <div class="notice-text">
-        <strong>동파 주의보 발령 중</strong><br>
-        기온 -8°C 이하 예보. 수도 계량기 동파 시 즉시 관리사무소로 연락하세요.
-      </div>
+      <div class="notice-text"><strong>동파 주의보 발령 중</strong><br>기온 -8°C 이하 예보. 수도 계량기 동파 시 즉시 관리사무소로 연락하세요.</div>
     </div>
 
-    <!-- 긴급 버튼 그리드 -->
     <div class="section-title">지금 바로 연락</div>
-    <div class="emergency-grid">
-      <a href="tel:02-3456-7890" class="emergency-btn urgent">
-        <span class="e-icon">💧</span>
-        <span class="e-label">누수 · 동파</span>
-        <span class="e-sub">관리사무소</span>
-      </a>
-      <a href="tel:02-3456-7891" class="emergency-btn urgent">
-        <span class="e-icon">🔥</span>
-        <span class="e-label">보일러 · 전기</span>
-        <span class="e-sub">야간 대응 가능</span>
-      </a>
-      <a href="tel:02-3456-7892" class="emergency-btn">
-        <span class="e-icon">🚪</span>
-        <span class="e-label">출입 · 열쇠</span>
-        <span class="e-sub">24시간 경비실</span>
-      </a>
-      <a href="tel:02-3456-7893" class="emergency-btn">
-        <span class="e-icon">🏥</span>
-        <span class="e-label">응급 · 약국</span>
-        <span class="e-sub">인근 병원 안내</span>
-      </a>
+    <div class="emergency-grid" id="emergency-grid">
+      <div class="loading">불러오는 중…</div>
     </div>
 
-    <!-- 연락처 카드 -->
     <div class="section-title">단지 주요 연락처</div>
-    <div class="card">
-      <div class="contact-row">
-        <span class="contact-label">관리사무소</span>
-        <div class="contact-info">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div>
-              <div class="contact-number">02-3456-7890</div>
-              <div class="contact-note">평일 09:00 ~ 18:00</div>
-            </div>
-            <a href="tel:02-3456-7890" class="call-btn">전화</a>
-          </div>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-label">경비실 (24h)</span>
-        <div class="contact-info">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div>
-              <div class="contact-number">02-3456-7891</div>
-              <div class="contact-note">24시간 상시 운영</div>
-            </div>
-            <a href="tel:02-3456-7891" class="call-btn">전화</a>
-          </div>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-label">야간 비상</span>
-        <div class="contact-info">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div>
-              <div class="contact-number">010-9876-5432</div>
-              <div class="contact-note">18:00 이후 · 주말</div>
-            </div>
-            <a href="tel:010-9876-5432" class="call-btn">전화</a>
-          </div>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-label">엘리베이터 고장</span>
-        <div class="contact-info">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div>
-              <div class="contact-number">1588-4321</div>
-              <div class="contact-note">현대엘리베이터 AS</div>
-            </div>
-            <a href="tel:1588-4321" class="call-btn">전화</a>
-          </div>
-        </div>
-      </div>
+    <div class="card" id="contacts-list">
+      <div class="loading">불러오는 중…</div>
     </div>
 
-    <!-- 수도관 동파 대응 절차 -->
     <div class="section-title">수도관 동파 시 대응 절차</div>
     <div class="card">
       <div style="font-size:14px;font-weight:700;color:var(--orange);margin-bottom:12px;">❄️ 동파 발생 즉시 이렇게 하세요</div>
       <div class="step-list">
-        <div class="step-item">
-          <div class="step-num">1</div>
-          <div class="step-text"><strong>계량기함 뚜껑 열기</strong> — 보통 현관 밖 복도 하단에 위치</div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">2</div>
-          <div class="step-text"><strong>지수밸브 잠그기</strong> — 시계 방향으로 끝까지 돌리기</div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">3</div>
-          <div class="step-text"><strong>관리사무소 신고</strong> — 02-3456-7890 (야간: 010-9876-5432)</div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">4</div>
-          <div class="step-text"><strong>전문 업체 연락</strong> — 관리사무소에서 연결해드립니다</div>
-        </div>
+        <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>계량기함 뚜껑 열기</strong> — 보통 현관 밖 복도 하단에 위치</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>지수밸브 잠그기</strong> — 시계 방향으로 끝까지 돌리기</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>관리사무소 신고</strong> — 02-3456-7890 (야간: 010-9876-5432)</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>전문 업체 연락</strong> — 관리사무소에서 연결해드립니다</div></div>
       </div>
     </div>
-
-    <!-- 응급병원 -->
-    <div class="section-title">인근 응급병원 · 야간약국</div>
-    <div class="card">
-      <div class="contact-row">
-        <span class="contact-label">강남세브란스 응급실</span>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <a href="tel:02-2019-3333" class="contact-number">02-2019-3333</a>
-          <a href="tel:02-2019-3333" class="call-btn">전화</a>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-label">야간 약국 (24h)</span>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <a href="tel:02-555-1234" class="contact-number">02-555-1234</a>
-          <a href="tel:02-555-1234" class="call-btn">전화</a>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-label">응급의료 정보센터</span>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <a href="tel:1339" class="contact-number">1339</a>
-          <a href="tel:1339" class="call-btn">전화</a>
-        </div>
-      </div>
-    </div>
-
     <div class="bottom-padding"></div>
   </div>
 
-  <!-- ────────────────────────────────────────── -->
   <!-- TAB 2: 단지위키 -->
-  <!-- ────────────────────────────────────────── -->
   <div class="tab-content" id="tab-wiki">
-
-    <div style="margin-top:16px;" class="filter-row">
+    <div style="margin-top:16px;" class="filter-row" id="wiki-filters">
       <button class="chip active" onclick="filterWiki(this,'all')">전체</button>
       <button class="chip" onclick="filterWiki(this,'trash')">분리수거</button>
       <button class="chip" onclick="filterWiki(this,'parking')">주차</button>
@@ -746,490 +215,276 @@
       <button class="chip" onclick="filterWiki(this,'facility')">시설</button>
       <button class="chip" onclick="filterWiki(this,'etc')">기타</button>
     </div>
-
     <div class="card" id="wiki-list">
-      <div class="wiki-item" data-cat="trash">
-        <div class="wiki-icon-wrap">🗑️</div>
-        <div class="wiki-body">
-          <div class="wiki-title">분리수거 일정 및 장소</div>
-          <div class="wiki-desc">월·수·금 저녁 8시~10시, B1층 분리수거장<br>재활용품은 품목별 분리 필수</div>
-          <span class="wiki-tag tag-updated">최근 확인됨</span>
-        </div>
-      </div>
-      <div class="wiki-item" data-cat="etc">
-        <div class="wiki-icon-wrap">📦</div>
-        <div class="wiki-body">
-          <div class="wiki-title">택배 보관 및 찾는 방법</div>
-          <div class="wiki-desc">B1층 무인택배함 24시간 운영<br>보관 3일 초과 시 관리사무소로 이전됨</div>
-          <span class="wiki-tag tag-fixed">상시 운영</span>
-        </div>
-      </div>
-      <div class="wiki-item" data-cat="parking">
-        <div class="wiki-icon-wrap">🚗</div>
-        <div class="wiki-body">
-          <div class="wiki-title">주차 등록 방법</div>
-          <div class="wiki-desc">관리사무소 방문, 차량등록증 지참<br>세대당 1대 기본 배정, 추가 신청 가능</div>
-          <span class="wiki-tag tag-fixed">서류 지참</span>
-        </div>
-      </div>
-      <div class="wiki-item" data-cat="parking">
-        <div class="wiki-icon-wrap">🚙</div>
-        <div class="wiki-body">
-          <div class="wiki-title">방문차량 등록</div>
-          <div class="wiki-desc">입구 키오스크에서 직접 번호 입력<br>최대 3일 유효, 초과 시 재등록 필요</div>
-          <span class="wiki-tag tag-fixed">키오스크 이용</span>
-        </div>
-      </div>
-      <div class="wiki-item" data-cat="moving">
-        <div class="wiki-icon-wrap">📦</div>
-        <div class="wiki-body">
-          <div class="wiki-title">이사 예약 방법</div>
-          <div class="wiki-desc">최소 2주 전 관리사무소 신청 필수<br>엘리베이터 보양재 필수, 8시~18시 이내 완료</div>
-          <span class="wiki-tag tag-fixed">사전 예약 필수</span>
-        </div>
-      </div>
-      <div class="wiki-item" data-cat="moving">
-        <div class="wiki-icon-wrap">🔨</div>
-        <div class="wiki-body">
-          <div class="wiki-title">인테리어 · 공사 신고</div>
-          <div class="wiki-desc">공사 3일 전 관리사무소 신청서 제출<br>허용 시간: 평일 9시~17시 (주말 불가)</div>
-          <span class="wiki-tag tag-fixed">신청서 제출 필수</span>
-        </div>
-      </div>
-      <div class="wiki-item" data-cat="facility">
-        <div class="wiki-icon-wrap">🏊</div>
-        <div class="wiki-body">
-          <div class="wiki-title">커뮤니티시설 이용 방법</div>
-          <div class="wiki-desc">헬스장·독서실: 단지ON 앱 또는 관리사무소 예약<br>수영장: 월별 사전신청 (선착순)</div>
-          <span class="wiki-tag tag-updated">24년 12월 갱신</span>
-        </div>
-      </div>
-      <div class="wiki-item" data-cat="etc">
-        <div class="wiki-icon-wrap">🐕</div>
-        <div class="wiki-body">
-          <div class="wiki-title">반려동물 관련 규정</div>
-          <div class="wiki-desc">엘리베이터 내 캐리어 또는 목줄 필수<br>공용공간에서 배변패드 지참 의무</div>
-          <span class="wiki-tag tag-fixed">입주 규정</span>
-        </div>
-      </div>
-      <div class="wiki-item" data-cat="etc">
-        <div class="wiki-icon-wrap">🔊</div>
-        <div class="wiki-body">
-          <div class="wiki-title">층간소음 문의 절차</div>
-          <div class="wiki-desc">1차: 관리사무소 신고 → 2차: 입주자 대표 중재<br>야간(22시 이후): 경비실 또는 1층간소음 이웃사이센터</div>
-          <span class="wiki-tag tag-fixed">규정 절차</span>
-        </div>
-      </div>
+      <div class="loading">불러오는 중…</div>
     </div>
-
     <div class="bottom-padding"></div>
   </div>
 
-  <!-- ────────────────────────────────────────── -->
   <!-- TAB 3: 생활추천 -->
-  <!-- ────────────────────────────────────────── -->
   <div class="tab-content" id="tab-recommend">
-
     <div style="margin-top:16px;" class="cat-scroll" id="bizCats">
-      <div class="cat-item active" onclick="filterBiz(this,'all')">
-        <div class="cat-icon-wrap">✨</div>
-        <div class="cat-label">전체</div>
-      </div>
-      <div class="cat-item" onclick="filterBiz(this,'clean')">
-        <div class="cat-icon-wrap">🧹</div>
-        <div class="cat-label">청소</div>
-      </div>
-      <div class="cat-item" onclick="filterBiz(this,'interior')">
-        <div class="cat-icon-wrap">🛋️</div>
-        <div class="cat-label">인테리어</div>
-      </div>
-      <div class="cat-item" onclick="filterBiz(this,'wallpaper')">
-        <div class="cat-icon-wrap">🖌️</div>
-        <div class="cat-label">도배·장판</div>
-      </div>
-      <div class="cat-item" onclick="filterBiz(this,'move')">
-        <div class="cat-icon-wrap">🚚</div>
-        <div class="cat-label">이사</div>
-      </div>
-      <div class="cat-item" onclick="filterBiz(this,'repair')">
-        <div class="cat-icon-wrap">🔧</div>
-        <div class="cat-label">수리</div>
-      </div>
+      <div class="cat-item active" onclick="filterBiz(this,'all')"><div class="cat-icon-wrap">✨</div><div class="cat-label">전체</div></div>
+      <div class="cat-item" onclick="filterBiz(this,'aircon_clean')"><div class="cat-icon-wrap">🧹</div><div class="cat-label">청소</div></div>
+      <div class="cat-item" onclick="filterBiz(this,'interior')"><div class="cat-icon-wrap">🛋️</div><div class="cat-label">인테리어</div></div>
+      <div class="cat-item" onclick="filterBiz(this,'wallpaper')"><div class="cat-icon-wrap">🖌️</div><div class="cat-label">도배·장판</div></div>
+      <div class="cat-item" onclick="filterBiz(this,'moving')"><div class="cat-icon-wrap">🚚</div><div class="cat-label">이사</div></div>
+      <div class="cat-item" onclick="filterBiz(this,'repair')"><div class="cat-icon-wrap">🔧</div><div class="cat-label">수리</div></div>
     </div>
-
-    <div id="biz-list">
-      <div class="biz-card" data-cat="clean">
-        <div class="biz-header">
-          <div>
-            <div class="biz-name">하늘청소</div>
-            <div class="biz-rating">
-              <span class="stars">★★★★★</span>
-              <span class="rating-score">4.8</span>
-              <span class="review-count">후기 47개</span>
-            </div>
-          </div>
-          <span class="biz-category">에어컨 청소</span>
-        </div>
-        <div class="biz-tags">
-          <span class="biz-tag"># 단지 내 47건 시공</span>
-          <span class="biz-tag"># 스팀 세척</span>
-          <span class="biz-tag"># 당일 가능</span>
-        </div>
-        <div class="biz-price">32평형 벽걸이 1대 기준 <strong>5만 8천원~</strong></div>
-        <div class="biz-footer">
-          <div class="verified-badge">✓ 입주민 인증 후기</div>
-          <div class="action-btns">
-            <button class="btn-outline">후기 보기</button>
-            <button class="btn-fill">상담 신청</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="biz-card" data-cat="clean">
-        <div class="biz-header">
-          <div>
-            <div class="biz-name">깨끗한나라 입주청소</div>
-            <div class="biz-rating">
-              <span class="stars">★★★★★</span>
-              <span class="rating-score">4.7</span>
-              <span class="review-count">후기 31개</span>
-            </div>
-          </div>
-          <span class="biz-category">입주청소</span>
-        </div>
-        <div class="biz-tags">
-          <span class="biz-tag"># 32평 이상 전문</span>
-          <span class="biz-tag"># 베란다 포함</span>
-          <span class="biz-tag"># 재방문율 높음</span>
-        </div>
-        <div class="biz-price">32평형 기준 <strong>25만원~</strong> (베란다 청소 포함)</div>
-        <div class="biz-footer">
-          <div class="verified-badge">✓ 입주민 인증 후기</div>
-          <div class="action-btns">
-            <button class="btn-outline">후기 보기</button>
-            <button class="btn-fill">상담 신청</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="biz-card" data-cat="wallpaper">
-        <div class="biz-header">
-          <div>
-            <div class="biz-name">늘푸른 인테리어</div>
-            <div class="biz-rating">
-              <span class="stars">★★★★☆</span>
-              <span class="rating-score">4.6</span>
-              <span class="review-count">후기 28개</span>
-            </div>
-          </div>
-          <span class="biz-category">도배·장판</span>
-        </div>
-        <div class="biz-tags">
-          <span class="biz-tag"># 합지·실크 모두</span>
-          <span class="biz-tag"># 장판·마루</span>
-          <span class="biz-tag"># 견적 무료</span>
-        </div>
-        <div class="biz-price">32평 합지 도배 기준 <strong>70만원~</strong></div>
-        <div class="biz-footer">
-          <div class="verified-badge">✓ 입주민 인증 후기</div>
-          <div class="action-btns">
-            <button class="btn-outline">후기 보기</button>
-            <button class="btn-fill">견적 요청</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="biz-card" data-cat="interior">
-        <div class="biz-header">
-          <div>
-            <div class="biz-name">라움 인테리어</div>
-            <div class="biz-rating">
-              <span class="stars">★★★★★</span>
-              <span class="rating-score">4.9</span>
-              <span class="review-count">후기 19개</span>
-            </div>
-          </div>
-          <span class="biz-category">인테리어</span>
-        </div>
-        <div class="biz-tags">
-          <span class="biz-tag"># 부분 리모델링</span>
-          <span class="biz-tag"># 주방·욕실 전문</span>
-          <span class="biz-tag"># 단지 관리사무소 등록</span>
-        </div>
-        <div class="biz-price">부분 인테리어 <strong>150만원~</strong> (현장 실측 후 확정)</div>
-        <div class="biz-footer">
-          <div class="verified-badge">✓ 관리사무소 등록 업체</div>
-          <div class="action-btns">
-            <button class="btn-outline">후기 보기</button>
-            <button class="btn-fill">견적 요청</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="biz-card" data-cat="move">
-        <div class="biz-header">
-          <div>
-            <div class="biz-name">행복이사</div>
-            <div class="biz-rating">
-              <span class="stars">★★★★☆</span>
-              <span class="rating-score">4.5</span>
-              <span class="review-count">후기 22개</span>
-            </div>
-          </div>
-          <span class="biz-category">이사</span>
-        </div>
-        <div class="biz-tags">
-          <span class="biz-tag"># 포장이사 전문</span>
-          <span class="biz-tag"># 사다리차 보유</span>
-          <span class="biz-tag"># 단지 이사 경험 다수</span>
-        </div>
-        <div class="biz-price">32평 포장이사 <strong>80만원~</strong> (거리·층수에 따라 변동)</div>
-        <div class="biz-footer">
-          <div class="verified-badge">✓ 입주민 인증 후기</div>
-          <div class="action-btns">
-            <button class="btn-outline">후기 보기</button>
-            <button class="btn-fill">상담 신청</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="biz-card" data-cat="repair">
-        <div class="biz-header">
-          <div>
-            <div class="biz-name">빠른수리 홈케어</div>
-            <div class="biz-rating">
-              <span class="stars">★★★★☆</span>
-              <span class="rating-score">4.4</span>
-              <span class="review-count">후기 16개</span>
-            </div>
-          </div>
-          <span class="biz-category">수리·누수</span>
-        </div>
-        <div class="biz-tags">
-          <span class="biz-tag"># 누수·배관</span>
-          <span class="biz-tag"># 전기 수리</span>
-          <span class="biz-tag"># 당일 출동</span>
-        </div>
-        <div class="biz-price">출장비 <strong>2만원~</strong> + 수리비 별도</div>
-        <div class="biz-footer">
-          <div class="verified-badge">✓ 입주민 인증 후기</div>
-          <div class="action-btns">
-            <button class="btn-outline">후기 보기</button>
-            <button class="btn-fill">상담 신청</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <div id="biz-list"><div class="loading">불러오는 중…</div></div>
     <div class="bottom-padding"></div>
   </div>
 
-  <!-- ────────────────────────────────────────── -->
   <!-- TAB 4: 우리동네 -->
-  <!-- ────────────────────────────────────────── -->
   <div class="tab-content" id="tab-local">
-
     <div style="margin-top:16px;" class="cat-scroll" id="localCats">
-      <div class="cat-item active" onclick="filterLocal(this,'all')">
-        <div class="cat-icon-wrap">🗺️</div>
-        <div class="cat-label">전체</div>
-      </div>
-      <div class="cat-item" onclick="filterLocal(this,'food')">
-        <div class="cat-icon-wrap">🍽️</div>
-        <div class="cat-label">맛집</div>
-      </div>
-      <div class="cat-item" onclick="filterLocal(this,'hospital')">
-        <div class="cat-icon-wrap">🏥</div>
-        <div class="cat-label">병원</div>
-      </div>
-      <div class="cat-item" onclick="filterLocal(this,'beauty')">
-        <div class="cat-icon-wrap">✂️</div>
-        <div class="cat-label">미용실</div>
-      </div>
-      <div class="cat-item" onclick="filterLocal(this,'edu')">
-        <div class="cat-icon-wrap">📚</div>
-        <div class="cat-label">학원</div>
-      </div>
-      <div class="cat-item" onclick="filterLocal(this,'kids')">
-        <div class="cat-icon-wrap">👶</div>
-        <div class="cat-label">키즈</div>
-      </div>
+      <div class="cat-item active" onclick="filterLocal(this,'all')"><div class="cat-icon-wrap">🗺️</div><div class="cat-label">전체</div></div>
+      <div class="cat-item" onclick="filterLocal(this,'food')"><div class="cat-icon-wrap">🍽️</div><div class="cat-label">맛집</div></div>
+      <div class="cat-item" onclick="filterLocal(this,'hospital')"><div class="cat-icon-wrap">🏥</div><div class="cat-label">병원</div></div>
+      <div class="cat-item" onclick="filterLocal(this,'hair')"><div class="cat-icon-wrap">✂️</div><div class="cat-label">미용실</div></div>
+      <div class="cat-item" onclick="filterLocal(this,'edu')"><div class="cat-icon-wrap">📚</div><div class="cat-label">학원</div></div>
+      <div class="cat-item" onclick="filterLocal(this,'kids')"><div class="cat-icon-wrap">👶</div><div class="cat-label">키즈</div></div>
     </div>
-
-    <div id="local-list">
-      <div class="place-card" data-cat="food">
-        <div class="place-thumb">🍜</div>
-        <div class="place-body">
-          <div class="place-cat">맛집</div>
-          <div class="place-name">진미 손칼국수</div>
-          <div class="place-desc">20년 전통 손칼국수 / 단지 주민 단골 맛집</div>
-          <div class="place-meta">
-            <span class="place-dist">📍 도보 4분</span>
-            <span class="stars" style="font-size:12px;">★ 4.7</span>
-            <span class="resident-review">주민 후기 38개</span>
-          </div>
-          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">주차 편함 · 유모차 입장 가능 · 웨이팅 없음</div>
-        </div>
-      </div>
-
-      <div class="place-card" data-cat="food">
-        <div class="place-thumb">☕</div>
-        <div class="place-body">
-          <div class="place-cat">카페</div>
-          <div class="place-name">한강뷰 커피 로스터스</div>
-          <div class="place-desc">스페셜티 원두 / 강변 뷰 / 조용한 작업 공간</div>
-          <div class="place-meta">
-            <span class="place-dist">📍 도보 7분</span>
-            <span class="stars" style="font-size:12px;">★ 4.6</span>
-            <span class="resident-review">주민 후기 21개</span>
-          </div>
-          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">주차 가능 · 노트북 환영 · 주말 웨이팅 있음</div>
-        </div>
-      </div>
-
-      <div class="place-card" data-cat="hospital">
-        <div class="place-thumb">👶</div>
-        <div class="place-body">
-          <div class="place-cat">소아과</div>
-          <div class="place-name">밝은미래 소아청소년과</div>
-          <div class="place-desc">예약제 운영 / 대기시간 짧음 / 친절한 설명</div>
-          <div class="place-meta">
-            <span class="place-dist">📍 도보 5분</span>
-            <span class="stars" style="font-size:12px;">★ 4.8</span>
-            <span class="resident-review">주민 후기 52개</span>
-          </div>
-          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">네이버 예약 가능 · 진료확인서 당일 발급</div>
-        </div>
-      </div>
-
-      <div class="place-card" data-cat="hospital">
-        <div class="place-thumb">🦷</div>
-        <div class="place-body">
-          <div class="place-cat">치과</div>
-          <div class="place-name">밝음치과</div>
-          <div class="place-desc">임플란트·교정 전문 / 야간진료(목 20시)</div>
-          <div class="place-meta">
-            <span class="place-dist">📍 도보 6분</span>
-            <span class="stars" style="font-size:12px;">★ 4.5</span>
-            <span class="resident-review">주민 후기 29개</span>
-          </div>
-          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">주차 가능 · 야간 진료 · 보험 적용 설명 꼼꼼</div>
-        </div>
-      </div>
-
-      <div class="place-card" data-cat="beauty">
-        <div class="place-thumb">✂️</div>
-        <div class="place-body">
-          <div class="place-cat">미용실</div>
-          <div class="place-name">살롱 드 파리</div>
-          <div class="place-desc">컬러·펌 전문 / 단지 주민 20% 할인</div>
-          <div class="place-meta">
-            <span class="place-dist">📍 도보 3분</span>
-            <span class="stars" style="font-size:12px;">★ 4.7</span>
-            <span class="resident-review">주민 후기 44개</span>
-          </div>
-          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">네이버 예약 필수 · 주민 할인 적용 · 주차 1시간 무료</div>
-        </div>
-      </div>
-
-      <div class="place-card" data-cat="edu">
-        <div class="place-thumb">📖</div>
-        <div class="place-body">
-          <div class="place-cat">영어학원</div>
-          <div class="place-name">한빛 영어학원</div>
-          <div class="place-desc">초등 1~6학년 전문 / 단지 셔틀 운행</div>
-          <div class="place-meta">
-            <span class="place-dist">📍 도보 8분</span>
-            <span class="stars" style="font-size:12px;">★ 4.6</span>
-            <span class="resident-review">주민 후기 33개</span>
-          </div>
-          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">단지 셔틀 운행 · 소수정예 · 레벨 테스트 무료</div>
-        </div>
-      </div>
-
-      <div class="place-card" data-cat="kids">
-        <div class="place-thumb">🎨</div>
-        <div class="place-body">
-          <div class="place-cat">키즈 클래스</div>
-          <div class="place-name">리틀아티스트 미술교실</div>
-          <div class="place-desc">5세~초등 저학년 / 소그룹 수업 / 체험 미술</div>
-          <div class="place-meta">
-            <span class="place-dist">📍 도보 6분</span>
-            <span class="stars" style="font-size:12px;">★ 4.8</span>
-            <span class="resident-review">주민 후기 18개</span>
-          </div>
-          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">체험수업 무료 · 재원생 대기 있음 (사전 문의)</div>
-        </div>
-      </div>
-    </div>
-
+    <div id="local-list"><div class="loading">불러오는 중…</div></div>
     <div class="bottom-padding"></div>
   </div>
 
 </div>
 
 <script>
-  // ── TAB SWITCHING ──
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
-  const tabMap = { emergency:'tab-emergency', wiki:'tab-wiki', recommend:'tab-recommend', local:'tab-local' };
+// ── SUPABASE 초기화 ──────────────────────────────────────────
+const { createClient } = supabase;
+const sb = createClient(
+  'https://svifbukyvyrtqzhbatvm.supabase.co',
+  'sb_publishable_V42OY5LenPHnI9yzusBl5g_D1otBO9j'
+);
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabBtns.forEach(b => b.classList.remove('active'));
-      tabContents.forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(tabMap[btn.dataset.tab]).classList.add('active');
-    });
+// ── 카테고리 매핑 ────────────────────────────────────────────
+const categoryIcons = {
+  water_leak: '💧', boiler: '🔥', door: '🚪', hospital: '🏥',
+  management: '📞', security: '🛡️', elevator: '🛗', parking: '🚗', etc: '❓'
+};
+const wikiIcons = {
+  trash: '🗑️', parking: '🚗', moving: '📦', facility: '🏊',
+  pet: '🐕', etc: '📋', construction: '🔨', noise: '🔊'
+};
+const bizCategoryLabels = {
+  aircon_clean: '에어컨 청소', move_in_clean: '입주청소',
+  wallpaper: '도배·장판', interior: '인테리어',
+  moving: '이사', repair: '수리·누수', other_clean: '청소'
+};
+const placeCategoryLabels = {
+  food: '맛집', cafe: '카페', hospital: '병원', pharmacy: '약국',
+  hair: '미용실', edu: '학원', kids: '키즈', pet: '반려동물', etc: '생활편의'
+};
+const placeCategoryIcons = {
+  food: '🍽️', cafe: '☕', hospital: '🏥', pharmacy: '💊',
+  hair: '✂️', edu: '📖', kids: '🎨', pet: '🐾', etc: '🏪'
+};
+
+// ── 캐시 ────────────────────────────────────────────────────
+let allContacts = [], allWikis = [], allBizs = [], allLocals = [];
+
+// ── 별점 렌더 ────────────────────────────────────────────────
+function stars(r) {
+  if (!r) return '';
+  const full = Math.floor(r), empty = 5 - Math.ceil(r);
+  return '★'.repeat(full) + (r % 1 >= 0.5 ? '½' : '') + '☆'.repeat(empty);
+}
+
+// ══════════════════════════════════════════════════════════════
+// 긴급도움 로드
+// ══════════════════════════════════════════════════════════════
+async function loadEmergency() {
+  const { data, error } = await sb.from('contacts').select('*').order('sort_order');
+  if (error || !data) return;
+  allContacts = data;
+
+  // 긴급 버튼 그리드 (is_urgent = true 인 것만)
+  const urgent = data.filter(c => c.is_urgent);
+  const grid = document.getElementById('emergency-grid');
+  if (urgent.length === 0) { grid.innerHTML = '<div class="empty">긴급 연락처가 없습니다</div>'; }
+  else {
+    grid.innerHTML = urgent.map(c => `
+      <a href="tel:${c.available_24h ? c.phone_day : (c.phone_night || c.phone_day)}" class="emergency-btn urgent">
+        <span class="e-icon">${categoryIcons[c.category] || '📞'}</span>
+        <span class="e-label">${c.title}</span>
+        <span class="e-sub">${c.available_24h ? '24시간 대응' : '야간 대응 가능'}</span>
+      </a>`).join('');
+  }
+
+  // 연락처 목록
+  const list = document.getElementById('contacts-list');
+  list.innerHTML = data.map(c => `
+    <div class="contact-row">
+      <span class="contact-label">${c.title}</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div>
+          <div><a href="tel:${c.phone_day}" class="contact-number">${c.phone_day || '—'}</a></div>
+          <div class="contact-note">${c.available_24h ? '24시간' : c.phone_night ? '야간: ' + c.phone_night : ''}</div>
+        </div>
+        ${c.phone_day ? `<a href="tel:${c.phone_day}" class="call-btn">전화</a>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// 단지위키 로드
+// ══════════════════════════════════════════════════════════════
+async function loadWiki() {
+  const { data, error } = await sb.from('wiki_documents').select('*').eq('status','published').order('created_at');
+  if (error || !data) return;
+  allWikis = data;
+  renderWiki(data);
+}
+
+function renderWiki(data) {
+  const list = document.getElementById('wiki-list');
+  if (data.length === 0) { list.innerHTML = '<div class="empty">해당 항목이 없습니다</div>'; return; }
+  list.innerHTML = data.map(w => `
+    <div class="wiki-item" data-cat="${w.category}">
+      <div class="wiki-icon-wrap">${wikiIcons[w.category] || '📋'}</div>
+      <div class="wiki-body">
+        <div class="wiki-title">${w.title}</div>
+        <div class="wiki-desc">${w.summary || ''}</div>
+        <span class="wiki-tag tag-fixed">${w.is_featured ? '신규 입주 추천' : '단지 규정'}</span>
+      </div>
+    </div>`).join('');
+}
+
+function filterWiki(chip, cat) {
+  document.querySelectorAll('#wiki-filters .chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  const filtered = cat === 'all' ? allWikis : allWikis.filter(w => w.category === cat);
+  renderWiki(filtered);
+}
+
+// ══════════════════════════════════════════════════════════════
+// 생활추천 로드
+// ══════════════════════════════════════════════════════════════
+async function loadBusinesses() {
+  const { data, error } = await sb.from('businesses').select('*').eq('status','active').order('review_count', { ascending: false });
+  if (error || !data) return;
+  allBizs = data;
+  renderBiz(data);
+}
+
+function renderBiz(data) {
+  const list = document.getElementById('biz-list');
+  if (data.length === 0) { list.innerHTML = '<div class="empty">해당 업체가 없습니다</div>'; return; }
+  list.innerHTML = data.map(b => `
+    <div class="biz-card" data-cat="${b.category}">
+      <div class="biz-header">
+        <div>
+          <div class="biz-name">${b.name}</div>
+          <div class="biz-rating">
+            <span class="stars">${b.avg_rating ? '★'.repeat(Math.round(b.avg_rating)) : '—'}</span>
+            <span class="rating-score">${b.avg_rating || '—'}</span>
+            <span class="review-count">후기 ${b.review_count}개</span>
+          </div>
+        </div>
+        <span class="biz-category">${bizCategoryLabels[b.category] || b.category}</span>
+      </div>
+      ${b.strength_tags ? `<div class="biz-tags">${b.strength_tags.map(t => `<span class="biz-tag"># ${t}</span>`).join('')}</div>` : ''}
+      ${b.price_range ? `<div class="biz-price">${b.price_range}</div>` : ''}
+      <div class="biz-footer">
+        <div class="verified-badge">✓ 입주민 인증 후기</div>
+        <div class="action-btns">
+          <button class="btn-outline">후기 보기</button>
+          <button class="btn-fill" onclick="callBiz('${b.phone || ''}')">상담 신청</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function callBiz(phone) {
+  if (phone) window.location.href = 'tel:' + phone;
+}
+
+function filterBiz(el, cat) {
+  document.querySelectorAll('#bizCats .cat-item').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const filtered = cat === 'all' ? allBizs : allBizs.filter(b => b.category === cat);
+  renderBiz(filtered);
+}
+
+// ══════════════════════════════════════════════════════════════
+// 우리동네 로드
+// ══════════════════════════════════════════════════════════════
+async function loadLocalPlaces() {
+  const { data, error } = await sb.from('local_places').select('*').eq('status','active').order('resident_review_count', { ascending: false });
+  if (error || !data) return;
+  allLocals = data;
+  renderLocal(data);
+}
+
+function renderLocal(data) {
+  const list = document.getElementById('local-list');
+  if (data.length === 0) { list.innerHTML = '<div class="empty">해당 장소가 없습니다</div>'; return; }
+  list.innerHTML = data.map(p => `
+    <div class="place-card" data-cat="${p.category}">
+      <div class="place-thumb">${placeCategoryIcons[p.category] || '📍'}</div>
+      <div class="place-body">
+        <span class="place-cat">${placeCategoryLabels[p.category] || p.category}</span>
+        <div class="place-name">${p.name}</div>
+        <div class="place-desc">${p.description || ''}</div>
+        <div class="place-meta">
+          ${p.distance_m ? `<span class="place-dist">📍 도보 ${Math.round(p.distance_m/80)}분</span>` : ''}
+          ${p.avg_rating ? `<span class="stars" style="font-size:12px;">★ ${p.avg_rating}</span>` : ''}
+          <span class="resident-review">주민 후기 ${p.resident_review_count}개</span>
+        </div>
+        ${p.context_tags ? `<div style="margin-top:6px;font-size:11px;color:var(--gray-400);">${p.context_tags.join(' · ')}</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function filterLocal(el, cat) {
+  document.querySelectorAll('#localCats .cat-item').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const filtered = cat === 'all' ? allLocals : allLocals.filter(p => p.category === cat);
+  renderLocal(filtered);
+}
+
+// ══════════════════════════════════════════════════════════════
+// TAB 전환
+// ══════════════════════════════════════════════════════════════
+const tabMap = { emergency:'tab-emergency', wiki:'tab-wiki', recommend:'tab-recommend', local:'tab-local' };
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(tabMap[btn.dataset.tab]).classList.add('active');
   });
+});
 
-  // ── WIKI FILTER ──
-  function filterWiki(chip, cat) {
-    document.querySelectorAll('.tab-nav ~ * .filter-row .chip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    document.querySelectorAll('#wiki-list .wiki-item').forEach(item => {
-      item.style.display = (cat === 'all' || item.dataset.cat === cat) ? 'flex' : 'none';
-    });
-  }
-
-  // ── BIZ FILTER ──
-  function filterBiz(el, cat) {
-    document.querySelectorAll('#bizCats .cat-item').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    document.querySelectorAll('#biz-list .biz-card').forEach(card => {
-      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
-    });
-  }
-
-  // ── LOCAL FILTER ──
-  function filterLocal(el, cat) {
-    document.querySelectorAll('#localCats .cat-item').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    document.querySelectorAll('#local-list .place-card').forEach(card => {
-      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
-    });
-  }
-
-  // ── SEARCH (simple highlight) ──
-  document.getElementById('searchInput').addEventListener('input', function() {
-    const q = this.value.trim().toLowerCase();
-    if (!q) return;
-    const keywords = {
-      '동파': 'emergency', '누수': 'emergency', '수도': 'emergency',
-      '도배': 'recommend', '청소': 'recommend', '이사': 'recommend', '인테리어': 'recommend',
-      '분리수거': 'wiki', '주차': 'wiki', '택배': 'wiki',
-      '맛집': 'local', '병원': 'local', '미용실': 'local', '학원': 'local',
-    };
-    for (const [kw, tab] of Object.entries(keywords)) {
-      if (q.includes(kw)) {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        tabContents.forEach(c => c.classList.remove('active'));
-        const target = document.querySelector(`[data-tab="${tab}"]`);
-        if (target) { target.classList.add('active'); document.getElementById(tabMap[tab]).classList.add('active'); }
-        break;
-      }
+// ══════════════════════════════════════════════════════════════
+// 검색
+// ══════════════════════════════════════════════════════════════
+document.getElementById('searchInput').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q) return;
+  const keywords = {
+    '동파':'emergency','누수':'emergency','수도':'emergency','보일러':'emergency',
+    '도배':'recommend','청소':'recommend','이사':'recommend','인테리어':'recommend',
+    '분리수거':'wiki','주차':'wiki','택배':'wiki',
+    '맛집':'local','병원':'local','미용실':'local','학원':'local',
+  };
+  for (const [kw, tab] of Object.entries(keywords)) {
+    if (q.includes(kw)) {
+      document.querySelector(`[data-tab="${tab}"]`).click();
+      break;
     }
-  });
+  }
+});
+
+// ══════════════════════════════════════════════════════════════
+// 초기 로드
+// ══════════════════════════════════════════════════════════════
+loadEmergency();
+loadWiki();
+loadBusinesses();
+loadLocalPlaces();
 </script>
 </body>
 </html>
