@@ -184,6 +184,17 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
 .back-btn{font-size:13px;color:var(--gray-400);background:none;border:none;cursor:pointer;margin-bottom:16px;}
 .loading-placeholder{padding:16px;color:var(--gray-400);font-size:13px;text-align:center;}
+
+/* 수리·하자 관련 업체 미니카드 */
+.rbiz{background:var(--navy-bg);border:1px solid #BDD0F0;border-radius:10px;padding:10px 12px;margin-top:8px;}
+.rbiz-title{font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.04em;margin-bottom:6px;}
+.rbiz-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid rgba(21,101,192,0.1);}
+.rbiz-item:last-child{border-bottom:none;padding-bottom:0;}
+.rbiz-item:first-child{padding-top:0;}
+.rbiz-info{}
+.rbiz-name{font-size:12px;font-weight:700;color:var(--gray-800);}
+.rbiz-price{font-size:10px;color:var(--gray-400);margin-top:1px;}
+.rbiz-call{flex-shrink:0;font-size:11px;font-weight:700;color:#fff;background:var(--navy);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit;}
 </style>
 </head>
 <body>
@@ -459,6 +470,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
               <div class="w-title">윗집 누수로 천장에서 물이 새요</div>
               <div class="w-desc" style="margin-bottom:8px;">① 관리사무소(02-931-8360) 즉시 신고<br>② 공용 배관 문제 → 관리사무소 처리<br>③ 세대 배관 문제 → 윗집 세대 책임<br>④ 사진 찍어두기 (분쟁 시 증거)</div>
               <span class="w-tag" style="background:var(--red-bg);color:var(--red);">즉시 신고 필수</span>
+              <div class="rbiz" id="rbiz-repair-leak"></div>
             </div>
           </div>
           <!-- 보일러 -->
@@ -467,14 +479,25 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="w-body">
               <div class="w-title">보일러 고장 — 누가 고쳐주나요?</div>
               <div class="w-desc" style="margin-bottom:8px;">세대 내 보일러 본체 → 세대 책임<br>공용 배관·열공급 → 관리사무소 처리<br>애매하면 먼저 관리사무소(02-931-8360)에 확인</div>
+              <div class="rbiz" id="rbiz-repair-boiler"></div>
             </div>
           </div>
-          <!-- 결로 -->
+          <!-- 결로·도배 -->
           <div class="witem">
             <div class="w-icon" style="background:var(--gray-100);">🌫️</div>
             <div class="w-body">
               <div class="w-title">벽에 결로·곰팡이가 생겼어요</div>
-              <div class="w-desc" style="margin-bottom:8px;">입주 10년 이하 → 하자보수 청구 가능<br>관리사무소에 하자보수 신청서 제출<br>10년 초과 → 원칙적으로 세대 자체 수리</div>
+              <div class="w-desc" style="margin-bottom:8px;">입주 10년 이하 → 하자보수 청구 가능<br>관리사무소에 하자보수 신청서 제출<br>10년 초과 → 원칙적으로 세대 자체 수리<br>곰팡이 제거 후 도배 교체 필요 시 아래 업체 이용</div>
+              <div class="rbiz" id="rbiz-wallpaper"></div>
+            </div>
+          </div>
+          <!-- 에어컨 청소 -->
+          <div class="witem">
+            <div class="w-icon" style="background:var(--blue-bg);">❄️</div>
+            <div class="w-body">
+              <div class="w-title">에어컨에서 냄새·곰팡이가 나요</div>
+              <div class="w-desc" style="margin-bottom:8px;">필터 교체 후에도 냄새 지속 → 전문 분해 청소 필요<br>여름 전 청소하면 전기요금·성능 모두 개선</div>
+              <div class="rbiz" id="rbiz-aircon"></div>
             </div>
           </div>
           <!-- 엘리베이터 -->
@@ -624,9 +647,32 @@ function goBack(){
 // DB에서 업체 불러와서 기본 콘텐츠 위에 덮어쓰기
 async function loadBiz(){
   const {data}=await sb.from('businesses').select('*').eq('status','active').order('review_count',{ascending:false});
-  if(!data||!data.length) return; // 데이터 없으면 기본 콘텐츠 유지
+  if(!data||!data.length) return;
   allBiz=data;
   renderBiz(allBiz);
+  renderRepairBiz();
+}
+
+function renderRepairBiz(){
+  const fill=(id, cats)=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const items=allBiz.filter(b=>cats.includes(b.category));
+    if(!items.length){el.style.display='none';return;}
+    el.innerHTML=`<div class="rbiz-title">📋 관련 업체</div>`+
+      items.map(b=>`
+        <div class="rbiz-item">
+          <div class="rbiz-info">
+            <div class="rbiz-name">${b.name}</div>
+            <div class="rbiz-price">${b.price_range||''}</div>
+          </div>
+          ${b.phone?`<button class="rbiz-call" onclick="location.href='tel:${b.phone}'">📞 전화</button>`:''}
+        </div>`).join('');
+  };
+  fill('rbiz-repair-leak',['repair']);
+  fill('rbiz-repair-boiler',['repair']);
+  fill('rbiz-wallpaper',['wallpaper']);
+  fill('rbiz-aircon',['aircon_clean']);
 }
 function renderBiz(data){
   if(!data.length) return;
