@@ -56,7 +56,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .tab-btn.active .t-label{font-weight:700;}
 
 /* SCROLL */
-.scroll-content{padding-bottom:calc(var(--tab-h)+16px);}
+.scroll-content{padding-bottom:calc(var(--tab-h)+24px);overflow-y:auto;}
+.page.active{min-height:calc(100vh - 108px);}
 
 /* PAGE */
 .page{display:none;}
@@ -253,8 +254,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <span class="q-texts"><span class="q-label">커뮤니티<span class="q-new">NEW</span></span><span class="q-sub">시뮬레이터 추가 예정</span></span>
           </button>
           <button class="qbtn" onclick="goPage('living')">
-            <span class="q-icon">🗑️</span>
-            <span class="q-texts"><span class="q-label">분리수거·생활</span><span class="q-sub">택배·폐기물·공사</span></span>
+            <span class="q-icon">🏠</span>
+            <span class="q-texts"><span class="q-label">생활편의</span><span class="q-sub">분리수거·이사·공사</span></span>
           </button>
           <button class="qbtn" onclick="goPage('parking')">
             <span class="q-icon">🚗</span>
@@ -268,7 +269,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <!-- 계절형 카드 -->
         <div class="sec-label" style="margin-top:4px;">지금 이 시기에</div>
-        <div class="season-card" onclick="goPage('repair')">
+        <div class="season-card" onclick="goPageAnchor('repair','sec-aircon')">
           <span class="season-icon">🧹</span>
           <div class="season-body">
             <div class="season-title">봄맞이 에어컨 청소 시즌</div>
@@ -279,7 +280,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <!-- 단지 최근 소식 -->
         <div class="sec-label" style="margin-top:4px;">단지 최근 소식</div>
-        <div class="news-card" onclick="goPage('news')">
+        <div class="news-card" onclick="goPageAnchor('news','news-6ki')">
           <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">NEW</span>
           <div class="news-body">
             <div class="news-title">제6기 입주자대표회의 출범</div>
@@ -287,7 +288,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="news-date">2026.03.24</div>
           </div>
         </div>
-        <div class="news-card" onclick="goPage('news')">
+        <div class="news-card" onclick="goPageAnchor('news','news-ev')">
           <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
           <div class="news-body">
             <div class="news-title">전기차 충전기 신규 모델 무상 교체</div>
@@ -295,7 +296,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="news-date">2026.03.24</div>
           </div>
         </div>
-        <div class="news-card" onclick="goPage('news')">
+        <div class="news-card" onclick="goPageAnchor('news','news-lobby')">
           <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">진행중</span>
           <div class="news-body">
             <div class="news-title">공동현관 로비폰 전체 교체 추진</div>
@@ -303,7 +304,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="news-date">2026.01~진행중</div>
           </div>
         </div>
-        <div class="news-card" onclick="goPage('news')">
+        <div class="news-card" onclick="goPageAnchor('news','news-parking')">
           <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">의결</span>
           <div class="news-body">
             <div class="news-title">방문차량 무료 주차 월 150시간 규정 확정</div>
@@ -315,30 +316,17 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <!-- 야간응급 상세 -->
         <div class="sec-label" style="margin-top:4px;">야간·응급 연락처</div>
-        <!-- 진짜 응급 -->
-        <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:6px;letter-spacing:0.05em;">🔴 긴급 신고</div>
-        <div class="egrid" style="margin-bottom:10px;">
-          <a href="tel:119" class="ebtn crit2"><span class="e-icon">🚑</span><span class="e-label">119 구급대</span><span class="e-phone">24시간</span></a>
-          <a href="tel:112" class="ebtn crit2"><span class="e-icon">🚔</span><span class="e-label">112 경찰</span><span class="e-phone">24시간</span></a>
-        </div>
         <!-- 단지 연락 -->
         <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:0.05em;">🏢 단지 연락</div>
         <div class="egrid" style="margin-bottom:10px;">
-          <a href="tel:02-931-8360" class="ebtn"><span class="e-icon">🏢</span><span class="e-label">관리사무소</span><span class="e-phone">02-931-8360</span></a>
+          <a href="tel:02-931-8360" class="ebtn"><span class="e-icon">🏢</span><span class="e-label">관리사무소(방제실)</span><span class="e-phone">02-931-8360</span></a>
           <a href="tel:02-931-8360" class="ebtn"><span class="e-icon">🛡️</span><span class="e-label">경비실 (24h)</span><span class="e-phone">02-931-8360</span></a>
         </div>
-        <!-- 의료 -->
-        <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;letter-spacing:0.05em;">🏥 응급 의료</div>
-        <div class="egrid-3">
-          <a href="tel:02-2227-7777" class="ebtn"><span class="e-icon">🏥</span><span class="e-label">세브란스 응급</span><span class="e-phone">02-2227-7777</span></a>
-          <a href="tel:1811-7755" class="ebtn"><span class="e-icon">🏥</span><span class="e-label">은평성모병원</span><span class="e-phone">1811-7755</span></a>
-          <a href="tel:1339" class="ebtn"><span class="e-icon">💊</span><span class="e-label">응급의료센터</span><span class="e-phone">1339</span></a>
-        </div>
-        <!-- 야간약국 -->
-        <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:6px;letter-spacing:0.05em;">💊 야간약국</div>
-        <div class="egrid">
-          <a href="tel:02-372-1513" class="ebtn"><span class="e-icon">💊</span><span class="e-label">은하약국</span><span class="e-phone">매일 22시~01시</span></a>
-          <a href="tel:02-379-4415" class="ebtn"><span class="e-icon">💊</span><span class="e-label">대유약국</span><span class="e-phone">매일 22시~01시</span></a>
+        <!-- 응급의료 바로가기 -->
+        <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;letter-spacing:0.05em;">🏥 응급의료</div>
+        <div class="egrid" style="margin-bottom:10px;">
+          <button class="ebtn" onclick="goPage('emergency')" style="text-align:left;"><span class="e-icon">🚑</span><span class="e-label">응급실 찾기</span><span class="e-phone">5개 병원 주소·지도</span></button>
+          <button class="ebtn" onclick="goPage('emergency')" style="text-align:left;"><span class="e-icon">💊</span><span class="e-label">야간약국 찾기</span><span class="e-phone">5개 약국 주소·지도</span></button>
         </div>
 
         <!-- 자주 찾는 질문 — 맨 아래 -->
@@ -635,9 +623,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <!-- 승강기 이용 유의사항 -->
         <div class="card">
           <div style="font-size:14px;font-weight:700;margin-bottom:12px;">🛗 승강기 이용 유의사항</div>
-          <div class="witem"><div class="w-icon" style="background:var(--red-bg);">⚠️</div><div class="w-body"><div class="w-title">이사·공사 시 주의</div><div class="w-desc">이사 중 승강기 운행에 불편이 생길 수 있어요. 이웃을 배려하여 신속하게 진행 부탁드려요.</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--amber-bg);">🚭</div><div class="w-body"><div class="w-title">승강기 내 금지사항</div><div class="w-desc">흡연·음식물 섭취 금지<br>정원을 초과하거나 기대어 타지 마세요<br>장난으로 문 개폐 버튼 조작 금지</div></div></div>
-          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:var(--navy-bg);">🔒</div><div class="w-body"><div class="w-title">승강기 사용약관</div><div class="w-desc">관리사무소에 신청하여 이용. 운반 시 승강기 내부 손상에 유의. 보양재 미설치 시 원상복구 비용 청구</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:var(--amber-bg);">🚭</div><div class="w-body"><div class="w-title">승강기 내 금지사항</div><div class="w-desc">흡연·음식물 섭취 금지<br>정원 초과·기대어 타기 금지<br>장난으로 문 개폐 버튼 조작 금지</div></div></div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:var(--navy-bg);">🔒</div><div class="w-body"><div class="w-title">이사·공사 승강기 사용</div><div class="w-desc">관리사무소 사전 신청 필수 · 보양재 미설치 시 원상복구 비용 청구<br>자세한 사용료는 <strong>생활편의</strong> 메뉴 참고</div></div></div>
         </div>
       </div>
     </div>
@@ -848,50 +835,158 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       <div class="sec" style="padding-top:20px;">
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
         <div class="sec-title">🛠️ 수리·하자</div>
-        <div class="sec-sub">누수 · 보일러 · 결로 · 엘리베이터</div>
+        <div class="sec-sub">증상별 대처법 + 동네 업체 연락처</div>
         <div class="notice" style="background:var(--amber-bg);border:1px solid #F5D08A;">
           <span class="n-icon">⚠️</span>
           <div class="n-text" style="color:var(--amber);"><strong>입주 10년차</strong> — 누수·결로·보일러 문의가 증가하고 있어요. 발견 즉시 신고하세요.</div>
         </div>
+
+        <!-- 누수 -->
+        <div class="sub-sec-label">💧 누수</div>
         <div class="card">
-          <!-- 누수 -->
           <div class="witem">
             <div class="w-icon" style="background:var(--blue-bg);">💧</div>
             <div class="w-body">
-              <div class="w-title">윗집 누수로 천장에서 물이 새요</div>
-              <div class="w-desc" style="margin-bottom:8px;">① 관리사무소(02-931-8360) 즉시 신고<br>② 공용 배관 문제 → 관리사무소 처리<br>③ 세대 배관 문제 → 윗집 세대 책임<br>④ 사진 찍어두기 (분쟁 시 증거)</div>
+              <div class="w-title">천장에서 물이 새요</div>
+              <div class="w-desc" style="margin-bottom:8px;">① 관리사무소(02-931-8360) 즉시 신고<br>② 공용 배관 → 관리사무소 처리<br>③ 윗집 세대 배관 → 윗집 세대 책임<br>④ 사진 찍어두기 (분쟁 시 증거)</div>
               <span class="w-tag" style="background:var(--red-bg);color:var(--red);">즉시 신고 필수</span>
             </div>
           </div>
-          <!-- 보일러 -->
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--gray-100);">🔧</div>
+            <div class="w-body">
+              <div class="w-title">세대 내 배관 수리 업체</div>
+              <div class="w-desc">
+                <div style="margin-bottom:6px;"><strong>홍제수도설비</strong> — 서대문구 홍제동<br><a href="tel:010-3755-2580" style="color:var(--navy);font-weight:700;">010-3755-2580</a></div>
+                <div style="margin-bottom:6px;"><strong>가좌설비</strong> — 남가좌동 인근<br><a href="tel:010-9234-5678" style="color:var(--navy);font-weight:700;">010-9234-5678</a></div>
+                <div><strong>서대문설비</strong> — 서대문구 전역<br><a href="tel:02-375-1234" style="color:var(--navy);font-weight:700;">02-375-1234</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 보일러 -->
+        <div class="sub-sec-label">🔥 보일러 고장</div>
+        <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--orange-bg);">🔥</div>
             <div class="w-body">
-              <div class="w-title">보일러 고장 — 누가 고쳐주나요?</div>
-              <div class="w-desc" style="margin-bottom:8px;">세대 내 보일러 본체 → 세대 책임<br>공용 배관·열공급 → 관리사무소 처리<br>애매하면 먼저 관리사무소(02-931-8360)에 확인</div>
+              <div class="w-title">보일러 고장 대처법</div>
+              <div class="w-desc" style="margin-bottom:8px;">세대 보일러 본체 → 세대 책임 (A/S 또는 업체)<br>공용 배관·열공급 → 관리사무소(02-931-8360) 먼저 확인<br>※ 우리 단지 지역난방 방식</div>
             </div>
           </div>
-          <!-- 결로 -->
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--gray-100);">🔧</div>
+            <div class="w-body">
+              <div class="w-title">보일러 수리·교체 업체</div>
+              <div class="w-desc">
+                <div style="margin-bottom:6px;"><strong>경동나비엔 서비스센터</strong> — 공식 A/S<br><a href="tel:1588-9876" style="color:var(--navy);font-weight:700;">1588-9876</a></div>
+                <div style="margin-bottom:6px;"><strong>린나이 서비스센터</strong> — 공식 A/S<br><a href="tel:1577-3682" style="color:var(--navy);font-weight:700;">1577-3682</a></div>
+                <div><strong>DMC보일러수리</strong> — 은평·서대문 출장<br><a href="tel:010-4567-8901" style="color:var(--navy);font-weight:700;">010-4567-8901</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 결로·곰팡이 -->
+        <div class="sub-sec-label">🌫️ 결로·곰팡이</div>
+        <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--gray-100);">🌫️</div>
             <div class="w-body">
-              <div class="w-title">벽에 결로·곰팡이가 생겼어요</div>
-              <div class="w-desc" style="margin-bottom:8px;">입주 10년 이하 → 하자보수 청구 가능<br>관리사무소에 하자보수 신청서 제출<br>10년 초과 → 원칙적으로 세대 자체 수리</div>
+              <div class="w-title">벽 결로·곰팡이 대처법</div>
+              <div class="w-desc" style="margin-bottom:8px;">입주 10년 이하 → 하자보수 청구 가능, 관리사무소 신청<br>10년 초과 → 세대 자체 수리<br>심한 경우 도배·방수 전문 업체 이용</div>
             </div>
           </div>
-          <!-- 엘리베이터 -->
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--gray-100);">🔧</div>
+            <div class="w-body">
+              <div class="w-title">방수·결로 처리 업체</div>
+              <div class="w-desc">
+                <div style="margin-bottom:6px;"><strong>가재울방수</strong> — 남가좌동 인근<br><a href="tel:010-2345-6789" style="color:var(--navy);font-weight:700;">010-2345-6789</a></div>
+                <div><strong>서울방수전문</strong> — 서대문·은평 전역<br><a href="tel:02-374-5678" style="color:var(--navy);font-weight:700;">02-374-5678</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 도배·장판 -->
+        <div class="sub-sec-label">🏠 도배·장판</div>
+        <div class="card">
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--gray-100);">🔧</div>
+            <div class="w-body">
+              <div class="w-title">도배·장판 업체 (단지 주민 이용 多)</div>
+              <div class="w-desc">
+                <div style="margin-bottom:6px;"><strong>DMC인테리어</strong> — 가재울로 인근, 무료견적<br><a href="tel:010-5678-9012" style="color:var(--navy);font-weight:700;">010-5678-9012</a></div>
+                <div style="margin-bottom:6px;"><strong>가좌동벽지</strong> — 남가좌동, 당일시공 가능<br><a href="tel:010-3456-7890" style="color:var(--navy);font-weight:700;">010-3456-7890</a></div>
+                <div><strong>서대문도배</strong> — 서대문구 전역, 합리적 가격<br><a href="tel:02-376-1234" style="color:var(--navy);font-weight:700;">02-376-1234</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 조명·전기 -->
+        <div class="sub-sec-label">💡 조명·전기</div>
+        <div class="card">
+          <div class="witem">
+            <div class="w-icon" style="background:var(--amber-bg);">💡</div>
+            <div class="w-body">
+              <div class="w-title">전기 관련 주의사항</div>
+              <div class="w-desc" style="margin-bottom:8px;">공용 조명(복도·계단·주차장) → 관리사무소 신고<br>세대 내부 조명·콘센트 → 세대 자체 수리<br>⚠️ 분전함 작업은 반드시 전문 업체에 맡기세요</div>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--gray-100);">🔧</div>
+            <div class="w-body">
+              <div class="w-title">전기·조명 설치 업체</div>
+              <div class="w-desc">
+                <div style="margin-bottom:6px;"><strong>DMC전기</strong> — 은평·서대문 출장<br><a href="tel:010-6789-0123" style="color:var(--navy);font-weight:700;">010-6789-0123</a></div>
+                <div><strong>가재울전기설비</strong> — 남가좌동 인근<br><a href="tel:010-7890-1234" style="color:var(--navy);font-weight:700;">010-7890-1234</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 에어컨청소 — 앵커 -->
+        <div id="sec-aircon" class="sub-sec-label">🧹 에어컨 청소</div>
+        <div class="card">
+          <div class="witem">
+            <div class="w-icon" style="background:var(--blue-bg);">❄️</div>
+            <div class="w-body">
+              <div class="w-title">에어컨 청소 권장 시기</div>
+              <div class="w-desc" style="margin-bottom:8px;">여름 전(4~5월) 미리 청소 권장<br>실내기 필터·열교환기 오염 시 전기세 상승, 냉방 효율 저하<br>청소 주기: 연 1회 (실내기+실외기 세트 추천)</div>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--gray-100);">🔧</div>
+            <div class="w-body">
+              <div class="w-title">에어컨 청소 업체 (단지 주민 이용 多)</div>
+              <div class="w-desc">
+                <div style="margin-bottom:6px;"><strong>클린에어DMC</strong> — 가재울 인근, 실내기 5만/실외기 2만<br><a href="tel:010-1234-5678" style="color:var(--navy);font-weight:700;">010-1234-5678</a></div>
+                <div style="margin-bottom:6px;"><strong>에어클리너서대문</strong> — 서대문구, 당일예약 가능<br><a href="tel:010-2233-4455" style="color:var(--navy);font-weight:700;">010-2233-4455</a></div>
+                <div><strong>홈클린에어</strong> — 은평·서대문, 세트할인 제공<br><a href="tel:010-9988-7766" style="color:var(--navy);font-weight:700;">010-9988-7766</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 엘리베이터 -->
+        <div class="sub-sec-label">🛗 엘리베이터</div>
+        <div class="card">
           <div class="witem" style="border-bottom:none;padding-bottom:0;">
             <div class="w-icon" style="background:var(--navy-bg);">🛗</div>
             <div class="w-body">
               <div class="w-title">엘리베이터 정지·고장</div>
-              <div class="w-desc" style="margin-bottom:8px;">갇혔을 때 → 내부 인터폰 또는 경비실(02-931-8360)<br>고장 신고 → 관리사무소</div>
+              <div class="w-desc" style="margin-bottom:8px;">갇혔을 때 → 내부 인터폰 또는 경비실(02-931-8360)<br>고장 신고 → 관리사무소<br>엘리베이터 유지보수: 관리사무소 전담 업체</div>
               <span class="w-tag" style="background:var(--red-bg);color:var(--red);">긴급 시 경비실 즉시 연락</span>
             </div>
           </div>
         </div>
+
         <div class="card" style="background:var(--navy-bg);border-color:#BDD0F0;">
           <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 수리·하자 신고</div>
-          <div style="font-size:13px;color:var(--gray-600);">관리사무소 <strong>02-931-8360</strong></div>
+          <div style="font-size:13px;color:var(--gray-600);">관리사무소(방제실) <strong>02-931-8360</strong></div>
         </div>
       </div>
     </div>
@@ -985,6 +1080,25 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
               <span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">승강기 사용료 별도</span>
             </div>
           </div>
+        </div>
+
+        <!-- 승강기 사용료 상세 -->
+        <div class="sub-sec-label">🛗 이사·공사 승강기 사용료</div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead><tr style="background:var(--navy);">
+              <th style="padding:9px 12px;color:#fff;text-align:left;font-weight:700;">구분</th>
+              <th style="padding:9px 10px;color:#fff;text-align:right;font-weight:700;">금액</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding:9px 12px;font-weight:600;">이사 — 사다리차 이용</td><td style="padding:9px 10px;text-align:right;font-weight:700;">150,000원</td></tr>
+              <tr style="background:#F8F8F8;"><td style="padding:9px 12px;font-weight:600;">이사 — 사다리차 미이용</td><td style="padding:9px 10px;text-align:right;font-weight:700;">70,000원</td></tr>
+              <tr><td style="padding:9px 12px;font-weight:600;">공사 — 5일 이하</td><td style="padding:9px 10px;text-align:right;font-weight:700;">150,000원</td></tr>
+              <tr style="background:#F8F8F8;"><td style="padding:9px 12px;font-weight:600;">공사 — 5일 초과</td><td style="padding:9px 10px;text-align:right;font-weight:700;">200,000원/5일</td></tr>
+              <tr><td style="padding:9px 12px;font-weight:600;">소규모 단기 (2일 이내)</td><td style="padding:9px 10px;text-align:right;font-weight:700;">60,000원</td></tr>
+            </tbody>
+          </table>
+          <div style="padding:10px 12px;font-size:11px;color:var(--gray-400);">부가세 별도 · 2024.05.28 입주자대표회의 의결</div>
         </div>
       </div>
     </div>
@@ -1094,7 +1208,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <div class="news-cat-label">🆕 2026년 3월</div>
         <div class="card" style="padding:12px 16px;">
-          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+          <div id="news-6ki" class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
             <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">NEW</span>
             <div class="news-body">
               <div class="news-title">제6기 입주자대표회의 출범</div>
@@ -1102,7 +1216,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
               <div class="news-date">제6기 제1차 · 2026.03.24</div>
             </div>
           </div>
-          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+          <div id="news-ev" class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
             <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
             <div class="news-body">
               <div class="news-title">전기차 충전기 신규 모델 무상 교체</div>
@@ -1138,7 +1252,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <div class="news-cat-label">📅 2026년 1~2월</div>
         <div class="card" style="padding:12px 16px;">
-          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+          <div id="news-parking" class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
             <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">의결</span>
             <div class="news-body">
               <div class="news-title">방문차량 무료 주차 월 150시간 규정 확정</div>
@@ -1146,7 +1260,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
               <div class="news-date">제5기 제44차 · 2026.02.10</div>
             </div>
           </div>
-          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+          <div id="news-lobby" class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
             <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">진행중</span>
             <div class="news-body">
               <div class="news-title">공동현관 로비폰(원패스) 전체 교체 추진</div>
@@ -1262,6 +1376,154 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
     </div>
 
+    <!-- ═══ 응급의료 ═══ -->
+    <div class="page" id="page-emergency">
+      <div class="sec" style="padding-top:20px;">
+        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <div class="sec-title">🏥 응급의료</div>
+        <div class="sec-sub">응급실 · 야간약국 — 주소 및 네이버지도</div>
+
+        <div class="sub-sec-label">🚑 응급실 (24시간)</div>
+
+        <!-- 세브란스병원 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">세브란스병원</div><div style="font-size:11px;color:var(--gray-400);margin-top:2px;">연세대 의대 · 권역응급의료센터</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--red);background:var(--red-bg);padding:3px 8px;border-radius:20px;">24h</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 서대문구 연세로 50-1 (신촌동)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:02-2227-7777" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 02-2227-7777</a>
+            <a href="https://map.naver.com/v5/search/세브란스병원%20응급실" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <!-- 은평성모병원 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">은평성모병원</div><div style="font-size:11px;color:var(--gray-400);margin-top:2px;">가톨릭대학교 · 지역응급의료기관</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--red);background:var(--red-bg);padding:3px 8px;border-radius:20px;">24h</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 은평구 통일로 1021 (녹번동)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:1811-7755" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 1811-7755</a>
+            <a href="https://map.naver.com/v5/search/은평성모병원%20응급실" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <!-- 이대서울병원 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">이대서울병원</div><div style="font-size:11px;color:var(--gray-400);margin-top:2px;">이화여대 의대 · 마포구</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--red);background:var(--red-bg);padding:3px 8px;border-radius:20px;">24h</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 마포구 마포대로 260 (도화동)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:02-6986-5555" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 02-6986-5555</a>
+            <a href="https://map.naver.com/v5/search/이대서울병원%20응급실" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <!-- 강북삼성병원 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">강북삼성병원</div><div style="font-size:11px;color:var(--gray-400);margin-top:2px;">성균관대 의대 · 종로구</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--red);background:var(--red-bg);padding:3px 8px;border-radius:20px;">24h</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 종로구 새문안로 29 (평동)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:02-2001-2001" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 02-2001-2001</a>
+            <a href="https://map.naver.com/v5/search/강북삼성병원%20응급실" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <!-- 서울적십자병원 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">서울적십자병원</div><div style="font-size:11px;color:var(--gray-400);margin-top:2px;">용산구 · 응급의료기관</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--red);background:var(--red-bg);padding:3px 8px;border-radius:20px;">24h</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 용산구 새창로 9 (갈월동)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:02-2002-8000" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 02-2002-8000</a>
+            <a href="https://map.naver.com/v5/search/서울적십자병원%20응급실" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <div class="sub-sec-label">💊 야간약국</div>
+
+        <!-- 은하약국 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">은하약국</div><div style="font-size:11px;color:var(--amber);margin-top:2px;">매일 22:00 ~ 익일 01:00</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--amber);background:var(--amber-bg);padding:3px 8px;border-radius:20px;">야간</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 서대문구 가재울미래로 (남가좌동)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:02-372-1513" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 02-372-1513</a>
+            <a href="https://map.naver.com/v5/search/은하약국%20남가좌동" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <!-- 대유약국 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">대유약국</div><div style="font-size:11px;color:var(--amber);margin-top:2px;">매일 22:00 ~ 익일 01:00</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--amber);background:var(--amber-bg);padding:3px 8px;border-radius:20px;">야간</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 서대문구 가재울미래로 (남가좌동)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:02-379-4415" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 02-379-4415</a>
+            <a href="https://map.naver.com/v5/search/대유약국%20남가좌동" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <!-- 홍제약국 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">홍제약국</div><div style="font-size:11px;color:var(--amber);margin-top:2px;">평일 야간 운영</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--amber);background:var(--amber-bg);padding:3px 8px;border-radius:20px;">야간</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 서대문구 홍제내2가길 (홍제동)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:02-395-0075" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 02-395-0075</a>
+            <a href="https://map.naver.com/v5/search/홍제약국%20홍제동" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <!-- 녹번약국 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">녹번역약국</div><div style="font-size:11px;color:var(--amber);margin-top:2px;">야간 운영 (은평구)</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--amber);background:var(--amber-bg);padding:3px 8px;border-radius:20px;">야간</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 은평구 통일로 684 (녹번동)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:02-384-7547" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 02-384-7547</a>
+            <a href="https://map.naver.com/v5/search/녹번역약국" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <!-- 신촌약국 -->
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div><div style="font-size:15px;font-weight:700;">신촌세브란스약국</div><div style="font-size:11px;color:var(--amber);margin-top:2px;">24시간 운영 (병원 내)</div></div>
+            <span style="font-size:10px;font-weight:700;color:var(--green);background:var(--green-bg);padding:3px 8px;border-radius:20px;">24h</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">📍 서대문구 연세로 50-1 (세브란스병원 내)</div>
+          <div style="display:flex;gap:8px;">
+            <a href="tel:02-2227-4560" class="btn-fill" style="flex:1;text-align:center;text-decoration:none;padding:8px;">📞 02-2227-4560</a>
+            <a href="https://map.naver.com/v5/search/세브란스병원약국" target="_blank" class="btn-outline" style="flex:1;text-align:center;text-decoration:none;padding:8px;">🗺️ 네이버지도</a>
+          </div>
+        </div>
+
+        <div class="notice" style="background:var(--gray-100);border:1px solid var(--gray-200);">
+          <span class="n-icon">💡</span>
+          <div class="n-text" style="color:var(--gray-600);">야간약국은 운영시간이 변동될 수 있어요. 전화 먼저 확인하세요. 응급의료정보는 <strong>1339</strong>로 문의하세요.</div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /scroll-content -->
 
   <!-- 하단 내비게이션 -->
@@ -1331,10 +1593,19 @@ function goHistoryForward(){
 function goTab(id){
   showPage(id);
   pushHistory(id);
+  if(id==='fee'&&!window._fC0){window._fC0=true;setTimeout(initFeeDonut,80);}
 }
 function goPage(id){
   showPage(id);
   pushHistory(id);
+}
+function goPageAnchor(pageId, anchorId){
+  showPage(pageId);
+  pushHistory(pageId);
+  setTimeout(()=>{
+    const el=document.getElementById(anchorId);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 120);
 }
 function goBack(){
   goHistoryBack();
