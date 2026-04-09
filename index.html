@@ -6,171 +6,184 @@
 <title>단지ON — DMC파크뷰자이</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy: #1B3A6B; --navy-bg: #EEF3FB;
-  --red: #C0392B; --red-bg: #FDECEA; --red-border: #F5B7B1;
-  --green: #1A6E3C; --green-bg: #E6F4ED;
-  --amber: #A0620A; --amber-bg: #FEF6E6;
-  --teal: #0F6E56; --teal-bg: #E1F5EE;
-  --purple-bg: #F0EBFF;
-  --orange: #C84B1A; --orange-bg: #FEF0EB;
-  --blue: #1565C0; --blue-bg: #E3F0FF;
-  --gray-50: #F8F8F8; --gray-100: #F0F0EF; --gray-200: #E0E0DE;
-  --gray-400: #9A9A97; --gray-600: #5A5A57; --gray-800: #2C2C2A;
-  --white: #FFFFFF;
-  --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
-  --tab-h: 64px; --ebar-h: 52px;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1B3A6B;--navy-bg:#EEF3FB;
+  --red:#C0392B;--red-bg:#FDECEA;--red-bd:#F5B7B1;
+  --green:#1A6E3C;--green-bg:#E6F4ED;
+  --amber:#A0620A;--amber-bg:#FEF6E6;
+  --orange:#C84B1A;--orange-bg:#FEF0EB;
+  --blue:#1565C0;--blue-bg:#E3F0FF;
+  --purple-bg:#F0EBFF;
+  --gray-50:#F8F8F8;--gray-100:#F0F0EF;--gray-200:#E0E0DE;
+  --gray-400:#9A9A97;--gray-600:#5A5A57;--gray-800:#2C2C2A;
+  --white:#FFFFFF;
+  --shadow-sm:0 1px 4px rgba(0,0,0,0.08);
+  --tab-h:64px;
 }
-html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-apple-system,sans-serif; font-size:15px; color:var(--gray-800); background:var(--gray-100); min-height:100vh; -webkit-font-smoothing:antialiased; }
-.app { max-width:430px; margin:0 auto; background:var(--gray-50); min-height:100vh; }
+html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-apple-system,sans-serif;font-size:15px;color:var(--gray-800);background:var(--gray-100);min-height:100vh;-webkit-font-smoothing:antialiased;}
+.app{max-width:430px;margin:0 auto;background:var(--gray-50);min-height:100vh;}
 
 /* HEADER */
-.header { background:var(--navy); padding:18px 20px 14px; position:sticky; top:0; z-index:100; }
-.header-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-.apt-name { font-size:12px; color:rgba(255,255,255,0.6); }
-.apt-title { font-size:17px; color:#fff; font-weight:700; margin-top:1px; }
-.header-badge { font-size:11px; background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.9); padding:4px 10px; border-radius:20px; border:1px solid rgba(255,255,255,0.2); }
-.search-wrap { position:relative; }
-.search-input { width:100%; background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:10px 16px 10px 40px; font-size:14px; color:#fff; font-family:inherit; outline:none; }
-.search-input::placeholder { color:rgba(255,255,255,0.45); }
-.s-icon { position:absolute; left:13px; top:50%; transform:translateY(-50%); width:16px; height:16px; opacity:0.55; }
+.header{background:var(--navy);padding:18px 20px 14px;position:sticky;top:0;z-index:100;}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.apt-name{font-size:12px;color:rgba(255,255,255,0.6);}
+.apt-title{font-size:17px;color:#fff;font-weight:700;margin-top:1px;}
+.hbadge{font-size:11px;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9);padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+.search-wrap{position:relative;}
+.search-input{width:100%;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:10px 16px 10px 40px;font-size:14px;color:#fff;font-family:inherit;outline:none;}
+.search-input::placeholder{color:rgba(255,255,255,0.45);}
+.s-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:0.55;}
 
-/* 야간응급 바 */
-.ebar { position:sticky; top:108px; z-index:99; background:var(--red); padding:0 16px; display:flex; align-items:center; gap:8px; height:var(--ebar-h); box-shadow:0 2px 8px rgba(192,57,43,0.3); }
-.ebar-t { flex:1; }
-.ebar-title { font-size:13px; font-weight:700; color:#fff; }
-.ebar-sub { font-size:11px; color:rgba(255,255,255,0.75); }
-.ebar-btns { display:flex; gap:6px; }
-.ebar-btn { background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.35); color:#fff; border-radius:8px; padding:5px 10px; font-size:12px; font-weight:700; font-family:inherit; cursor:pointer; text-decoration:none; }
+/* 야간응급 — 리디자인 */
+.ebar{position:sticky;top:108px;z-index:99;background:#1a1a1a;padding:0 16px;display:flex;align-items:center;gap:10px;height:56px;box-shadow:0 2px 10px rgba(0,0,0,0.35);}
+.ebar-dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(192,57,43,0.3);flex-shrink:0;}
+.ebar-t{flex:1;}
+.ebar-title{font-size:13px;font-weight:700;color:#fff;}
+.ebar-sub{font-size:10px;color:rgba(255,255,255,0.55);margin-top:1px;}
+.ebar-btns{display:flex;gap:5px;}
+.ebar-btn{padding:5px 10px;border-radius:7px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;text-decoration:none;border:none;}
+.ebar-btn.emergency{background:var(--red);color:#fff;}
+.ebar-btn.normal{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.2);}
 
 /* 하단 탭 */
-.tab-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:var(--white); border-top:1px solid var(--gray-200); display:flex; height:var(--tab-h); z-index:200; box-shadow:0 -2px 12px rgba(0,0,0,0.08); }
-.tab-btn { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; border:none; background:none; cursor:pointer; font-family:inherit; color:var(--gray-400); transition:color 0.15s; padding:8px 4px; }
-.tab-btn.active { color:var(--navy); }
-.t-icon { font-size:20px; line-height:1; }
-.t-label { font-size:10px; font-weight:600; }
-.tab-btn.active .t-label { font-weight:700; }
+.tab-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--white);border-top:1px solid var(--gray-200);display:flex;height:var(--tab-h);z-index:200;box-shadow:0 -2px 12px rgba(0,0,0,0.08);}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;cursor:pointer;font-family:inherit;color:var(--gray-400);transition:color 0.15s;padding:8px 4px;}
+.tab-btn.active{color:var(--navy);}
+.t-icon{font-size:20px;line-height:1;}
+.t-label{font-size:10px;font-weight:600;}
+.tab-btn.active .t-label{font-weight:700;}
 
 /* SCROLL */
-.scroll-content { padding-bottom:calc(var(--tab-h) + 16px); }
+.scroll-content{padding-bottom:calc(var(--tab-h)+16px);}
 
 /* PAGE */
-.page { display:none; }
-.page.active { display:block; animation:fadeUp 0.18s ease; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.page{display:none;}
+.page.active{display:block;animation:fadeUp 0.18s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 
-/* SECTION */
-.sec { padding:16px 16px 0; }
-.sec-label { font-size:11px; font-weight:700; color:var(--gray-400); letter-spacing:0.07em; text-transform:uppercase; margin-bottom:10px; }
-.sec-title { font-size:17px; font-weight:800; color:var(--gray-800); letter-spacing:-0.02em; margin-bottom:4px; }
-.sec-sub { font-size:13px; color:var(--gray-400); margin-bottom:14px; }
+/* LAYOUT */
+.sec{padding:16px 16px 0;}
+.sec-label{font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;}
+.sec-title{font-size:17px;font-weight:800;color:var(--gray-800);letter-spacing:-0.02em;margin-bottom:4px;}
+.sec-sub{font-size:13px;color:var(--gray-400);margin-bottom:14px;}
+.card{background:var(--white);border-radius:16px;border:1px solid var(--gray-200);padding:16px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
 
-/* CARD */
-.card { background:var(--white); border-radius:16px; border:1px solid var(--gray-200); padding:16px; margin-bottom:10px; box-shadow:var(--shadow-sm); }
+/* 홈 퀵메뉴 — 더 크게, 2열로 */
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.qbtn{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:16px 14px;cursor:pointer;font-family:inherit;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:14px;transition:transform 0.1s;text-align:left;}
+.qbtn:active{transform:scale(0.97);}
+.q-icon{font-size:28px;line-height:1;flex-shrink:0;}
+.q-texts{}
+.q-label{font-size:14px;font-weight:700;color:var(--gray-800);display:block;}
+.q-sub{font-size:11px;color:var(--gray-400);margin-top:2px;display:block;}
 
-/* QUICK GRID */
-.qgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
-.qbtn { background:var(--white); border:1px solid var(--gray-200); border-radius:16px; padding:16px 10px 14px; text-align:center; cursor:pointer; font-family:inherit; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; align-items:center; gap:6px; transition:transform 0.1s; }
-.qbtn:active { transform:scale(0.96); }
-.q-icon { font-size:26px; line-height:1; }
-.q-label { font-size:12px; font-weight:700; color:var(--gray-800); }
-.q-sub { font-size:10px; color:var(--gray-400); }
+/* 계절 카드 */
+.season-card{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:12px;cursor:pointer;}
+.season-icon{font-size:28px;flex-shrink:0;}
+.season-body{}
+.season-title{font-size:14px;font-weight:700;color:var(--gray-800);}
+.season-desc{font-size:12px;color:var(--gray-400);margin-top:2px;line-height:1.5;}
+.season-arrow{margin-left:auto;font-size:18px;color:var(--gray-300);}
 
 /* FAQ */
-.faq-item { display:flex; align-items:center; gap:12px; padding:13px 0; border-bottom:1px solid var(--gray-100); cursor:pointer; }
-.faq-item:last-child { border-bottom:none; padding-bottom:0; }
-.faq-item:first-child { padding-top:0; }
-.faq-n { font-size:12px; font-weight:800; color:var(--gray-200); min-width:20px; }
-.faq-t { flex:1; font-size:14px; color:var(--gray-800); line-height:1.4; }
-.faq-arr { font-size:14px; color:var(--gray-300); }
-.hot { font-size:10px; font-weight:700; color:var(--red); background:var(--red-bg); padding:2px 6px; border-radius:10px; margin-left:4px; }
+.faq-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--gray-100);cursor:pointer;}
+.faq-item:last-child{border-bottom:none;padding-bottom:0;}
+.faq-item:first-child{padding-top:0;}
+.faq-n{font-size:12px;font-weight:800;color:var(--gray-200);min-width:20px;}
+.faq-t{flex:1;font-size:14px;color:var(--gray-800);line-height:1.4;}
+.faq-arr{font-size:14px;color:var(--gray-300);}
+.hot{font-size:10px;font-weight:700;color:var(--red);background:var(--red-bg);padding:2px 6px;border-radius:10px;margin-left:4px;}
 
 /* INFO ROW */
-.irow { display:flex; align-items:flex-start; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--gray-100); }
-.irow:last-child { border-bottom:none; padding-bottom:0; }
-.irow:first-child { padding-top:0; }
-.i-label { font-size:13px; color:var(--gray-600); flex-shrink:0; }
-.i-val { text-align:right; }
-.i-main { font-size:14px; font-weight:600; color:var(--gray-800); }
-.i-note { font-size:11px; color:var(--gray-400); margin-top:1px; }
-
-/* CALL BTN */
-.call-btn { display:inline-flex; align-items:center; background:var(--navy); color:#fff; border:none; border-radius:20px; padding:5px 12px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; margin-left:8px; text-decoration:none; }
+.irow{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray-100);}
+.irow:last-child{border-bottom:none;padding-bottom:0;}
+.irow:first-child{padding-top:0;}
+.i-label{font-size:13px;color:var(--gray-600);flex-shrink:0;}
+.i-val{text-align:right;}
+.i-main{font-size:14px;font-weight:600;color:var(--gray-800);}
+.i-note{font-size:11px;color:var(--gray-400);margin-top:1px;}
 
 /* WIKI ITEM */
-.witem { display:flex; gap:12px; align-items:flex-start; padding:14px 0; border-bottom:1px solid var(--gray-100); cursor:pointer; }
-.witem:last-child { border-bottom:none; padding-bottom:0; }
-.witem:first-child { padding-top:0; }
-.w-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
-.w-body { flex:1; }
-.w-title { font-size:14px; font-weight:600; color:var(--gray-800); margin-bottom:3px; }
-.w-desc { font-size:12px; color:var(--gray-400); line-height:1.5; }
-.w-tag { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; margin-top:5px; }
+.witem{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--gray-100);}
+.witem:last-child{border-bottom:none;padding-bottom:0;}
+.witem:first-child{padding-top:0;}
+.w-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.w-body{flex:1;}
+.w-title{font-size:14px;font-weight:600;color:var(--gray-800);margin-bottom:3px;}
+.w-desc{font-size:12px;color:var(--gray-400);line-height:1.5;}
+.w-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-top:5px;}
 
 /* BIZ CARD */
-.bcard { background:var(--white); border-radius:16px; border:1px solid var(--gray-200); padding:16px; margin-bottom:10px; box-shadow:var(--shadow-sm); }
-.b-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
-.b-name { font-size:15px; font-weight:700; }
-.b-cat { font-size:11px; font-weight:700; color:var(--navy); background:var(--navy-bg); padding:3px 8px; border-radius:20px; }
-.b-rating { display:flex; align-items:center; gap:4px; margin-bottom:8px; }
-.stars { color:#F5A623; font-size:12px; }
-.b-tags { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
-.b-tag { font-size:11px; color:var(--gray-600); background:var(--gray-100); padding:2px 8px; border-radius:20px; }
-.b-price { font-size:12px; color:var(--gray-600); margin-bottom:10px; }
-.b-footer { display:flex; justify-content:space-between; align-items:center; padding-top:10px; border-top:1px solid var(--gray-100); }
-.b-verified { font-size:11px; color:var(--green); font-weight:700; }
-.btn-fill { font-size:12px; font-weight:700; color:#fff; background:var(--navy); border:none; border-radius:8px; padding:6px 14px; cursor:pointer; font-family:inherit; }
-.btn-outline { font-size:12px; font-weight:700; color:var(--navy); background:none; border:1.5px solid var(--navy); border-radius:8px; padding:5px 12px; cursor:pointer; font-family:inherit; }
+.bcard{background:var(--white);border-radius:16px;border:1px solid var(--gray-200);padding:16px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
+.b-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.b-name{font-size:15px;font-weight:700;}
+.b-cat{font-size:11px;font-weight:700;color:var(--navy);background:var(--navy-bg);padding:3px 8px;border-radius:20px;}
+.b-rating{display:flex;align-items:center;gap:4px;margin-bottom:8px;}
+.stars{color:#F5A623;font-size:12px;}
+.b-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.b-tag{font-size:11px;color:var(--gray-600);background:var(--gray-100);padding:2px 8px;border-radius:20px;}
+.b-price{font-size:12px;color:var(--gray-600);margin-bottom:10px;}
+.b-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--gray-100);}
+.b-verified{font-size:11px;color:var(--green);font-weight:700;}
+.btn-fill{font-size:12px;font-weight:700;color:#fff;background:var(--navy);border:none;border-radius:8px;padding:6px 14px;cursor:pointer;font-family:inherit;}
+.btn-outline{font-size:12px;font-weight:700;color:var(--navy);background:none;border:1.5px solid var(--navy);border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;}
 
 /* PLACE CARD */
-.pcard { background:var(--white); border-radius:16px; border:1px solid var(--gray-200); padding:14px 16px; margin-bottom:10px; box-shadow:var(--shadow-sm); display:flex; gap:12px; }
-.p-icon { width:46px; height:46px; border-radius:12px; background:var(--gray-100); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
-.p-body { flex:1; }
-.p-cat { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; margin-bottom:4px; background:var(--amber-bg); color:var(--amber); }
-.p-name { font-size:14px; font-weight:700; margin-bottom:3px; }
-.p-desc { font-size:12px; color:var(--gray-400); line-height:1.5; }
-.p-meta { display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; align-items:center; }
-.p-dist { font-size:11px; color:var(--gray-400); }
-.res-badge { font-size:10px; font-weight:700; color:var(--green); background:var(--green-bg); padding:2px 7px; border-radius:10px; }
+.pcard{background:var(--white);border-radius:16px;border:1px solid var(--gray-200);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow-sm);display:flex;gap:12px;}
+.p-icon{width:46px;height:46px;border-radius:12px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.p-body{flex:1;}
+.p-cat{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-bottom:4px;background:var(--amber-bg);color:var(--amber);}
+.p-name{font-size:14px;font-weight:700;margin-bottom:3px;}
+.p-desc{font-size:12px;color:var(--gray-400);line-height:1.5;}
+.p-meta{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;align-items:center;}
+.p-dist{font-size:11px;color:var(--gray-400);}
+.res-badge{font-size:10px;font-weight:700;color:var(--green);background:var(--green-bg);padding:2px 7px;border-radius:10px;}
 
 /* CHIPS */
-.chips { display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px; margin-bottom:12px; }
-.chips::-webkit-scrollbar { display:none; }
-.chip { flex-shrink:0; font-size:12px; font-weight:600; padding:6px 14px; border-radius:20px; border:1.5px solid var(--gray-200); background:var(--white); color:var(--gray-600); cursor:pointer; font-family:inherit; }
-.chip.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+.chips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;margin-bottom:12px;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;border:1.5px solid var(--gray-200);background:var(--white);color:var(--gray-600);cursor:pointer;font-family:inherit;}
+.chip.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 
 /* CAT ROW */
-.cats { display:flex; gap:10px; overflow-x:auto; scrollbar-width:none; margin-bottom:14px; padding-bottom:2px; }
-.cats::-webkit-scrollbar { display:none; }
-.citem { flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; }
-.c-wrap { width:52px; height:52px; border-radius:14px; background:var(--white); border:1.5px solid var(--gray-200); display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow:var(--shadow-sm); }
-.citem.active .c-wrap { border-color:var(--navy); background:var(--navy-bg); }
-.c-lbl { font-size:11px; font-weight:600; color:var(--gray-600); }
-.citem.active .c-lbl { color:var(--navy); font-weight:700; }
+.cats{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;padding-bottom:2px;}
+.cats::-webkit-scrollbar{display:none;}
+.citem{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
+.c-wrap{width:52px;height:52px;border-radius:14px;background:var(--white);border:1.5px solid var(--gray-200);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--shadow-sm);}
+.citem.active .c-wrap{border-color:var(--navy);background:var(--navy-bg);}
+.c-lbl{font-size:11px;font-weight:600;color:var(--gray-600);}
+.citem.active .c-lbl{color:var(--navy);font-weight:700;}
 
 /* NOTICE */
-.notice { border-radius:12px; padding:12px 14px; display:flex; gap:10px; align-items:flex-start; margin-bottom:14px; }
-.n-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
-.n-text { font-size:13px; line-height:1.5; }
+.notice{border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;}
+.n-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.n-text{font-size:13px;line-height:1.5;}
 
-/* EMER GRID */
-.egrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
-.ebtn { background:var(--white); border:1px solid var(--gray-200); border-radius:16px; padding:14px; cursor:pointer; box-shadow:var(--shadow-sm); text-decoration:none; display:flex; flex-direction:column; gap:4px; transition:transform 0.1s; }
-.ebtn:active { transform:scale(0.97); }
-.ebtn.crit { background:var(--red-bg); border-color:var(--red-border); }
-.e-icon { font-size:22px; }
-.e-label { font-size:13px; font-weight:700; color:var(--gray-800); }
-.ebtn.crit .e-label { color:var(--red); }
-.e-phone { font-size:11px; color:var(--gray-400); }
+/* 응급 그리드 */
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.egrid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
+.ebtn{background:var(--white);border:1px solid var(--gray-200);border-radius:14px;padding:12px;cursor:pointer;box-shadow:var(--shadow-sm);text-decoration:none;display:flex;flex-direction:column;gap:3px;transition:transform 0.1s;}
+.ebtn:active{transform:scale(0.97);}
+.ebtn.crit{background:var(--red-bg);border-color:var(--red-bd);}
+.ebtn.crit2{background:#1a1a1a;border-color:#333;}
+.e-icon{font-size:20px;}
+.e-label{font-size:12px;font-weight:700;color:var(--gray-800);}
+.ebtn.crit .e-label{color:var(--red);}
+.ebtn.crit2 .e-label{color:#fff;}
+.e-phone{font-size:10px;color:var(--gray-400);}
+.ebtn.crit2 .e-phone{color:rgba(255,255,255,0.5);}
 
-/* 2col quick */
-.qgrid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
-.qbtn2 { background:var(--white); border:1px solid var(--gray-200); border-radius:16px; padding:14px; cursor:pointer; font-family:inherit; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:12px; transition:transform 0.1s; }
-.qbtn2:active { transform:scale(0.97); }
+/* 2col quick (생활탭) */
+.qgrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.qbtn2{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:14px;cursor:pointer;font-family:inherit;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:12px;transition:transform 0.1s;}
+.qbtn2:active{transform:scale(0.97);}
 
-.loading { text-align:center; padding:32px; color:var(--gray-400); font-size:13px; }
-.back-btn { font-size:13px; color:var(--gray-400); background:none; border:none; cursor:pointer; margin-bottom:16px; }
+/* 민원 섹션 구분 */
+.sub-sec-label{font-size:12px;font-weight:700;color:var(--gray-400);margin:14px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--gray-200);}
+
+.back-btn{font-size:13px;color:var(--gray-400);background:none;border:none;cursor:pointer;margin-bottom:16px;}
+.loading-placeholder{padding:16px;color:var(--gray-400);font-size:13px;text-align:center;}
 </style>
 </head>
 <body>
@@ -180,21 +193,24 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
   <div class="header">
     <div class="header-top">
       <div><div class="apt-name">가재울미래로</div><div class="apt-title">DMC파크뷰자이</div></div>
-      <span class="header-badge">입주민 인증 ✓</span>
+      <span class="hbadge">입주민 인증 ✓</span>
     </div>
     <div class="search-wrap">
-      <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <svg class="s-ico" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
       <input class="search-input" type="search" placeholder="관리비, 층간소음, 분리수거, 주차…" id="searchInput">
     </div>
   </div>
 
-  <!-- 야간응급 바 -->
+  <!-- 야간응급 바 — 날카롭게 리디자인 -->
   <div class="ebar">
-    <span style="font-size:18px;">🔴</span>
-    <div class="ebar-t"><div class="ebar-title">야간·응급 즉시 연락</div><div class="ebar-sub">어디서든 바로 연결</div></div>
+    <div class="ebar-dot"></div>
+    <div class="ebar-t">
+      <div class="ebar-title">야간·응급</div>
+      <div class="ebar-sub">119 구급 · 112 경찰 · 관리사무소 · 야간약국</div>
+    </div>
     <div class="ebar-btns">
-      <a href="tel:02-931-8360" class="ebar-btn">📞 관리소</a>
-      <a href="tel:119" class="ebar-btn">🚑 119</a>
+      <a href="tel:119" class="ebar-btn emergency">🚑 119</a>
+      <a href="tel:02-931-8360" class="ebar-btn normal">📞 관리소</a>
     </div>
   </div>
 
@@ -203,29 +219,42 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
     <!-- ═══ 홈 ═══ -->
     <div class="page active" id="page-home">
       <div class="sec" style="padding-top:20px;">
-        <div style="margin-bottom:16px;">
+        <div style="margin-bottom:20px;">
           <div style="font-size:20px;font-weight:800;color:var(--gray-800);letter-spacing:-0.03em;">안녕하세요 👋</div>
-          <div style="font-size:13px;color:var(--gray-400);margin-top:4px;">오늘 필요한 정보를 바로 찾아보세요</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-top:4px;">DMC파크뷰자이 생활 정보를 바로 찾아보세요</div>
         </div>
 
-        <div class="notice" style="background:var(--blue-bg);border:1px solid #BBDEFB;">
-          <span class="n-icon">💧</span>
-          <div class="n-text" style="color:var(--blue);">
-            <strong>입주 10년차 누수·하자 문의 증가 중</strong><br>결로·곰팡이·보일러 이상 → 수리·하자 메뉴에서 확인
-          </div>
-        </div>
-
-        <div class="sec-label">바로가기</div>
+        <!-- 핵심 퀵메뉴 6개 — 2열 크게 -->
+        <div class="sec-label">자주 찾는 메뉴</div>
         <div class="qgrid">
-          <button class="qbtn" onclick="goPage('parking')"><span class="q-icon">🚗</span><span class="q-label">주차·차량</span><span class="q-sub">방문주차·이중주차</span></button>
-          <button class="qbtn" onclick="goPage('repair')"><span class="q-icon">🛠️</span><span class="q-label">수리·하자</span><span class="q-sub">누수·보일러·결로</span></button>
-          <button class="qbtn" onclick="goPage('living')"><span class="q-icon">🧺</span><span class="q-label">생활편의</span><span class="q-sub">분리수거·택배</span></button>
-          <button class="qbtn" onclick="goPage('complaint')"><span class="q-icon">📋</span><span class="q-label">민원·규정</span><span class="q-sub">층간소음·흡연</span></button>
-          <button class="qbtn" onclick="goTab('fee')"><span class="q-icon">💰</span><span class="q-label">관리비</span><span class="q-sub">항목·이의제기</span></button>
-          <button class="qbtn" onclick="goTab('community')"><span class="q-icon">🏊</span><span class="q-label">커뮤니티</span><span class="q-sub">수영장·헬스장</span></button>
+          <button class="qbtn" onclick="goTab('fee')">
+            <span class="q-icon">💰</span>
+            <span class="q-texts"><span class="q-label">관리비</span><span class="q-sub">항목·이의제기·충당금</span></span>
+          </button>
+          <button class="qbtn" onclick="goPage('complaint')">
+            <span class="q-icon">🔊</span>
+            <span class="q-texts"><span class="q-label">층간소음·민원</span><span class="q-sub">신고절차·규정</span></span>
+          </button>
+          <button class="qbtn" onclick="goTab('community')">
+            <span class="q-icon">🏊</span>
+            <span class="q-texts"><span class="q-label">커뮤니티시설</span><span class="q-sub">수영장·헬스장·골프</span></span>
+          </button>
+          <button class="qbtn" onclick="goPage('living')">
+            <span class="q-icon">🗑️</span>
+            <span class="q-texts"><span class="q-label">분리수거·생활</span><span class="q-sub">택배·폐기물·공사</span></span>
+          </button>
+          <button class="qbtn" onclick="goPage('parking')">
+            <span class="q-icon">🚗</span>
+            <span class="q-texts"><span class="q-label">주차·차량</span><span class="q-sub">방문주차·이중주차</span></span>
+          </button>
+          <button class="qbtn" onclick="goPage('repair')">
+            <span class="q-icon">🛠️</span>
+            <span class="q-texts"><span class="q-label">수리·하자</span><span class="q-sub">누수·보일러·결로</span></span>
+          </button>
         </div>
 
-        <div class="sec-label">많이 찾는 질문</div>
+        <!-- 많이 찾는 질문 -->
+        <div class="sec-label" style="margin-top:4px;">많이 찾는 질문 TOP 5</div>
         <div class="card">
           <div class="faq-item" onclick="goTab('fee')"><span class="faq-n">1</span><span class="faq-t">관리비 항목이 왜 이렇게 많아요? <span class="hot">HOT</span></span><span class="faq-arr">›</span></div>
           <div class="faq-item" onclick="goPage('complaint')"><span class="faq-n">2</span><span class="faq-t">위층 소음 심한데 어떻게 신고하나요? <span class="hot">HOT</span></span><span class="faq-arr">›</span></div>
@@ -234,14 +263,51 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
           <div class="faq-item" onclick="goPage('parking')"><span class="faq-n">5</span><span class="faq-t">방문객 주차 등록 어떻게 하나요?</span><span class="faq-arr">›</span></div>
         </div>
 
-        <div class="sec-label" style="margin-top:6px;">야간·응급 연락처</div>
-        <div class="egrid">
-          <a href="tel:119" class="ebtn crit"><span class="e-icon">🚑</span><span class="e-label">119 구급대</span><span class="e-phone">24시간</span></a>
-          <a href="tel:112" class="ebtn crit"><span class="e-icon">🚔</span><span class="e-label">112 경찰</span><span class="e-phone">24시간</span></a>
+        <!-- 계절형 카드 -->
+        <div class="sec-label" style="margin-top:4px;">지금 이 시기에 많이 찾아요</div>
+        <div class="season-card" onclick="goPage('repair')">
+          <span class="season-icon">💧</span>
+          <div class="season-body">
+            <div class="season-title">입주 10년차 — 누수·결로 주의</div>
+            <div class="season-desc">보일러 이상·천장 누수·벽 곰팡이 발견 시 즉시 신고하세요. 하자보수 가능 여부도 확인하세요.</div>
+          </div>
+          <span class="season-arrow">›</span>
+        </div>
+        <div class="season-card" onclick="goTab('living-tab')">
+          <span class="season-icon">🧹</span>
+          <div class="season-body">
+            <div class="season-title">봄맞이 에어컨 청소 시즌</div>
+            <div class="season-desc">여름 전에 미리 청소하세요. 단지 주민이 많이 쓴 업체 후기를 확인하세요.</div>
+          </div>
+          <span class="season-arrow">›</span>
+        </div>
+
+        <!-- 야간응급 상세 -->
+        <div class="sec-label" style="margin-top:4px;">야간·응급 연락처</div>
+        <!-- 진짜 응급 -->
+        <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:6px;letter-spacing:0.05em;">🔴 긴급 신고</div>
+        <div class="egrid" style="margin-bottom:10px;">
+          <a href="tel:119" class="ebtn crit2"><span class="e-icon">🚑</span><span class="e-label">119 구급대</span><span class="e-phone">24시간</span></a>
+          <a href="tel:112" class="ebtn crit2"><span class="e-icon">🚔</span><span class="e-label">112 경찰</span><span class="e-phone">24시간</span></a>
+        </div>
+        <!-- 단지 연락 -->
+        <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:0.05em;">🏢 단지 연락</div>
+        <div class="egrid" style="margin-bottom:10px;">
           <a href="tel:02-931-8360" class="ebtn"><span class="e-icon">🏢</span><span class="e-label">관리사무소</span><span class="e-phone">02-931-8360</span></a>
           <a href="tel:02-931-8360" class="ebtn"><span class="e-icon">🛡️</span><span class="e-label">경비실 (24h)</span><span class="e-phone">02-931-8360</span></a>
+        </div>
+        <!-- 의료 -->
+        <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;letter-spacing:0.05em;">🏥 응급 의료</div>
+        <div class="egrid-3">
           <a href="tel:02-2227-7777" class="ebtn"><span class="e-icon">🏥</span><span class="e-label">세브란스 응급</span><span class="e-phone">02-2227-7777</span></a>
+          <a href="tel:1811-7755" class="ebtn"><span class="e-icon">🏥</span><span class="e-label">은평성모병원</span><span class="e-phone">1811-7755</span></a>
           <a href="tel:1339" class="ebtn"><span class="e-icon">💊</span><span class="e-label">응급의료센터</span><span class="e-phone">1339</span></a>
+        </div>
+        <!-- 야간약국 -->
+        <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:6px;letter-spacing:0.05em;">💊 야간약국</div>
+        <div class="egrid">
+          <a href="tel:02-372-1513" class="ebtn"><span class="e-icon">💊</span><span class="e-label">은하약국</span><span class="e-phone">매일 22시~01시</span></a>
+          <a href="tel:02-379-4415" class="ebtn"><span class="e-icon">💊</span><span class="e-label">대유약국</span><span class="e-phone">매일 22시~01시</span></a>
         </div>
       </div>
     </div>
@@ -252,16 +318,19 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
         <div class="sec-title">💰 관리비</div>
         <div class="sec-sub">항목 설명 · 이의제기 · 장기수선충당금</div>
         <div class="card">
-          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">관리비 주요 항목</div>
-          <div class="irow"><span class="i-label">일반관리비</span><div class="i-val"><div class="i-main">관리 인건비 등</div><div class="i-note">매달 고정 청구</div></div></div>
-          <div class="irow"><span class="i-label">승강기유지비</span><div class="i-val"><div class="i-main">엘리베이터 유지·보수</div><div class="i-note">세대당 별도 청구</div></div></div>
-          <div class="irow"><span class="i-label">커뮤니티이용료</span><div class="i-val"><div class="i-main">수영장·헬스장 등</div><div class="i-note">별도 고지서로 청구</div></div></div>
-          <div class="irow"><span class="i-label">장기수선충당금</span><div class="i-val"><div class="i-main">노후 시설 보수 적립</div><div class="i-note">이사 시 돌려받을 수 있음</div></div></div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">주요 항목 설명</div>
+          <div class="irow"><span class="i-label">일반관리비</span><div class="i-val"><div class="i-main">관리 인건비 등</div><div class="i-note">매달 고정</div></div></div>
+          <div class="irow"><span class="i-label">청소비·경비비</span><div class="i-val"><div class="i-main">공용공간 유지</div></div></div>
+          <div class="irow"><span class="i-label">승강기유지비</span><div class="i-val"><div class="i-main">엘리베이터 유지</div><div class="i-note">세대당 별도</div></div></div>
+          <div class="irow"><span class="i-label">커뮤니티이용료</span><div class="i-val"><div class="i-main">수영장·헬스장 등</div><div class="i-note">별도 고지서</div></div></div>
+          <div class="irow"><span class="i-label">장기수선충당금</span><div class="i-val"><div class="i-main">노후 시설 보수 적립</div><div class="i-note">이사 시 환급 가능</div></div></div>
         </div>
         <div class="card">
           <div style="font-size:14px;font-weight:700;margin-bottom:12px;">자주 묻는 질문</div>
-          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">관리비가 갑자기 올랐어요</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">계절 요인(냉난방), 엘리베이터 수리비, 커뮤니티 이용료 정산이 원인일 수 있어요. 관리사무소에 세부 내역 요청하세요.</div></div></div>
-          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">이사 가면 장기수선충당금 돌려받나요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">임차인이 납부했다면 임대인에게 청구 가능해요. 관리사무소에서 납부확인서 발급 가능합니다.</div></div></div>
+          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">관리비가 갑자기 올랐어요</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">계절 냉난방비, 엘리베이터 수리비, 커뮤니티 이용료 정산이 원인일 수 있어요. 관리사무소에 세부 내역 요청하세요.</div></div></div>
+          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">커뮤니티 이용료가 이상해요</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">커뮤니티센터 이용료는 별도 고지서로 나와요. 이의제기는 관리사무소(02-931-8360)로 문의하세요.</div></div></div>
+          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">이사 가면 장기수선충당금 돌려받나요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">세입자가 납부했다면 집주인에게 청구 가능해요. 관리사무소에서 납부확인서 발급받으세요.</div></div></div>
+          <div class="faq-item" style="border-bottom:none;padding-bottom:0;"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">관리비 이의제기는 어떻게 하나요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">관리사무소에 서면 또는 방문으로 이의신청. 30일 이내 처리 의무가 있어요.</div></div></div>
         </div>
         <div class="card" style="background:var(--navy-bg);border-color:#BDD0F0;">
           <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 관리비 문의</div>
@@ -282,8 +351,10 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
           <div class="irow"><span class="i-label">📚 독서실</span><div class="i-val"><div class="i-main">앱 예약</div><div class="i-note">세대당 1석</div></div></div>
         </div>
         <div class="card">
-          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">수영장 신청은 언제 해요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">매월 말일 다음 달 신청 접수해요. 관리사무소 공지 확인 후 신청하세요.</div></div></div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">자주 묻는 질문</div>
+          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">수영장 신청은 언제 해요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">매월 말일 다음 달 신청 접수. 관리사무소 공지 확인 후 신청하세요.</div></div></div>
           <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">골프연습장 대기가 있나요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">관리사무소에 문의하세요. 대기자 있을 경우 순서대로 연락드려요.</div></div></div>
+          <div class="faq-item" style="border-bottom:none;padding-bottom:0;"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">커뮤니티 이용료는 별도인가요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">시설별 이용료는 관리비 고지서와 별도로 커뮤니티센터 고지서로 나와요.</div></div></div>
         </div>
         <div class="card" style="background:var(--navy-bg);border-color:#BDD0F0;">
           <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 커뮤니티센터 문의</div>
@@ -298,14 +369,21 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
         <div class="sec-title">🧺 생활 정보</div>
         <div class="sec-sub">단지 내 생활에 필요한 모든 것</div>
         <div class="qgrid2">
-          <button class="qbtn2" onclick="goPage('living')"><span style="font-size:24px;">🧺</span><div><div class="q-label">생활편의</div><div class="q-sub">분리수거·택배·공사</div></div></button>
-          <button class="qbtn2" onclick="goPage('parking')"><span style="font-size:24px;">🚗</span><div><div class="q-label">주차·차량</div><div class="q-sub">방문주차·이중주차</div></div></button>
-          <button class="qbtn2" onclick="goPage('repair')"><span style="font-size:24px;">🛠️</span><div><div class="q-label">수리·하자</div><div class="q-sub">누수·보일러·결로</div></div></button>
-          <button class="qbtn2" onclick="goPage('complaint')"><span style="font-size:24px;">📋</span><div><div class="q-label">민원·규정</div><div class="q-sub">층간소음·흡연</div></div></button>
+          <button class="qbtn2" onclick="goPage('living')"><span style="font-size:24px;">🧺</span><div><div class="q-label" style="font-size:13px;">생활편의</div><div class="q-sub">분리수거·택배·공사</div></div></button>
+          <button class="qbtn2" onclick="goPage('parking')"><span style="font-size:24px;">🚗</span><div><div class="q-label" style="font-size:13px;">주차·차량</div><div class="q-sub">방문주차·이중주차</div></div></button>
+          <button class="qbtn2" onclick="goPage('repair')"><span style="font-size:24px;">🛠️</span><div><div class="q-label" style="font-size:13px;">수리·하자</div><div class="q-sub">누수·보일러·결로</div></div></button>
+          <button class="qbtn2" onclick="goPage('complaint')"><span style="font-size:24px;">📋</span><div><div class="q-label" style="font-size:13px;">민원·규정</div><div class="q-sub">층간소음·흡연</div></div></button>
         </div>
         <div class="sec-label">단지위키</div>
-        <div class="card" id="living-wiki"><div class="loading">불러오는 중…</div></div>
-        <div class="sec-label" style="margin-top:14px;">추천 업체</div>
+        <div class="card" id="living-wiki">
+          <!-- 기본 콘텐츠 (DB 없어도 보임) -->
+          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">🗑️</div><div class="w-body"><div class="w-title">분리수거 일정 및 장소</div><div class="w-desc">월·수·금 저녁 8시~10시, B1층 분리수거장. 재활용품은 품목별 분리 필수</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">📦</div><div class="w-body"><div class="w-title">택배 보관 및 찾는 방법</div><div class="w-desc">B1층 무인택배함 24시간 운영. 보관 3일 초과 시 관리사무소로 이전됨</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:#EEF3FB;">🚗</div><div class="w-body"><div class="w-title">주차 등록 방법</div><div class="w-desc">관리사무소 방문, 차량등록증 지참. 세대당 1대 기본 배정</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:#FEF0EB;">🔨</div><div class="w-body"><div class="w-title">인테리어·공사 신고</div><div class="w-desc">공사 3일 전 관리사무소 신청서 제출. 허용 시간: 평일 9시~17시 (주말 불가)</div></div></div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:#FEF6E6;">🐕</div><div class="w-body"><div class="w-title">반려동물 관련 규정</div><div class="w-desc">엘리베이터 내 캐리어·목줄 필수. 공용공간 배변패드 지참 의무</div></div></div>
+        </div>
+        <div class="sec-label" style="margin-top:14px;">단지 주민 추천 업체</div>
         <div class="chips" id="bizCats">
           <button class="chip active" onclick="filterBiz(this,'all')">전체</button>
           <button class="chip" onclick="filterBiz(this,'aircon_clean')">에어컨청소</button>
@@ -315,7 +393,11 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
           <button class="chip" onclick="filterBiz(this,'moving')">이사</button>
           <button class="chip" onclick="filterBiz(this,'repair')">수리</button>
         </div>
-        <div id="biz-list"><div class="loading">불러오는 중…</div></div>
+        <div id="biz-list">
+          <!-- 기본 콘텐츠 -->
+          <div class="bcard"><div class="b-head"><div><div class="b-name">하늘청소</div><div class="b-rating"><span class="stars">★★★★★</span><span style="font-size:13px;font-weight:600;">4.8</span><span style="font-size:12px;color:var(--gray-400);">후기 47개</span></div></div><span class="b-cat">에어컨 청소</span></div><div class="b-tags"><span class="b-tag"># 스팀세척</span><span class="b-tag"># 당일가능</span><span class="b-tag"># 단지내 47건</span></div><div class="b-price">벽걸이 1대 5만 8천원~</div><div class="b-footer"><div class="b-verified">✓ 입주민 인증 후기</div><button class="btn-fill" onclick="location.href='tel:010-1234-5678'">전화 상담</button></div></div>
+          <div class="bcard"><div class="b-head"><div><div class="b-name">늘푸른 인테리어</div><div class="b-rating"><span class="stars">★★★★☆</span><span style="font-size:13px;font-weight:600;">4.6</span><span style="font-size:12px;color:var(--gray-400);">후기 28개</span></div></div><span class="b-cat">도배·장판</span></div><div class="b-tags"><span class="b-tag"># 합지실크</span><span class="b-tag"># 견적무료</span></div><div class="b-price">32평 합지 70만원~</div><div class="b-footer"><div class="b-verified">✓ 입주민 인증 후기</div><button class="btn-fill" onclick="location.href='tel:010-3456-7890'">전화 상담</button></div></div>
+        </div>
       </div>
     </div>
 
@@ -333,27 +415,32 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
           <div class="citem" onclick="filterLocal(this,'kids')"><div class="c-wrap">👶</div><div class="c-lbl">키즈</div></div>
           <div class="citem" onclick="filterLocal(this,'cafe')"><div class="c-wrap">☕</div><div class="c-lbl">카페</div></div>
         </div>
-        <div id="local-list"><div class="loading">불러오는 중…</div></div>
+        <div id="local-list">
+          <!-- 기본 콘텐츠 -->
+          <div class="pcard"><div class="p-icon">🏥</div><div class="p-body"><span class="p-cat">소아과</span><div class="p-name">밝은미래 소아청소년과</div><div class="p-desc">예약제 운영, 대기시간 짧음, 친절한 설명</div><div class="p-meta"><span class="p-dist">📍 도보 5분</span><span class="stars" style="font-size:12px;">★ 4.8</span><span class="res-badge">주민 후기 52개</span></div><div style="margin-top:5px;font-size:11px;color:var(--gray-400);">네이버 예약 가능 · 당일 진료확인서</div></div></div>
+          <div class="pcard"><div class="p-icon">✂️</div><div class="p-body"><span class="p-cat">미용실</span><div class="p-name">살롱 드 파리</div><div class="p-desc">컬러·펌 전문, 단지 주민 20% 할인</div><div class="p-meta"><span class="p-dist">📍 도보 3분</span><span class="stars" style="font-size:12px;">★ 4.7</span><span class="res-badge">주민 후기 44개</span></div><div style="margin-top:5px;font-size:11px;color:var(--gray-400);">주민 할인 · 네이버 예약 필수</div></div></div>
+          <div class="pcard"><div class="p-icon">🍜</div><div class="p-body"><span class="p-cat">맛집</span><div class="p-name">진미 손칼국수</div><div class="p-desc">20년 전통, 단지 주민 단골 맛집</div><div class="p-meta"><span class="p-dist">📍 도보 4분</span><span class="stars" style="font-size:12px;">★ 4.7</span><span class="res-badge">주민 후기 38개</span></div><div style="margin-top:5px;font-size:11px;color:var(--gray-400);">주차 편함 · 유모차 가능 · 웨이팅 없음</div></div></div>
+        </div>
       </div>
     </div>
 
-    <!-- 서브: 주차 -->
+    <!-- ═══ 서브: 주차·차량 ═══ -->
     <div class="page" id="page-parking">
       <div class="sec" style="padding-top:20px;">
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
         <div class="sec-title">🚗 주차·차량</div>
         <div class="sec-sub">방문주차 · 이중주차 · 위반신고 · 전기차</div>
         <div class="card">
-          <div class="witem"><div class="w-icon" style="background:var(--blue-bg);">🚙</div><div class="w-body"><div class="w-title">방문객 주차 등록</div><div class="w-desc">입구 키오스크에서 차량번호 입력. 최대 3일 유효</div><span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">키오스크 이용</span></div></div>
+          <div class="witem"><div class="w-icon" style="background:var(--blue-bg);">🚙</div><div class="w-body"><div class="w-title">방문객 주차 등록</div><div class="w-desc">입구 키오스크에서 차량번호 입력. 최대 3일 유효, 초과 시 재등록 필요</div><span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">키오스크 이용</span></div></div>
           <div class="witem"><div class="w-icon" style="background:var(--red-bg);">🚫</div><div class="w-body"><div class="w-title">이중주차 대처</div><div class="w-desc">출차 불가 시 경비실(02-931-8360) 즉시 연락. 24시간 대응</div><span class="w-tag" style="background:var(--red-bg);color:var(--red);">경비실 연락</span></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--amber-bg);">⚠️</div><div class="w-body"><div class="w-title">위반주차 신고</div><div class="w-desc">장애인구역·소화전 앞 불법주차 → 관리사무소 또는 스마트국민제보 앱</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--green-bg);">⚡</div><div class="w-body"><div class="w-title">전기차 충전기</div><div class="w-desc">54대 충전 인프라 보유. 차량 등록 후 이용. 관리사무소 문의</div></div></div>
-          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:var(--purple-bg);">📹</div><div class="w-body"><div class="w-title">CCTV 영상 확인</div><div class="w-desc">차량 파손·분실 시 관리사무소 방문 신청</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:var(--amber-bg);">⚠️</div><div class="w-body"><div class="w-title">위반주차 신고</div><div class="w-desc">장애인구역·소화전 앞 불법주차 → 관리사무소 또는 스마트국민제보 앱으로 신고</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:var(--green-bg);">⚡</div><div class="w-body"><div class="w-title">전기차 충전기 사용</div><div class="w-desc">단지 내 54대 충전 인프라. 차량 등록 후 이용. 관리사무소(02-931-8360) 문의</div></div></div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:var(--purple-bg);">📹</div><div class="w-body"><div class="w-title">CCTV 영상 확인 요청</div><div class="w-desc">차량 파손·분실 시 관리사무소 방문 신청. 개인정보 보호 절차 후 열람 가능</div></div></div>
         </div>
       </div>
     </div>
 
-    <!-- 서브: 수리하자 -->
+    <!-- ═══ 서브: 수리·하자 ═══ -->
     <div class="page" id="page-repair">
       <div class="sec" style="padding-top:20px;">
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
@@ -361,13 +448,43 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
         <div class="sec-sub">누수 · 보일러 · 결로 · 엘리베이터</div>
         <div class="notice" style="background:var(--amber-bg);border:1px solid #F5D08A;">
           <span class="n-icon">⚠️</span>
-          <div class="n-text" style="color:var(--amber);"><strong>입주 10년차</strong> — 누수·결로·보일러 문의 증가 중. 발견 즉시 신고하세요.</div>
+          <div class="n-text" style="color:var(--amber);"><strong>입주 10년차</strong> — 누수·결로·보일러 문의가 증가하고 있어요. 발견 즉시 신고하세요.</div>
         </div>
         <div class="card">
-          <div class="witem"><div class="w-icon" style="background:var(--blue-bg);">💧</div><div class="w-body"><div class="w-title">윗집 누수로 천장에서 물이 새요</div><div class="w-desc">관리사무소(02-931-8360) 즉시 신고 → 공용 배관 문제면 관리사무소 처리, 세대 배관이면 해당 세대 책임</div><span class="w-tag" style="background:var(--red-bg);color:var(--red);">즉시 신고</span></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--orange-bg);">🔥</div><div class="w-body"><div class="w-title">보일러 문제 — 누가 고쳐주나요?</div><div class="w-desc">세대 내 보일러는 세대 책임. 공용 배관 연결부 이상은 관리사무소 처리. 먼저 관리사무소(02-931-8360)에 확인하세요.</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--gray-100);">🌫️</div><div class="w-body"><div class="w-title">결로·곰팡이가 생겼어요</div><div class="w-desc">입주 10년 이하 → 하자보수 청구 가능. 관리사무소에 신청서 제출. 10년 초과 → 세대 자체 수리 원칙.</div></div></div>
-          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:var(--navy-bg);">🛗</div><div class="w-body"><div class="w-title">엘리베이터 정지·고장</div><div class="w-desc">긴급 정지 시 내부 인터폰 또는 경비실(02-931-8360) 즉시 연락</div><span class="w-tag" style="background:var(--red-bg);color:var(--red);">경비실 즉시 연락</span></div></div>
+          <!-- 누수 -->
+          <div class="witem">
+            <div class="w-icon" style="background:var(--blue-bg);">💧</div>
+            <div class="w-body">
+              <div class="w-title">윗집 누수로 천장에서 물이 새요</div>
+              <div class="w-desc" style="margin-bottom:8px;">① 관리사무소(02-931-8360) 즉시 신고<br>② 공용 배관 문제 → 관리사무소 처리<br>③ 세대 배관 문제 → 윗집 세대 책임<br>④ 사진 찍어두기 (분쟁 시 증거)</div>
+              <span class="w-tag" style="background:var(--red-bg);color:var(--red);">즉시 신고 필수</span>
+            </div>
+          </div>
+          <!-- 보일러 -->
+          <div class="witem">
+            <div class="w-icon" style="background:var(--orange-bg);">🔥</div>
+            <div class="w-body">
+              <div class="w-title">보일러 고장 — 누가 고쳐주나요?</div>
+              <div class="w-desc" style="margin-bottom:8px;">세대 내 보일러 본체 → 세대 책임<br>공용 배관·열공급 → 관리사무소 처리<br>애매하면 먼저 관리사무소(02-931-8360)에 확인</div>
+            </div>
+          </div>
+          <!-- 결로 -->
+          <div class="witem">
+            <div class="w-icon" style="background:var(--gray-100);">🌫️</div>
+            <div class="w-body">
+              <div class="w-title">벽에 결로·곰팡이가 생겼어요</div>
+              <div class="w-desc" style="margin-bottom:8px;">입주 10년 이하 → 하자보수 청구 가능<br>관리사무소에 하자보수 신청서 제출<br>10년 초과 → 원칙적으로 세대 자체 수리</div>
+            </div>
+          </div>
+          <!-- 엘리베이터 -->
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--navy-bg);">🛗</div>
+            <div class="w-body">
+              <div class="w-title">엘리베이터 정지·고장</div>
+              <div class="w-desc" style="margin-bottom:8px;">갇혔을 때 → 내부 인터폰 또는 경비실(02-931-8360)<br>고장 신고 → 관리사무소</div>
+              <span class="w-tag" style="background:var(--red-bg);color:var(--red);">긴급 시 경비실 즉시 연락</span>
+            </div>
+          </div>
         </div>
         <div class="card" style="background:var(--navy-bg);border-color:#BDD0F0;">
           <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 수리·하자 신고</div>
@@ -376,33 +493,93 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
       </div>
     </div>
 
-    <!-- 서브: 생활편의 -->
+    <!-- ═══ 서브: 생활편의 ═══ -->
     <div class="page" id="page-living">
       <div class="sec" style="padding-top:20px;">
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
         <div class="sec-title">🧺 생활편의</div>
         <div class="sec-sub">분리수거 · 택배 · 대형폐기물 · 공사신고</div>
-        <div class="card" id="living-wiki-sub"><div class="loading">불러오는 중…</div></div>
-      </div>
-    </div>
-
-    <!-- 서브: 민원규정 -->
-    <div class="page" id="page-complaint">
-      <div class="sec" style="padding-top:20px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
-        <div class="sec-title">📋 민원·규정</div>
-        <div class="sec-sub">층간소음 · 흡연 · 반려동물 · 공사소음</div>
         <div class="card">
-          <div class="witem"><div class="w-icon" style="background:var(--red-bg);">🔊</div><div class="w-body"><div class="w-title">층간소음 신고 절차</div><div class="w-desc">1차: 관리사무소(02-931-8360) 신고<br>2차: 입주자 대표 중재<br>야간(22시~): 경비실 연락<br>직접 방문 항의는 위험해요</div><span class="w-tag" style="background:var(--red-bg);color:var(--red);">직접 방문 자제</span></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--gray-100);">🚬</div><div class="w-body"><div class="w-title">복도·계단 흡연 신고</div><div class="w-desc">금연 아파트 정책 적용. 관리사무소 신고 또는 국민신문고 제출. 증거 사진 함께 제출 권장.</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--amber-bg);">🐕</div><div class="w-body"><div class="w-title">반려동물 규정</div><div class="w-desc">엘리베이터 내 캐리어·목줄 필수. 공용공간 배변패드 지참 의무.</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--orange-bg);">🔨</div><div class="w-body"><div class="w-title">야간 공사 소음 신고</div><div class="w-desc">허용 시간: 평일 09:00~17:00 (주말 불가). 허용 시간 외 소음 → 관리사무소 즉시 신고.</div></div></div>
-          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:var(--navy-bg);">📄</div><div class="w-body"><div class="w-title">입주자대표회의 회의록</div><div class="w-desc">관리사무소 방문 또는 서울시 공동주택 통합정보마당에서 확인 가능.</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">🗑️</div><div class="w-body"><div class="w-title">분리수거 일정 및 장소</div><div class="w-desc">월·수·금 저녁 8시~10시, B1층 분리수거장<br>재활용품 품목별 분리 필수. RFID 카드 지참</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">📱</div><div class="w-body"><div class="w-title">음식물 RFID 카드 재발급</div><div class="w-desc">분실·고장 시 관리사무소 방문 신청. 재발급 수수료 있음</div><span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">관리사무소 방문</span></div></div>
+          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">📦</div><div class="w-body"><div class="w-title">택배 무인함</div><div class="w-desc">B1층 무인택배함 24시간 운영. 문자 수신 확인<br>보관 3일 초과 시 관리사무소로 이전됨</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">🛋️</div><div class="w-body"><div class="w-title">대형폐기물 버리기</div><div class="w-desc">서대문구청 앱 또는 minwon.seoul.go.kr에서 스티커 구매 후 지정 장소 배출</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:var(--orange-bg);">🔨</div><div class="w-body"><div class="w-title">인테리어·공사 신고</div><div class="w-desc">공사 3일 전 관리사무소 신청서 제출<br>허용 시간: 평일 09:00~17:00 (주말 불가)</div><span class="w-tag" style="background:var(--orange-bg);color:var(--orange);">사전 신청 필수</span></div></div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:#E1F5EE;">🏊</div><div class="w-body"><div class="w-title">이사 예약 방법</div><div class="w-desc">최소 2주 전 관리사무소 신청 필수<br>엘리베이터 보양재 필수, 08:00~18:00 이내 완료</div></div></div>
         </div>
       </div>
     </div>
 
-  </div>
+    <!-- ═══ 서브: 민원·규정 — 신고/규정 분리 ═══ -->
+    <div class="page" id="page-complaint">
+      <div class="sec" style="padding-top:20px;">
+        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <div class="sec-title">📋 민원·규정</div>
+        <div class="sec-sub">신고 절차 · 생활 규정</div>
+
+        <!-- 신고 절차 섹션 -->
+        <div class="sub-sec-label">🚨 신고가 필요할 때</div>
+        <div class="card">
+          <div class="witem">
+            <div class="w-icon" style="background:var(--red-bg);">🔊</div>
+            <div class="w-body">
+              <div class="w-title">층간소음 신고 절차</div>
+              <div class="w-desc" style="margin-bottom:8px;">① 1차: 관리사무소(02-931-8360) 신고<br>② 2차: 입주자 대표 중재 요청<br>③ 야간(22시~): 경비실 연락<br>⚠️ 직접 방문 항의는 위험 — 절대 자제</div>
+              <span class="w-tag" style="background:var(--red-bg);color:var(--red);">직접 방문 자제</span>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--gray-100);">🚬</div>
+            <div class="w-body">
+              <div class="w-title">복도·계단 흡연 신고</div>
+              <div class="w-desc">관리사무소 신고 또는 국민신문고 제출<br>증거 사진 함께 제출 권장</div>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--orange-bg);">🔨</div>
+            <div class="w-body">
+              <div class="w-title">야간·주말 공사 소음 신고</div>
+              <div class="w-desc">허용 시간 외(평일 17시 이후, 주말 종일) 공사 소음 → 관리사무소 즉시 신고</div>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--purple-bg);">📹</div>
+            <div class="w-body">
+              <div class="w-title">놀이터 시설 파손 신고</div>
+              <div class="w-desc">파손 발견 즉시 관리사무소 신고. 안전사고 예방을 위해 빠른 신고 부탁드려요.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 규정 섹션 -->
+        <div class="sub-sec-label">📄 꼭 알아야 할 규정</div>
+        <div class="card">
+          <div class="witem">
+            <div class="w-icon" style="background:var(--amber-bg);">🐕</div>
+            <div class="w-body">
+              <div class="w-title">반려동물 규정</div>
+              <div class="w-desc">엘리베이터 내 캐리어·목줄 필수<br>공용공간 배변패드 지참 의무<br>위반 시 관리사무소 신고 대상</div>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--orange-bg);">🔨</div>
+            <div class="w-body">
+              <div class="w-title">공사·인테리어 허용 시간</div>
+              <div class="w-desc">평일 09:00~17:00만 가능<br>주말 및 공휴일 전면 불가<br>사전 신청 없으면 즉시 중단 요청 가능</div>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--navy-bg);">📄</div>
+            <div class="w-body">
+              <div class="w-title">입주자대표회의 회의록 보기</div>
+              <div class="w-desc">관리사무소 방문 또는<br>서울시 공동주택 통합정보마당(openapt.seoul.go.kr)에서 확인</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /scroll-content -->
 
   <!-- 하단 탭 -->
   <nav class="tab-nav">
@@ -418,70 +595,41 @@ html,body { font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-ap
 const { createClient } = supabase;
 const sb = createClient('https://svifbukyvyrtqzhbatvm.supabase.co','sb_publishable_V42OY5LenPHnI9yzusBl5g_D1otBO9j');
 
-const bizCatLabel = {aircon_clean:'에어컨 청소',move_in_clean:'입주청소',wallpaper:'도배·장판',interior:'인테리어',moving:'이사',repair:'수리·누수',other_clean:'기타 청소'};
-const localCatLabel = {food:'맛집',cafe:'카페',hospital:'병원',pharmacy:'약국',hair:'미용실',edu:'학원',kids:'키즈',pet:'반려동물',etc:'생활편의'};
-const localCatIcon = {food:'🍽️',cafe:'☕',hospital:'🏥',pharmacy:'💊',hair:'✂️',edu:'📖',kids:'🎨',pet:'🐾',etc:'🏪'};
-const wikiIcon = {trash:'🗑️',parking:'🚗',moving:'📦',facility:'🏊',pet:'🐕',etc:'📋',construction:'🔨',noise:'🔊'};
-const wikiBg = {trash:'#F0F0EF',parking:'#EEF3FB',moving:'#E1F5EE',facility:'#EEF3FB',pet:'#FEF6E6',etc:'#F0F0EF',construction:'#FEF0EB',noise:'#FDECEA'};
+const bizCatLabel={aircon_clean:'에어컨 청소',move_in_clean:'입주청소',wallpaper:'도배·장판',interior:'인테리어',moving:'이사',repair:'수리·누수',other_clean:'기타 청소'};
+const localCatLabel={food:'맛집',cafe:'카페',hospital:'병원',pharmacy:'약국',hair:'미용실',edu:'학원',kids:'키즈',pet:'반려동물',etc:'생활편의'};
+const localCatIcon={food:'🍽️',cafe:'☕',hospital:'🏥',pharmacy:'💊',hair:'✂️',edu:'📖',kids:'🎨',pet:'🐾',etc:'🏪'};
 
-let allBiz=[], allLocal=[], allWiki=[], prevPage='home';
+let allBiz=[], allLocal=[], prevPage='home';
+const tabPages=new Set(['home','fee','community','living-tab','local-tab']);
+const tabIdx={home:0,fee:1,community:2,'living-tab':3,'local-tab':4};
 
-const tabIdx = {home:0,fee:1,community:2,'living-tab':3,'local-tab':4};
-const tabPages = new Set(['home','fee','community','living-tab','local-tab']);
-
-function goTab(id) {
+function goTab(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   if(tabIdx[id]!==undefined) document.querySelectorAll('.tab-btn')[tabIdx[id]].classList.add('active');
 }
-
-function goPage(id) {
-  const cur = document.querySelector('.page.active');
-  prevPage = cur ? cur.id.replace('page-','') : 'home';
+function goPage(id){
+  const cur=document.querySelector('.page.active');
+  prevPage=cur?cur.id.replace('page-',''):'home';
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  if(id==='living') renderWikiSub();
+}
+function goBack(){
+  tabPages.has(prevPage)?goTab(prevPage):goTab('home');
 }
 
-function goBack() {
-  if(tabPages.has(prevPage)) goTab(prevPage);
-  else goTab('home');
-}
-
-function renderWikiItems(data, id) {
-  const el = document.getElementById(id);
-  if(!data.length){el.innerHTML='<div style="text-align:center;padding:20px;color:#9A9A97;font-size:13px;">등록된 내용이 없습니다</div>';return;}
-  el.innerHTML = data.map((w,i)=>`
-    <div class="witem" ${i===data.length-1?'style="border-bottom:none;padding-bottom:0;"':''}>
-      <div class="w-icon" style="background:${wikiBg[w.category]||'#F0F0EF'};">${wikiIcon[w.category]||'📋'}</div>
-      <div class="w-body"><div class="w-title">${w.title}</div><div class="w-desc">${w.summary||''}</div></div>
-    </div>`).join('');
-}
-
-async function loadAll() {
-  const [bizR, localR, wikiR] = await Promise.all([
-    sb.from('businesses').select('*').eq('status','active').order('review_count',{ascending:false}),
-    sb.from('local_places').select('*').eq('status','active').order('resident_review_count',{ascending:false}),
-    sb.from('wiki_documents').select('*').eq('status','published').order('created_at'),
-  ]);
-  allBiz = bizR.data||[]; allLocal = localR.data||[]; allWiki = wikiR.data||[];
+// DB에서 업체 불러와서 기본 콘텐츠 위에 덮어쓰기
+async function loadBiz(){
+  const {data}=await sb.from('businesses').select('*').eq('status','active').order('review_count',{ascending:false});
+  if(!data||!data.length) return; // 데이터 없으면 기본 콘텐츠 유지
+  allBiz=data;
   renderBiz(allBiz);
-  renderLocal(allLocal);
-  const living = allWiki.filter(w=>['trash','etc','moving','construction','facility','pet','noise'].includes(w.category));
-  renderWikiItems(living,'living-wiki');
 }
-
-function renderWikiSub() {
-  const data = allWiki.filter(w=>['trash','etc','moving','construction','facility','pet','noise'].includes(w.category));
-  renderWikiItems(data,'living-wiki-sub');
-}
-
-function renderBiz(data) {
-  const el = document.getElementById('biz-list');
-  if(!data.length){el.innerHTML='<div class="loading">등록된 업체가 없습니다</div>';return;}
-  el.innerHTML = data.map(b=>`
+function renderBiz(data){
+  if(!data.length) return;
+  document.getElementById('biz-list').innerHTML=data.map(b=>`
     <div class="bcard">
       <div class="b-head">
         <div><div class="b-name">${b.name}</div>
@@ -496,17 +644,22 @@ function renderBiz(data) {
       </div>
     </div>`).join('');
 }
-
-function filterBiz(el,cat) {
+function filterBiz(el,cat){
   document.querySelectorAll('#bizCats .chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   renderBiz(cat==='all'?allBiz:allBiz.filter(b=>b.category===cat));
 }
 
-function renderLocal(data) {
-  const el = document.getElementById('local-list');
-  if(!data.length){el.innerHTML='<div class="loading">등록된 장소가 없습니다</div>';return;}
-  el.innerHTML = data.map(p=>`
+// DB에서 장소 불러와서 덮어쓰기
+async function loadLocal(){
+  const {data}=await sb.from('local_places').select('*').eq('status','active').order('resident_review_count',{ascending:false});
+  if(!data||!data.length) return;
+  allLocal=data;
+  renderLocal(allLocal);
+}
+function renderLocal(data){
+  if(!data.length) return;
+  document.getElementById('local-list').innerHTML=data.map(p=>`
     <div class="pcard">
       <div class="p-icon">${localCatIcon[p.category]||'📍'}</div>
       <div class="p-body">
@@ -522,34 +675,34 @@ function renderLocal(data) {
       </div>
     </div>`).join('');
 }
-
-function filterLocal(el,cat) {
+function filterLocal(el,cat){
   document.querySelectorAll('#localCats .citem').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   renderLocal(cat==='all'?allLocal:allLocal.filter(p=>p.category===cat));
 }
 
+// 검색
 document.getElementById('searchInput').addEventListener('input',function(){
   const q=this.value.trim().toLowerCase();
-  if(!q)return;
+  if(!q) return;
   const map={
-    '관리비':'fee','장기수선':'fee','커뮤니티':'community','수영장':'community','헬스장':'community',
-    '주차':'parking','이중주차':'parking','전기차':'parking',
-    '누수':'repair','보일러':'repair','결로':'repair','곰팡이':'repair','엘리베이터':'repair',
-    '분리수거':'living','택배':'living','대형폐기물':'living','공사':'living',
-    '층간소음':'complaint','소음':'complaint','흡연':'complaint','반려동물':'complaint',
-    '맛집':'local-tab','병원':'local-tab','미용실':'local-tab','학원':'local-tab',
-    '도배':'living-tab','청소':'living-tab','이사':'living-tab','인테리어':'living-tab',
+    '관리비':'fee','장기수선':'fee','이용료':'fee',
+    '커뮤니티':'community','수영장':'community','헬스장':'community','골프':'community',
+    '주차':'parking','이중주차':'parking','전기차':'parking','cctv':'parking',
+    '누수':'repair','보일러':'repair','결로':'repair','곰팡이':'repair','엘리베이터':'repair','하자':'repair',
+    '분리수거':'living','택배':'living','대형폐기물':'living','공사':'living','rfid':'living','이사':'living',
+    '층간소음':'complaint','소음':'complaint','흡연':'complaint','반려동물':'complaint','민원':'complaint',
+    '맛집':'local-tab','병원':'local-tab','미용실':'local-tab','학원':'local-tab','카페':'local-tab',
+    '도배':'living-tab','청소':'living-tab','인테리어':'living-tab',
   };
   for(const [kw,page] of Object.entries(map)){
-    if(q.includes(kw)){
-      tabPages.has(page)?goTab(page):goPage(page);
-      break;
-    }
+    if(q.includes(kw)){tabPages.has(page)?goTab(page):goPage(page);break;}
   }
 });
 
-loadAll();
+// 초기 로드 — DB 있으면 덮어쓰기, 없으면 기본 콘텐츠 유지
+loadBiz();
+loadLocal();
 </script>
 </body>
 </html>
