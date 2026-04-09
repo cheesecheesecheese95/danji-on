@@ -184,6 +184,19 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .sub-sec-label{font-size:12px;font-weight:700;color:var(--gray-400);margin:14px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--gray-200);}
 
 .back-btn{font-size:13px;color:var(--gray-400);background:none;border:none;cursor:pointer;margin-bottom:16px;}
+/* 단지 소식 */
+.news-card{background:var(--white);border-radius:16px;border:1px solid var(--gray-200);padding:14px 16px;margin-bottom:8px;box-shadow:var(--shadow-sm);display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:transform 0.1s;}
+.news-card:active{transform:scale(0.98);}
+.news-badge{flex-shrink:0;font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;margin-top:1px;white-space:nowrap;}
+.news-body{flex:1;}
+.news-title{font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:3px;line-height:1.4;}
+.news-desc{font-size:12px;color:var(--gray-400);line-height:1.5;}
+.news-date{font-size:10px;color:var(--gray-400);margin-top:4px;}
+.news-more{text-align:center;padding:10px;font-size:13px;color:var(--navy);font-weight:600;cursor:pointer;background:none;border:none;font-family:inherit;width:100%;}
+/* 퀵메뉴 뱃지 */
+.q-new{font-size:9px;font-weight:800;color:var(--red);background:var(--red-bg);padding:1px 6px;border-radius:10px;margin-left:4px;display:inline-block;}
+/* 소식 페이지 카테고리 구분 */
+.news-cat-label{font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:0.07em;text-transform:uppercase;margin:16px 0 8px;}
 /* 관리비 서브탭 */
 .fee-tab.active{color:var(--navy)!important;border-bottom-color:var(--navy)!important;}
 .fee-page{display:none;}
@@ -214,19 +227,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     </div>
   </div>
 
-  <!-- 야간응급 바 — 날카롭게 리디자인 -->
-  <div class="ebar">
-    <div class="ebar-dot"></div>
-    <div class="ebar-t">
-      <div class="ebar-title">야간·응급</div>
-      <div class="ebar-sub">119 구급 · 112 경찰 · 관리사무소 · 야간약국</div>
-    </div>
-    <div class="ebar-btns">
-      <a href="tel:119" class="ebar-btn emergency">🚑 119</a>
-      <a href="tel:02-931-8360" class="ebar-btn normal">📞 관리소</a>
-    </div>
-  </div>
-
   <div class="scroll-content">
 
     <!-- ═══ 홈 ═══ -->
@@ -238,7 +238,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 핵심 퀵메뉴 6개 — 2열 크게 -->
-        <div class="sec-label">자주 찾는 메뉴</div>
+        <div class="sec-label">메뉴</div>
         <div class="qgrid">
           <button class="qbtn" onclick="goTab('fee')">
             <span class="q-icon">💰</span>
@@ -250,7 +250,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </button>
           <button class="qbtn" onclick="goTab('community')">
             <span class="q-icon">🏊</span>
-            <span class="q-texts"><span class="q-label">커뮤니티시설</span><span class="q-sub">수영장·헬스장·골프</span></span>
+            <span class="q-texts"><span class="q-label">커뮤니티<span class="q-new">NEW</span></span><span class="q-sub">시뮬레이터 추가 예정</span></span>
           </button>
           <button class="qbtn" onclick="goPage('living')">
             <span class="q-icon">🗑️</span>
@@ -258,7 +258,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </button>
           <button class="qbtn" onclick="goPage('parking')">
             <span class="q-icon">🚗</span>
-            <span class="q-texts"><span class="q-label">주차·차량</span><span class="q-sub">방문주차·이중주차</span></span>
+            <span class="q-texts"><span class="q-label">주차·차량<span class="q-new">변경</span></span><span class="q-sub">150시간 무료 확정</span></span>
           </button>
           <button class="qbtn" onclick="goPage('repair')">
             <span class="q-icon">🛠️</span>
@@ -266,27 +266,9 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </button>
         </div>
 
-        <!-- 많이 찾는 질문 -->
-        <div class="sec-label" style="margin-top:4px;">많이 찾는 질문 TOP 5</div>
-        <div class="card">
-          <div class="faq-item" onclick="goTab('fee')"><span class="faq-n">1</span><span class="faq-t">관리비 항목이 왜 이렇게 많아요? <span class="hot">HOT</span></span><span class="faq-arr">›</span></div>
-          <div class="faq-item" onclick="goPage('complaint')"><span class="faq-n">2</span><span class="faq-t">위층 소음 심한데 어떻게 신고하나요? <span class="hot">HOT</span></span><span class="faq-arr">›</span></div>
-          <div class="faq-item" onclick="goTab('community')"><span class="faq-n">3</span><span class="faq-t">수영장·헬스장 예약 어떻게 해요?</span><span class="faq-arr">›</span></div>
-          <div class="faq-item" onclick="goPage('living')"><span class="faq-n">4</span><span class="faq-t">분리수거 정확히 언제예요?</span><span class="faq-arr">›</span></div>
-          <div class="faq-item" onclick="goPage('parking')"><span class="faq-n">5</span><span class="faq-t">방문객 주차 등록 어떻게 하나요?</span><span class="faq-arr">›</span></div>
-        </div>
-
         <!-- 계절형 카드 -->
-        <div class="sec-label" style="margin-top:4px;">지금 이 시기에 많이 찾아요</div>
+        <div class="sec-label" style="margin-top:4px;">지금 이 시기에</div>
         <div class="season-card" onclick="goPage('repair')">
-          <span class="season-icon">💧</span>
-          <div class="season-body">
-            <div class="season-title">입주 10년차 — 누수·결로 주의</div>
-            <div class="season-desc">보일러 이상·천장 누수·벽 곰팡이 발견 시 즉시 신고하세요. 하자보수 가능 여부도 확인하세요.</div>
-          </div>
-          <span class="season-arrow">›</span>
-        </div>
-        <div class="season-card" onclick="goTab('living-tab')">
           <span class="season-icon">🧹</span>
           <div class="season-body">
             <div class="season-title">봄맞이 에어컨 청소 시즌</div>
@@ -294,6 +276,42 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </div>
           <span class="season-arrow">›</span>
         </div>
+
+        <!-- 단지 최근 소식 -->
+        <div class="sec-label" style="margin-top:4px;">단지 최근 소식</div>
+        <div class="news-card" onclick="goPage('news')">
+          <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">NEW</span>
+          <div class="news-body">
+            <div class="news-title">제6기 입주자대표회의 출범</div>
+            <div class="news-desc">회장 배영준(109·111동) 선출. 제5기에서 제6기로 전환.</div>
+            <div class="news-date">2026.03.24</div>
+          </div>
+        </div>
+        <div class="news-card" onclick="goPage('news')">
+          <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+          <div class="news-body">
+            <div class="news-title">전기차 충전기 신규 모델 무상 교체</div>
+            <div class="news-desc">에버온과 7년 재계약. 기존 설비를 신규 모델로 무상 교체. 6개월간 0원 프로모션 적용.</div>
+            <div class="news-date">2026.03.24</div>
+          </div>
+        </div>
+        <div class="news-card" onclick="goPage('news')">
+          <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">진행중</span>
+          <div class="news-body">
+            <div class="news-title">공동현관 로비폰 전체 교체 추진</div>
+            <div class="news-desc">61동 88개 라인 전체 교체 예정. 장기수선계획 반영, 서대문구 자문 신청 완료.</div>
+            <div class="news-date">2026.01~진행중</div>
+          </div>
+        </div>
+        <div class="news-card" onclick="goPage('news')">
+          <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">의결</span>
+          <div class="news-body">
+            <div class="news-title">방문차량 무료 주차 월 150시간 규정 확정</div>
+            <div class="news-desc">초과 시 30분당 500원 부과. 명절 연휴 차감 없음. 2026.03.01부터 시행.</div>
+            <div class="news-date">2026.02.10</div>
+          </div>
+        </div>
+        <button class="news-more" onclick="goPage('news')">전체 소식 보기 →</button>
 
         <!-- 야간응급 상세 -->
         <div class="sec-label" style="margin-top:4px;">야간·응급 연락처</div>
@@ -322,13 +340,23 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <a href="tel:02-372-1513" class="ebtn"><span class="e-icon">💊</span><span class="e-label">은하약국</span><span class="e-phone">매일 22시~01시</span></a>
           <a href="tel:02-379-4415" class="ebtn"><span class="e-icon">💊</span><span class="e-label">대유약국</span><span class="e-phone">매일 22시~01시</span></a>
         </div>
+
+        <!-- 자주 찾는 질문 — 맨 아래 -->
+        <div class="sec-label" style="margin-top:14px;">자주 찾는 질문</div>
+        <div class="card">
+          <div class="faq-item" onclick="goTab('fee')"><span class="faq-n">1</span><span class="faq-t">관리비 항목이 왜 이렇게 많아요? <span class="hot">HOT</span></span><span class="faq-arr">›</span></div>
+          <div class="faq-item" onclick="goPage('complaint')"><span class="faq-n">2</span><span class="faq-t">위층 소음 심한데 어떻게 신고하나요? <span class="hot">HOT</span></span><span class="faq-arr">›</span></div>
+          <div class="faq-item" onclick="goTab('community')"><span class="faq-n">3</span><span class="faq-t">수영장·헬스장 예약 어떻게 해요?</span><span class="faq-arr">›</span></div>
+          <div class="faq-item" onclick="goPage('living')"><span class="faq-n">4</span><span class="faq-t">분리수거 정확히 언제예요?</span><span class="faq-arr">›</span></div>
+          <div class="faq-item" onclick="goPage('parking')"><span class="faq-n">5</span><span class="faq-t">방문객 주차 등록 어떻게 하나요?</span><span class="faq-arr">›</span></div>
+        </div>
       </div>
     </div>
 
     <!-- ═══ 관리비 ═══ -->
     <div class="page" id="page-fee">
       <!-- 관리비 서브탭 -->
-      <div style="display:flex;background:var(--white);border-bottom:1px solid var(--gray-200);overflow-x:auto;scrollbar-width:none;position:sticky;top:164px;z-index:90;">
+      <div style="display:flex;background:var(--white);border-bottom:1px solid var(--gray-200);overflow-x:auto;scrollbar-width:none;position:sticky;top:108px;z-index:90;">
         <button class="fee-tab active" onclick="goFeeTab(0,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">이번 달</button>
         <button class="fee-tab" onclick="goFeeTab(1,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">월별 추이</button>
         <button class="fee-tab" onclick="goFeeTab(2,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">항목 분석</button>
@@ -499,21 +527,117 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       <div class="sec" style="padding-top:20px;">
         <div class="sec-title">🏊 커뮤니티시설</div>
         <div class="sec-sub">수영장 · 헬스장 · 골프 · 독서실</div>
+
+        <!-- 개정 공고 배너 -->
+        <div class="notice" style="background:var(--blue-bg);border:1px solid #BBDEFB;">
+          <span class="n-icon">📋</span>
+          <div class="n-text" style="color:var(--blue);"><strong>이용규정 개정 시행 (2026.04.01~)</strong><br>출입 방법·등록 일정·분실물 처리 규정이 변경됐어요.</div>
+        </div>
+
+        <!-- 시설 현황 -->
+        <div class="sub-sec-label">🏢 시설 현황</div>
         <div class="card">
           <div class="irow"><span class="i-label">🏊 수영장</span><div class="i-val"><div class="i-main">월별 사전 신청</div><div class="i-note">선착순 마감</div></div></div>
           <div class="irow"><span class="i-label">💪 헬스장</span><div class="i-val"><div class="i-main">앱 또는 관리사무소</div><div class="i-note">06:00~22:00</div></div></div>
-          <div class="irow"><span class="i-label">⛳ 골프연습장</span><div class="i-val"><div class="i-main">월정액 회원 등록</div><div class="i-note">대기 있을 수 있음</div></div></div>
+          <div class="irow"><span class="i-label">⛳ 골프연습장</span><div class="i-val"><div class="i-main">월정액 회원 등록</div><div class="i-note">시뮬레이터 추가 예정</div></div></div>
           <div class="irow"><span class="i-label">📚 독서실</span><div class="i-val"><div class="i-main">앱 예약</div><div class="i-note">세대당 1석</div></div></div>
         </div>
+
+        <!-- 출입 방법 -->
+        <div class="sub-sec-label">🔑 출입 방법 (2026.04.01~)</div>
         <div class="card">
-          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">자주 묻는 질문</div>
-          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">수영장 신청은 언제 해요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">매월 말일 다음 달 신청 접수. 관리사무소 공지 확인 후 신청하세요.</div></div></div>
-          <div class="faq-item"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">골프연습장 대기가 있나요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">관리사무소에 문의하세요. 대기자 있을 경우 순서대로 연락드려요.</div></div></div>
-          <div class="faq-item" style="border-bottom:none;padding-bottom:0;"><span class="faq-n">Q</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">커뮤니티 이용료는 별도인가요?</div><div style="font-size:12px;color:var(--gray-500);line-height:1.6;">시설별 이용료는 관리비 고지서와 별도로 커뮤니티센터 고지서로 나와요.</div></div></div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--navy-bg);">👤</div>
+            <div class="w-body">
+              <div class="w-title">안면인식 또는 RF카드로 출입</div>
+              <div class="w-desc">시설 이용 시 반드시 본인 확인 후 출입 가능<br>안면인식 또는 RF카드 중 하나 등록 필수<br>타인 카드 사용·대리 출입 불가</div>
+              <span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">개정 제8조</span>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--amber-bg);">🎥</div>
+            <div class="w-body">
+              <div class="w-title">CCTV 설치 운영</div>
+              <div class="w-desc">출입구·안내데스크 등 공용공간에 CCTV 설치·운영 중. 이용자는 촬영 및 관리에 협조 필요.</div>
+            </div>
+          </div>
         </div>
+
+        <!-- 등록·취소 일정 -->
+        <div class="sub-sec-label">📅 월별 등록·취소 일정 (2026.04.01~)</div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead><tr style="background:var(--navy);">
+              <th style="padding:9px 12px;color:#fff;text-align:left;font-weight:700;">구분</th>
+              <th style="padding:9px 10px;color:#fff;text-align:left;font-weight:700;">기간</th>
+              <th style="padding:9px 8px;color:#fff;text-align:left;font-weight:700;">비고</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding:9px 12px;font-weight:700;">익월 재등록·취소</td><td style="padding:9px 10px;">온라인(앱) 1일 12:00 ~ 20일 12:00</td><td style="padding:9px 8px;color:var(--gray-400);"></td></tr>
+              <tr style="background:#F8F8F8;"><td style="padding:9px 12px;font-weight:700;">익월 신규등록</td><td style="padding:9px 10px;">온라인(앱) 20일 13:00 ~ 24일 24:00</td><td style="padding:9px 8px;color:var(--gray-400);"></td></tr>
+              <tr><td style="padding:9px 12px;font-weight:700;">현장 등록·취소</td><td style="padding:9px 10px;">25일 09:00 ~ 28일 12:00</td><td style="padding:9px 8px;color:var(--gray-600);">신청서 작성</td></tr>
+              <tr style="background:#F8F8F8;"><td style="padding:9px 12px;font-weight:700;">정기회원</td><td style="padding:9px 10px;">월 중 신규·취소 신청 가능</td><td style="padding:9px 8px;color:var(--gray-600);">1개월 요금 부과</td></tr>
+            </tbody>
+          </table>
+          <div style="padding:10px 12px;font-size:11px;color:var(--gray-400);">
+            예: 4월 신청 → 5월 심사 → 5월 재등록 기간에 등록 가능<br>
+            친인척(지계 존비인) 등록 시 실거주 확인 심사 진행
+          </div>
+        </div>
+
+        <!-- 분실물 처리 -->
+        <div class="sub-sec-label">🔍 분실물 처리 규정 (2026.04.01~)</div>
+        <div class="card">
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--gray-100);">📦</div>
+            <div class="w-body">
+              <div class="w-title">분실물 보관 절차</div>
+              <div class="w-desc">안내데스크 1개월 보관 → 이후 2개월 별도 보관창고 보관<br>총 3개월 경과 후 미수령 시 <strong>폐기</strong><br>분실물 문의: 커뮤니티센터 안내데스크</div>
+              <span class="w-tag" style="background:var(--amber-bg);color:var(--amber);">개정 제16조</span>
+            </div>
+          </div>
+        </div>
+
         <div class="card" style="background:var(--navy-bg);border-color:#BDD0F0;">
           <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 커뮤니티센터 문의</div>
           <div style="font-size:13px;color:var(--gray-600);">관리사무소 <strong>02-931-8360</strong></div>
+        </div>
+
+        <!-- 승강기 사용료 -->
+        <div class="sub-sec-label">🛗 이사·공사 시 승강기 사용료</div>
+        <div class="card">
+          <div style="font-size:12px;color:var(--gray-400);margin-bottom:12px;">이사·공사 시 엘리베이터를 독점 사용하는 경우 아래 사용료가 부과됩니다.</div>
+          <div class="irow">
+            <div class="i-label">🚚 이사 — 사다리차 이용</div>
+            <div class="i-val"><div class="i-main">150,000원</div></div>
+          </div>
+          <div class="irow">
+            <div class="i-label">🚚 이사 — 사다리차 미이용</div>
+            <div class="i-val"><div class="i-main">70,000원</div></div>
+          </div>
+          <div class="irow">
+            <div class="i-label">🔨 공사 — 5일 이하</div>
+            <div class="i-val"><div class="i-main">150,000원</div><div class="i-note">부가세 별도</div></div>
+          </div>
+          <div class="irow">
+            <div class="i-label">🔨 공사 — 5일 초과</div>
+            <div class="i-val"><div class="i-main">200,000원 / 5일당</div><div class="i-note">부가세 별도</div></div>
+          </div>
+          <div class="irow">
+            <div class="i-label">🔧 소규모 단기 (2일 이내)</div>
+            <div class="i-val"><div class="i-main">60,000원</div><div class="i-note">2024.05.28 의결</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:10px;padding-top:10px;border-top:1px solid var(--gray-100);">
+            이사·공사 신청: 최소 2주 전 관리사무소 방문 · 엘리베이터 보양재 필수
+          </div>
+        </div>
+
+        <!-- 승강기 이용 유의사항 -->
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">🛗 승강기 이용 유의사항</div>
+          <div class="witem"><div class="w-icon" style="background:var(--red-bg);">⚠️</div><div class="w-body"><div class="w-title">이사·공사 시 주의</div><div class="w-desc">이사 중 승강기 운행에 불편이 생길 수 있어요. 이웃을 배려하여 신속하게 진행 부탁드려요.</div></div></div>
+          <div class="witem"><div class="w-icon" style="background:var(--amber-bg);">🚭</div><div class="w-body"><div class="w-title">승강기 내 금지사항</div><div class="w-desc">흡연·음식물 섭취 금지<br>정원을 초과하거나 기대어 타지 마세요<br>장난으로 문 개폐 버튼 조작 금지</div></div></div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:var(--navy-bg);">🔒</div><div class="w-body"><div class="w-title">승강기 사용약관</div><div class="w-desc">관리사무소에 신청하여 이용. 운반 시 승강기 내부 손상에 유의. 보양재 미설치 시 원상복구 비용 청구</div></div></div>
         </div>
       </div>
     </div>
@@ -692,6 +816,30 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 주차 관련 문의</div>
           <div style="font-size:13px;color:var(--gray-600);">경비실(24h) / 관리사무소 <strong>02-931-8360</strong></div>
         </div>
+
+        <!-- 방문차량 출입구 지정 -->
+        <div class="sub-sec-label">🚦 단지별 방문차량 출입구</div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead><tr style="background:var(--navy);">
+              <th style="padding:9px 10px;color:#fff;text-align:left;font-weight:700;">단지</th>
+              <th style="padding:9px 8px;color:#fff;text-align:left;font-weight:700;">게이트</th>
+              <th style="padding:9px 8px;color:#fff;text-align:left;font-weight:700;">구분</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding:8px 10px;font-weight:600;" rowspan="3">1단지<br>(GS)</td><td style="padding:8px;">2번(127동)</td><td style="padding:8px;color:var(--green);">입주민·방문자 공용</td></tr>
+              <tr style="background:#F8F8F8;"><td style="padding:8px;">3번(130동)</td><td style="padding:8px;color:var(--green);">입주민·방문자 공용</td></tr>
+              <tr><td style="padding:8px;">4번(110동)</td><td style="padding:8px;color:var(--green);">입주민·방문자 공용</td></tr>
+              <tr style="background:#F8F8F8;"><td style="padding:8px 10px;font-weight:600;">1단지<br>(현대)</td><td style="padding:8px;">101동/지하주차장</td><td style="padding:8px;color:var(--navy);font-weight:600;">입주민 전용</td></tr>
+              <tr><td style="padding:8px 10px;font-weight:600;">2단지<br>(SK)</td><td style="padding:8px;">7번(210동)</td><td style="padding:8px;color:var(--green);">입주민·방문자 공용</td></tr>
+              <tr style="background:#F8F8F8;"><td style="padding:8px 10px;font-weight:600;">2단지</td><td style="padding:8px;">(220동)</td><td style="padding:8px;color:var(--navy);font-weight:600;">입주민 전용</td></tr>
+              <tr><td style="padding:8px 10px;font-weight:600;">3단지</td><td style="padding:8px;">1번(303동)</td><td style="padding:8px;color:var(--green);">입주민·방문자 공용</td></tr>
+              <tr style="background:#F8F8F8;"><td style="padding:8px 10px;font-weight:600;">3단지</td><td style="padding:8px;">3-2(상업고교)</td><td style="padding:8px;color:var(--green);">입주민·방문자 공용</td></tr>
+              <tr><td style="padding:8px 10px;font-weight:600;">4·5단지</td><td style="padding:8px;">전체</td><td style="padding:8px;color:var(--green);">입주민·방문자 공용</td></tr>
+            </tbody>
+          </table>
+          <div style="padding:10px 12px;font-size:11px;color:var(--gray-400);">2017년 6월 1일부터 시행 · 입주민 전용 게이트에 방문차량 진입 불가</div>
+        </div>
       </div>
     </div>
 
@@ -754,13 +902,89 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
         <div class="sec-title">🧺 생활편의</div>
         <div class="sec-sub">분리수거 · 택배 · 대형폐기물 · 공사신고</div>
+
+        <!-- 분리수거 -->
+        <div class="sub-sec-label">🗑️ 쓰레기 배출</div>
         <div class="card">
-          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">🗑️</div><div class="w-body"><div class="w-title">분리수거 일정 및 장소</div><div class="w-desc">월·수·금 저녁 8시~10시, B1층 분리수거장<br>재활용품 품목별 분리 필수. RFID 카드 지참</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">📱</div><div class="w-body"><div class="w-title">음식물 RFID 카드 재발급</div><div class="w-desc">분실·고장 시 관리사무소 방문 신청. 재발급 수수료 있음</div><span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">관리사무소 방문</span></div></div>
-          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">📦</div><div class="w-body"><div class="w-title">택배 무인함</div><div class="w-desc">B1층 무인택배함 24시간 운영. 문자 수신 확인<br>보관 3일 초과 시 관리사무소로 이전됨</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">🛋️</div><div class="w-body"><div class="w-title">대형폐기물 버리기</div><div class="w-desc">서대문구청 앱 또는 minwon.seoul.go.kr에서 스티커 구매 후 지정 장소 배출</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--orange-bg);">🔨</div><div class="w-body"><div class="w-title">인테리어·공사 신고</div><div class="w-desc">공사 3일 전 관리사무소 신청서 제출<br>허용 시간: 평일 09:00~17:00 (주말 불가)</div><span class="w-tag" style="background:var(--orange-bg);color:var(--orange);">사전 신청 필수</span></div></div>
-          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:#E1F5EE;">🏊</div><div class="w-body"><div class="w-title">이사 예약 방법</div><div class="w-desc">최소 2주 전 관리사무소 신청 필수<br>엘리베이터 보양재 필수, 08:00~18:00 이내 완료</div></div></div>
+          <div style="background:var(--navy-bg);border-radius:10px;padding:12px;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;">📅 배출 일정 (공지사항 기준)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:12px;">
+              <div style="text-align:center;"><div style="font-weight:700;color:var(--navy);">요일</div><div style="color:var(--gray-600);">일·월, 수·목<br>(주 2회)</div></div>
+              <div style="text-align:center;"><div style="font-weight:700;color:var(--navy);">시간</div><div style="color:var(--gray-600);">18:00~<br>익일 10:00</div></div>
+              <div style="text-align:center;"><div style="font-weight:700;color:var(--navy);">장소</div><div style="color:var(--gray-600);">각 동<br>재활용장</div></div>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:#F0F0EF;">🛍️</div>
+            <div class="w-body">
+              <div class="w-title">일반생활쓰레기</div>
+              <div class="w-desc">종량제 규격봉투 사용 필수<br>의류 등 중종류(이불·두꺼운색지 등)는 따로 분리 배출</div>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--green-bg);">🍱</div>
+            <div class="w-body">
+              <div class="w-title">음식물쓰레기 (RFID)</div>
+              <div class="w-desc">RFID 음식물 종량제 실시 중<br>1단지 관리사무소에서 개인인식카드 발급<br>카드 미사용 시 건당 <strong>200원</strong> 벌금 발생</div>
+              <span class="w-tag" style="background:var(--red-bg);color:var(--red);">카드 반드시 지참</span>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--orange-bg);">🛋️</div>
+            <div class="w-body">
+              <div class="w-title">대형폐기물 (소파·냉장고 등)</div>
+              <div class="w-desc">서대문구 다산콜 <strong>02-391-7171</strong> 또는 minwon.seoul.go.kr<br>신청 → 납부 → 접수증 번호 → 경비실 신고 → 배출</div>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--gray-100);">🪨</div>
+            <div class="w-body">
+              <div class="w-title">불연성폐기물</div>
+              <div class="w-desc">사기·타일·유리·도자기·항아리류<br>PP대(재활용 불가)를 구입해서 배출</div>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--blue-bg);">♻️</div>
+            <div class="w-body">
+              <div class="w-title">재활용품</div>
+              <div class="w-desc">종이·음료병·캔(고문, 묶음) · 플라스틱 · 스티로폼(재활용 가능한 것) · 의류<br>지정된 분리수거장에 품목별로 분리 배출</div>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--amber-bg);">👗</div>
+            <div class="w-body">
+              <div class="w-title">의류</div>
+              <div class="w-desc">분리수거장 지정 의류 함에 배출<br>※ 유가하락으로 파벽 니트·폴리에스터(오믈런스티로폼 등)는 수거하지 않으니 종량제봉투에 넣어서 배출</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 택배·이사·공사 -->
+        <div class="sub-sec-label">📦 택배 · 이사 · 공사</div>
+        <div class="card">
+          <div class="witem">
+            <div class="w-icon" style="background:#F0F0EF;">📦</div>
+            <div class="w-body">
+              <div class="w-title">택배 무인함</div>
+              <div class="w-desc">B1층 무인택배함 24시간 운영. 문자 수신 후 확인<br>보관 3일 초과 시 관리사무소로 이전됨</div>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--orange-bg);">🔨</div>
+            <div class="w-body">
+              <div class="w-title">인테리어·공사 신고</div>
+              <div class="w-desc">공사 3일 전 관리사무소 신청서 제출<br>허용 시간: 평일 09:00~17:00 (주말·공휴일 불가)</div>
+              <span class="w-tag" style="background:var(--orange-bg);color:var(--orange);">사전 신청 필수</span>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:#E1F5EE;">🚛</div>
+            <div class="w-body">
+              <div class="w-title">이사 예약 및 승강기 사용료</div>
+              <div class="w-desc">최소 2주 전 관리사무소 신청 필수<br>엘리베이터 보양재 필수, 08:00~18:00 이내 완료<br><strong>사다리차 이용 시 150,000원 / 미이용 시 70,000원</strong></div>
+              <span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">승강기 사용료 별도</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -830,6 +1054,21 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
               <span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">주차장관리규정 제13조</span>
             </div>
           </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--red-bg);">🚨</div>
+            <div class="w-body">
+              <div class="w-title">도난·범죄 예방</div>
+              <div class="w-desc">수도·전기·도시가스 점검업체, 이사업체 직원 등 출입자를 주의하세요<br>상업위한 어떤 이유로도 출입시키지 마세요<br>범죄 신고: <strong>112</strong> / 낚시꾼자구대: <strong>335-8305</strong></div>
+              <span class="w-tag" style="background:var(--red-bg);color:var(--red);">전 이자로 대면변경 약속 후 현금 요구 시 100% 보이스피싱</span>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--amber-bg);">🚬</div>
+            <div class="w-body">
+              <div class="w-title">금연 구역 준수</div>
+              <div class="w-desc">계단·복도 등 공용부분 전체 금연<br>담배꽁초 투기 금지 (소방관련법 위반)<br>고층에서의 낙하 시 대단히 위험하며 화재 원인. 절대 투기 금지</div>
+            </div>
+          </div>
           <div class="witem" style="border-bottom:none;padding-bottom:0;">
             <div class="w-icon" style="background:var(--navy-bg);">📄</div>
             <div class="w-body">
@@ -841,15 +1080,201 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
     </div>
 
+    <!-- ═══ 서브: 단지 소식 ═══ -->
+    <div class="page" id="page-news">
+      <div class="sec" style="padding-top:20px;">
+        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <div class="sec-title">📢 단지 소식</div>
+        <div class="sec-sub">입주자대표회의 결정사항 요약 (2025.09~2026.03)</div>
+
+        <div class="notice" style="background:var(--gray-100);border:1px solid var(--gray-200);">
+          <span class="n-icon">💡</span>
+          <div class="n-text" style="color:var(--gray-600);">입주자대표회의 결정사항을 입주민 언어로 요약한 내용이에요. 원문은 <strong>서울시 공동주택 통합정보마당</strong>에서 확인하세요.</div>
+        </div>
+
+        <div class="news-cat-label">🆕 2026년 3월</div>
+        <div class="card" style="padding:12px 16px;">
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">NEW</span>
+            <div class="news-body">
+              <div class="news-title">제6기 입주자대표회의 출범</div>
+              <div class="news-desc">회장 배영준(109·111동) 선출. 제5기에서 제6기로 전환되었습니다.</div>
+              <div class="news-date">제6기 제1차 · 2026.03.24</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">전기차 충전기 신규 모델 무상 교체</div>
+              <div class="news-desc">에버온과 7년 재계약. 기존 설비를 신규 모델로 무상 교체. 6개월간 프로모션(0원) 적용. 충전기 이용은 관리사무소 문의.</div>
+              <div class="news-date">제6기 제1차 · 2026.03.24</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">예정</span>
+            <div class="news-body">
+              <div class="news-title">커뮤니티 골프 시뮬레이터 설치</div>
+              <div class="news-desc">골프타석 시뮬레이터 시스템 설치 추진 (골프존, 총 1억 5천만원). 입찰 2회 유찰 후 수의계약 진행 예정.</div>
+              <div class="news-date">제5기 제46차 · 2026.03.10</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">독서실·골프장 안면인식기 추가 설치</div>
+              <div class="news-desc">커뮤니티 1·2단지 독서실 및 골프장 키오스크에 안면인식기 4대 추가 설치 완료.</div>
+              <div class="news-date">제5기 제46차 · 2026.03.10</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-radius:0;">
+            <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">예정</span>
+            <div class="news-body">
+              <div class="news-title">공용부분 소화기 교체 입찰 진행</div>
+              <div class="news-desc">법정 내용연수(10년) 경과 소화기 전체 교체. 일반경쟁입찰 진행 중.</div>
+              <div class="news-date">제5기 제46차 · 2026.03.10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="news-cat-label">📅 2026년 1~2월</div>
+        <div class="card" style="padding:12px 16px;">
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">의결</span>
+            <div class="news-body">
+              <div class="news-title">방문차량 무료 주차 월 150시간 규정 확정</div>
+              <div class="news-desc">초과 시 30분당 500원 부과. 명절 연휴 차감 없음. 2026년 3월 1일 주차장관리규정 시행.</div>
+              <div class="news-date">제5기 제44차 · 2026.02.10</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">진행중</span>
+            <div class="news-body">
+              <div class="news-title">공동현관 로비폰(원패스) 전체 교체 추진</div>
+              <div class="news-desc">61동 88개 라인 전체 교체 예정. 2026년 반영, 장기수선계획 수시조정. 서대문구 전문가 자문 신청 완료.</div>
+              <div class="news-date">제5기 제43차 · 2026.01.27</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">진행중</span>
+            <div class="news-body">
+              <div class="news-title">2단지 지하주차장 구조보강 공사</div>
+              <div class="news-desc">2단지 지하3층 구조안전진단 결과에 따른 보수공사. 모두건설 수의계약 (6,569만원). 공사 중 해당 구역 이용 불편 예상.</div>
+              <div class="news-date">제5기 제43차 · 2026.01.27</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">커뮤니티 골프장 오토티업기 교체</div>
+              <div class="news-desc">기존 노후 오토티업기 교체 완료 (캐디로, 1,620만원).</div>
+              <div class="news-date">제5기 제42차 · 2026.01.13</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">수영장 순환펌프 교체</div>
+              <div class="news-desc">커뮤니티센터 수영장 순환펌프(A·B펌프) 교체 완료. 장기수선충당금 사용.</div>
+              <div class="news-date">제6기 제1차 · 2026.03 / 제5기 제44차 · 2026.02</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="news-cat-label">📅 2025년 11~12월</div>
+        <div class="card" style="padding:12px 16px;">
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">장애인 주차면 증설 — 122동 지하</div>
+              <div class="news-desc">122동 지하 1층 일반 주차면 1면을 장애인 주차면으로 전환. 기존 3면 → 4면으로 확대.</div>
+              <div class="news-date">제5기 제39차 · 2025.11.25</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">의결</span>
+            <div class="news-body">
+              <div class="news-title">2026년 사업계획서 및 예산 승인</div>
+              <div class="news-desc">2026년도 단지 운영 사업계획서 및 예산안 의결 완료.</div>
+              <div class="news-date">제5기 제39차 · 2025.11.25</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">단지 내 정원등(발목등) 교체</div>
+              <div class="news-desc">단지 전체 발목등 및 태양광 일부 교체 공사 완료.</div>
+              <div class="news-date">제5기 제38차 · 2025.11.15</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">구립 어린이집(가람·아람) 시설 재계약</div>
+              <div class="news-desc">1·2단지 구립어린이집 시설 사용 5년 재계약 (무상임대, 관리비 납부 조건).</div>
+              <div class="news-date">제5기 제40차 · 2025.12.09</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="news-cat-label">📅 2025년 9~10월</div>
+        <div class="card" style="padding:12px 16px;">
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">옥상 방수공사 완료</div>
+              <div class="news-desc">옥상 방수공사(2025.06~10월). 우천으로 인해 기간 연장 후 완료.</div>
+              <div class="news-date">제5기 제37차 · 2025.10.28</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">승강기 피트(승강로) 방수공사</div>
+              <div class="news-desc">2025년 9월 승강기 정기검사에서 피트 누수 지적. 방수공사 완료.</div>
+              <div class="news-date">제5기 제36차 · 2025.10.14</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">의결</span>
+            <div class="news-body">
+              <div class="news-title">아파트 화재보험 등 갱신</div>
+              <div class="news-desc">주택화재보험·시설소유자배상보험·승강기사고보상보험 등 갱신 완료 (DB손해보험, 총 1억 8,304만원).</div>
+              <div class="news-date">제5기 제35차 · 2025.09.23</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-radius:0;">
+            <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
+            <div class="news-body">
+              <div class="news-title">2단지 지하3층 구조안전진단 실시</div>
+              <div class="news-desc">구조안전진단 결과에 따라 보수·보강 공사 입찰 진행. 비용은 하자보수판결금 우선 사용.</div>
+              <div class="news-date">제5기 제35차 · 2025.09.23</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--gray-100);border-color:var(--gray-200);margin-top:4px;">
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">
+            📄 <strong>원문 회의록 보기</strong><br>
+            서울시 공동주택 통합정보마당에서 전체 회의록을 확인할 수 있어요.<br>
+            <a href="https://openapt.seoul.go.kr" target="_blank" style="color:var(--navy);font-weight:700;">openapt.seoul.go.kr →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /scroll-content -->
 
-  <!-- 하단 탭 -->
+  <!-- 하단 내비게이션 -->
   <nav class="tab-nav">
-    <button class="tab-btn active" onclick="goTab('home')"><span class="t-icon">🏠</span><span class="t-label">홈</span></button>
-    <button class="tab-btn" onclick="goTab('fee')"><span class="t-icon">💰</span><span class="t-label">관리비</span></button>
-    <button class="tab-btn" onclick="goTab('community')"><span class="t-icon">🏊</span><span class="t-label">커뮤니티</span></button>
-    <button class="tab-btn" onclick="goTab('living-tab')"><span class="t-icon">🧺</span><span class="t-label">생활</span></button>
-    <button class="tab-btn" onclick="goTab('local-tab')"><span class="t-icon">📍</span><span class="t-label">주변정보</span></button>
+    <button class="tab-btn" onclick="goHistoryBack()" id="btn-back" style="opacity:0.35;">
+      <span class="t-icon">←</span><span class="t-label">뒤로</span>
+    </button>
+    <button class="tab-btn active" onclick="goTab('home')" id="btn-home">
+      <span class="t-icon">🏠</span><span class="t-label">홈</span>
+    </button>
+    <button class="tab-btn" onclick="goHistoryForward()" id="btn-forward" style="opacity:0.35;">
+      <span class="t-icon">→</span><span class="t-label">앞으로</span>
+    </button>
   </nav>
 
 </div>
@@ -863,23 +1288,56 @@ const localCatIcon={food:'🍽️',cafe:'☕',hospital:'🏥',pharmacy:'💊',ha
 
 let allBiz=[], allLocal=[], prevPage='home';
 const tabPages=new Set(['home','fee','community','living-tab','local-tab']);
-const tabIdx={home:0,fee:1,community:2,'living-tab':3,'local-tab':4};
+const tabIdx={home:0};
+
+// ── 히스토리 스택 ─────────────────────────────────────────
+const histStack=[];
+let histPos=-1;
+
+function pushHistory(id){
+  // 현재 위치 이후 스택 제거
+  histStack.splice(histPos+1);
+  histStack.push(id);
+  histPos=histStack.length-1;
+  updateNavBtns();
+}
+function updateNavBtns(){
+  const back=document.getElementById('btn-back');
+  const fwd=document.getElementById('btn-forward');
+  const home=document.getElementById('btn-home');
+  if(back) back.style.opacity=histPos>0?'1':'0.35';
+  if(fwd) fwd.style.opacity=histPos<histStack.length-1?'1':'0.35';
+  const cur=histStack[histPos]||'home';
+  if(home) home.classList.toggle('active', cur==='home'||tabPages.has(cur));
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goHistoryBack(){
+  if(histPos<=0) return;
+  histPos--;
+  showPage(histStack[histPos]);
+  updateNavBtns();
+}
+function goHistoryForward(){
+  if(histPos>=histStack.length-1) return;
+  histPos++;
+  showPage(histStack[histPos]);
+  updateNavBtns();
+}
 
 function goTab(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if(tabIdx[id]!==undefined) document.querySelectorAll('.tab-btn')[tabIdx[id]].classList.add('active');
+  showPage(id);
+  pushHistory(id);
 }
 function goPage(id){
-  const cur=document.querySelector('.page.active');
-  prevPage=cur?cur.id.replace('page-',''):'home';
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
+  showPage(id);
+  pushHistory(id);
 }
 function goBack(){
-  tabPages.has(prevPage)?goTab(prevPage):goTab('home');
+  goHistoryBack();
 }
 
 // DB에서 업체 불러와서 기본 콘텐츠 위에 덮어쓰기
@@ -956,6 +1414,7 @@ document.getElementById('searchInput').addEventListener('input',function(){
     '층간소음':'complaint','소음':'complaint','흡연':'complaint','반려동물':'complaint','민원':'complaint',
     '맛집':'local-tab','병원':'local-tab','미용실':'local-tab','학원':'local-tab','카페':'local-tab',
     '도배':'living-tab','청소':'living-tab','인테리어':'living-tab',
+    '소식':'news','공지':'news','회의록':'news','대표회의':'news','변경':'news',
   };
   for(const [kw,page] of Object.entries(map)){
     if(q.includes(kw)){tabPages.has(page)?goTab(page):goPage(page);break;}
@@ -1004,15 +1463,22 @@ function initFeeYoy(){
   const el=document.getElementById('feeYoy');if(!el)return;
   new Chart(el,{type:'bar',data:{labels:['1월','2월'],datasets:[{label:'2025년',data:[180.7,174.6],backgroundColor:CL,borderRadius:4},{label:'2026년',data:[189.1,166.2],backgroundColor:CN,borderRadius:4}]},options:{...BO,plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:12,padding:10}}}}});
 }
-// 관리비 탭 진입 시 이번달 차트 자동 초기화
-const _origGoTab=goTab;
-function goTab(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if(tabIdx[id]!==undefined) document.querySelectorAll('.tab-btn')[tabIdx[id]].classList.add('active');
-  if(id==='fee'&&!window._fC0){window._fC0=true;setTimeout(initFeeDonut,80);}
+// 관리비 차트 — fee 탭 진입 시 자동 초기화
+function goFeeTab(idx,btn){
+  document.querySelectorAll('.fee-tab').forEach(b=>{b.style.color='var(--gray-400)';b.style.borderBottomColor='transparent';});
+  document.querySelectorAll('.fee-page').forEach(p=>p.classList.remove('active'));
+  btn.style.color='var(--navy)';btn.style.borderBottomColor='var(--navy)';
+  document.getElementById('fee'+idx).classList.add('active');
+  if(idx===0&&!window._fC0){window._fC0=true;setTimeout(initFeeDonut,50);}
+  if(idx===1&&!window._fC1){window._fC1=true;setTimeout(initFeeTrend,50);}
+  if(idx===2&&!window._fC2){window._fC2=true;setTimeout(initFeeItems,50);}
+  if(idx===3&&!window._fC3){window._fC3=true;setTimeout(initFeeYoy,50);}
 }
+
+// 초기 히스토리 세팅
+pushHistory('home');
+loadBiz();
+loadLocal();
 </script>
 </body>
 </html>
