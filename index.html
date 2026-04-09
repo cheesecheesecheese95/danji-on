@@ -584,13 +584,113 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       <div class="sec" style="padding-top:20px;">
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
         <div class="sec-title">🚗 주차·차량</div>
-        <div class="sec-sub">방문주차 · 이중주차 · 위반신고 · 전기차</div>
+        <div class="sec-sub">방문주차 · 등록 · 위반 · 요금 · 규정</div>
+
+        <!-- 방문차량 -->
+        <div class="sub-sec-label">🙋 방문차량</div>
         <div class="card">
-          <div class="witem"><div class="w-icon" style="background:var(--blue-bg);">🚙</div><div class="w-body"><div class="w-title">방문객 주차 등록</div><div class="w-desc">입구 키오스크에서 차량번호 입력. 최대 3일 유효, 초과 시 재등록 필요</div><span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">키오스크 이용</span></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--red-bg);">🚫</div><div class="w-body"><div class="w-title">이중주차 대처</div><div class="w-desc">출차 불가 시 경비실(02-931-8360) 즉시 연락. 24시간 대응</div><span class="w-tag" style="background:var(--red-bg);color:var(--red);">경비실 연락</span></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--amber-bg);">⚠️</div><div class="w-body"><div class="w-title">위반주차 신고</div><div class="w-desc">장애인구역·소화전 앞 불법주차 → 관리사무소 또는 스마트국민제보 앱으로 신고</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:var(--green-bg);">⚡</div><div class="w-body"><div class="w-title">전기차 충전기 사용</div><div class="w-desc">단지 내 54대 충전 인프라. 차량 등록 후 이용. 관리사무소(02-931-8360) 문의</div></div></div>
-          <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:var(--purple-bg);">📹</div><div class="w-body"><div class="w-title">CCTV 영상 확인 요청</div><div class="w-desc">차량 파손·분실 시 관리사무소 방문 신청. 개인정보 보호 절차 후 열람 가능</div></div></div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--blue-bg);">🚙</div>
+            <div class="w-body">
+              <div class="w-title">방문차량 무료 주차 시간</div>
+              <div class="w-desc" style="margin-bottom:8px;">세대당 <strong>월 150시간 무료</strong> 등록 가능<br>초과 시 <strong>30분당 500원</strong> 해당 세대에 부과<br>명절(설·추석) 연휴 방문차량은 무료시간에서 차감 안 됨<br>무료 주차시간은 세대 간 거래 불가</div>
+              <span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">주차장관리규정 제14조</span>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--gray-100);">🔖</div>
+            <div class="w-body">
+              <div class="w-title">방문차량 등록 방법</div>
+              <div class="w-desc">① 정문 경비초소에서 방문차량증 발급<br>② 또는 세대에서 전산프로그램으로 예약등록 시 경비초소 절차 생략 가능<br>③ 방문차량증 미부착 시 무단주차로 간주될 수 있음</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 차량 등록 -->
+        <div class="sub-sec-label">📋 차량 등록</div>
+        <div class="card">
+          <div class="witem">
+            <div class="w-icon" style="background:var(--green-bg);">📄</div>
+            <div class="w-body">
+              <div class="w-title">입주민 차량 신규 등록</div>
+              <div class="w-desc" style="margin-bottom:8px;">관리사무소 방문 → 아래 서류 제출<br>· 소유 차량: <strong>차량등록증 + 주민등록증</strong> 각 1부<br>· 회사 차량: 차량등록증 + 주민등록증 + 재직증명서<br>등록 후 차량 스티커 발급 (전면유리 부착 필수)</div>
+              <span class="w-tag" style="background:var(--green-bg);color:var(--green);">관리사무소 방문 필수</span>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--amber-bg);">🔁</div>
+            <div class="w-body">
+              <div class="w-title">차량 스티커 재발급</div>
+              <div class="w-desc">분실·훼손 시 관리사무소 신청<br>재발급 비용: <strong>1매당 1,000원</strong><br>차량번호 변경 시 변동일로부터 <strong>5일 이내</strong> 신고 의무</div>
+              <span class="w-tag" style="background:var(--amber-bg);color:var(--amber);">주차장관리규정 제11조</span>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--purple-bg);">🛵</div>
+            <div class="w-body">
+              <div class="w-title">오토바이·이륜차 주차</div>
+              <div class="w-desc">관리주체가 지정한 장소에만 주차 가능<br>이륜차도 <strong>세대 차량 대수에 포함</strong>되어 차량 등록 필요</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 기본대수 초과 주차비 -->
+        <div class="sub-sec-label">💰 기본대수 초과 주차비</div>
+        <div class="card">
+          <div style="font-size:12px;color:var(--gray-400);margin-bottom:12px;">세대 면적별 기본 주차 대수를 초과하는 경우 아래 금액이 관리비와 함께 청구됩니다.</div>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+              <thead>
+                <tr style="background:var(--navy);">
+                  <th style="padding:8px 10px;color:#fff;text-align:left;font-weight:700;">면적</th>
+                  <th style="padding:8px 6px;color:#fff;text-align:center;font-weight:700;">2번째 차량</th>
+                  <th style="padding:8px 6px;color:#fff;text-align:center;font-weight:700;">3번째 차량</th>
+                  <th style="padding:8px 6px;color:#fff;text-align:center;font-weight:700;">4번째 차량</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="padding:8px 10px;font-weight:600;">60㎡ 이하</td><td style="padding:8px 6px;text-align:center;">5,000원</td><td style="padding:8px 6px;text-align:center;">25,000원</td><td style="padding:8px 6px;text-align:center;">75,000원</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 10px;font-weight:600;">85㎡ 이하</td><td style="padding:8px 6px;text-align:center;">4,500원</td><td style="padding:8px 6px;text-align:center;">24,500원</td><td style="padding:8px 6px;text-align:center;">74,500원</td></tr>
+                <tr><td style="padding:8px 10px;font-weight:600;">122㎡ 이하</td><td style="padding:8px 6px;text-align:center;">500원</td><td style="padding:8px 6px;text-align:center;">20,500원</td><td style="padding:8px 6px;text-align:center;">70,500원</td></tr>
+                <tr style="background:#F8F8F8;"><td style="padding:8px 10px;font-weight:600;">153㎡ 이하</td><td style="padding:8px 6px;text-align:center;">3,000원</td><td style="padding:8px 6px;text-align:center;">23,000원</td><td style="padding:8px 6px;text-align:center;">—</td></tr>
+                <tr><td style="padding:8px 10px;font-weight:600;">176㎡ 이하</td><td style="padding:8px 6px;text-align:center;">1,500원</td><td style="padding:8px 6px;text-align:center;">21,500원</td><td style="padding:8px 6px;text-align:center;">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:10px;">출처: 주차장관리규정 별표5</div>
+        </div>
+
+        <!-- 위반·제재 -->
+        <div class="sub-sec-label">🚫 위반·제재</div>
+        <div class="card">
+          <div class="witem">
+            <div class="w-icon" style="background:var(--red-bg);">🚨</div>
+            <div class="w-body">
+              <div class="w-title">무단주차 경고 및 견인</div>
+              <div class="w-desc" style="margin-bottom:8px;">스티커 미부착·방문차량증 미부착 → 경고문 부착<br>경고문 부착 후 <strong>3일 이상 지속 시</strong> 관할구청 신고 후 견인<br>견인 비용은 차량 소유자 부담</div>
+              <span class="w-tag" style="background:var(--red-bg);color:var(--red);">주차장관리규정 제15조</span>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--amber-bg);">⚠️</div>
+            <div class="w-body">
+              <div class="w-title">단지 내 금지 행위</div>
+              <div class="w-desc">· 물 세차 또는 과도한 정비 <strong>불가</strong><br>· 경적 사용 <strong>불가</strong> (서행 의무)<br>· 특정 구획 장기 독점 <strong>불가</strong><br>· 장애인 주차구역 일반 주차 <strong>불가</strong></div>
+            </div>
+          </div>
+          <div class="witem" style="border-bottom:none;padding-bottom:0;">
+            <div class="w-icon" style="background:var(--purple-bg);">📹</div>
+            <div class="w-body">
+              <div class="w-title">CCTV 영상 확인 요청</div>
+              <div class="w-desc">CCTV 녹화 영상 <strong>30일간 보관</strong><br>차량 파손·분실 시 관리사무소 방문 신청<br>개인정보 보호 절차 후 열람 가능</div>
+              <span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">주차장관리규정 제17조</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--navy-bg);border-color:#BDD0F0;">
+          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 주차 관련 문의</div>
+          <div style="font-size:13px;color:var(--gray-600);">경비실(24h) / 관리사무소 <strong>02-931-8360</strong></div>
         </div>
       </div>
     </div>
@@ -665,14 +765,13 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
     </div>
 
-    <!-- ═══ 서브: 민원·규정 — 신고/규정 분리 ═══ -->
+    <!-- ═══ 서브: 민원·규정 ═══ -->
     <div class="page" id="page-complaint">
       <div class="sec" style="padding-top:20px;">
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
         <div class="sec-title">📋 민원·규정</div>
         <div class="sec-sub">신고 절차 · 생활 규정</div>
 
-        <!-- 신고 절차 섹션 -->
         <div class="sub-sec-label">🚨 신고가 필요할 때</div>
         <div class="card">
           <div class="witem">
@@ -706,7 +805,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </div>
         </div>
 
-        <!-- 규정 섹션 -->
         <div class="sub-sec-label">📄 꼭 알아야 할 규정</div>
         <div class="card">
           <div class="witem">
@@ -720,7 +818,16 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="w-icon" style="background:var(--orange-bg);">🔨</div>
             <div class="w-body">
               <div class="w-title">공사·인테리어 허용 시간</div>
-              <div class="w-desc">평일 09:00~17:00만 가능<br>주말 및 공휴일 전면 불가<br>사전 신청 없으면 즉시 중단 요청 가능</div>
+              <div class="w-desc">평일 09:00~17:00만 가능<br>주말 및 공휴일 전면 불가<br>3일 전 관리사무소 신청서 제출 필수</div>
+              <span class="w-tag" style="background:var(--orange-bg);color:var(--orange);">관리규약 기준</span>
+            </div>
+          </div>
+          <div class="witem">
+            <div class="w-icon" style="background:var(--blue-bg);">🚗</div>
+            <div class="w-body">
+              <div class="w-title">단지 내 차량 금지 행위</div>
+              <div class="w-desc">물 세차·과도한 정비 불가<br>경적 사용 불가 (서행 의무)<br>특정 주차구획 장기 독점 불가</div>
+              <span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">주차장관리규정 제13조</span>
             </div>
           </div>
           <div class="witem" style="border-bottom:none;padding-bottom:0;">
