@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>단지ON — 운영 어드민</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #1B3A6B; --navy-2: #2952A3; --navy-bg: #EEF3FB;
+  --teal: #0F6E56; --teal-bg: #E1F5EE;
+  --orange: #C84B1A; --orange-bg: #FEF0EB;
+  --amber: #8B5A0A; --amber-bg: #FEF6E6;
+  --red: #A32D2D; --red-bg: #FCEBEB;
+  --green: #1A6E3C; --green-bg: #E6F4ED;
+  --gray-50: #F8F8F7; --gray-100: #F0EFED; --gray-200: #E0DFDC;
+  --gray-300: #C8C7C3; --gray-400: #9A9895; --gray-500: #6E6C69;
+  --gray-600: #4A4845; --gray-800: #242320; --white: #FFFFFF;
+  --sidebar-w: 220px; --header-h: 56px;
+}
+html, body { font-family: 'Apple SD Gothic Neo','Noto Sans KR',-apple-system,sans-serif; font-size: 14px; color: var(--gray-800); background: var(--gray-50); height: 100%; -webkit-font-smoothing: antialiased; }
+.layout { display: flex; height: 100vh; overflow: hidden; }
+
+/* SIDEBAR */
+.sidebar { width: var(--sidebar-w); background: var(--navy); display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
+.sidebar-logo { padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.logo-title { font-size: 18px; font-weight: 800; color: #fff; }
+.logo-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+.sidebar-section { padding: 16px 12px 6px; }
+.sidebar-section-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; text-transform: uppercase; padding: 0 8px; margin-bottom: 4px; }
+.nav-item { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; color: rgba(255,255,255,0.65); font-weight: 500; border: none; background: none; width: 100%; text-align: left; font-family: inherit; margin-bottom: 1px; transition: background 0.15s, color 0.15s; }
+.nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+.nav-item.active { background: rgba(255,255,255,0.14); color: #fff; font-weight: 700; }
+.nav-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+.nav-badge { margin-left: auto; font-size: 10px; font-weight: 700; background: var(--orange); color: #fff; padding: 1px 6px; border-radius: 10px; }
+.sidebar-bottom { margin-top: auto; padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); }
+.admin-info { display: flex; align-items: center; gap: 10px; padding: 8px 10px; }
+.admin-avatar { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.admin-name { font-size: 12px; color: rgba(255,255,255,0.75); font-weight: 600; }
+.admin-role { font-size: 10px; color: rgba(255,255,255,0.4); }
+
+/* MAIN */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar { height: var(--header-h); background: var(--white); border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; padding: 0 24px; gap: 16px; flex-shrink: 0; }
+.topbar-title { font-size: 15px; font-weight: 700; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.content { flex: 1; overflow-y: auto; padding: 24px; }
+
+/* PAGE */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.18s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.page-title { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+.page-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+
+/* STAT */
+.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-bottom: 20px; }
+.stat-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px 18px; }
+.stat-label { font-size: 11px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 8px; }
+.stat-value { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
+.stat-sub { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+
+/* SECTION CARD */
+.section-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+.section-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--gray-100); }
+.section-title { font-size: 13px; font-weight: 700; }
+
+/* TABLE */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 18px; text-align: left; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); }
+.data-table td { padding: 12px 18px; font-size: 13px; color: var(--gray-600); border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--gray-50); }
+.data-table td strong { color: var(--gray-800); font-weight: 600; }
+
+/* BADGE */
+.badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+.badge-green  { background: var(--green-bg);  color: var(--green); }
+.badge-red    { background: var(--red-bg);    color: var(--red); }
+.badge-amber  { background: var(--amber-bg);  color: var(--amber); }
+.badge-navy   { background: var(--navy-bg);   color: var(--navy); }
+.badge-teal   { background: var(--teal-bg);   color: var(--teal); }
+.badge-gray   { background: var(--gray-100);  color: var(--gray-500); }
+
+/* BUTTON */
+.btn { font-family: inherit; font-size: 12px; font-weight: 600; border-radius: 8px; padding: 7px 14px; cursor: pointer; border: none; transition: opacity 0.15s; }
+.btn:active { opacity: 0.8; }
+.btn-primary { background: var(--navy); color: #fff; }
+.btn-secondary { background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-200); }
+.btn-danger { background: var(--red-bg); color: var(--red); border: 1px solid #F7C1C1; }
+.btn-teal { background: var(--teal-bg); color: var(--teal); border: 1px solid #9FE1CB; }
+.btn-sm { font-size: 11px; padding: 4px 10px; border-radius: 6px; }
+.action-row { display: flex; gap: 8px; align-items: center; }
+
+/* FILTER */
+.filter-bar { display: flex; gap: 8px; padding: 12px 18px; border-bottom: 1px solid var(--gray-100); flex-wrap: wrap; align-items: center; }
+.filter-select { font-size: 12px; font-family: inherit; border: 1px solid var(--gray-200); border-radius: 7px; padding: 5px 10px; color: var(--gray-600); background: var(--white); cursor: pointer; }
+.search-input-sm { font-size: 12px; font-family: inherit; border: 1px solid var(--gray-200); border-radius: 7px; padding: 5px 12px; color: var(--gray-800); background: var(--white); outline: none; width: 180px; }
+.search-input-sm:focus { border-color: var(--navy); }
+.filter-right { margin-left: auto; }
+
+/* FORM / MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--white); border-radius: 16px; padding: 24px; width: 480px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 18px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--gray-200); }
+.form-group { margin-bottom: 14px; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--gray-600); margin-bottom: 5px; display: block; }
+.form-label .required { color: var(--red); margin-left: 2px; }
+.form-input, .form-select, .form-textarea { width: 100%; font-size: 13px; font-family: inherit; border: 1px solid var(--gray-200); border-radius: 8px; padding: 8px 12px; color: var(--gray-800); background: var(--white); outline: none; transition: border-color 0.15s; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--navy); }
+.form-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-hint { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--gray-800); color: #fff; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 20px; z-index: 2000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.toast.show { opacity: 1; }
+
+/* LOADING */
+.loading { text-align: center; padding: 40px; color: var(--gray-400); font-size: 13px; }
+.empty-row td { text-align: center; color: var(--gray-400); padding: 30px !important; }
+
+/* DASH GRID */
+.dash-grid { display: grid; grid-template-columns: 1fr 300px; gap: 16px; }
+.alert-list { padding: 0 18px; }
+.alert-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
+.alert-item:last-child { border-bottom: none; }
+.alert-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.dot-red { background: var(--red); } .dot-amber { background: #D97706; } .dot-navy { background: var(--navy); }
+.alert-text { font-size: 13px; color: var(--gray-600); line-height: 1.5; flex: 1; }
+.alert-text strong { color: var(--gray-800); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- 업체 편집 모달 -->
+<div class="modal-overlay" id="bizModal">
+  <div class="modal">
+    <div class="modal-title" id="bizModalTitle">업체 추가</div>
+    <input type="hidden" id="bizId">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">업체명 <span class="required">*</span></label>
+        <input class="form-input" id="bizName" placeholder="예: 하늘청소">
+      </div>
+      <div class="form-group">
+        <label class="form-label">카테고리 <span class="required">*</span></label>
+        <select class="form-select" id="bizCategory">
+          <option value="aircon_clean">에어컨 청소</option>
+          <option value="move_in_clean">입주청소</option>
+          <option value="wallpaper">도배·장판</option>
+          <option value="interior">인테리어</option>
+          <option value="moving">이사</option>
+          <option value="repair">수리·누수</option>
+          <option value="other_clean">기타 청소</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">설명</label>
+      <input class="form-input" id="bizDesc" placeholder="간단한 업체 설명">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">연락처</label>
+        <input class="form-input" id="bizPhone" placeholder="010-0000-0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">가격대</label>
+        <input class="form-input" id="bizPrice" placeholder="예: 32평 5만원~">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">평균 평점</label>
+        <input class="form-input" id="bizRating" type="number" min="1" max="5" step="0.1" placeholder="4.5">
+      </div>
+      <div class="form-group">
+        <label class="form-label">후기 수</label>
+        <input class="form-input" id="bizReviews" type="number" placeholder="0">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">강점 태그</label>
+      <input class="form-input" id="bizTags" placeholder="쉼표로 구분: 당일가능, 스팀세척">
+      <div class="form-hint">쉼표(,)로 구분해서 입력하세요</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">상태</label>
+      <select class="form-select" id="bizStatus">
+        <option value="active">게시중</option>
+        <option value="candidate">검토중</option>
+        <option value="hidden">숨김</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('bizModal')">취소</button>
+      <button class="btn btn-primary" onclick="saveBiz()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 긴급정보 편집 모달 -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <div class="modal-title" id="contactModalTitle">긴급정보 추가</div>
+    <input type="hidden" id="contactId">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">제목 <span class="required">*</span></label>
+        <input class="form-input" id="contactTitle" placeholder="예: 수도관 동파 대응">
+      </div>
+      <div class="form-group">
+        <label class="form-label">카테고리</label>
+        <select class="form-select" id="contactCategory">
+          <option value="water_leak">누수·동파</option>
+          <option value="boiler">보일러·전기</option>
+          <option value="door">출입·열쇠</option>
+          <option value="hospital">응급·약국</option>
+          <option value="management">관리사무소</option>
+          <option value="security">경비실</option>
+          <option value="elevator">엘리베이터</option>
+          <option value="parking">주차</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">설명</label>
+      <input class="form-input" id="contactDesc" placeholder="상황 설명">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">주간 연락처</label>
+        <input class="form-input" id="contactPhoneDay" placeholder="02-0000-0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">야간 연락처</label>
+        <input class="form-input" id="contactPhoneNight" placeholder="010-0000-0000">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">24시간 대응</label>
+        <select class="form-select" id="contactAvail24h">
+          <option value="false">아니오</option>
+          <option value="true">예</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">긴급 버튼 노출</label>
+        <select class="form-select" id="contactUrgent">
+          <option value="false">아니오</option>
+          <option value="true">예 (상단 버튼)</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('contactModal')">취소</button>
+      <button class="btn btn-primary" onclick="saveContact()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 위키 편집 모달 -->
+<div class="modal-overlay" id="wikiModal">
+  <div class="modal">
+    <div class="modal-title" id="wikiModalTitle">위키 문서 추가</div>
+    <input type="hidden" id="wikiId">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">제목 <span class="required">*</span></label>
+        <input class="form-input" id="wikiTitle" placeholder="예: 분리수거 일정">
+      </div>
+      <div class="form-group">
+        <label class="form-label">카테고리</label>
+        <select class="form-select" id="wikiCategory">
+          <option value="trash">분리수거</option>
+          <option value="parking">주차</option>
+          <option value="moving">이사</option>
+          <option value="facility">시설</option>
+          <option value="pet">반려동물</option>
+          <option value="etc">기타</option>
+          <option value="construction">공사신고</option>
+          <option value="noise">층간소음</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">한 줄 요약 <span class="required">*</span></label>
+      <input class="form-input" id="wikiSummary" placeholder="사용자에게 보여질 요약">
+    </div>
+    <div class="form-group">
+      <label class="form-label">본문</label>
+      <textarea class="form-textarea" id="wikiBody" placeholder="상세 내용" style="min-height:120px;"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">신규 입주민 추천</label>
+        <select class="form-select" id="wikiFeatured">
+          <option value="false">아니오</option>
+          <option value="true">예</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">상태</label>
+        <select class="form-select" id="wikiStatus">
+          <option value="published">게시중</option>
+          <option value="draft">초안</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('wikiModal')">취소</button>
+      <button class="btn btn-primary" onclick="saveWiki()">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-title">단지ON</div>
+      <div class="logo-sub">운영 어드민 v1.0</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">운영</div>
+      <button class="nav-item active" onclick="goPage('dashboard',this)"><span class="nav-icon">📊</span>대시보드</button>
+      <button class="nav-item" onclick="goPage('businesses',this)"><span class="nav-icon">⭐</span>업체 관리</button>
+      <button class="nav-item" onclick="goPage('wiki',this)"><span class="nav-icon">📋</span>단지위키</button>
+      <button class="nav-item" onclick="goPage('emergency',this)"><span class="nav-icon">🚨</span>긴급정보</button>
+      <button class="nav-item" onclick="goPage('local',this)"><span class="nav-icon">📍</span>우리동네</button>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="admin-info">
+        <div class="admin-avatar">관</div>
+        <div>
+          <div class="admin-name">운영자</div>
+          <div class="admin-role">슈퍼 어드민</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">대시보드</div>
+      <div class="topbar-right">
+        <a href="https://danji-on.vercel.app" target="_blank" class="btn btn-secondary btn-sm">🔗 사용자 앱 보기</a>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ═══ 대시보드 ═══ -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div><div class="page-title">운영 현황</div><div class="page-sub" id="dash-date">로딩 중…</div></div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">업체 카드</div><div class="stat-value" id="stat-biz">—</div><div class="stat-sub">게시중</div></div>
+          <div class="stat-card"><div class="stat-label">위키 문서</div><div class="stat-value" id="stat-wiki">—</div><div class="stat-sub">게시중</div></div>
+          <div class="stat-card"><div class="stat-label">긴급 연락처</div><div class="stat-value" id="stat-contact">—</div><div class="stat-sub">등록됨</div></div>
+          <div class="stat-card"><div class="stat-label">우리동네</div><div class="stat-value" id="stat-local">—</div><div class="stat-sub">장소 등록됨</div></div>
+        </div>
+        <div class="dash-grid">
+          <div>
+            <div class="section-card">
+              <div class="section-header"><div class="section-title">📋 업체 현황</div></div>
+              <table class="data-table">
+                <thead><tr><th>업체명</th><th>카테고리</th><th>평점</th><th>후기</th><th>상태</th></tr></thead>
+                <tbody id="dash-biz-table"><tr><td colspan="5" class="loading">불러오는 중…</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="section-card">
+              <div class="section-header"><div class="section-title">🚨 긴급정보 현황</div></div>
+              <div class="alert-list" id="dash-contacts">
+                <div class="loading">불러오는 중…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ 업체 관리 ═══ -->
+      <div class="page" id="page-businesses">
+        <div class="page-header">
+          <div><div class="page-title">업체 관리</div><div class="page-sub">생활추천 업체 카드 관리</div></div>
+          <button class="btn btn-primary" onclick="openBizModal()">+ 업체 추가</button>
+        </div>
+        <div class="section-card">
+          <div class="filter-bar">
+            <input class="search-input-sm" type="search" placeholder="업체명 검색…" id="biz-search" oninput="filterBizTable()">
+            <select class="filter-select" id="biz-cat-filter" onchange="filterBizTable()">
+              <option value="">전체 카테고리</option>
+              <option value="aircon_clean">에어컨 청소</option>
+              <option value="move_in_clean">입주청소</option>
+              <option value="wallpaper">도배·장판</option>
+              <option value="interior">인테리어</option>
+              <option value="moving">이사</option>
+              <option value="repair">수리·누수</option>
+              <option value="other_clean">기타 청소</option>
+            </select>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>업체명</th><th>카테고리</th><th>평점</th><th>후기</th><th>상태</th><th>액션</th></tr></thead>
+            <tbody id="biz-table"><tr><td colspan="6" class="loading">불러오는 중…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ 단지위키 ═══ -->
+      <div class="page" id="page-wiki">
+        <div class="page-header">
+          <div><div class="page-title">단지위키 관리</div><div class="page-sub">반복 질문을 문서 자산으로</div></div>
+          <button class="btn btn-primary" onclick="openWikiModal()">+ 문서 추가</button>
+        </div>
+        <div class="section-card">
+          <table class="data-table">
+            <thead><tr><th>제목</th><th>카테고리</th><th>요약</th><th>상태</th><th>액션</th></tr></thead>
+            <tbody id="wiki-table"><tr><td colspan="5" class="loading">불러오는 중…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ 긴급정보 ═══ -->
+      <div class="page" id="page-emergency">
+        <div class="page-header">
+          <div><div class="page-title">긴급정보 관리</div><div class="page-sub">정확성·최신성 최우선</div></div>
+          <button class="btn btn-primary" onclick="openContactModal()">+ 항목 추가</button>
+        </div>
+        <div class="section-card">
+          <table class="data-table">
+            <thead><tr><th>제목</th><th>주간 연락처</th><th>야간 연락처</th><th>24시간</th><th>긴급버튼</th><th>액션</th></tr></thead>
+            <tbody id="contact-table"><tr><td colspan="6" class="loading">불러오는 중…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ 우리동네 ═══ -->
+      <div class="page" id="page-local">
+        <div class="page-header">
+          <div><div class="page-title">우리동네 관리</div><div class="page-sub">인근 장소 정보</div></div>
+        </div>
+        <div class="section-card">
+          <table class="data-table">
+            <thead><tr><th>장소명</th><th>카테고리</th><th>설명</th><th>거리</th><th>평점</th><th>후기</th><th>상태</th></tr></thead>
+            <tbody id="local-table"><tr><td colspan="7" class="loading">불러오는 중…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── SUPABASE ─────────────────────────────────────────────────
+const { createClient } = supabase;
+const sb = createClient(
+  'https://svifbukyvyrtqzhbatvm.supabase.co',
+  'sb_publishable_V42OY5LenPHnI9yzusBl5g_D1otBO9j'
+);
+
+// ── 매핑 ─────────────────────────────────────────────────────
+const bizCatLabel = { aircon_clean:'에어컨 청소', move_in_clean:'입주청소', wallpaper:'도배·장판', interior:'인테리어', moving:'이사', repair:'수리·누수', other_clean:'기타 청소' };
+const wikiCatLabel = { trash:'분리수거', parking:'주차', moving:'이사', facility:'시설', pet:'반려동물', etc:'기타', construction:'공사신고', noise:'층간소음' };
+const localCatLabel = { food:'맛집', cafe:'카페', hospital:'병원', pharmacy:'약국', hair:'미용실', edu:'학원', kids:'키즈', pet:'반려동물', etc:'생활편의' };
+
+// ── TOAST ────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── MODAL ────────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── PAGE NAV ─────────────────────────────────────────────────
+const pageTitles = { dashboard:'대시보드', businesses:'업체 관리', wiki:'단지위키', emergency:'긴급정보', local:'우리동네' };
+let allBizData = [], allWikiData = [], allContactData = [], allLocalData = [];
+
+function goPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  document.getElementById('topbar-title').textContent = pageTitles[id];
+}
+
+// ══════════════════════════════════════════════════════════════
+// 대시보드
+// ══════════════════════════════════════════════════════════════
+async function loadDashboard() {
+  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' }) + ' 기준';
+
+  const [bizR, wikiR, contactR, localR] = await Promise.all([
+    sb.from('businesses').select('*').eq('status','active'),
+    sb.from('wiki_documents').select('*').eq('status','published'),
+    sb.from('contacts').select('*'),
+    sb.from('local_places').select('*').eq('status','active'),
+  ]);
+
+  allBizData = bizR.data || [];
+  allWikiData = wikiR.data || [];
+  allContactData = contactR.data || [];
+  allLocalData = localR.data || [];
+
+  document.getElementById('stat-biz').textContent = allBizData.length;
+  document.getElementById('stat-wiki').textContent = allWikiData.length;
+  document.getElementById('stat-contact').textContent = allContactData.length;
+  document.getElementById('stat-local').textContent = allLocalData.length;
+
+  // 업체 테이블
+  const bt = document.getElementById('dash-biz-table');
+  bt.innerHTML = allBizData.length === 0
+    ? '<tr><td colspan="5" class="empty-row">등록된 업체가 없습니다</td></tr>'
+    : allBizData.slice(0,6).map(b => `
+      <tr>
+        <td><strong>${b.name}</strong></td>
+        <td>${bizCatLabel[b.category] || b.category}</td>
+        <td>${b.avg_rating ? '★ ' + b.avg_rating : '—'}</td>
+        <td>${b.review_count}개</td>
+        <td><span class="badge badge-green">게시중</span></td>
+      </tr>`).join('');
+
+  // 긴급정보 목록
+  const cl = document.getElementById('dash-contacts');
+  cl.innerHTML = allContactData.length === 0
+    ? '<div style="padding:16px;color:var(--gray-400);font-size:13px;">등록된 긴급정보가 없습니다</div>'
+    : allContactData.map(c => `
+      <div class="alert-item">
+        <div class="alert-dot ${c.is_urgent ? 'dot-red' : 'dot-navy'}"></div>
+        <div class="alert-text">
+          <strong>${c.title}</strong><br>
+          ${c.phone_day || '—'}${c.available_24h ? ' · 24시간' : ''}
+        </div>
+      </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// 업체 관리
+// ══════════════════════════════════════════════════════════════
+async function loadBizTable() {
+  const { data } = await sb.from('businesses').select('*').order('created_at', { ascending: false });
+  allBizData = data || [];
+  renderBizTable(allBizData);
+}
+
+function renderBizTable(data) {
+  const tb = document.getElementById('biz-table');
+  if (data.length === 0) { tb.innerHTML = '<tr><td colspan="6" class="empty-row">업체가 없습니다</td></tr>'; return; }
+  tb.innerHTML = data.map(b => `
+    <tr>
+      <td><strong>${b.name}</strong><br><span style="font-size:11px;color:var(--gray-400);">${b.description || ''}</span></td>
+      <td>${bizCatLabel[b.category] || b.category}</td>
+      <td>${b.avg_rating ? '★ ' + b.avg_rating : '—'}</td>
+      <td>${b.review_count}개</td>
+      <td><span class="badge ${b.status === 'active' ? 'badge-green' : b.status === 'candidate' ? 'badge-amber' : 'badge-gray'}">${b.status === 'active' ? '게시중' : b.status === 'candidate' ? '검토중' : '숨김'}</span></td>
+      <td>
+        <div class="action-row">
+          <button class="btn btn-secondary btn-sm" onclick="editBiz('${b.id}')">수정</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteBiz('${b.id}','${b.name}')">삭제</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function filterBizTable() {
+  const q = document.getElementById('biz-search').value.toLowerCase();
+  const cat = document.getElementById('biz-cat-filter').value;
+  const filtered = allBizData.filter(b =>
+    (!q || b.name.toLowerCase().includes(q)) &&
+    (!cat || b.category === cat)
+  );
+  renderBizTable(filtered);
+}
+
+function openBizModal(biz = null) {
+  document.getElementById('bizModalTitle').textContent = biz ? '업체 수정' : '업체 추가';
+  document.getElementById('bizId').value = biz?.id || '';
+  document.getElementById('bizName').value = biz?.name || '';
+  document.getElementById('bizCategory').value = biz?.category || 'aircon_clean';
+  document.getElementById('bizDesc').value = biz?.description || '';
+  document.getElementById('bizPhone').value = biz?.phone || '';
+  document.getElementById('bizPrice').value = biz?.price_range || '';
+  document.getElementById('bizRating').value = biz?.avg_rating || '';
+  document.getElementById('bizReviews').value = biz?.review_count || 0;
+  document.getElementById('bizTags').value = biz?.strength_tags?.join(', ') || '';
+  document.getElementById('bizStatus').value = biz?.status || 'active';
+  openModal('bizModal');
+}
+
+async function editBiz(id) {
+  const { data } = await sb.from('businesses').select('*').eq('id', id).single();
+  if (data) openBizModal(data);
+}
+
+async function saveBiz() {
+  const id = document.getElementById('bizId').value;
+  const tagsRaw = document.getElementById('bizTags').value;
+  const payload = {
+    name: document.getElementById('bizName').value.trim(),
+    category: document.getElementById('bizCategory').value,
+    description: document.getElementById('bizDesc').value.trim(),
+    phone: document.getElementById('bizPhone').value.trim(),
+    price_range: document.getElementById('bizPrice').value.trim(),
+    avg_rating: parseFloat(document.getElementById('bizRating').value) || null,
+    review_count: parseInt(document.getElementById('bizReviews').value) || 0,
+    strength_tags: tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : null,
+    status: document.getElementById('bizStatus').value,
+  };
+  if (!payload.name) { alert('업체명을 입력하세요'); return; }
+  if (id) { await sb.from('businesses').update(payload).eq('id', id); }
+  else { await sb.from('businesses').insert(payload); }
+  closeModal('bizModal');
+  showToast(id ? '업체가 수정됐어요 ✓' : '업체가 추가됐어요 ✓');
+  loadBizTable();
+}
+
+async function deleteBiz(id, name) {
+  if (!confirm(`"${name}" 업체를 삭제할까요?`)) return;
+  await sb.from('businesses').delete().eq('id', id);
+  showToast('삭제됐어요');
+  loadBizTable();
+}
+
+// ══════════════════════════════════════════════════════════════
+// 단지위키
+// ══════════════════════════════════════════════════════════════
+async function loadWikiTable() {
+  const { data } = await sb.from('wiki_documents').select('*').order('created_at', { ascending: false });
+  allWikiData = data || [];
+  const tb = document.getElementById('wiki-table');
+  if (!data?.length) { tb.innerHTML = '<tr><td colspan="5" class="empty-row">위키 문서가 없습니다</td></tr>'; return; }
+  tb.innerHTML = data.map(w => `
+    <tr>
+      <td><strong>${w.title}</strong></td>
+      <td>${wikiCatLabel[w.category] || w.category}</td>
+      <td style="font-size:12px;color:var(--gray-500);">${w.summary || ''}</td>
+      <td><span class="badge ${w.status === 'published' ? 'badge-green' : 'badge-gray'}">${w.status === 'published' ? '게시중' : '초안'}</span></td>
+      <td>
+        <div class="action-row">
+          <button class="btn btn-secondary btn-sm" onclick="editWiki('${w.id}')">수정</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteWiki('${w.id}','${w.title}')">삭제</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function openWikiModal(wiki = null) {
+  document.getElementById('wikiModalTitle').textContent = wiki ? '위키 문서 수정' : '위키 문서 추가';
+  document.getElementById('wikiId').value = wiki?.id || '';
+  document.getElementById('wikiTitle').value = wiki?.title || '';
+  document.getElementById('wikiCategory').value = wiki?.category || 'trash';
+  document.getElementById('wikiSummary').value = wiki?.summary || '';
+  document.getElementById('wikiBody').value = wiki?.body || '';
+  document.getElementById('wikiFeatured').value = wiki?.is_featured ? 'true' : 'false';
+  document.getElementById('wikiStatus').value = wiki?.status || 'published';
+  openModal('wikiModal');
+}
+
+async function editWiki(id) {
+  const { data } = await sb.from('wiki_documents').select('*').eq('id', id).single();
+  if (data) openWikiModal(data);
+}
+
+async function saveWiki() {
+  const id = document.getElementById('wikiId').value;
+  const payload = {
+    title: document.getElementById('wikiTitle').value.trim(),
+    category: document.getElementById('wikiCategory').value,
+    summary: document.getElementById('wikiSummary').value.trim(),
+    body: document.getElementById('wikiBody').value.trim(),
+    is_featured: document.getElementById('wikiFeatured').value === 'true',
+    status: document.getElementById('wikiStatus').value,
+  };
+  if (!payload.title || !payload.summary) { alert('제목과 요약을 입력하세요'); return; }
+  if (id) { await sb.from('wiki_documents').update(payload).eq('id', id); }
+  else { await sb.from('wiki_documents').insert(payload); }
+  closeModal('wikiModal');
+  showToast(id ? '문서가 수정됐어요 ✓' : '문서가 추가됐어요 ✓');
+  loadWikiTable();
+}
+
+async function deleteWiki(id, title) {
+  if (!confirm(`"${title}" 문서를 삭제할까요?`)) return;
+  await sb.from('wiki_documents').delete().eq('id', id);
+  showToast('삭제됐어요');
+  loadWikiTable();
+}
+
+// ══════════════════════════════════════════════════════════════
+// 긴급정보
+// ══════════════════════════════════════════════════════════════
+async function loadContactTable() {
+  const { data } = await sb.from('contacts').select('*').order('sort_order');
+  allContactData = data || [];
+  const tb = document.getElementById('contact-table');
+  if (!data?.length) { tb.innerHTML = '<tr><td colspan="6" class="empty-row">긴급정보가 없습니다</td></tr>'; return; }
+  tb.innerHTML = data.map(c => `
+    <tr>
+      <td><strong>${c.title}</strong><br><span style="font-size:11px;color:var(--gray-400);">${c.description || ''}</span></td>
+      <td>${c.phone_day || '—'}</td>
+      <td>${c.phone_night || '—'}</td>
+      <td>${c.available_24h ? '<span class="badge badge-green">예</span>' : '<span class="badge badge-gray">아니오</span>'}</td>
+      <td>${c.is_urgent ? '<span class="badge badge-red">노출</span>' : '<span class="badge badge-gray">미노출</span>'}</td>
+      <td>
+        <div class="action-row">
+          <button class="btn btn-secondary btn-sm" onclick="editContact('${c.id}')">수정</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteContact('${c.id}','${c.title}')">삭제</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function openContactModal(contact = null) {
+  document.getElementById('contactModalTitle').textContent = contact ? '긴급정보 수정' : '긴급정보 추가';
+  document.getElementById('contactId').value = contact?.id || '';
+  document.getElementById('contactTitle').value = contact?.title || '';
+  document.getElementById('contactCategory').value = contact?.category || 'water_leak';
+  document.getElementById('contactDesc').value = contact?.description || '';
+  document.getElementById('contactPhoneDay').value = contact?.phone_day || '';
+  document.getElementById('contactPhoneNight').value = contact?.phone_night || '';
+  document.getElementById('contactAvail24h').value = contact?.available_24h ? 'true' : 'false';
+  document.getElementById('contactUrgent').value = contact?.is_urgent ? 'true' : 'false';
+  openModal('contactModal');
+}
+
+async function editContact(id) {
+  const { data } = await sb.from('contacts').select('*').eq('id', id).single();
+  if (data) openContactModal(data);
+}
+
+async function saveContact() {
+  const id = document.getElementById('contactId').value;
+  const payload = {
+    title: document.getElementById('contactTitle').value.trim(),
+    category: document.getElementById('contactCategory').value,
+    description: document.getElementById('contactDesc').value.trim(),
+    phone_day: document.getElementById('contactPhoneDay').value.trim(),
+    phone_night: document.getElementById('contactPhoneNight').value.trim(),
+    available_24h: document.getElementById('contactAvail24h').value === 'true',
+    is_urgent: document.getElementById('contactUrgent').value === 'true',
+  };
+  if (!payload.title) { alert('제목을 입력하세요'); return; }
+  if (id) { await sb.from('contacts').update(payload).eq('id', id); }
+  else { await sb.from('contacts').insert(payload); }
+  closeModal('contactModal');
+  showToast(id ? '수정됐어요 ✓' : '추가됐어요 ✓');
+  loadContactTable();
+}
+
+async function deleteContact(id, title) {
+  if (!confirm(`"${title}"을 삭제할까요?`)) return;
+  await sb.from('contacts').delete().eq('id', id);
+  showToast('삭제됐어요');
+  loadContactTable();
+}
+
+// ══════════════════════════════════════════════════════════════
+// 우리동네
+// ══════════════════════════════════════════════════════════════
+async function loadLocalTable() {
+  const { data } = await sb.from('local_places').select('*').order('created_at', { ascending: false });
+  const tb = document.getElementById('local-table');
+  if (!data?.length) { tb.innerHTML = '<tr><td colspan="7" class="empty-row">장소가 없습니다</td></tr>'; return; }
+  tb.innerHTML = data.map(p => `
+    <tr>
+      <td><strong>${p.name}</strong></td>
+      <td>${localCatLabel[p.category] || p.category}</td>
+      <td style="font-size:12px;color:var(--gray-500);">${p.description || ''}</td>
+      <td>${p.distance_m ? Math.round(p.distance_m/80) + '분' : '—'}</td>
+      <td>${p.avg_rating ? '★ ' + p.avg_rating : '—'}</td>
+      <td>${p.resident_review_count}개</td>
+      <td><span class="badge ${p.status === 'active' ? 'badge-green' : 'badge-gray'}">${p.status === 'active' ? '노출' : '숨김'}</span></td>
+    </tr>`).join('');
+}
+
+// ── 페이지 로드 시 데이터 로드 ───────────────────────────────
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.getAttribute('onclick').match(/'(\w+)'/)[1];
+    if (id === 'businesses') loadBizTable();
+    if (id === 'wiki') loadWikiTable();
+    if (id === 'emergency') loadContactTable();
+    if (id === 'local') loadLocalTable();
+  });
+});
+
+// 모달 바깥 클릭 시 닫기
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+});
+
+// 초기 로드
+loadDashboard();
+</script>
+</body>
+</html>
