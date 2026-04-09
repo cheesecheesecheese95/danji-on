@@ -163,7 +163,7 @@ html, body {
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round">
         <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/>
       </svg>
-      <input class="search-input" type="search" placeholder="수도관 동파, 도배 업체, 분리수거…" id="searchInput">
+      <input class="search-input" type="search" placeholder="분리수거, 층간소음, 이사 신청, 택배함…" id="searchInput">
     </div>
   </div>
 
@@ -178,8 +178,8 @@ html, body {
   <!-- TAB 1: 긴급도움 -->
   <div class="tab-content active" id="tab-emergency">
     <div class="notice-banner" style="margin-top:16px;">
-      <span class="notice-icon">❄️</span>
-      <div class="notice-text"><strong>동파 주의보 발령 중</strong><br>기온 -8°C 이하 예보. 수도 계량기 동파 시 즉시 관리사무소로 연락하세요.</div>
+      <span class="notice-icon">🔧</span>
+      <div class="notice-text"><strong>4월 정기 시설 점검 안내</strong><br>4/14(월)~4/18(금) 소방설비·엘리베이터 정기점검. 세대 방문 직원은 신분증 지참합니다.</div>
     </div>
 
     <div class="section-title">지금 바로 연락</div>
@@ -192,14 +192,14 @@ html, body {
       <div class="loading">불러오는 중…</div>
     </div>
 
-    <div class="section-title">수도관 동파 시 대응 절차</div>
+    <div class="section-title">세대 내 누수 발생 시 대응 절차</div>
     <div class="card">
-      <div style="font-size:14px;font-weight:700;color:var(--orange);margin-bottom:12px;">❄️ 동파 발생 즉시 이렇게 하세요</div>
+      <div style="font-size:14px;font-weight:700;color:var(--orange);margin-bottom:12px;">💧 누수 발생 즉시 이렇게 하세요</div>
       <div class="step-list">
-        <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>계량기함 뚜껑 열기</strong> — 보통 현관 밖 복도 하단에 위치</div></div>
-        <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>지수밸브 잠그기</strong> — 시계 방향으로 끝까지 돌리기</div></div>
-        <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>관리사무소 신고</strong> — 02-3456-7890 (야간: 010-9876-5432)</div></div>
-        <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>전문 업체 연락</strong> — 관리사무소에서 연결해드립니다</div></div>
+        <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>지수밸브 잠그기</strong> — 현관 밖 복도 하단 계량기함 내, 시계방향으로 끝까지</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>관리사무소 즉시 신고</strong> — 02-931-8360 (야간·경비실 동일 번호)</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>아랫집 확인</strong> — 아래 세대로 물이 샜다면 초인종 눌러 알리고 관리소 중재 요청</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>사진 증거 확보</strong> — 보험 청구·원인 분쟁 대비, 누수 부위 즉시 촬영</div></div>
       </div>
     </div>
     <div class="bottom-padding"></div>
@@ -209,11 +209,12 @@ html, body {
   <div class="tab-content" id="tab-wiki">
     <div style="margin-top:16px;" class="filter-row" id="wiki-filters">
       <button class="chip active" onclick="filterWiki(this,'all')">전체</button>
-      <button class="chip" onclick="filterWiki(this,'trash')">분리수거</button>
-      <button class="chip" onclick="filterWiki(this,'parking')">주차</button>
-      <button class="chip" onclick="filterWiki(this,'moving')">이사</button>
-      <button class="chip" onclick="filterWiki(this,'facility')">시설</button>
-      <button class="chip" onclick="filterWiki(this,'etc')">기타</button>
+      <button class="chip" onclick="filterWiki(this,'trash')">🗑️ 분리수거</button>
+      <button class="chip" onclick="filterWiki(this,'parking')">🚗 주차</button>
+      <button class="chip" onclick="filterWiki(this,'moving')">📦 이사·공사</button>
+      <button class="chip" onclick="filterWiki(this,'facility')">🏊 시설</button>
+      <button class="chip" onclick="filterWiki(this,'noise')">🔊 소음·민원</button>
+      <button class="chip" onclick="filterWiki(this,'delivery')">📬 택배</button>
     </div>
     <div class="card" id="wiki-list">
       <div class="loading">불러오는 중…</div>
@@ -266,7 +267,7 @@ const categoryIcons = {
 };
 const wikiIcons = {
   trash: '🗑️', parking: '🚗', moving: '📦', facility: '🏊',
-  pet: '🐕', etc: '📋', construction: '🔨', noise: '🔊'
+  noise: '🔊', delivery: '📬', pet: '🐕', etc: '📋'
 };
 const bizCategoryLabels = {
   aircon_clean: '에어컨 청소', move_in_clean: '입주청소',
@@ -347,7 +348,7 @@ function renderWiki(data) {
       <div class="wiki-body">
         <div class="wiki-title">${w.title}</div>
         <div class="wiki-desc">${w.summary || ''}</div>
-        <span class="wiki-tag tag-fixed">${w.is_featured ? '신규 입주 추천' : '단지 규정'}</span>
+        <span class="wiki-tag tag-fixed">${w.is_featured ? '⭐ 자주 찾는 정보' : '단지 규정'}</span>
       </div>
     </div>`).join('');
 }
