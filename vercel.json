@@ -1,4 +1,14 @@
 {
+  "functions": {
+    "api/naver-search.js":   { "runtime": "nodejs20.x" },
+    "api/notices-sync.js":   { "runtime": "nodejs20.x" }
+  },
+  "crons": [
+    {
+      "path": "/api/notices-sync",
+      "schedule": "0 22 * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/sw.js",
