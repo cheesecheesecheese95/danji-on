@@ -2313,10 +2313,27 @@ async function loadDashboard(){
   const LAT=37.5737, LON=126.9042;
   const el=document.getElementById('dashboard');
   if(!el) return;
+
+  // 분리수거 — 네트워크 불필요, 항상 계산
+  const now=new Date();
+  const dow=now.getDay(), hr=now.getHours();
+  const isCollectionDay=(d,h)=>{
+    if([0,1,3,4].includes(d)&&h>=18) return true;
+    if([1,2,4,5].includes(d)&&h<10) return true;
+    return false;
+  };
+  const canDispose=isCollectionDay(dow,hr);
+
+  const fetchWithTimeout=(url,ms=6000)=>{
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),ms);
+    return fetch(url,{signal:ctrl.signal}).then(r=>{clearTimeout(tid);return r.json();});
+  };
+
   try{
     const [wRes,aRes]=await Promise.allSettled([
-      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul&forecast_days=1`).then(r=>r.json()),
-      fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm10,pm2_5&timezone=Asia%2FSeoul`).then(r=>r.json())
+      fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul&forecast_days=1`),
+      fetchWithTimeout(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm10,pm2_5&timezone=Asia%2FSeoul`)
     ]);
     const w=wRes.status==='fulfilled'?wRes.value:null;
     const a=aRes.status==='fulfilled'?aRes.value:null;
@@ -2329,18 +2346,6 @@ async function loadDashboard(){
     function pm10Grade(v){if(v<=30)return['🟢','좋음','grade-good'];if(v<=80)return['🟡','보통','grade-normal'];if(v<=150)return['🟠','나쁨','grade-bad'];return['🔴','매우나쁨','grade-very-bad'];}
     function pm25Grade(v){if(v<=15)return['🟢','좋음','grade-good'];if(v<=35)return['🟡','보통','grade-normal'];if(v<=75)return['🟠','나쁨','grade-bad'];return['🔴','매우나쁨','grade-very-bad'];}
     
-    // 분리수거 오늘 가능 여부
-    const now=new Date();
-    const dow=now.getDay(); // 0=일,1=월,...
-    const hr=now.getHours();
-    // 가능일: 일(0),월(1),수(3),목(4) 18:00 ~ 익일 10:00
-    const isCollectionDay=(d,h)=>{
-      if([0,1,3,4].includes(d) && h>=18) return true;
-      if([1,2,4,5].includes(d) && h<10) return true; // 전날 18시~익일 10시
-      return false;
-    };
-    const canDispose=isCollectionDay(dow,hr);
-    const nextDays=['일','월','화','수','목','금','토'];
     const disposeDesc=canDispose?'지금 배출 가능':'오늘 배출 불가';
 
     // Weather
@@ -2398,59 +2403,84 @@ async function loadDashboard(){
         </div>
       </div>`;
   }catch(e){
-    if(el) el.innerHTML='';
     console.warn('[dashboard]',e);
+    const disposeDesc=canDispose?'지금 배출 가능':'오늘 배출 불가';
+    el.innerHTML=`
+      <div style="background:var(--gray-100);border-radius:14px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:20px;">🌥️</span>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--gray-600);">오늘 날씨 정보를 불러오지 못했습니다</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">네트워크 상태를 확인하거나 잠시 후 다시 시도해주세요</div>
+        </div>
+      </div>
+      <div class="dash-sub-row">
+        <div class="dash-sub" style="flex:1;">
+          <div class="dash-sub-label">분리수거</div>
+          <div class="dash-sub-val">${canDispose?'✅':'⏳'}</div>
+          <div class="dash-sub-grade ${canDispose?'grade-good':''}">${disposeDesc}</div>
+        </div>
+      </div>`;
   }
 }
 
 async function loadNotices() {
   const el = document.getElementById('notice-list');
   if (!el) return;
-  const { data } = await sb.from('wiki_documents')
-    .select('title,summary,body')
-    .eq('category','notice')
-    .eq('status','published')
-    .order('summary', { ascending: false });
-  if (!data || !data.length) {
-    el.innerHTML = '<div style="padding:12px;color:var(--gray-400);font-size:13px;text-align:center;">공지사항이 없습니다.</div>';
-    return;
-  }
-  el.innerHTML = data.map((n, i) => `
-    <a href="${n.body}" target="_blank" style="text-decoration:none;" rel="noopener">
-      <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;${i < data.length-1 ? 'border-bottom:1px solid var(--gray-100);' : ''}border-radius:0;">
-        <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">공지</span>
-        <div class="news-body">
-          <div class="news-title">${n.title}</div>
-          <div class="news-date">${n.summary}</div>
+  try {
+    const timeout = new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),7000));
+    const query = sb.from('wiki_documents').select('title,summary,body').eq('category','notice').eq('status','published').order('summary',{ascending:false});
+    const { data } = await Promise.race([query, timeout]);
+    if (!data || !data.length) {
+      el.innerHTML = '<div style="padding:12px;color:var(--gray-400);font-size:13px;text-align:center;">등록된 공지사항이 없습니다.</div>';
+      return;
+    }
+    el.innerHTML = data.map((n, i) => `
+      <a href="${n.body}" target="_blank" style="text-decoration:none;" rel="noopener">
+        <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;${i < data.length-1 ? 'border-bottom:1px solid var(--gray-100);' : ''}border-radius:0;">
+          <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">공지</span>
+          <div class="news-body">
+            <div class="news-title">${n.title}</div>
+            <div class="news-date">${n.summary}</div>
+          </div>
+          <span style="color:var(--gray-300);font-size:14px;flex-shrink:0;">›</span>
         </div>
-        <span style="color:var(--gray-300);font-size:14px;flex-shrink:0;">›</span>
-      </div>
-    </a>`).join('');
+      </a>`).join('');
+  } catch(e) {
+    el.innerHTML = '<div style="padding:12px;color:var(--gray-400);font-size:13px;text-align:center;">공지 데이터를 준비 중입니다. 잠시 후 다시 확인해주세요.</div>';
+  }
 }
 
 async function loadMeetings() {
   const el = document.getElementById('meeting-list');
   if (!el) return;
-  const { data } = await sb.from('wiki_documents')
-    .select('title,summary,body')
-    .eq('category','meeting')
-    .eq('status','published')
-    .order('summary', { ascending: false });
-  if (!data || !data.length) {
-    el.innerHTML = '<div style="padding:12px;color:var(--gray-400);font-size:13px;text-align:center;">회의록이 없습니다.</div>';
-    return;
-  }
-  el.innerHTML = data.map((n, i) => `
-    <a href="${n.body}" target="_blank" style="text-decoration:none;" rel="noopener">
-      <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;${i < data.length-1 ? 'border-bottom:1px solid var(--gray-100);' : ''}border-radius:0;">
-        <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">PDF</span>
-        <div class="news-body">
-          <div class="news-title">${n.title}</div>
-          <div class="news-date">${n.summary}</div>
+  try {
+    const timeout = new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),7000));
+    const query = sb.from('wiki_documents').select('title,summary,body').eq('category','meeting').eq('status','published').order('summary',{ascending:false});
+    const { data } = await Promise.race([query, timeout]);
+    if (!data || !data.length) {
+      el.innerHTML = `<div style="padding:12px;color:var(--gray-400);font-size:13px;text-align:center;">
+        등록된 회의록이 없습니다.<br>
+        <a href="https://dmcpvx.com" target="_blank" rel="noopener" style="color:var(--navy);font-weight:600;text-decoration:none;margin-top:6px;display:inline-block;">원문 회의록 → dmcpvx.com ›</a>
+      </div>`;
+      return;
+    }
+    el.innerHTML = data.map((n, i) => `
+      <a href="${n.body}" target="_blank" style="text-decoration:none;" rel="noopener">
+        <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;${i < data.length-1 ? 'border-bottom:1px solid var(--gray-100);' : ''}border-radius:0;">
+          <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">PDF</span>
+          <div class="news-body">
+            <div class="news-title">${n.title}</div>
+            <div class="news-date">${n.summary}</div>
+          </div>
+          <span style="color:var(--gray-300);font-size:14px;flex-shrink:0;">›</span>
         </div>
-        <span style="color:var(--gray-300);font-size:14px;flex-shrink:0;">›</span>
-      </div>
-    </a>`).join('');
+      </a>`).join('');
+  } catch(e) {
+    el.innerHTML = `<div style="padding:12px;color:var(--gray-400);font-size:13px;text-align:center;">
+      회의록을 불러오지 못했습니다.<br>
+      <a href="https://dmcpvx.com" target="_blank" rel="noopener" style="color:var(--navy);font-weight:600;text-decoration:none;margin-top:6px;display:inline-block;">원문 회의록은 dmcpvx.com에서 확인하세요 ›</a>
+    </div>`;
+  }
 }
 
 // 초기 히스토리 세팅
