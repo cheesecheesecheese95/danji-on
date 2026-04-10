@@ -1754,6 +1754,43 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
     </div>
 
+    <!-- ═══ 실거래가 ═══ -->
+    <div class="page" id="page-realestate">
+      <div class="sec" style="padding-top:20px;padding-bottom:32px;">
+        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <div class="sec-title">🏠 실거래가</div>
+        <div class="sec-sub">DMC파크뷰자이 · 최근 6개월 매매 실거래</div>
+
+        <!-- 요약 카드 -->
+        <div class="re-summary" id="re-summary" style="margin-top:14px;">
+          <div class="re-sum-card"><div class="re-sum-label">최근 거래</div><div class="re-sum-val" id="re-latest-price">—</div><div class="re-sum-sub" id="re-latest-info">불러오는 중</div></div>
+          <div class="re-sum-card"><div class="re-sum-label">거래 건수</div><div class="re-sum-val" id="re-count">—</div><div class="re-sum-sub">최근 6개월</div></div>
+        </div>
+
+        <!-- 면적 필터 -->
+        <div class="re-filter-row" id="re-filters">
+          <div class="re-chip active" onclick="filterRE(this,'all')">전체</div>
+        </div>
+
+        <!-- 거래 목록 -->
+        <div class="re-table-wrap">
+          <table class="re-table">
+            <thead><tr>
+              <th>계약일</th>
+              <th>전용면적</th>
+              <th>층</th>
+              <th>거래금액</th>
+            </tr></thead>
+            <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 데이터 불러오는 중…</td></tr></tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:12px;font-size:11px;color:var(--gray-400);text-align:center;line-height:1.6;">
+          출처: 국토교통부 실거래가 공개시스템 · 단위: 만원
+        </div>
+      </div>
+    </div>
+
   </div><!-- /scroll-content -->
 
   <!-- 하단 내비게이션 -->
@@ -2650,43 +2687,6 @@ window.addEventListener('DOMContentLoaded', () => {
       <div style="margin-top:16px;background:var(--navy-bg);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
         <span style="font-size:12px;color:var(--navy);flex:1;font-weight:600;">danji-on.vercel.app</span>
         <button onclick="navigator.clipboard.writeText('https://danji-on.vercel.app').then(()=>{this.textContent='✓ 복사됨';setTimeout(()=>this.textContent='URL 복사',1500)})" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">URL 복사</button>
-      </div>
-    </div>
-
-    <!-- ═══ 실거래가 ═══ -->
-    <div class="page" id="page-realestate">
-      <div class="sec" style="padding-top:20px;padding-bottom:32px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
-        <div class="sec-title">🏠 실거래가</div>
-        <div class="sec-sub">DMC파크뷰자이 · 최근 6개월 매매 실거래</div>
-
-        <!-- 요약 카드 -->
-        <div class="re-summary" id="re-summary" style="margin-top:14px;">
-          <div class="re-sum-card"><div class="re-sum-label">최근 거래</div><div class="re-sum-val" id="re-latest-price">—</div><div class="re-sum-sub" id="re-latest-info">불러오는 중</div></div>
-          <div class="re-sum-card"><div class="re-sum-label">거래 건수</div><div class="re-sum-val" id="re-count">—</div><div class="re-sum-sub">최근 6개월</div></div>
-        </div>
-
-        <!-- 면적 필터 -->
-        <div class="re-filter-row" id="re-filters">
-          <div class="re-chip active" onclick="filterRE(this,'all')">전체</div>
-        </div>
-
-        <!-- 거래 목록 -->
-        <div class="re-table-wrap">
-          <table class="re-table">
-            <thead><tr>
-              <th>계약일</th>
-              <th>전용면적</th>
-              <th>층</th>
-              <th>거래금액</th>
-            </tr></thead>
-            <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 데이터 불러오는 중…</td></tr></tbody>
-          </table>
-        </div>
-
-        <div style="margin-top:12px;font-size:11px;color:var(--gray-400);text-align:center;line-height:1.6;">
-          출처: 국토교통부 실거래가 공개시스템 · 단위: 만원
-        </div>
       </div>
     </div>
 
