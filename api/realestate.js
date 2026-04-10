@@ -1,8 +1,9 @@
 // Vercel 서버리스 함수 — 국토부 아파트 실거래가 조회
+// DMC파크뷰자이 1단지/4단지 (서대문구 11410)
 export const config = { maxDuration: 20 };
 
 const KEY = process.env.REALESTATE_KEY;
-const DEFAULT_LAWD = '11440'; // 마포구 (기본값)
+const LAWD_CD = '11410'; // 서대문구
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,25 +13,19 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'API 키가 설정되지 않았습니다.' });
   }
 
-  const raw = req.query.raw === '1';
-  const lawd = req.query.lawd || DEFAULT_LAWD;
   const months = getLastMonths(6);
   const allItems = [];
 
   for (const ym of months) {
     try {
-      const url = `https://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade?serviceKey=${KEY}&LAWD_CD=${lawd}&DEAL_YMD=${ym}&numOfRows=100&pageNo=1`;
+      const url = `https://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade?serviceKey=${KEY}&LAWD_CD=${LAWD_CD}&DEAL_YMD=${ym}&numOfRows=100&pageNo=1`;
       const r = await fetch(url);
       const xml = await r.text();
       const items = parseXmlItems(xml);
-      if (raw) {
-        allItems.push(...items);
-      } else {
-        const filtered = items.filter(i =>
-          i.aptNm && (i.aptNm.includes('파크뷰자이') || i.aptNm.includes('DMC파크뷰'))
-        );
-        allItems.push(...filtered);
-      }
+      const filtered = items.filter(i =>
+        i.aptNm && i.aptNm.includes('DMC파크뷰자이')
+      );
+      allItems.push(...filtered);
     } catch (e) {
       console.error(`[realestate] ${ym} 조회 실패:`, e.message);
     }
@@ -42,7 +37,7 @@ export default async function handler(req, res) {
     return db.localeCompare(da);
   });
 
-  return res.status(200).json({ items: allItems.slice(0, 100), total: allItems.length, lawd });
+  return res.status(200).json({ items: allItems.slice(0, 60), total: allItems.length });
 }
 
 function parseXmlItems(xml) {
