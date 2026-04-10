@@ -1786,7 +1786,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <div style="margin-top:12px;font-size:11px;color:var(--gray-400);text-align:center;line-height:1.6;">
-          출처: 국토교통부 실거래가 공개시스템 · 단위: 만원
+          출처: 국토교통부 실거래가 공개시스템 · 단위: 만원 · *동 표시는 과거 거래 패턴 기반 추정
         </div>
       </div>
     </div>
@@ -2210,7 +2210,7 @@ function renderRETable(items) {
     return `<tr>
       <td class="re-date">${date}</td>
       <td><span class="re-area-badge">${area}㎡</span></td>
-      <td class="re-floor">${i.aptDong ? i.aptDong+'동 ' : ''}${i.floor}층</td>
+      <td class="re-floor">${i.aptDong ? `<span style="color:var(--gray-700)">${i.aptDong}동</span>${i.dongInferred ? '<span style="font-size:9px;color:var(--gray-400)">*</span>' : ''} ` : ''}${i.floor}층</td>
       <td class="re-price">${priceStr}</td>
     </tr>`;
   }).join('');
