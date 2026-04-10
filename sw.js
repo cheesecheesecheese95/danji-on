@@ -1,4 +1,4 @@
-const CACHE = 'pvx-on-v2';
+const CACHE = 'pvx-on-v3';
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/','index.html'])).catch(()=>{}));
