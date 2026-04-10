@@ -284,6 +284,29 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .s-naver-badge{font-size:9px;font-weight:700;color:#03C75A;background:#e8faf0;padding:1px 5px;border-radius:4px;margin-left:4px;}
 .danji-btn{background:var(--white);border:1.5px solid var(--gray-200);border-radius:10px;padding:10px 8px;font-size:13px;font-weight:600;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all 0.12s;}
 .danji-btn.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* ── 날씨·환경 대시보드 ───────────────────────────── */
+.dash-wrap{margin-bottom:16px;}
+.dash-main{background:linear-gradient(135deg,#1B3A6B 0%,#2a5298 100%);border-radius:18px;padding:16px;color:#fff;margin-bottom:8px;position:relative;overflow:hidden;}
+.dash-main::before{content:'';position:absolute;top:-30px;right:-20px;width:120px;height:120px;background:rgba(255,255,255,0.06);border-radius:50%;}
+.dash-main::after{content:'';position:absolute;bottom:-20px;right:30px;width:80px;height:80px;background:rgba(255,255,255,0.04);border-radius:50%;}
+.dash-weather-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.dash-emoji{font-size:36px;line-height:1;}
+.dash-temp-block{flex:1;}
+.dash-temp{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1;}
+.dash-desc{font-size:12px;opacity:.8;margin-top:2px;}
+.dash-loc{font-size:11px;opacity:.6;margin-left:auto;text-align:right;}
+.dash-minmax{font-size:12px;opacity:.75;margin-top:2px;}
+.dash-meta{display:flex;gap:14px;font-size:12px;opacity:.75;}
+.dash-meta span{display:flex;align-items:center;gap:4px;}
+.dash-sub-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.dash-sub{background:#fff;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.dash-sub-label{font-size:10px;font-weight:700;color:var(--gray-400);letter-spacing:.04em;}
+.dash-sub-val{font-size:14px;font-weight:800;color:var(--gray-800);line-height:1.2;}
+.dash-sub-grade{font-size:11px;font-weight:600;margin-top:1px;}
+.grade-good{color:#10B981;}.grade-normal{color:#F59E0B;}.grade-bad{color:#EF4444;}.grade-very-bad{color:#7C3AED;}
+.dash-garbage-day{font-size:11px;color:var(--gray-500);margin-top:2px;line-height:1.4;}
+.dash-loading{text-align:center;padding:20px;font-size:13px;color:var(--gray-400);}
 </style>
 </head>
 <body>
@@ -319,7 +342,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div style="font-size:13px;color:var(--gray-400);margin-top:4px;">DMC파크뷰자이 입주민 전용 생활정보</div>
         </div>
 
-        <!-- 핵심 퀵메뉴 6개 — 2열 크게 -->
+        <!-- ── 날씨·환경 대시보드 ── -->
+        <div class="dash-wrap" id="dashboard">
+          <div class="dash-loading">🌤️ 날씨 불러오는 중…</div>
+        </div>
+
+                <!-- 핵심 퀵메뉴 6개 — 2열 크게 -->
         <div class="sec-label">메뉴</div>
         <div class="qgrid">
           <button class="qbtn" onclick="goTab('fee')">
@@ -2068,6 +2096,103 @@ function goFeeTab(idx,btn){
 }
 
 // 관리사무소 공지사항 로드
+
+// ── 날씨·환경 대시보드 ────────────────────────────────────────
+async function loadDashboard(){
+  const LAT=37.5737, LON=126.9042;
+  const el=document.getElementById('dashboard');
+  if(!el) return;
+  try{
+    const [wRes,aRes]=await Promise.allSettled([
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul&forecast_days=1`).then(r=>r.json()),
+      fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm10,pm2_5&timezone=Asia%2FSeoul`).then(r=>r.json())
+    ]);
+    const w=wRes.status==='fulfilled'?wRes.value:null;
+    const a=aRes.status==='fulfilled'?aRes.value:null;
+
+    const WMO={0:['☀️','맑음'],1:['🌤️','대체로 맑음'],2:['⛅','구름 조금'],3:['☁️','흐림'],
+      45:['🌫️','안개'],48:['🌫️','안개'],51:['🌦️','이슬비'],53:['🌦️','이슬비'],55:['🌦️','이슬비'],
+      61:['🌧️','비'],63:['🌧️','비'],65:['🌧️','비'],71:['🌨️','눈'],73:['🌨️','눈'],75:['🌨️','눈'],
+      80:['🌧️','소나기'],81:['🌧️','소나기'],82:['⛈️','폭우'],95:['⛈️','뇌우']};
+    
+    function pm10Grade(v){if(v<=30)return['🟢','좋음','grade-good'];if(v<=80)return['🟡','보통','grade-normal'];if(v<=150)return['🟠','나쁨','grade-bad'];return['🔴','매우나쁨','grade-very-bad'];}
+    function pm25Grade(v){if(v<=15)return['🟢','좋음','grade-good'];if(v<=35)return['🟡','보통','grade-normal'];if(v<=75)return['🟠','나쁨','grade-bad'];return['🔴','매우나쁨','grade-very-bad'];}
+    
+    // 분리수거 오늘 가능 여부
+    const now=new Date();
+    const dow=now.getDay(); // 0=일,1=월,...
+    const hr=now.getHours();
+    // 가능일: 일(0),월(1),수(3),목(4) 18:00 ~ 익일 10:00
+    const isCollectionDay=(d,h)=>{
+      if([0,1,3,4].includes(d) && h>=18) return true;
+      if([1,2,4,5].includes(d) && h<10) return true; // 전날 18시~익일 10시
+      return false;
+    };
+    const canDispose=isCollectionDay(dow,hr);
+    const nextDays=['일','월','화','수','목','금','토'];
+    const disposeDesc=canDispose?'지금 배출 가능':'오늘 배출 불가';
+    const disposeNote='배출가능: 일·월, 수·목 18:00~';
+
+    // Weather
+    let emoji='🌡️',desc='불러오기 실패',temp='—',maxT='—',minT='—',wind='—',hum='—';
+    if(w&&w.current){
+      const code=w.current.weather_code;
+      [emoji,desc]=WMO[code]||['🌡️',`코드${code}`];
+      temp=Math.round(w.current.temperature_2m);
+      wind=w.current.wind_speed_10m?.toFixed(1);
+      hum=Math.round(w.current.relative_humidity_2m);
+      if(w.daily){maxT=Math.round(w.daily.temperature_2m_max[0]);minT=Math.round(w.daily.temperature_2m_min[0]);}
+    }
+
+    // Air quality
+    let pm10Val='—',pm10G=['🔘','정보없음',''],pm25Val='—',pm25G=['🔘','정보없음',''];
+    if(a&&a.current){
+      pm10Val=Math.round(a.current.pm10);
+      pm25Val=Math.round(a.current.pm2_5);
+      pm10G=pm10Grade(pm10Val);
+      pm25G=pm25Grade(pm25Val);
+    }
+
+    el.innerHTML=`
+      <div class="dash-main">
+        <div class="dash-weather-row">
+          <div class="dash-emoji">${emoji}</div>
+          <div class="dash-temp-block">
+            <div class="dash-temp">${temp}°<span style="font-size:16px;font-weight:500;opacity:.8">C</span></div>
+            <div class="dash-desc">${desc}</div>
+            <div class="dash-minmax">최고 ${maxT}° / 최저 ${minT}°</div>
+          </div>
+          <div class="dash-loc">서대문구<br>남가좌동<br><span style="font-size:10px;opacity:.5">${now.getHours()}시 기준</span></div>
+        </div>
+        <div class="dash-meta">
+          <span>💧 습도 ${hum}%</span>
+          <span>💨 바람 ${wind}m/s</span>
+        </div>
+      </div>
+      <div class="dash-sub-row">
+        <div class="dash-sub">
+          <div class="dash-sub-label">미세먼지 PM10</div>
+          <div class="dash-sub-val">${pm10G[0]} ${pm10Val}</div>
+          <div class="dash-sub-grade ${pm10G[2]}">${pm10G[1]} <span style="font-size:10px;color:var(--gray-400)">㎍/㎥</span></div>
+        </div>
+        <div class="dash-sub">
+          <div class="dash-sub-label">초미세먼지 PM2.5</div>
+          <div class="dash-sub-val">${pm25G[0]} ${pm25Val}</div>
+          <div class="dash-sub-grade ${pm25G[2]}">${pm25G[1]} <span style="font-size:10px;color:var(--gray-400)">㎍/㎥</span></div>
+        </div>
+        <div class="dash-sub">
+          <div class="dash-sub-label">분리수거</div>
+          <div class="dash-sub-val">${canDispose?'✅':'⏳'}</div>
+          <div class="dash-sub-grade ${canDispose?'grade-good':''}"> ${disposeDesc}</div>
+          <div class="dash-garbage-day">${disposeNote}</div>
+        </div>
+      </div>`;
+  }catch(e){
+    if(el) el.innerHTML='';
+    console.warn('[dashboard]',e);
+  }
+}
+
 async function loadNotices() {
   const el = document.getElementById('notice-list');
   if (!el) return;
@@ -2122,6 +2247,7 @@ async function loadMeetings() {
 pushHistory('home');
 loadBiz();
 loadLocal();
+loadDashboard();
 loadNotices();
 loadMeetings();
 
