@@ -1984,7 +1984,7 @@ async function _doSearch(q){
       items.slice(0,5).forEach(item=>{
         const name = item.title.replace(/<[^>]+>/g,'');
         const addr = (item.roadAddress||item.address||'').split(' ').slice(-3).join(' ');
-        const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(name+' '+addr)}`;
+        const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(name)}`;
         nh += `<div class="s-item" onclick="window.open('${mapUrl}','_blank')">
           <div class="s-item-icon" style="background:#e8faf0;font-size:18px;">📍</div>
           <div class="s-item-body">
