@@ -119,6 +119,20 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .faq-t{flex:1;font-size:14px;color:var(--gray-800);line-height:1.4;}
 .faq-arr{font-size:14px;color:var(--gray-300);}
 .hot{font-size:10px;font-weight:700;color:var(--red);background:var(--red-bg);padding:2px 6px;border-radius:10px;margin-left:4px;}
+/* FAQ PAGE */
+.faq-acc-wrap{border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
+.faq-acc-item{border-bottom:1px solid var(--gray-100);}
+.faq-acc-item:last-child{border-bottom:none;}
+.faq-acc-q{display:flex;align-items:flex-start;gap:12px;padding:15px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.faq-acc-q:active{background:var(--gray-50);}
+.faq-acc-num{font-size:11px;font-weight:800;color:var(--navy);min-width:20px;padding-top:2px;}
+.faq-acc-text{flex:1;font-size:14px;font-weight:600;color:var(--gray-800);line-height:1.45;}
+.faq-acc-chevron{font-size:13px;color:var(--gray-300);transition:transform .2s;padding-top:2px;flex-shrink:0;}
+.faq-acc-item.open .faq-acc-chevron{transform:rotate(90deg);}
+.faq-acc-a{display:none;padding:0 16px 16px 48px;}
+.faq-acc-item.open .faq-acc-a{display:block;}
+.faq-acc-body{font-size:13px;color:var(--gray-600);line-height:1.75;}
+.faq-go{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:12px;font-weight:700;color:var(--navy);background:var(--navy-bg);border:none;border-radius:8px;padding:7px 13px;cursor:pointer;font-family:inherit;}
 
 /* INFO ROW */
 .irow{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray-100);}
@@ -403,12 +417,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <!-- 자주 찾는 질문 — 맨 아래 -->
         <div class="sec-label" style="margin-top:14px;">자주 찾는 질문</div>
-        <div class="card">
-          <div class="faq-item" onclick="goTab('fee')"><span class="faq-n">1</span><span class="faq-t">관리비 항목이 왜 이렇게 많아요? <span class="hot">HOT</span></span><span class="faq-arr">›</span></div>
-          <div class="faq-item" onclick="goPage('complaint')"><span class="faq-n">2</span><span class="faq-t">위층 소음 심한데 어떻게 신고하나요? <span class="hot">HOT</span></span><span class="faq-arr">›</span></div>
-          <div class="faq-item" onclick="goTab('community')"><span class="faq-n">3</span><span class="faq-t">수영장·헬스장 예약 어떻게 해요?</span><span class="faq-arr">›</span></div>
-          <div class="faq-item" onclick="goPage('living')"><span class="faq-n">4</span><span class="faq-t">분리수거 정확히 언제예요?</span><span class="faq-arr">›</span></div>
-          <div class="faq-item" onclick="goPage('parking')"><span class="faq-n">5</span><span class="faq-t">방문객 주차 등록 어떻게 하나요?</span><span class="faq-arr">›</span></div>
+        <div class="card" onclick="goPage('faq')" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;-webkit-tap-highlight-color:transparent;">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--gray-800);">입주민이 가장 많이 물어보는 질문</div>
+            <div style="font-size:12px;color:var(--gray-400);margin-top:3px;">주차 · 관리비 · 커뮤니티 · 소음 등 10가지</div>
+          </div>
+          <span style="font-size:20px;color:var(--gray-300);flex-shrink:0;">›</span>
         </div>
 
         <!-- 앱 설치 유도 -->
@@ -2111,6 +2125,10 @@ async function loadMeetings() {
     </a>`).join('');
 }
 
+function toggleFaq(el) {
+  el.closest('.faq-acc-item').classList.toggle('open');
+}
+
 // 초기 히스토리 세팅
 pushHistory('home');
 loadBiz();
@@ -2412,6 +2430,149 @@ window.addEventListener('DOMContentLoaded', () => {
       <div style="margin-top:16px;background:var(--navy-bg);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
         <span style="font-size:12px;color:var(--navy);flex:1;font-weight:600;">danji-on.vercel.app</span>
         <button onclick="navigator.clipboard.writeText('https://danji-on.vercel.app').then(()=>{this.textContent='✓ 복사됨';setTimeout(()=>this.textContent='URL 복사',1500)})" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">URL 복사</button>
+      </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="page" id="page-faq">
+      <div class="sec" style="padding-top:20px;padding-bottom:32px;">
+        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <div class="sec-title">❓ 자주 찾는 질문</div>
+        <div class="sec-sub">2024~2026년 실제 민원 734건 기반</div>
+
+        <div class="faq-acc-wrap" style="margin-top:16px;">
+
+          <!-- Q1 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q1</span>
+              <span class="faq-acc-text">전기차 충전구역에 일반 차량을 주차해도 되나요?<span class="hot" style="margin-left:6px;">HOT</span></span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">'전기차 전용' 표시 구역은 충전 목적의 전기차만 주차 가능합니다. '일반 병행 주차 허용' 구역은 비충전 차량도 주차할 수 있으나, 전기차가 충전을 위해 진입하면 즉시 이동 협조해야 합니다.<br><br>충전 완료 후 14시간 이내 이동 의무(친환경자동차법)가 있으며, 미이동 시 과태료 대상이 될 수 있습니다. 단지별 구역 현황은 관리사무소로 문의하세요.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goPage('parking')">→ 주차 안내 보기</button>
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q2</span>
+              <span class="faq-acc-text">관리비 고지서 상세 내역을 어디서 확인하나요?<span class="hot" style="margin-left:6px;">HOT</span></span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">아파트 홈페이지(dmcpvx.com) 로그인 후 '관리비 조회' 메뉴에서 월별 상세 내역을 확인할 수 있습니다.<br><br>공동관리비 차감액은 단지 공용 수익(광고·임대 수익 등)을 입주민에게 환급하는 금액으로 매월 달라집니다. 회계 장부·외부 감사 결과는 관리사무소 열람 신청 또는 서울시 공동주택 통합정보마당에서 확인 가능합니다.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goTab('fee')">→ 관리비 안내 보기</button>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q3</span>
+              <span class="faq-acc-text">인테리어 공사 중 엘리베이터 보양재가 너무 오래 방치돼 있어요.</span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">공사 세대의 보양재는 공사 완료 후 해당 세대가 관리사무소에 철거를 요청해야 합니다. 공사가 끝났음에도 방치되거나 분진으로 오염된 경우, 민원게시판 또는 관리사무소(☎ 02-931-8360)에 <strong>동·라인 번호</strong>를 알려주시면 조치해 드립니다.<br><br>공사 중 엘리베이터 한 라인 장시간 독점 사용도 관리사무소에 시정 요청할 수 있습니다.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goPage('repair')">→ 수리·하자 안내 보기</button>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q4</span>
+              <span class="faq-acc-text">커뮤니티 시설(수영장·헬스장·독서실) 이용 등록은 어떻게 하나요?</span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">매월 지정된 신청일에 아파트 앱(바이비) 또는 커뮤니티센터 현장에서 등록합니다. RF카드 기본 등록 외에 수영장은 얼굴인식 별도 등록이 필요합니다(입퇴장 관리 목적).<br><br>독서실은 일일권 결제 없이 이용 불가합니다. 사이트 오류 발생 시 현장 방문 접수로 대체됩니다.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goTab('community')">→ 커뮤니티 안내 보기</button>
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q5</span>
+              <span class="faq-acc-text">음식물 쓰레기를 비닐봉투째 버려도 되나요?</span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">원칙적으로 비닐봉투 없이 전용 수거함에 직접 투입해야 합니다. 단, 동절기(기온이 매우 낮은 시기)에만 냄새·동결 방지를 위해 비닐째 투입을 허용하는 임시 안내문이 게시됩니다. 봄이 오면 해당 안내문을 철거하니 확인 후 이용해 주세요.<br><br>베란다에서 음식물을 투척하는 행위는 공동주택 관리규약 위반입니다.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goPage('living')">→ 생활 정보 보기</button>
+            </div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q6</span>
+              <span class="faq-acc-text">주차 위반 차량을 신고하고 싶어요.<span class="hot" style="margin-left:6px;">HOT</span></span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">소화전 앞, 장애인 구역 무단 점유, 이중 주차 등 불법 주차 차량은 <strong>관리사무소(☎ 02-931-8360)</strong> 또는 민원게시판에 차량 번호와 위치를 알려주시면 방송·스티커 경고 조치합니다.<br><br>지속 점유 차량은 견인 조치 가능하며, 전기자전거·킥보드 지하주차장 무단 주차도 동일하게 신고하실 수 있습니다.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goPage('parking')">→ 주차 안내 보기</button>
+            </div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q7</span>
+              <span class="faq-acc-text">화장실·안방에서 담배 냄새가 올라옵니다.</span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">배관을 통한 담배 냄새 유입은 인근 세대 흡연 또는 단지 내 외부 흡연이 원인인 경우가 많습니다. 관리사무소에 신고하면 해당 구역에 금연 방송 및 주의 안내문 발송이 가능합니다.<br><br>근본적 해결을 위해 환기구 역류 방지 장치 점검을 요청하세요. 지정 흡연구역 외 흡연 적발 시 관리규약에 따라 과태료 처분이 가능합니다.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goPage('complaint')">→ 민원·소음 신고 안내</button>
+            </div>
+          </div>
+
+          <!-- Q8 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q8</span>
+              <span class="faq-acc-text">엘리베이터에서 이상한 소리·떨림이 납니다.</span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">민원게시판 또는 관리사무소(☎ 02-931-8360)에 <strong>동·라인 번호와 증상</strong>(어느 층 부근, 소리 종류)을 구체적으로 알려주시면 승강기 유지보수 업체에 즉시 점검을 의뢰합니다.<br><br>덜컹거림·멈춤·문 오작동 등 긴급 이상 징후는 수시 신고 즉시 조치합니다. 엘리베이터 내 무단 광고 스티커 부착도 동일하게 신고해 주세요.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goPage('repair')">→ 수리·하자 안내 보기</button>
+            </div>
+          </div>
+
+          <!-- Q9 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q9</span>
+              <span class="faq-acc-text">층간소음 민원 절차가 어떻게 되나요?<span class="hot" style="margin-left:6px;">HOT</span></span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">타워동은 구조 특성상 소음 발생 세대 특정이 어렵습니다. 경비실 신고 시 소음 방향 위층 복수 세대에 주의 안내를 합니다.<br><br>발생 세대를 특정하려면 <strong>소음 시간대·위치(천장·벽 방향)</strong>를 기록해 관리사무소에 제출하면 층간소음 측정 조사를 요청할 수 있습니다. 지속 분쟁은 <strong>층간소음이웃사이센터(☎ 1661-2642)</strong>를 통한 공식 조정도 가능합니다.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goPage('complaint')">→ 민원·소음 신고 안내</button>
+            </div>
+          </div>
+
+          <!-- Q10 -->
+          <div class="faq-acc-item">
+            <div class="faq-acc-q" onclick="toggleFaq(this)">
+              <span class="faq-acc-num">Q10</span>
+              <span class="faq-acc-text">단지 조경(고사목 식재·전지) 계획을 어디서 확인하나요?</span>
+              <span class="faq-acc-chevron">›</span>
+            </div>
+            <div class="faq-acc-a">
+              <p class="faq-acc-body">조경 전지 및 교목 관리는 봄·가을 연 1~2회 시행되며 일정은 관리사무소 공지사항을 통해 안내됩니다. 특정 위치의 고사목·방치 잡초는 위치를 명시하여 민원게시판에 신고해 주세요.<br><br>중기 조경 계획은 입주자대표회의 결정 사항으로 회의록을 통해 확인할 수 있습니다.</p>
+              <button class="faq-go" onclick="event.stopPropagation();goPage('news')">→ 단지소식 보기</button>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
