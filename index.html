@@ -2,8 +2,27 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>단지ON — DMC파크뷰자이</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DMC파크뷰자이 ON</title>
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1B3A6B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DMC파크뷰자이 ON">
+
+<!-- Apple 아이콘 -->
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144.png">
+
+<!-- OG / 공유 미리보기 -->
+<meta property="og:title" content="DMC파크뷰자이 ON">
+<meta property="og:description" content="DMC파크뷰자이 입주민 전용 생활정보 — 관리비, 주차, 커뮤니티, 소식">
+<meta property="og:image" content="/icons/icon-512.png">
+<meta property="og:type" content="website">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -22,19 +41,23 @@
   --shadow-sm:0 1px 4px rgba(0,0,0,0.08);
   --tab-h:64px;
 }
-html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-apple-system,sans-serif;font-size:15px;color:var(--gray-800);background:var(--gray-100);min-height:100vh;-webkit-font-smoothing:antialiased;}
-.app{max-width:430px;margin:0 auto;background:var(--gray-50);min-height:100vh;}
+html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-apple-system,sans-serif;font-size:15px;color:var(--gray-800);background:var(--gray-100);height:100%;-webkit-font-smoothing:antialiased;}
+.app{max-width:430px;margin:0 auto;background:var(--gray-50);min-height:100vh;position:relative;}
 
 /* HEADER */
-.header{background:var(--navy);padding:18px 20px 14px;position:sticky;top:0;z-index:100;}
+.header{background:linear-gradient(135deg,#162d56 0%,#1B3A6B 60%,#1e4480 100%);padding:16px 20px 14px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08);}
 .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.apt-name{font-size:12px;color:rgba(255,255,255,0.6);}
-.apt-title{font-size:17px;color:#fff;font-weight:700;margin-top:1px;}
-.hbadge{font-size:11px;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9);padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+/* 브랜드 로고 */
+.brand-wrap{display:flex;align-items:center;gap:0;cursor:pointer;background:none;border:none;padding:0;font-family:inherit;}
+.brand-dmc{font-size:10px;font-weight:800;color:rgba(255,255,255,0.5);letter-spacing:0.12em;text-transform:uppercase;margin-right:6px;margin-top:1px;}
+.brand-name{font-size:16px;font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1;}
+.brand-on{display:inline-flex;align-items:center;justify-content:center;background:#fff;color:#1B3A6B;font-size:11px;font-weight:900;padding:2px 7px;border-radius:6px;margin-left:7px;letter-spacing:0.04em;line-height:1.4;vertical-align:middle;margin-bottom:1px;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+.hbadge{font-size:11px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);padding:5px 11px;border-radius:20px;border:1px solid rgba(255,255,255,0.18);letter-spacing:0.01em;}
 .search-wrap{position:relative;}
-.search-input{width:100%;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:10px 16px 10px 40px;font-size:14px;color:#fff;font-family:inherit;outline:none;}
-.search-input::placeholder{color:rgba(255,255,255,0.45);}
-.s-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:0.55;}
+.search-input{width:100%;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.16);border-radius:12px;padding:10px 16px 10px 40px;font-size:14px;color:#fff;font-family:inherit;outline:none;transition:border-color 0.15s;}
+.search-input:focus{border-color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.14);}
+.search-input::placeholder{color:rgba(255,255,255,0.4);}
+.s-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:0.5;}
 
 /* 야간응급 — 리디자인 */
 .ebar{position:sticky;top:108px;z-index:99;background:#1a1a1a;padding:0 16px;display:flex;align-items:center;gap:10px;height:56px;box-shadow:0 2px 10px rgba(0,0,0,0.35);}
@@ -56,8 +79,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .tab-btn.active .t-label{font-weight:700;}
 
 /* SCROLL */
-.scroll-content{padding-bottom:calc(var(--tab-h)+24px);overflow-y:auto;}
-.page.active{min-height:calc(100vh - 108px);}
+.scroll-content{padding-bottom:calc(var(--tab-h) + 32px);}
+.page.active{display:block;animation:fadeUp 0.18s ease;padding-bottom:8px;}
 
 /* PAGE */
 .page{display:none;}
@@ -210,7 +233,34 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .ss{font-size:11px;margin-top:4px;}
 .down{color:var(--green);}
 .up2{color:var(--red);}
+/* PWA 설치 배너 */
+.install-banner{display:none;position:fixed;bottom:calc(var(--tab-h)+10px);left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;background:var(--navy);border-radius:16px;padding:14px 16px;z-index:300;box-shadow:0 4px 20px rgba(0,0,0,0.3);align-items:center;gap:12px;animation:slideUp 0.3s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.install-icon{font-size:28px;flex-shrink:0;}
+.install-body{flex:1;}
+.install-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;}
+.install-sub{font-size:11px;color:rgba(255,255,255,0.65);}
+.install-btns{display:flex;gap:6px;flex-shrink:0;}
+.install-ok{background:#fff;color:var(--navy);border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+.install-x{background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:8px;padding:7px 10px;font-size:12px;cursor:pointer;font-family:inherit;}
+/* iOS 설치 모달 */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.ios-modal{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:430px;padding:24px 24px 40px;animation:slideUpModal 0.3s ease;}
+@keyframes slideUpModal{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.ios-step{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
+.ios-step:last-child{margin-bottom:0;}
+.ios-num{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.ios-step-body{flex:1;}
+.ios-step-title{font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:3px;}
+.ios-step-desc{font-size:12px;color:var(--gray-600);line-height:1.5;}
+.ios-emoji{font-size:20px;}
+.modal-close{width:100%;margin-top:20px;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
 .loading-placeholder{padding:16px;color:var(--gray-400);font-size:13px;text-align:center;}
+/* 입주민 인증 */
+.danji-btn{background:var(--white);border:1.5px solid var(--gray-200);border-radius:10px;padding:10px 8px;font-size:13px;font-weight:600;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all 0.12s;}
+.danji-btn.active{background:var(--navy);border-color:var(--navy);color:#fff;}
 </style>
 </head>
 <body>
@@ -219,8 +269,13 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
   <!-- HEADER -->
   <div class="header">
     <div class="header-top">
-      <div><div class="apt-name">가재울미래로</div><div class="apt-title">DMC파크뷰자이</div></div>
-      <span class="hbadge">입주민 인증 ✓</span>
+      <button class="brand-wrap" onclick="goTab('home')">
+        <span class="brand-dmc">DMC</span>
+        <span class="brand-name">파크뷰자이<span class="brand-on">ON</span></span>
+      </button>
+      <button id="btn-install-ios" onclick="showIOSGuide()" style="display:none;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.9);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">📲 앱 설치</button>
+      <span class="hbadge" id="btn-installed" style="display:none;">✓ 설치됨</span>
+      <button onclick="goPage('register')" class="hbadge" id="badge-default" style="cursor:pointer;border:none;font-family:inherit;">입주민 전용 →</button>
     </div>
     <div class="search-wrap">
       <svg class="s-ico" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
@@ -235,7 +290,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       <div class="sec" style="padding-top:20px;">
         <div style="margin-bottom:20px;">
           <div style="font-size:20px;font-weight:800;color:var(--gray-800);letter-spacing:-0.03em;">안녕하세요 👋</div>
-          <div style="font-size:13px;color:var(--gray-400);margin-top:4px;">DMC파크뷰자이 생활 정보를 바로 찾아보세요</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-top:4px;">DMC파크뷰자이 입주민 전용 생활정보</div>
         </div>
 
         <!-- 핵심 퀵메뉴 6개 — 2열 크게 -->
@@ -326,7 +381,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;letter-spacing:0.05em;">🏥 응급의료</div>
         <div class="egrid" style="margin-bottom:10px;">
           <button class="ebtn" onclick="goPage('emergency')" style="text-align:left;"><span class="e-icon">🚑</span><span class="e-label">응급실 찾기</span><span class="e-phone">5개 병원 주소·지도</span></button>
-          <button class="ebtn" onclick="goPage('emergency')" style="text-align:left;"><span class="e-icon">💊</span><span class="e-label">야간약국 찾기</span><span class="e-phone">5개 약국 주소·지도</span></button>
+          <button class="ebtn" onclick="goPageAnchor('emergency','sec-pharmacy')" style="text-align:left;"><span class="e-icon">💊</span><span class="e-label">야간약국 찾기</span><span class="e-phone">5개 약국 주소·지도</span></button>
         </div>
 
         <!-- 자주 찾는 질문 — 맨 아래 -->
@@ -337,6 +392,14 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div class="faq-item" onclick="goTab('community')"><span class="faq-n">3</span><span class="faq-t">수영장·헬스장 예약 어떻게 해요?</span><span class="faq-arr">›</span></div>
           <div class="faq-item" onclick="goPage('living')"><span class="faq-n">4</span><span class="faq-t">분리수거 정확히 언제예요?</span><span class="faq-arr">›</span></div>
           <div class="faq-item" onclick="goPage('parking')"><span class="faq-n">5</span><span class="faq-t">방문객 주차 등록 어떻게 하나요?</span><span class="faq-arr">›</span></div>
+        </div>
+
+        <!-- 앱 설치 유도 -->
+        <div id="home-install-btn" style="display:none;">
+          <button onclick="showInstallGuide()" style="width:100%;background:var(--navy);color:#fff;border:none;border-radius:16px;padding:16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px;">
+            📲 홈화면에 앱으로 추가하기
+          </button>
+          <div style="text-align:center;font-size:11px;color:var(--gray-400);margin-bottom:4px;">설치 무료 · 앱스토어 불필요</div>
         </div>
       </div>
     </div>
@@ -1450,7 +1513,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </div>
         </div>
 
-        <div class="sub-sec-label">💊 야간약국</div>
+        <div id="sec-pharmacy" class="sub-sec-label">💊 야간약국</div>
 
         <!-- 은하약국 -->
         <div class="card" style="margin-bottom:10px;">
@@ -1520,6 +1583,85 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="notice" style="background:var(--gray-100);border:1px solid var(--gray-200);">
           <span class="n-icon">💡</span>
           <div class="n-text" style="color:var(--gray-600);">야간약국은 운영시간이 변동될 수 있어요. 전화 먼저 확인하세요. 응급의료정보는 <strong>1339</strong>로 문의하세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 입주민 인증 ═══ -->
+    <div class="page" id="page-register">
+      <div class="sec" style="padding-top:20px;padding-bottom:20px;">
+        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+
+        <!-- 헤더 -->
+        <div style="text-align:center;margin-bottom:28px;">
+          <div style="width:64px;height:64px;background:var(--navy);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 14px;">🏠</div>
+          <div style="font-size:20px;font-weight:800;color:var(--gray-800);letter-spacing:-0.02em;">입주민 인증</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-top:6px;line-height:1.6;">DMC파크뷰자이 입주민만 이용할 수 있어요.<br>세대 정보를 입력해주세요.</div>
+        </div>
+
+        <!-- 인증 안내 -->
+        <div class="notice" style="background:var(--blue-bg);border:1px solid #BBDEFB;margin-bottom:20px;">
+          <span class="n-icon">🔒</span>
+          <div class="n-text" style="color:var(--blue);">입력하신 정보는 입주민 확인 용도로만 사용되며, 외부에 공개되지 않아요.</div>
+        </div>
+
+        <!-- 폼 -->
+        <div class="card" style="padding:20px;">
+
+          <!-- 단지 선택 -->
+          <div style="margin-bottom:18px;">
+            <div style="font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">단지 선택 *</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;" id="danji-group">
+              <button class="danji-btn active" onclick="selectDanji(this,'1단지')">1단지</button>
+              <button class="danji-btn" onclick="selectDanji(this,'2단지')">2단지</button>
+              <button class="danji-btn" onclick="selectDanji(this,'3단지')">3단지</button>
+              <button class="danji-btn" onclick="selectDanji(this,'4단지')">4단지</button>
+              <button class="danji-btn" onclick="selectDanji(this,'5단지')">5단지</button>
+            </div>
+          </div>
+
+          <!-- 동·호수 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">동 *</div>
+              <input id="input-dong" type="number" inputmode="numeric" placeholder="예) 125" style="width:100%;border:1.5px solid var(--gray-200);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;color:var(--gray-800);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--gray-200)'">
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">호수 *</div>
+              <input id="input-ho" type="number" inputmode="numeric" placeholder="예) 1502" style="width:100%;border:1.5px solid var(--gray-200);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;color:var(--gray-800);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--gray-200)'">
+            </div>
+          </div>
+
+          <!-- 세대주명 -->
+          <div style="margin-bottom:18px;">
+            <div style="font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">세대주 성함 *</div>
+            <input id="input-name" type="text" placeholder="예) 홍길동" style="width:100%;border:1.5px solid var(--gray-200);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;color:var(--gray-800);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--gray-200)'">
+          </div>
+
+          <!-- 연락처 -->
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">연락처 *</div>
+            <input id="input-phone" type="tel" inputmode="numeric" placeholder="예) 010-1234-5678" style="width:100%;border:1.5px solid var(--gray-200);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;color:var(--gray-800);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--gray-200)'" oninput="formatPhone(this)">
+            <div style="font-size:11px;color:var(--gray-400);margin-top:6px;">입력하신 연락처는 기기에만 저장되며 외부에 공개되지 않아요.</div>
+          </div>
+
+          <!-- 확인 버튼 -->
+          <button onclick="submitRegister()" style="width:100%;background:var(--navy);color:#fff;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:-0.01em;">
+            입주민 인증하기
+          </button>
+          <div style="text-align:center;font-size:11px;color:var(--gray-400);margin-top:12px;line-height:1.6;">
+            인증 후 단지 맞춤 정보를 더 정확하게 볼 수 있어요.<br>현재 버전은 별도 서버 저장 없이 기기에만 저장됩니다.
+          </div>
+        </div>
+
+        <!-- 이미 인증된 경우 -->
+        <div id="already-registered" style="display:none;">
+          <div class="card" style="background:var(--green-bg);border-color:#A9D6BD;text-align:center;padding:20px;">
+            <div style="font-size:24px;margin-bottom:8px;">✅</div>
+            <div style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:4px;" id="registered-label">인증 완료</div>
+            <div style="font-size:12px;color:#155a30;">저장된 정보로 이용 중이에요.</div>
+            <button onclick="clearRegister()" style="margin-top:16px;background:none;border:1px solid #A9D6BD;border-radius:10px;padding:8px 20px;font-size:12px;color:#155a30;cursor:pointer;font-family:inherit;">정보 초기화</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1750,6 +1892,311 @@ function goFeeTab(idx,btn){
 pushHistory('home');
 loadBiz();
 loadLocal();
+
+// ── iOS 감지 및 설치 안내 ────────────────────────────────────
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches
+  || window.navigator.standalone === true;
+
+function showInstallGuide() {
+  if (isIOS) {
+    // iOS: 모달 안내
+    const modal = document.getElementById('ios-modal');
+    if (modal) modal.style.display = 'flex';
+  } else {
+    // Android: 설치 프롬프트
+    installApp();
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  // 이미 설치됐으면 버튼 숨김
+  if (isInStandaloneMode) return;
+
+  const btn = document.getElementById('home-install-btn');
+
+  // iOS Safari: 자동 배너 없으므로 홈 버튼만 표시
+  if (isIOS && btn) {
+    btn.style.display = 'block';
+  }
+
+  // 7일 이내 dismiss 했으면 배너 숨김
+  const dismissed = localStorage.getItem('install-dismissed');
+  if (dismissed && Date.now() - Number(dismissed) < 7*24*60*60*1000) {
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'none';
+  }
+});
+
+// Android: beforeinstallprompt 시 홈 버튼도 표시
+window.addEventListener('beforeinstallprompt', () => {
+  const btn = document.getElementById('home-install-btn');
+  if (btn && !isInStandaloneMode) btn.style.display = 'block';
+});
+
+// iOS 모달 외부 탭 시 닫기
+document.getElementById('ios-modal')?.addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
+// ── 입주민 인증 ─────────────────────────────────────────────
+let selectedDanji = '1단지';
+
+function selectDanji(btn, val){
+  document.querySelectorAll('#danji-group .danji-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedDanji = val;
+}
+
+function formatPhone(input){
+  let v = input.value.replace(/\D/g,'');
+  if(v.length <= 3) input.value = v;
+  else if(v.length <= 7) input.value = v.slice(0,3)+'-'+v.slice(3);
+  else input.value = v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7,11);
+}
+
+function submitRegister(){
+  const dong = document.getElementById('input-dong').value.trim();
+  const ho = document.getElementById('input-ho').value.trim();
+  const name = document.getElementById('input-name').value.trim();
+  const phone = document.getElementById('input-phone').value.trim();
+  if(!dong || !ho || !name || !phone){
+    alert('모든 항목을 입력해주세요.');
+    return;
+  }
+  const info = { danji: selectedDanji, dong, ho, name, phone, date: new Date().toLocaleDateString('ko-KR') };
+  localStorage.setItem('resident-info', JSON.stringify(info));
+  window._savedResident = info;
+  showRegistered(info);
+  updateBadge(info);
+}
+
+function showRegistered(info){
+  const formCard = document.querySelector('#page-register .card');
+  if(formCard) formCard.style.display = 'none';
+  const el = document.getElementById('already-registered');
+  el.style.display = 'block';
+  document.getElementById('registered-label').textContent = `${info.danji} ${info.dong}동 ${info.ho}호 · ${info.name}님`;
+}
+
+function clearRegister(){
+  if(!confirm('입주민 정보를 초기화할까요?')) return;
+  localStorage.removeItem('resident-info');
+  window._savedResident = null;
+  const formCard = document.querySelector('#page-register .card');
+  if(formCard) formCard.style.display = 'block';
+  document.getElementById('already-registered').style.display = 'none';
+  ['input-dong','input-ho','input-name','input-phone'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  updateBadge(null);
+}
+
+function updateBadge(info){
+  const badge = document.getElementById('badge-default');
+  if(!badge) return;
+  if(info){
+    badge.textContent = `${info.dong}동 ${info.ho}호 ✓`;
+    badge.style.background = 'rgba(26,110,60,0.25)';
+    badge.style.borderColor = 'rgba(26,110,60,0.4)';
+  } else {
+    badge.textContent = '입주민 전용 →';
+    badge.style.background = '';
+    badge.style.borderColor = '';
+  }
+}
+
+// 페이지 로드 시 저장된 정보 복원
+(function(){
+  const saved = localStorage.getItem('resident-info');
+  if(saved){
+    try {
+      const info = JSON.parse(saved);
+      window._savedResident = info;
+      updateBadge(info);
+    } catch(e){}
+  }
+})();
+
+// 인증 페이지 진입 시 기존 정보 표시
+const _origShowPage = showPage;
+function showPage(id){
+  _origShowPage(id);
+  if(id === 'register' && window._savedResident){
+    setTimeout(()=>showRegistered(window._savedResident), 50);
+  }
+}
+
+(function(){
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.navigator.standalone === true;
+
+  if (isStandalone) {
+    document.getElementById('badge-default').style.display = 'none';
+    document.getElementById('btn-installed').style.display = 'inline-block';
+  } else if (isIOS) {
+    document.getElementById('badge-default').style.display = 'none';
+    document.getElementById('btn-install-ios').style.display = 'inline-block';
+    // 첫 방문 시 3초 후 자동으로 가이드 표시
+    if (!localStorage.getItem('ios-guide-shown')) {
+      setTimeout(() => {
+        showIOSGuide();
+        localStorage.setItem('ios-guide-shown', '1');
+      }, 3000);
+    }
+  }
+})();
+
+function showIOSGuide(){
+  document.getElementById('ios-modal').classList.add('open');
+}
+function closeIOSGuide(){
+  document.getElementById('ios-modal').classList.remove('open');
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('[SW] 등록 성공:', reg.scope))
+      .catch(err => console.log('[SW] 등록 실패:', err));
+  });
+}
+
+// ── 홈화면 추가 유도 배너 (안드로이드) ──────────────────────
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // 설치 배너 표시
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.style.display = 'flex';
+});
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(choice => {
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'none';
+    deferredPrompt = null;
+  });
+}
+function dismissInstall() {
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.style.display = 'none';
+  // 7일간 다시 안 보이기
+  localStorage.setItem('install-dismissed', Date.now());
+}
+// 7일 이내 dismiss 했으면 배너 숨김
+window.addEventListener('DOMContentLoaded', () => {
+  const dismissed = localStorage.getItem('install-dismissed');
+  if (dismissed && Date.now() - Number(dismissed) < 7*24*60*60*1000) {
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'none';
+  }
+});
 </script>
+
+  <!-- iOS 설치 가이드 모달 -->
+  <div class="modal-overlay" id="ios-modal" onclick="if(event.target===this)closeIOSGuide()">
+    <div class="ios-modal">
+      <div style="text-align:center;margin-bottom:22px;">
+        <img src="/icons/icon-96.png" width="60" height="60" style="border-radius:14px;margin-bottom:10px;" alt="DMC파크뷰자이 ON">
+        <div style="font-size:17px;font-weight:800;color:var(--gray-800);">DMC파크뷰자이 ON</div>
+        <div style="font-size:12px;color:var(--gray-400);margin-top:4px;">홈화면에 추가하는 방법</div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-num">1</div>
+        <div class="ios-step-body">
+          <div class="ios-step-title">Safari 브라우저로 열기</div>
+          <div class="ios-step-desc">크롬이 아닌 <strong>Safari</strong>에서만 홈화면 추가가 가능해요. Safari 앱을 열어주세요.</div>
+        </div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-num">2</div>
+        <div class="ios-step-body">
+          <div class="ios-step-title">하단 공유 버튼 누르기</div>
+          <div class="ios-step-desc">화면 하단 가운데 <span style="font-size:15px;">⬆️</span> <strong>공유 버튼</strong>을 탭해주세요.</div>
+        </div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-num">3</div>
+        <div class="ios-step-body">
+          <div class="ios-step-title">"홈 화면에 추가" 선택</div>
+          <div class="ios-step-desc">메뉴에서 <strong>📱 홈 화면에 추가</strong>를 찾아 탭하세요. 스크롤을 내려야 보일 수 있어요.</div>
+        </div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-num">4</div>
+        <div class="ios-step-body">
+          <div class="ios-step-title">"추가" 버튼 탭</div>
+          <div class="ios-step-desc">우측 상단 <strong>추가</strong>를 탭하면 DMC파크뷰자이 ON 아이콘이 홈화면에 생겨요!</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeIOSGuide()">확인했어요</button>
+    </div>
+  </div>
+
+  <!-- PWA 설치 유도 배너 (안드로이드 자동) -->
+  <div class="install-banner" id="install-banner">
+    <span class="install-icon">📲</span>
+    <div class="install-body">
+      <div class="install-title">홈화면에 추가하기</div>
+      <div class="install-sub">앱처럼 바로 열 수 있어요</div>
+    </div>
+    <div class="install-btns">
+      <button class="install-ok" onclick="installApp()">설치</button>
+      <button class="install-x" onclick="dismissInstall()">✕</button>
+    </div>
+  </div>
+
+  <!-- iOS 설치 안내 모달 -->
+  <div id="ios-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;align-items:flex-end;justify-content:center;">
+    <div style="background:#fff;border-radius:24px 24px 0 0;padding:28px 24px 40px;width:100%;max-width:430px;animation:slideUp 0.3s ease;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div style="font-size:16px;font-weight:800;color:var(--gray-800);">홈화면에 추가하기</div>
+        <button onclick="document.getElementById('ios-modal').style.display='none'" style="background:var(--gray-100);border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;">✕</button>
+      </div>
+      <div style="font-size:13px;color:var(--gray-600);line-height:1.8;margin-bottom:20px;">
+        iPhone에서 앱처럼 설치하려면 아래 순서로 해주세요.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:14px;background:var(--gray-50);border-radius:14px;padding:14px;">
+          <div style="width:40px;height:40px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">1️⃣</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:2px;">Safari에서 열기</div>
+            <div style="font-size:12px;color:var(--gray-400);">Chrome이 아닌 Safari 앱으로 이 페이지를 여세요</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:var(--gray-50);border-radius:14px;padding:14px;">
+          <div style="width:40px;height:40px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">2️⃣</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:2px;">공유 버튼 탭</div>
+            <div style="font-size:12px;color:var(--gray-400);">하단 가운데 □↑ 아이콘을 누르세요</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:var(--gray-50);border-radius:14px;padding:14px;">
+          <div style="width:40px;height:40px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">3️⃣</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:2px;">"홈 화면에 추가" 선택</div>
+            <div style="font-size:12px;color:var(--gray-400);">메뉴를 스크롤해서 "홈 화면에 추가"를 탭하세요</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:var(--green-bg);border-radius:14px;padding:14px;border:1px solid #A9D6BD;">
+          <div style="width:40px;height:40px;background:var(--green);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">✓</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">완료!</div>
+            <div style="font-size:12px;color:var(--gray-600);">홈화면에 단지ON 아이콘이 생겨요</div>
+          </div>
+        </div>
+      </div>
+      <!-- URL 복사 -->
+      <div style="margin-top:16px;background:var(--navy-bg);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:12px;color:var(--navy);flex:1;font-weight:600;">danji-on.vercel.app</span>
+        <button onclick="navigator.clipboard.writeText('https://danji-on.vercel.app').then(()=>{this.textContent='✓ 복사됨';setTimeout(()=>this.textContent='URL 복사',1500)})" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">URL 복사</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
