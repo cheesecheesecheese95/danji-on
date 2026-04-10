@@ -299,6 +299,32 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 /* 검색 결과 — 업체/FAQ 카드 */
 .s-item-verified{font-size:9px;font-weight:700;color:#2E7D32;background:#E8F5E9;padding:1px 5px;border-radius:4px;margin-left:4px;}
 .s-faq-a{font-size:11px;color:var(--gray-400);margin-top:2px;line-height:1.45;}
+/* ── 채팅 오버레이 ──────────────────────────────── */
+.chat-overlay{position:fixed;top:108px;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:calc(100vh - 108px - var(--tab-h));background:var(--gray-50);z-index:450;display:flex;flex-direction:column;}
+.chat-header{background:var(--white);border-bottom:1px solid var(--gray-200);padding:11px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.chat-back{background:none;border:none;font-size:13px;color:var(--gray-400);cursor:pointer;font-family:inherit;padding:0;display:flex;align-items:center;gap:4px;}
+.chat-title{font-size:14px;font-weight:800;color:var(--gray-800);}
+.chat-badge{font-size:10px;font-weight:700;color:var(--navy);background:var(--navy-bg);padding:2px 7px;border-radius:10px;margin-left:auto;}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;}
+.chat-msg-user{display:flex;justify-content:flex-end;}
+.chat-msg-ai{display:flex;justify-content:flex-start;align-items:flex-start;gap:8px;}
+.chat-avatar{width:28px;height:28px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;margin-top:2px;}
+.chat-bubble-user{background:var(--navy);color:#fff;padding:10px 14px;border-radius:18px 18px 4px 18px;font-size:14px;line-height:1.55;max-width:76%;word-break:keep-all;}
+.chat-bubble-ai{background:var(--white);border:1px solid var(--gray-200);padding:12px 14px;border-radius:4px 18px 18px 18px;font-size:13px;line-height:1.8;max-width:84%;box-shadow:var(--shadow-sm);word-break:keep-all;white-space:pre-wrap;}
+.chat-typing{display:flex;gap:5px;align-items:center;padding:4px 2px;}
+.chat-dot{width:6px;height:6px;border-radius:50%;background:var(--gray-300);animation:chatDot 1.2s infinite;}
+.chat-dot:nth-child(2){animation-delay:0.2s;}
+.chat-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes chatDot{0%,100%{opacity:0.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.chat-input-wrap{background:var(--white);border-top:1px solid var(--gray-200);padding:10px 12px;display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.chat-input{flex:1;border:1.5px solid var(--gray-200);border-radius:22px;padding:10px 16px;font-size:14px;font-family:inherit;outline:none;background:var(--gray-50);transition:border-color 0.15s;}
+.chat-input:focus{border-color:var(--navy);background:#fff;}
+.chat-send-btn{width:38px;height:38px;background:var(--navy);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:opacity 0.15s;}
+.chat-send-btn:disabled{opacity:0.35;cursor:default;}
+.chat-send-btn svg{width:16px;height:16px;}
+/* 검색창에 채팅 힌트 */
+.s-chat-hint{padding:12px 16px;border-top:1px solid var(--gray-100);display:flex;align-items:center;gap:8px;cursor:pointer;}
+.s-chat-hint:active{background:var(--gray-50);}
 /* Claude AI 답변 카드 */
 .s-claude-sec{padding:12px 16px;}
 .s-claude-card{background:linear-gradient(135deg,#EEF3FB 0%,#F5F0FF 100%);border:1px solid #C8D8F5;border-radius:14px;padding:14px;}
@@ -409,8 +435,27 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     </div>
   </div>
 
-  <!-- 검색 결과 패널 — 헤더 밖으로 빼서 z-index 문제 해결 -->
+  <!-- 검색 결과 패널 -->
   <div id="search-panel" style="display:none;position:fixed;top:108px;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-radius:0 0 20px 20px;box-shadow:0 8px 32px rgba(0,0,0,0.18);z-index:500;max-height:calc(100vh - 120px);overflow-y:auto;"></div>
+
+  <!-- 채팅 오버레이 -->
+  <div id="chat-overlay" class="chat-overlay" style="display:none;">
+    <div class="chat-header">
+      <button class="chat-back" onclick="_closeChat()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        검색으로
+      </button>
+      <span class="chat-title">AI 상담</span>
+      <span class="chat-badge">DMC파크뷰자이</span>
+    </div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-input-wrap">
+      <input class="chat-input" id="chat-input" type="text" placeholder="무엇이든 물어보세요…" autocomplete="off">
+      <button class="chat-send-btn" id="chat-send-btn" onclick="_sendChat()">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
 
   <div class="scroll-content">
 
@@ -2250,13 +2295,22 @@ async function _doSearch(q){
     </div>`;
   }
 
-  if(!html){
+  // 채팅 힌트 (항상 하단에)
+  html += `<div class="s-chat-hint" onclick="_openChat('${q.replace(/'/g,"\\'")}')">
+    <div style="width:28px;height:28px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">C</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:600;color:var(--gray-800);">"${q}" 더 자세히 물어보기</div>
+      <div style="font-size:11px;color:var(--gray-400);">AI 채팅으로 대화형 답변 받기 →</div>
+    </div>
+  </div>`;
+
+  if(!html.includes('s-result-section') && !html.includes('s-claude-sec')){
     html = `<div class="s-empty">
       <div style="font-size:22px;margin-bottom:6px;">🔍</div>
       <div style="font-weight:600;color:var(--gray-600);">"${q}" 검색 결과 없음</div>
       <div style="font-size:12px;margin-top:4px;">학원, 맛집, 관리비, 주차 등 검색해보세요</div>
       <div class="s-chips" style="margin-top:12px;justify-content:center;">${suggestChips.slice(0,5).map(c=>`<button class="s-chip" onclick="_si.value='${c}';_doSearch('${c}');">${c}</button>`).join('')}</div>
-    </div>`;
+    </div>` + html;
   }
 
   _sp.innerHTML = html;
@@ -2335,6 +2389,100 @@ async function _fetchNaver(query){
   if(data.error) throw new Error(data.error);
   return data.items || [];
 }
+
+// ── 채팅 모드 ────────────────────────────────────────────────
+let _chatHistory = [];
+let _chatBusy = false;
+
+function _openChat(initialQ = '') {
+  _closeSearch();
+  _si.blur();
+  const overlay = document.getElementById('chat-overlay');
+  const msgs = document.getElementById('chat-msgs');
+  overlay.style.display = 'flex';
+  msgs.innerHTML = '';
+  _chatHistory = [];
+  _chatBusy = false;
+  document.getElementById('chat-send-btn').disabled = false;
+  // 웰컴 메시지
+  _appendAiMsg('안녕하세요! 단지 관련 무엇이든 물어보세요.\n예: "211동 근처 미용실", "장기수선충당금 환급 방법", "커뮤니티 등록 언제 해?"');
+  if(initialQ){
+    setTimeout(()=>{ document.getElementById('chat-input').value=initialQ; _sendChat(); }, 150);
+  } else {
+    setTimeout(()=>document.getElementById('chat-input').focus(), 100);
+  }
+}
+
+function _closeChat(){
+  document.getElementById('chat-overlay').style.display = 'none';
+  _chatHistory = [];
+  _si.value = '';
+}
+
+function _appendUserMsg(q){
+  const msgs = document.getElementById('chat-msgs');
+  const el = document.createElement('div');
+  el.className = 'chat-msg-user';
+  el.innerHTML = `<div class="chat-bubble-user">${q.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div>`;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function _appendAiMsg(text, loading=false){
+  const msgs = document.getElementById('chat-msgs');
+  const el = document.createElement('div');
+  el.className = 'chat-msg-ai';
+  const inner = loading
+    ? `<div class="chat-typing"><div class="chat-dot"></div><div class="chat-dot"></div><div class="chat-dot"></div></div>`
+    : text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  el.innerHTML = `<div class="chat-avatar">C</div><div class="chat-bubble-ai">${inner}</div>`;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
+
+async function _sendChat(){
+  if(_chatBusy) return;
+  const input = document.getElementById('chat-input');
+  const q = input.value.trim();
+  if(!q) return;
+  input.value = '';
+  _chatBusy = true;
+  document.getElementById('chat-send-btn').disabled = true;
+  _appendUserMsg(q);
+  _chatHistory.push({role:'user', content:q});
+  const loadEl = _appendAiMsg('', true);
+  try{
+    const res = await fetch('https://danji-on.vercel.app/api/claude', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({messages: _chatHistory})
+    });
+    const data = await res.json();
+    const answer = data.answer || '답변을 생성할 수 없어요.';
+    _chatHistory.push({role:'assistant', content:answer});
+    loadEl.querySelector('.chat-bubble-ai').textContent = answer;
+    document.getElementById('chat-msgs').scrollTop = 99999;
+  }catch(e){
+    loadEl.querySelector('.chat-bubble-ai').textContent = '일시적 오류가 발생했어요. 다시 시도해주세요.';
+  }
+  _chatBusy = false;
+  document.getElementById('chat-send-btn').disabled = false;
+  input.focus();
+}
+
+// 채팅 입력창 Enter
+document.getElementById('chat-input').addEventListener('keydown', function(e){
+  if(e.key==='Enter'){ e.preventDefault(); _sendChat(); }
+});
+
+// 검색창 Enter → 채팅 열기
+_si.addEventListener('keydown', function(e){
+  if(e.key==='Enter' && this.value.trim()){
+    e.preventDefault();
+    _openChat(this.value.trim());
+  }
+});
 
 
 // 초기 로드 — DB 있으면 덮어쓰기, 없으면 기본 콘텐츠 유지
