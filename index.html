@@ -284,6 +284,21 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .s-naver-badge{font-size:9px;font-weight:700;color:#03C75A;background:#e8faf0;padding:1px 5px;border-radius:4px;margin-left:4px;}
 .danji-btn{background:var(--white);border:1.5px solid var(--gray-200);border-radius:10px;padding:10px 8px;font-size:13px;font-weight:600;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all 0.12s;}
 .danji-btn.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+/* 검색 홈 — 추천 칩 + 최근검색 */
+.s-home{padding:14px 16px 8px;}
+.s-home-label{font-size:10px;font-weight:800;color:var(--gray-400);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:8px;}
+.s-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;}
+.s-chip{padding:6px 12px;background:var(--gray-100);border:none;border-radius:20px;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:background 0.12s;}
+.s-chip:active{background:var(--navy-bg);color:var(--navy);}
+.s-rec-list{display:flex;flex-direction:column;}
+.s-rec-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--gray-100);cursor:pointer;}
+.s-rec-item:last-child{border-bottom:none;}
+.s-rec-ico{font-size:13px;color:var(--gray-400);}
+.s-rec-txt{flex:1;font-size:13px;color:var(--gray-600);}
+.s-rec-del{font-size:16px;color:var(--gray-300);padding:0 2px;background:none;border:none;cursor:pointer;line-height:1;}
+/* 검색 결과 — 업체/FAQ 카드 */
+.s-item-verified{font-size:9px;font-weight:700;color:#2E7D32;background:#E8F5E9;padding:1px 5px;border-radius:4px;margin-left:4px;}
+.s-faq-a{font-size:11px;color:var(--gray-400);margin-top:2px;line-height:1.45;}
 
 /* ── 날씨·환경 대시보드 ───────────────────────────── */
 .dash-wrap{margin-bottom:16px;}
@@ -1977,17 +1992,39 @@ function filterLocal(el,cat){
   renderLocal(cat==='all'?allLocal:allLocal.filter(p=>p.category===cat));
 }
 
-// ── 검색 — 앱 내 + 네이버 API 통합 ─────────────────────────
+// ── 검색 — 앱 내 + DB + FAQ + 네이버 통합 ──────────────────────
+
 const appPages = [
   { kw:['관리비','장기수선','이용료','충당금','난방비','전기료'], page:'fee', tab:true, icon:'💰', label:'관리비 분석', sub:'월별 추이·항목별 분석' },
-  { kw:['커뮤니티','수영장','헬스장','골프','독서실','등록','취소'], page:'community', tab:true, icon:'🏊', label:'커뮤니티시설', sub:'수영장·헬스장·골프·독서실' },
+  { kw:['커뮤니티','수영장','헬스장','골프','독서실','등록','취소','바이비'], page:'community', tab:true, icon:'🏊', label:'커뮤니티시설', sub:'수영장·헬스장·골프·독서실' },
   { kw:['주차','이중주차','전기차','cctv','차량','스티커','방문차량'], page:'parking', icon:'🚗', label:'주차·차량', sub:'방문주차·등록·위반' },
   { kw:['누수','보일러','결로','곰팡이','엘리베이터','하자','수리','에어컨'], page:'repair', icon:'🛠️', label:'수리·하자', sub:'누수·보일러·결로·업체' },
   { kw:['분리수거','택배','대형폐기물','공사','rfid','이사','승강기'], page:'living', icon:'🏠', label:'생활편의', sub:'분리수거·이사·공사' },
-  { kw:['층간소음','소음','흡연','반려동물','민원','금연'], page:'complaint', icon:'📋', label:'민원·규정', sub:'신고절차·생활규정' },
+  { kw:['층간소음','소음','흡연','반려동물','민원','금연','담배'], page:'complaint', icon:'📋', label:'민원·규정', sub:'신고절차·생활규정' },
   { kw:['소식','공지','회의록','대표회의'], page:'news', icon:'📢', label:'단지 소식', sub:'입주자대표회의 결정사항' },
   { kw:['응급','병원','응급실','야간약국','약국'], page:'emergency', icon:'🏥', label:'응급의료', sub:'응급실·야간약국' },
   { kw:['입주민','인증','세대','호수'], page:'register', icon:'🔑', label:'입주민 인증', sub:'동·호수·연락처 등록' },
+  { kw:['실거래','매매','거래가','시세'], page:'realestate', icon:'🏠', label:'실거래가', sub:'최근 6개월 매매 실거래' },
+  { kw:['faq','자주묻는','민원','신고'], page:'faq', icon:'❓', label:'자주 찾는 질문', sub:'734건 기반 20개 항목' },
+];
+
+// FAQ 검색 인덱스
+const faqIndex = [
+  { q:'관리비 고지서 상세 내역 확인', a:'dmcpvx.com 관리비 조회 메뉴에서 월별 상세 확인', kw:['관리비','고지서','내역','조회'], page:'faq' },
+  { q:'방문차량 무료 주차 시간', a:'월 150시간 무료 · 초과 시 30분당 500원 (2026.03~)', kw:['방문','주차','무료','시간'], page:'parking' },
+  { q:'수영장·헬스장·독서실 등록 방법', a:'매월 바이비 앱 또는 커뮤니티 현장 등록', kw:['수영장','헬스장','독서실','등록','커뮤니티','바이비'], page:'community', tab:true },
+  { q:'집에 누수·결로·곰팡이 생겼어요', a:'관리사무소 ☎ 02-931-8360 신고 → 하자보수 업체 연결', kw:['누수','결로','곰팡이','하자'], page:'repair' },
+  { q:'층간소음 민원 절차', a:'소음 시간대 기록 후 관리사무소 제출 · 이웃사이센터 1661-2642', kw:['층간소음','소음'], page:'complaint' },
+  { q:'주차 위반 차량 신고', a:'차번·위치를 관리사무소 또는 민원게시판에 신고 · 89건 집계', kw:['주차','위반','신고'], page:'parking' },
+  { q:'엘리베이터 이상한 소리·떨림', a:'동·라인·증상을 관리사무소에 신고 → 승강기 업체 점검', kw:['엘리베이터','승강기','소리','떨림'], page:'repair' },
+  { q:'전기차 충전구역에 일반 주차', a:'전기차 전용 구역 · 충전 완료 후 14시간 내 이동 의무', kw:['전기차','충전','주차'], page:'parking' },
+  { q:'커뮤니티 얼굴인식 등록 오류', a:'현장 재등록 또는 관리사무소 방문 접수', kw:['얼굴인식','오류','등록'], page:'community', tab:true },
+  { q:'음식물 쓰레기 RFID 카드', a:'카드 없이 투입 시 건당 200원 · 1단지 관리사무소 발급', kw:['음식물','rfid','카드','쓰레기'], page:'living' },
+  { q:'대형폐기물 처리 방법', a:'서대문구 다산콜 ☎ 02-391-7171 신청 후 배출', kw:['대형폐기물','소파','냉장고','폐기물'], page:'living' },
+  { q:'담배 냄새 흡연 민원', a:'관리사무소 신고 시 금연 방송·안내문 발송 가능', kw:['담배','흡연','냄새'], page:'complaint' },
+  { q:'반려동물 공용공간 규정', a:'공용공간 목줄 필수 · 배변 즉시 처리 의무', kw:['반려동물','강아지','고양이','목줄'], page:'complaint' },
+  { q:'택배 무인함 비밀번호 분실', a:'관리사무소 ☎ 02-931-8360 문의', kw:['택배','무인함','비밀번호'], page:'living' },
+  { q:'장기수선충당금 환급', a:'임차인이 납부 시 이사할 때 임대인에게 청구 가능', kw:['장기수선','충당금','환급'], page:'fee', tab:true },
 ];
 
 const naverKwMap = {
@@ -1998,10 +2035,30 @@ const naverKwMap = {
   '미용실':'남가좌동 미용실', '헤어':'남가좌동 미용실', '네일':'남가좌동 네일샵',
   '세탁':'남가좌동 세탁소', '마트':'남가좌동 마트', '편의점':'남가좌동 편의점',
   '소아과':'남가좌동 소아과', '내과':'남가좌동 내과', '치과':'남가좌동 치과',
-  '한의원':'남가좌동 한의원', '정형외과':'남가좌동 정형외과',
+  '한의원':'남가좌동 한의원', '정형외과':'남가좌동 정형외과', '안과':'남가좌동 안과', '피부과':'남가좌동 피부과',
   '부동산':'남가좌동 부동산', '공인중개':'남가좌동 공인중개사',
   '헬스':'남가좌동 헬스장', '피트니스':'남가좌동 헬스장',
+  '초밥':'남가좌동 초밥', '한식':'남가좌동 한식', '중식':'남가좌동 중국집', '일식':'남가좌동 일식',
+  '치킨':'남가좌동 치킨', '피자':'남가좌동 피자', '분식':'남가좌동 분식',
 };
+
+// 추천 검색 칩
+const suggestChips = ['맛집','학원','카페','미용실','소아과','치과','주차','관리비','커뮤니티','실거래가'];
+
+// 최근 검색어 localStorage 관리
+function _getRecent(){ try{ return JSON.parse(localStorage.getItem('_rs')||'[]'); }catch(e){ return []; } }
+function _saveRecent(q){
+  if(!q || q.length < 2) return;
+  let list = _getRecent().filter(x=>x!==q);
+  list.unshift(q);
+  list = list.slice(0,5);
+  try{ localStorage.setItem('_rs', JSON.stringify(list)); }catch(e){}
+}
+function _deleteRecent(q){
+  const list = _getRecent().filter(x=>x!==q);
+  try{ localStorage.setItem('_rs', JSON.stringify(list)); }catch(e){}
+  _showSearchHome();
+}
 
 let _searchTimer = null;
 const _si = document.getElementById('searchInput');
@@ -2011,64 +2068,139 @@ function _closeSearch(){
   if(_sp){ _sp.style.display='none'; _sp.innerHTML=''; }
 }
 
-// 검색창 입력
+// 검색 홈 — 포커스 시 추천 칩 + 최근 검색
+function _showSearchHome(){
+  _sp.style.display = 'block';
+  const recents = _getRecent();
+  let html = `<div class="s-home">
+    <div class="s-home-label">빠른 검색</div>
+    <div class="s-chips">${suggestChips.map(c=>`<button class="s-chip" onclick="_si.value='${c}';_doSearch('${c}');">${c}</button>`).join('')}</div>
+  </div>`;
+  if(recents.length){
+    html += `<div class="s-result-section" style="padding-top:8px;">
+      <div class="s-section-label">🕐 최근 검색</div>
+      <div class="s-rec-list">
+        ${recents.map(r=>`
+          <div class="s-rec-item" onclick="_si.value='${r}';_doSearch('${r}');">
+            <span class="s-rec-ico">↩</span>
+            <span class="s-rec-txt">${r}</span>
+            <button class="s-rec-del" onclick="event.stopPropagation();_deleteRecent('${r}');">×</button>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }
+  _sp.innerHTML = html;
+}
+
+// 이벤트 리스너
 _si.addEventListener('input', function(){
   clearTimeout(_searchTimer);
   const q = this.value.trim();
-  if(!q){ _closeSearch(); return; }
+  if(!q){ _showSearchHome(); return; }
   _searchTimer = setTimeout(()=>_doSearch(q), 350);
 });
-
-// 검색창 포커스
 _si.addEventListener('focus', function(){
   const q = this.value.trim();
-  if(q) _doSearch(q);
+  if(q) _doSearch(q); else _showSearchHome();
 });
-
-// 외부 클릭 시 닫기
 document.addEventListener('click', function(e){
-  if(!_si.contains(e.target) && !_sp.contains(e.target)){
-    _closeSearch();
-  }
+  if(!_si.contains(e.target) && !_sp.contains(e.target)) _closeSearch();
 });
-
-// ESC 키
 document.addEventListener('keydown', function(e){
   if(e.key==='Escape'){ _closeSearch(); _si.blur(); }
 });
 
 async function _doSearch(q){
-  const ql = q.toLowerCase();
+  const ql = q.toLowerCase().trim();
+  if(!ql) return;
   _sp.style.display = 'block';
   _sp.innerHTML = '<div class="s-loading">🔍 검색 중...</div>';
 
-  // 1. 앱 내 메뉴 매칭
-  const matched = appPages.filter(p => p.kw.some(k => ql.includes(k)));
+  // ① 앱 메뉴 매칭
+  const matchedPages = appPages.filter(p => p.kw.some(k => ql.includes(k)));
 
-  // 2. 네이버 검색어 결정
+  // ② 입주민 DB 매칭 (businesses + local_places)
+  const bizCatLabel = {'restaurant':'맛집','cafe':'카페','education':'학원·교육','beauty':'미용·헬스','medical':'병원·의원','etc':'기타'};
+  const localCatLabel2 = {'restaurant':'맛집','cafe':'카페','education':'교육','medical':'병원','shopping':'쇼핑','park':'공원·산책','sports':'운동','etc':'기타'};
+  const matchedBiz = (allBiz||[]).filter(b=>{
+    const hay = [b.name, b.category, ...(b.strength_tags||[]), b.description||''].join(' ').toLowerCase();
+    return ql.split('').length>=2 && hay.includes(ql);
+  }).slice(0,3);
+  const matchedLocal = (allLocal||[]).filter(p=>{
+    const hay = [p.name, p.category, p.description||'', ...(p.context_tags||[])].join(' ').toLowerCase();
+    return ql.split('').length>=2 && hay.includes(ql);
+  }).slice(0,3);
+
+  // ③ FAQ 매칭
+  const matchedFaq = faqIndex.filter(f => f.kw.some(k=>ql.includes(k)) || f.q.toLowerCase().includes(ql)).slice(0,3);
+
+  // ④ 네이버 검색어 결정
   let naverQ = null;
   for(const [kw, query] of Object.entries(naverKwMap)){
     if(ql.includes(kw)){ naverQ = query; break; }
   }
-  // 앱 메뉴 매칭 없고 짧은 단어면 주변 검색
-  if(!naverQ && !matched.length && q.length >= 2){
+  if(!naverQ && !matchedPages.length && !matchedBiz.length && !matchedLocal.length && ql.length >= 2){
     naverQ = `남가좌동 ${q}`;
   }
 
   let html = '';
 
-  // 앱 내 메뉴 섹션
-  if(matched.length){
+  // 앱 메뉴 섹션
+  if(matchedPages.length){
     html += `<div class="s-result-section"><div class="s-section-label">📱 앱 메뉴</div>`;
-    matched.slice(0,3).forEach(p=>{
+    matchedPages.slice(0,3).forEach(p=>{
       const action = p.tab ? `goTab('${p.page}')` : `goPage('${p.page}')`;
-      html += `<div class="s-item" onclick="_closeSearch();_si.value='';${action}">
+      html += `<div class="s-item" onclick="_saveRecent('${q}');_closeSearch();_si.value='';${action}">
         <div class="s-item-icon" style="background:var(--navy-bg);">${p.icon}</div>
+        <div class="s-item-body"><div class="s-item-title">${p.label}</div><div class="s-item-sub">${p.sub}</div></div>
+        <span class="s-item-arrow">›</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // 입주민 추천 업체 섹션
+  if(matchedBiz.length || matchedLocal.length){
+    html += `<div class="s-result-section"><div class="s-section-label">⭐ 입주민 추천 <span class="s-item-verified">검수완료</span></div>`;
+    matchedBiz.forEach(b=>{
+      const stars = '★'.repeat(Math.round(b.avg_rating||0));
+      const catLabel = bizCatLabel[b.category]||b.category;
+      html += `<div class="s-item" onclick="_saveRecent('${q}');_closeSearch();_si.value='';goTab('local-tab');">
+        <div class="s-item-icon" style="background:var(--green-bg);font-size:18px;">🏪</div>
         <div class="s-item-body">
-          <div class="s-item-title">${p.label}</div>
-          <div class="s-item-sub">${p.sub}</div>
+          <div class="s-item-title">${b.name} <span style="font-size:10px;color:var(--gray-400);font-weight:400;">${catLabel}</span></div>
+          <div class="s-item-sub">${stars?stars+' ':''}후기 ${b.review_count}개${b.phone?` · <a href="tel:${b.phone}" style="color:var(--navy);font-weight:600;" onclick="event.stopPropagation();">📞 전화</a>`:''}</div>
         </div>
         <span class="s-item-arrow">›</span>
+      </div>`;
+    });
+    matchedLocal.forEach(p=>{
+      const catLabel = localCatLabel2[p.category]||p.category;
+      const dist = p.distance_m ? `도보 ${Math.round(p.distance_m/80)}분` : '';
+      html += `<div class="s-item" onclick="_saveRecent('${q}');_closeSearch();_si.value='';goTab('local-tab');">
+        <div class="s-item-icon" style="background:var(--green-bg);font-size:18px;">📍</div>
+        <div class="s-item-body">
+          <div class="s-item-title">${p.name} <span style="font-size:10px;color:var(--gray-400);font-weight:400;">${catLabel}</span></div>
+          <div class="s-item-sub">${dist}${dist?' · ':''}후기 ${p.resident_review_count}개</div>
+        </div>
+        <span class="s-item-arrow">›</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // FAQ 섹션
+  if(matchedFaq.length){
+    html += `<div class="s-result-section"><div class="s-section-label">❓ FAQ 바로보기</div>`;
+    matchedFaq.forEach(f=>{
+      const action = f.tab ? `goTab('${f.page}')` : `goPage('${f.page}')`;
+      html += `<div class="s-item" onclick="_saveRecent('${q}');_closeSearch();_si.value='';${action}" style="align-items:flex-start;">
+        <div class="s-item-icon" style="background:var(--amber-bg);font-size:18px;margin-top:2px;">💬</div>
+        <div class="s-item-body">
+          <div class="s-item-title">${f.q}</div>
+          <div class="s-faq-a">${f.a}</div>
+        </div>
+        <span class="s-item-arrow" style="margin-top:2px;">›</span>
       </div>`;
     });
     html += '</div>';
@@ -2087,6 +2219,7 @@ async function _doSearch(q){
       <div style="font-size:22px;margin-bottom:6px;">🔍</div>
       <div style="font-weight:600;color:var(--gray-600);">"${q}" 검색 결과 없음</div>
       <div style="font-size:12px;margin-top:4px;">학원, 맛집, 관리비, 주차 등 검색해보세요</div>
+      <div class="s-chips" style="margin-top:12px;justify-content:center;">${suggestChips.slice(0,5).map(c=>`<button class="s-chip" onclick="_si.value='${c}';_doSearch('${c}');">${c}</button>`).join('')}</div>
     </div>`;
   }
 
@@ -2094,32 +2227,30 @@ async function _doSearch(q){
 
   // 네이버 비동기 로드
   if(naverQ){
-    try {
+    try{
       const items = await _fetchNaver(naverQ);
       const sec = document.getElementById('_naver_sec');
       if(!sec) return;
-      if(!items || !items.length){
-        sec.querySelector('.s-loading').textContent = '주변 검색 결과가 없어요.';
-        return;
-      }
+      if(!items||!items.length){ sec.querySelector('.s-loading').textContent='주변 검색 결과가 없어요.'; return; }
       let nh = `<div class="s-section-label">📍 주변 장소 <span class="s-naver-badge">NAVER</span></div>`;
       items.slice(0,5).forEach(item=>{
         const name = item.title.replace(/<[^>]+>/g,'');
         const addr = (item.roadAddress||item.address||'').split(' ').slice(-3).join(' ');
-        const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(name)}`;
-        nh += `<div class="s-item" onclick="window.open('${mapUrl}','_blank')">
+        const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(name+' '+addr)}`;
+        const tel = item.telephone ? item.telephone.replace(/[^0-9\-]/g,'') : '';
+        nh += `<div class="s-item" onclick="_saveRecent('${q}');window.open('${mapUrl}','_blank')">
           <div class="s-item-icon" style="background:#e8faf0;font-size:18px;">📍</div>
           <div class="s-item-body">
             <div class="s-item-title">${name}</div>
-            <div class="s-item-sub">${item.category||''} · ${addr}</div>
+            <div class="s-item-sub">${item.category||''} · ${addr}${tel?` · <a href="tel:${tel}" style="color:var(--navy);font-weight:600;" onclick="event.stopPropagation();">📞 전화</a>`:''}</div>
           </div>
           <span class="s-item-arrow" style="color:#03C75A;font-size:11px;">지도→</span>
         </div>`;
       });
       sec.innerHTML = nh;
-    } catch(e){
+    }catch(e){
       const sec = document.getElementById('_naver_sec');
-      if(sec) sec.innerHTML = `<div class="s-section-label">📍 주변 장소</div><div style="padding:8px 0;font-size:12px;color:var(--gray-400);">검색 서비스를 불러올 수 없어요. (Vercel 환경변수 확인 필요)</div>`;
+      if(sec) sec.innerHTML=`<div class="s-section-label">📍 주변 장소</div><div style="padding:8px 0;font-size:12px;color:var(--gray-400);">검색 서비스를 불러올 수 없어요.</div>`;
     }
   }
 }
