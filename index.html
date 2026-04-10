@@ -307,6 +307,30 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .grade-good{color:#10B981;}.grade-normal{color:#F59E0B;}.grade-bad{color:#EF4444;}.grade-very-bad{color:#7C3AED;}
 .dash-garbage-day{font-size:11px;color:var(--gray-500);margin-top:2px;line-height:1.4;}
 .dash-loading{text-align:center;padding:20px;font-size:13px;color:var(--gray-400);}
+
+/* ── 실거래가 페이지 ─────────────────────────────── */
+.re-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.re-sum-card{background:var(--navy-bg);border-radius:14px;padding:12px 14px;}
+.re-sum-label{font-size:10px;font-weight:700;color:var(--navy);letter-spacing:.04em;margin-bottom:4px;}
+.re-sum-val{font-size:17px;font-weight:800;color:var(--navy);}
+.re-sum-sub{font-size:11px;color:var(--gray-400);margin-top:2px;}
+.re-filter-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:12px;}
+.re-filter-row::-webkit-scrollbar{display:none;}
+.re-chip{flex-shrink:0;background:#fff;border:1.5px solid var(--gray-200);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;}
+.re-chip.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.re-table-wrap{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.re-table{width:100%;border-collapse:collapse;font-size:12px;}
+.re-table thead tr{background:var(--gray-50);border-bottom:2px solid var(--gray-100);}
+.re-table th{padding:10px 10px;font-weight:700;color:var(--gray-500);text-align:left;white-space:nowrap;}
+.re-table th:last-child,.re-table td:last-child{text-align:right;}
+.re-table td{padding:10px 10px;border-bottom:1px solid var(--gray-100);color:var(--gray-800);vertical-align:middle;}
+.re-table tr:last-child td{border-bottom:none;}
+.re-table tr:hover td{background:var(--gray-50);}
+.re-price{font-weight:800;color:var(--navy);}
+.re-area-badge{display:inline-block;background:var(--navy-bg);color:var(--navy);border-radius:6px;padding:2px 6px;font-size:11px;font-weight:700;}
+.re-date{color:var(--gray-400);font-size:11px;}
+.re-floor{color:var(--gray-500);}
+.re-empty{text-align:center;padding:32px;color:var(--gray-400);font-size:13px;}
 </style>
 </head>
 <body>
@@ -373,6 +397,10 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <button class="qbtn" onclick="location.href='./faq.html'">
             <span class="q-icon">❓</span>
             <span class="q-texts"><span class="q-label">자주 찾는 질문</span><span class="q-sub">주차·관리비·소음 등</span></span>
+          </button>
+          <button class="qbtn" onclick="goPage('realestate')">
+            <span class="q-icon">🏠</span>
+            <span class="q-texts"><span class="q-label">실거래가</span><span class="q-sub">매매·전월세 실거래</span></span>
           </button>
           <button class="qbtn" onclick="goPage('news')">
             <span class="q-icon">📢</span>
@@ -1780,6 +1808,7 @@ function showPage(id){
   if(!target){ console.warn('페이지 없음: page-'+id); return; }
   target.classList.add('active');
   window.scrollTo(0,0);
+  if(id==='realestate') loadRealestate();
   // 인증 페이지 진입 시 저장 정보 표시
   if(id === 'register' && window._savedResident){
     setTimeout(()=>showRegistered(window._savedResident), 50);
@@ -2094,6 +2123,75 @@ function goFeeTab(idx,btn){
 // 관리사무소 공지사항 로드
 
 // ── 날씨·환경 대시보드 ────────────────────────────────────────
+
+// ── 실거래가 ─────────────────────────────────────────────────
+let _reAllItems = [], _reFiltered = [];
+
+async function loadRealestate() {
+  if (_reAllItems.length) return; // 이미 로드됨
+  try {
+    const r = await fetch('https://danji-on.vercel.app/api/realestate');
+    const d = await r.json();
+    if (d.error) {
+      document.getElementById('re-tbody').innerHTML = `<tr><td colspan="4" class="re-empty">⚠️ ${d.error}</td></tr>`;
+      return;
+    }
+    _reAllItems = d.items || [];
+    renderRETable(_reAllItems);
+    buildREFilters(_reAllItems);
+    updateRESummary(_reAllItems);
+  } catch(e) {
+    document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">데이터를 불러올 수 없습니다.</td></tr>';
+  }
+}
+
+function buildREFilters(items) {
+  const areas = [...new Set(items.map(i => Math.round(parseFloat(i.excluUseAr))))].sort((a,b)=>a-b);
+  const wrap = document.getElementById('re-filters');
+  if (!wrap) return;
+  wrap.innerHTML = '<div class="re-chip active" onclick="filterRE(this,\'all\')">전체</div>' +
+    areas.map(a => `<div class="re-chip" onclick="filterRE(this,'${a}')">${a}㎡</div>`).join('');
+}
+
+function filterRE(el, area) {
+  document.querySelectorAll('#re-filters .re-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const filtered = area === 'all' ? _reAllItems : _reAllItems.filter(i => Math.round(parseFloat(i.excluUseAr)) == area);
+  renderRETable(filtered);
+  updateRESummary(filtered);
+}
+
+function renderRETable(items) {
+  const tbody = document.getElementById('re-tbody');
+  if (!tbody) return;
+  if (!items.length) { tbody.innerHTML = '<tr><td colspan="4" class="re-empty">해당 조건의 거래 내역이 없습니다.</td></tr>'; return; }
+  tbody.innerHTML = items.map(i => {
+    const price = parseInt((i.dealAmount||'0').replace(/,/g,''));
+    const priceStr = price >= 10000 ? `${Math.floor(price/10000)}억${price%10000?` ${price%10000}만`:''}` : `${price}만`;
+    const area = parseFloat(i.excluUseAr).toFixed(1);
+    const date = `${i.dealYear}.${String(i.dealMonth).padStart(2,'0')}.${String(i.dealDay).padStart(2,'0')}`;
+    return `<tr>
+      <td class="re-date">${date}</td>
+      <td><span class="re-area-badge">${area}㎡</span></td>
+      <td class="re-floor">${i.floor}층</td>
+      <td class="re-price">${priceStr}</td>
+    </tr>`;
+  }).join('');
+}
+
+function updateRESummary(items) {
+  if (!items.length) return;
+  const latest = items[0];
+  const price = parseInt((latest.dealAmount||'0').replace(/,/g,''));
+  const priceStr = price >= 10000 ? `${Math.floor(price/10000)}억${price%10000?` ${price%10000}만`:''}` : `${price}만`;
+  const el1 = document.getElementById('re-latest-price');
+  const el2 = document.getElementById('re-latest-info');
+  const el3 = document.getElementById('re-count');
+  if (el1) el1.textContent = priceStr;
+  if (el2) el2.textContent = `${latest.dealYear}.${String(latest.dealMonth).padStart(2,'0')} · ${parseFloat(latest.excluUseAr).toFixed(0)}㎡ ${latest.floor}층`;
+  if (el3) el3.textContent = `${items.length}건`;
+}
+
 async function loadDashboard(){
   const LAT=37.5737, LON=126.9042;
   const el=document.getElementById('dashboard');
@@ -2552,6 +2650,43 @@ window.addEventListener('DOMContentLoaded', () => {
       <div style="margin-top:16px;background:var(--navy-bg);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
         <span style="font-size:12px;color:var(--navy);flex:1;font-weight:600;">danji-on.vercel.app</span>
         <button onclick="navigator.clipboard.writeText('https://danji-on.vercel.app').then(()=>{this.textContent='✓ 복사됨';setTimeout(()=>this.textContent='URL 복사',1500)})" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">URL 복사</button>
+      </div>
+    </div>
+
+    <!-- ═══ 실거래가 ═══ -->
+    <div class="page" id="page-realestate">
+      <div class="sec" style="padding-top:20px;padding-bottom:32px;">
+        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <div class="sec-title">🏠 실거래가</div>
+        <div class="sec-sub">DMC파크뷰자이 · 최근 6개월 매매 실거래</div>
+
+        <!-- 요약 카드 -->
+        <div class="re-summary" id="re-summary" style="margin-top:14px;">
+          <div class="re-sum-card"><div class="re-sum-label">최근 거래</div><div class="re-sum-val" id="re-latest-price">—</div><div class="re-sum-sub" id="re-latest-info">불러오는 중</div></div>
+          <div class="re-sum-card"><div class="re-sum-label">거래 건수</div><div class="re-sum-val" id="re-count">—</div><div class="re-sum-sub">최근 6개월</div></div>
+        </div>
+
+        <!-- 면적 필터 -->
+        <div class="re-filter-row" id="re-filters">
+          <div class="re-chip active" onclick="filterRE(this,'all')">전체</div>
+        </div>
+
+        <!-- 거래 목록 -->
+        <div class="re-table-wrap">
+          <table class="re-table">
+            <thead><tr>
+              <th>계약일</th>
+              <th>전용면적</th>
+              <th>층</th>
+              <th>거래금액</th>
+            </tr></thead>
+            <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 데이터 불러오는 중…</td></tr></tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:12px;font-size:11px;color:var(--gray-400);text-align:center;line-height:1.6;">
+          출처: 국토교통부 실거래가 공개시스템 · 단위: 만원
+        </div>
       </div>
     </div>
 
