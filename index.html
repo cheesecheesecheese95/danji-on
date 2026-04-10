@@ -318,6 +318,23 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .mc-badge.soon{background:#E8F5E9;color:#2E7D32;}
 .mc-badge.done{background:var(--gray-100);color:var(--gray-400);}
 .mc-badge.alert{background:#FFEBEE;color:#C62828;}
+/* 이번 달 챙길 것 — 리치 카드 */
+.mc2{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:16px;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform 0.1s;text-align:left;width:100%;font-family:inherit;}
+.mc2:active{transform:scale(0.98);}
+.mc2-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.mc2-label{font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:0.02em;}
+.mc2-main{font-size:20px;font-weight:800;color:var(--gray-800);letter-spacing:-0.03em;line-height:1.2;margin-bottom:5px;}
+.mc2-main .mc2-unit{font-size:12px;font-weight:500;color:var(--gray-400);margin-left:2px;}
+.mc2-sub{font-size:12px;color:var(--gray-600);line-height:1.6;margin-bottom:10px;}
+.mc2-items{display:flex;flex-direction:column;gap:3px;margin-bottom:10px;}
+.mc2-item{font-size:12px;color:var(--gray-600);display:flex;align-items:baseline;gap:5px;}
+.mc2-item-dot{width:4px;height:4px;border-radius:50%;background:var(--gray-300);flex-shrink:0;margin-bottom:1px;}
+.mc2-cta{font-size:12px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:3px;}
+.src-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--gray-400);background:var(--gray-100);border-radius:6px;padding:2px 7px;white-space:nowrap;}
+.src-tag.v{background:#E8F5E9;color:#2E7D32;}
+.src-tag.o{background:var(--navy-bg);color:var(--navy);}
+.src-tag.a{background:#FFF8E1;color:#E65100;}
+.sub-sec-label{font-size:12px;font-weight:700;color:var(--gray-400);margin:14px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;}
 
 /* ── 실거래가 페이지 ─────────────────────────────── */
 .re-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
@@ -379,8 +396,11 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
                 <!-- 이번 달 챙길 것 -->
-        <div class="sec-label">이번 달 챙길 것</div>
-        <div id="monthly-cards" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:800;color:var(--gray-800);letter-spacing:-0.01em;">이번 달 챙길 것</div>
+          <span id="monthly-month" style="font-size:11px;color:var(--gray-400);font-weight:600;"></span>
+        </div>
+        <div id="monthly-cards" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;"></div>
 
         <!-- 핵심 퀵메뉴 6개 — 2열 크게 -->
         <div class="sec-label">메뉴</div>
@@ -509,6 +529,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       <!-- 서브탭 0: 이번 달 -->
       <div class="fee-page active" id="fee0">
         <div class="sec" style="padding-top:16px;">
+          <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px;"><span class="src-tag o">출처: 관리비 고지서 · 2026.02</span></div>
           <div class="stat-grid2">
             <div class="stat-card2"><div class="sl">2026년 2월 총계</div><div class="sv">166<span class="su">억</span></div><div class="ss down">▼ 전월 대비 22.9억 감소</div></div>
             <div class="stat-card2"><div class="sl">세대당 평균</div><div class="sv">38.7<span class="su">만원</span></div><div class="ss down">▼ 전월(44만) 대비 감소</div></div>
@@ -677,7 +698,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 운영시간 -->
-        <div class="sub-sec-label">🕐 운영시간</div>
+        <div class="sub-sec-label">🕐 운영시간 <span class="src-tag o">2026.04 기준</span></div>
         <div class="card" style="padding:0;overflow:hidden;">
           <table style="width:100%;border-collapse:collapse;font-size:12px;">
             <tbody>
@@ -689,7 +710,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 시설 현황 -->
-        <div class="sub-sec-label">🏢 시설 현황</div>
+        <div class="sub-sec-label">🏢 시설 현황 <span class="src-tag o">2026.04 기준</span></div>
         <div class="card">
           <div class="irow"><span class="i-label">🏊 수영장</span><div class="i-val"><div class="i-main">월별 사전 신청</div><div class="i-note">선착순 마감</div></div></div>
           <div class="irow"><span class="i-label">💪 헬스장</span><div class="i-val"><div class="i-main">바이비 앱 또는 현장</div><div class="i-note">06:00~23:00</div></div></div>
@@ -700,7 +721,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 출입 방법 -->
-        <div class="sub-sec-label">🔑 출입 방법 (2026.04.01~)</div>
+        <div class="sub-sec-label">🔑 출입 방법 <span class="src-tag a">2026.04.01~</span></div>
         <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--navy-bg);">👤</div>
@@ -720,7 +741,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 바이비 앱 등록 절차 -->
-        <div class="sub-sec-label">📱 바이비(ByB) 앱 등록 절차 (5월부터)</div>
+        <div class="sub-sec-label">📱 바이비(ByB) 앱 등록 절차 <span class="src-tag a">2026.05~</span></div>
         <div class="card">
           <div style="font-size:12px;color:var(--gray-600);line-height:1.8;">
             <div style="margin-bottom:6px;">① 바이비(ByB) 앱 설치 후 회원가입 → <strong>승인 요청</strong></div>
@@ -734,7 +755,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 등록·취소 일정 -->
-        <div class="sub-sec-label">📅 월별 등록·취소 일정 (2026.04.01~)</div>
+        <div class="sub-sec-label">📅 월별 등록·취소 일정 <span class="src-tag a">2026.04.01~</span></div>
         <div class="card" style="padding:0;overflow:hidden;">
           <table style="width:100%;border-collapse:collapse;font-size:12px;">
             <thead><tr style="background:var(--navy);">
@@ -756,7 +777,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 분실물 처리 -->
-        <div class="sub-sec-label">🔍 분실물 처리 규정 (2026.04.01~)</div>
+        <div class="sub-sec-label">🔍 분실물 처리 규정 <span class="src-tag a">2026.04.01~</span></div>
         <div class="card">
           <div class="witem" style="border-bottom:none;padding-bottom:0;">
             <div class="w-icon" style="background:var(--gray-100);">📦</div>
@@ -845,7 +866,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="sec-sub">방문주차 · 등록 · 위반 · 요금 · 규정</div>
 
         <!-- 방문차량 -->
-        <div class="sub-sec-label">🙋 방문차량</div>
+        <div class="sub-sec-label">🙋 방문차량 <span class="src-tag o">2026년 기준</span></div>
         <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--blue-bg);">🚙</div>
@@ -865,7 +886,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 차량 등록 -->
-        <div class="sub-sec-label">📋 차량 등록</div>
+        <div class="sub-sec-label">📋 차량 등록 <span class="src-tag o">2026년 기준</span></div>
         <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--green-bg);">📄</div>
@@ -1036,7 +1057,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 결로·곰팡이 -->
-        <div class="sub-sec-label">🌫️ 결로·곰팡이</div>
+        <div class="sub-sec-label">🌫️ 결로·곰팡이 <span class="src-tag o">입주민 경험</span></div>
         <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--gray-100);">🌫️</div>
@@ -1058,7 +1079,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 도배·장판 -->
-        <div class="sub-sec-label">🏠 도배·장판</div>
+        <div class="sub-sec-label">🏠 도배·장판 <span class="src-tag o">입주민 경험</span></div>
         <div class="card">
           <div class="witem" style="border-bottom:none;padding-bottom:0;">
             <div class="w-icon" style="background:var(--gray-100);">🔧</div>
@@ -1074,7 +1095,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 조명·전기 -->
-        <div class="sub-sec-label">💡 조명·전기</div>
+        <div class="sub-sec-label">💡 조명·전기 <span class="src-tag o">입주민 경험</span></div>
         <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--amber-bg);">💡</div>
@@ -1096,7 +1117,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 에어컨청소 — 앵커 -->
-        <div id="sec-aircon" class="sub-sec-label">🧹 에어컨 청소</div>
+        <div id="sec-aircon" class="sub-sec-label">🧹 에어컨 청소 <span class="src-tag v">입주민 검수</span></div>
         <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--blue-bg);">❄️</div>
@@ -1119,7 +1140,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 엘리베이터 -->
-        <div class="sub-sec-label">🛗 엘리베이터</div>
+        <div class="sub-sec-label">🛗 엘리베이터 <span class="src-tag o">2026년 기준</span></div>
         <div class="card">
           <div class="witem" style="border-bottom:none;padding-bottom:0;">
             <div class="w-icon" style="background:var(--navy-bg);">🛗</div>
@@ -1146,7 +1167,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="sec-sub">분리수거 · 택배 · 대형폐기물 · 공사신고</div>
 
         <!-- 분리수거 -->
-        <div class="sub-sec-label">🗑️ 쓰레기 배출</div>
+        <div class="sub-sec-label">🗑️ 쓰레기 배출 <span class="src-tag o">2026년 기준</span></div>
         <div class="card">
           <div style="background:var(--navy-bg);border-radius:10px;padding:12px;margin-bottom:14px;">
             <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;">📅 배출 일정 (공지사항 기준)</div>
@@ -1202,7 +1223,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 택배·이사·공사 -->
-        <div class="sub-sec-label">📦 택배 · 이사 · 공사</div>
+        <div class="sub-sec-label">📦 택배 · 이사 · 공사 <span class="src-tag o">2026년 기준</span></div>
         <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:#F0F0EF;">📦</div>
@@ -1230,7 +1251,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 승강기 사용료 상세 -->
-        <div class="sub-sec-label">🛗 이사·공사 승강기 사용료</div>
+        <div class="sub-sec-label">🛗 이사·공사 승강기 사용료 <span class="src-tag o">2026년 기준</span></div>
         <div class="card" style="padding:0;overflow:hidden;">
           <table style="width:100%;border-collapse:collapse;font-size:12px;">
             <thead><tr style="background:var(--navy);">
@@ -1257,7 +1278,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="sec-title">📋 민원·규정</div>
         <div class="sec-sub">신고 절차 · 생활 규정</div>
 
-        <div class="sub-sec-label">🚨 신고가 필요할 때</div>
+        <div class="sub-sec-label">🚨 신고가 필요할 때 <span class="src-tag o">2026년 기준</span></div>
         <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--red-bg);">🔊</div>
@@ -1290,7 +1311,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </div>
         </div>
 
-        <div class="sub-sec-label">📄 꼭 알아야 할 규정</div>
+        <div class="sub-sec-label">📄 꼭 알아야 할 규정 <span class="src-tag o">2026년 기준</span></div>
         <div class="card">
           <div class="witem">
             <div class="w-icon" style="background:var(--amber-bg);">🐕</div>
@@ -1768,7 +1789,10 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
         <div class="sec-title">🏠 실거래가</div>
         <div class="sec-sub">DMC파크뷰자이 · 최근 6개월 매매 실거래</div>
-        <div style="font-size:11px;color:var(--gray-400);margin-top:2px;margin-bottom:2px;">출처: 국토교통부 실거래가 공개시스템 · 단위: 만원 · *동은 추정</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:4px;margin-bottom:4px;flex-wrap:wrap;">
+          <span class="src-tag o">출처: 국토교통부 실거래가 공개시스템</span>
+          <span class="src-tag" style="font-size:10px;">단위: 만원 · *동은 추정</span>
+        </div>
 
         <!-- 요약 카드 -->
         <div class="re-summary" id="re-summary" style="margin-top:14px;">
@@ -1910,7 +1934,7 @@ function renderBiz(data){
       ${b.strength_tags?`<div class="b-tags">${b.strength_tags.map(t=>`<span class="b-tag"># ${t}</span>`).join('')}</div>`:''}
       ${b.price_range?`<div class="b-price">${b.price_range}</div>`:''}
       <div class="b-footer">
-        <div class="b-verified">✓ 입주민 인증 후기</div>
+        <span class="src-tag v">✓ 입주민 검수${b.created_at?' · '+b.created_at.slice(0,7).replace('-','.'):''}</span>
         ${b.phone?`<button class="btn-fill" onclick="location.href='tel:${b.phone}'">전화 상담</button>`:`<button class="btn-outline">후기 보기</button>`}
       </div>
     </div>`).join('');
@@ -1941,6 +1965,7 @@ function renderLocal(data){
           ${p.distance_m?`<span class="p-dist">📍 도보 ${Math.round(p.distance_m/80)}분</span>`:''}
           ${p.avg_rating?`<span class="stars" style="font-size:12px;">★ ${p.avg_rating}</span>`:''}
           <span class="res-badge">주민 후기 ${p.resident_review_count}개</span>
+          <span class="src-tag v" style="margin-left:auto;">입주민 추천${p.created_at?' · '+p.created_at.slice(0,7).replace('-','.'):''}</span>
         </div>
         ${p.context_tags?`<div style="margin-top:5px;font-size:11px;color:var(--gray-400);">${p.context_tags.join(' · ')}</div>`:''}
       </div>
@@ -2241,71 +2266,93 @@ function renderMonthlyCards() {
   if (!wrap) return;
   const now = new Date();
   const y = now.getFullYear(), m = now.getMonth() + 1, d = now.getDate();
-  const mn = `${y}년 ${m}월`;
+  const monthEl = document.getElementById('monthly-month');
+  if (monthEl) monthEl.textContent = `${y}년 ${m}월`;
 
-  // ① 관리비 카드 — 매월 25일 납부마감
-  const feeDeadline = 25;
-  let feeBadge, feeDesc;
-  if (d < feeDeadline) {
-    const left = feeDeadline - d;
-    feeBadge = left <= 3 ? ['alert', `D-${left}`] : ['soon', `D-${left}`];
-    feeDesc = `${mn} 청구서 · 납부 마감 ${feeDeadline}일`;
-  } else {
-    feeBadge = ['done', '완료'];
-    feeDesc = `${mn} 납부 마감일(${feeDeadline}일) 지남`;
-  }
+  // ── 최신 관리비 데이터 (고지서 기준, 업데이트 시 여기만 수정)
+  const FEE = { month:'2026.02', avg:'38.7만원', highlight:'📉 난방비 큰 폭 감소', highlight2:'⚡ 전기료 8.9만원 · 🛡️ 경비비 4.0만원' };
 
-  // ② 커뮤니티 신청 카드 — 재등록 1~20일 / 신규 20~24일 / 현장 25~28일
-  let comBadge, comTitle, comDesc;
+  // ① 관리비 카드
+  const deadline = 25, dLeft = deadline - d;
+  let feeBadge, feeDeadlineText;
+  if (dLeft > 3)       { feeBadge=['soon',`D-${dLeft}`];  feeDeadlineText=`납부 마감 이달 ${deadline}일 (D-${dLeft})`; }
+  else if (dLeft > 0)  { feeBadge=['alert',`D-${dLeft}`]; feeDeadlineText=`⚠️ 납부 마감 ${dLeft}일 남음!`; }
+  else                 { feeBadge=['done','납부완료'];     feeDeadlineText=`이달 납부 마감일(${deadline}일) 지남`; }
+
+  // ② 커뮤니티 신청 카드
+  let comBadge, comPhase, comDeadline, comAction;
   if (d >= 1 && d < 20) {
     const left = 20 - d;
-    comBadge = ['now', '진행중'];
-    comTitle = '재등록·취소 기간';
-    comDesc = `온라인(바이비 앱) · ~${m}월 20일 12:00 마감 (D-${left})`;
+    comBadge = ['now','진행중']; comPhase = '재등록·취소 기간';
+    comDeadline = `~${m}월 20일 12:00 마감 (D-${left})`;
+    comAction = '바이비 앱 또는 현장 접수';
   } else if (d >= 20 && d < 25) {
-    comBadge = ['now', '진행중'];
-    comTitle = '신규 등록 기간';
-    comDesc = `온라인(바이비 앱) · ~${m}월 24일 24:00 마감`;
+    comBadge = ['now','진행중']; comPhase = '신규 등록 기간';
+    comDeadline = `~${m}월 24일 24:00 마감`;
+    comAction = '바이비 앱에서 신청';
   } else if (d >= 25 && d <= 28) {
-    comBadge = ['now', '진행중'];
-    comTitle = '현장 등록·취소 기간';
-    comDesc = `커뮤니티 데스크 방문 · ~${m}월 28일 12:00`;
+    comBadge = ['now','진행중']; comPhase = '현장 등록·취소';
+    comDeadline = `~${m}월 28일 12:00 마감`;
+    comAction = '커뮤니티 데스크 방문 필요';
   } else {
-    comBadge = ['done', '대기중'];
-    comTitle = '다음 달 신청';
-    comDesc = `다음 달 1일부터 재등록 시작`;
+    comBadge = ['done','대기중']; comPhase = '신청 대기';
+    comDeadline = `다음 달 1일부터 재등록 시작`;
+    comAction = '수영장 · 헬스장 · 골프 · 독서실';
   }
 
-  // ③ 이번 달 변경사항 카드
-  const changes = m >= 5
-    ? { icon:'📱', title:'바이비(ByB) 앱 신청', desc:'5월부터 커뮤니티 프로그램 신청은 바이비 앱에서만 가능', badge:['alert','변경'] }
-    : { icon:'📋', title:'4월 이용규정 개정 시행', desc:'출입·등록일정·분실물 규정 변경 · 4월은 기존 사이트 신청', badge:['soon','확인'] };
+  // ③ 이번 달 바뀐 것
+  let chgBadge, chgTitle, chgItems, chgPage;
+  if (m >= 5) {
+    chgBadge = ['alert','변경'];
+    chgTitle  = '바이비(ByB) 앱으로 전환';
+    chgItems  = ['커뮤니티 신청: 바이비 앱에서만 가능', '기존 dmcpvx 사이트 신청 종료', '앱 미설치 시 현장 접수 가능'];
+    chgPage   = ()=>goTab('community');
+  } else {
+    chgBadge = ['soon','신규'];
+    chgTitle  = '4월 이용규정 개정 시행';
+    chgItems  = ['출입 방식 변경 (2026.04.01~)', '월별 등록·취소 일정 개편', '분실물 처리 절차 명문화'];
+    chgPage   = ()=>goTab('community');
+  }
 
   wrap.innerHTML = [
-    `<div class="mc" onclick="goTab('fee')">
-      <div class="mc-icon">💰</div>
-      <div class="mc-body">
-        <div class="mc-title">관리비 납부</div>
-        <div class="mc-desc">${feeDesc}</div>
+    // 카드 1: 관리비 요약
+    `<button class="mc2" onclick="goTab('fee')">
+      <div class="mc2-head">
+        <span class="mc2-label">💰 이번 달 관리비</span>
+        <span class="mc-badge done">${FEE.month} 확정</span>
       </div>
-      <span class="mc-badge ${feeBadge[0]}">${feeBadge[1]}</span>
-    </div>`,
-    `<div class="mc" onclick="goTab('community')">
-      <div class="mc-icon">🏊</div>
-      <div class="mc-body">
-        <div class="mc-title">커뮤니티 ${comTitle}</div>
-        <div class="mc-desc">${comDesc}</div>
+      <div class="mc2-main">${FEE.avg}<span class="mc2-unit">/ 세대 평균</span></div>
+      <div class="mc2-sub">${FEE.highlight}<br><span style="color:var(--gray-400);">${FEE.highlight2}</span></div>
+      <div style="font-size:11px;color:var(--gray-400);margin-bottom:10px;">${feeDeadlineText}</div>
+      <div class="mc2-cta">관리비 분석 보기 →</div>
+    </button>`,
+
+    // 카드 2: 커뮤니티 신청 일정
+    `<button class="mc2" onclick="goTab('community')">
+      <div class="mc2-head">
+        <span class="mc2-label">🏊 이번 달 커뮤니티 신청</span>
+        <span class="mc-badge ${comBadge[0]}">${comBadge[1]}</span>
       </div>
-      <span class="mc-badge ${comBadge[0]}">${comBadge[1]}</span>
-    </div>`,
-    `<div class="mc" onclick="goTab('community')">
-      <div class="mc-icon">${changes.icon}</div>
-      <div class="mc-body">
-        <div class="mc-title">${changes.title}</div>
-        <div class="mc-desc">${changes.desc}</div>
+      <div class="mc2-main">${comPhase}</div>
+      <div class="mc2-items">
+        <div class="mc2-item"><span class="mc2-item-dot"></span>${comDeadline}</div>
+        <div class="mc2-item"><span class="mc2-item-dot"></span>${comAction}</div>
       </div>
-      <span class="mc-badge ${changes.badge[0]}">${changes.badge[1]}</span>
-    </div>`
+      <div class="mc2-cta">등록 일정 전체 보기 →</div>
+    </button>`,
+
+    // 카드 3: 이번 달 바뀐 것
+    `<button class="mc2" onclick="${m >= 5 ? "goTab('community')" : "goTab('community')"}">
+      <div class="mc2-head">
+        <span class="mc2-label">📋 이번 달 바뀐 것</span>
+        <span class="mc-badge ${chgBadge[0]}">${chgBadge[1]}</span>
+      </div>
+      <div class="mc2-main">${chgTitle}</div>
+      <div class="mc2-items">
+        ${chgItems.map(i=>`<div class="mc2-item"><span class="mc2-item-dot"></span>${i}</div>`).join('')}
+      </div>
+      <div class="mc2-cta">변경 내용 확인 →</div>
+    </button>`
   ].join('');
 }
 
@@ -2810,130 +2857,139 @@ window.addEventListener('DOMContentLoaded', () => {
 
         <div class="faq-list" style="margin-top:16px;">
 
-          <!-- Q1 -->
+          <!-- ── 항상 많이 찾는 질문 ── -->
+          <div class="sub-sec-label">📌 항상 많이 찾는 질문 <span class="src-tag o">카테고리별 입문</span></div>
+
+          <!-- Q1 (관리비) -->
           <div class="faq-card">
-            <div class="faq-card-q"><span class="faq-card-num">Q1</span>
-              <span class="faq-card-qtxt">주차 위반 차량을 신고하고 싶어요. <span class="hot">HOT</span></span></div>
-            <div class="faq-card-a">차량 번호와 위치를 <strong>관리사무소(☎ <a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)</strong> 또는 민원게시판에 알리면 방송·스티커 경고 조치합니다.<br><br>소화전 앞, 장애인 구역, 이중주차 포함. 지속 점유 시 견인 조치 가능. 전기자전거·킥보드 지하주차장 무단 주차도 동일하게 신고하실 수 있습니다.<br><span class="faq-cnt">📊 관련 민원 약 89건</span><br><button class="faq-go" onclick="goPage('parking')">→ 주차 안내 보기</button></div>
+            <div class="faq-card-q"><span class="faq-card-num" style="background:var(--navy);">💰</span>
+              <span class="faq-card-qtxt">관리비 고지서 상세 내역을 어디서 확인하나요?</span></div>
+            <div class="faq-card-a">dmcpvx.com 로그인 후 <strong>'관리비 조회'</strong> 메뉴에서 월별 상세 내역 확인 가능합니다.<br><br>공동관리비 차감액은 단지 공용 수익(광고·임대) 환급분으로 매월 달라집니다. 회계장부·외부감사 결과는 관리사무소 열람 신청 또는 서울시 공동주택 통합정보마당에서 확인 가능합니다.<br><span class="faq-cnt">📊 관련 민원 다수</span><br><button class="faq-go" onclick="goTab('fee')">→ 관리비 안내 보기</button></div>
           </div>
 
-          <!-- Q2 -->
+          <!-- Q2 (주차) -->
           <div class="faq-card">
-            <div class="faq-card-q"><span class="faq-card-num">Q2</span>
-              <span class="faq-card-qtxt">전기차 충전구역에 일반 차량을 주차해도 되나요? <span class="hot">HOT</span></span></div>
-            <div class="faq-card-a">'전기차 전용' 표시 구역은 충전 목적의 전기차만 주차 가능합니다.<br><br>충전 완료 후 14시간 이내 이동 의무(친환경자동차법)가 있으며, 미이동 시 과태료 대상이 될 수 있습니다. 구역 현황은 관리사무소로 문의하세요.<br><span class="faq-cnt">📊 관련 민원 약 54건</span><br><button class="faq-go" onclick="goPage('parking')">→ 주차 안내 보기</button></div>
-          </div>
-
-          <!-- Q3 -->
-          <div class="faq-card">
-            <div class="faq-card-q"><span class="faq-card-num">Q3</span>
+            <div class="faq-card-q"><span class="faq-card-num" style="background:#5A5A57;">🚗</span>
               <span class="faq-card-qtxt">방문차량 무료 주차 시간은 얼마나 되나요?</span></div>
             <div class="faq-card-a">월 <strong>150시간 무료</strong>(2026.03.01 시행). 초과 시 30분당 500원 부과.<br><br>명절 연휴는 시간 차감 없음. 세대당 등록 차량 외 방문차량에 적용됩니다.<br><span class="faq-cnt">📊 관련 민원 약 35건</span><br><button class="faq-go" onclick="goPage('parking')">→ 주차 안내 보기</button></div>
           </div>
 
-          <!-- Q4 -->
+          <!-- Q3 (커뮤니티) -->
           <div class="faq-card">
-            <div class="faq-card-q"><span class="faq-card-num">Q4</span>
-              <span class="faq-card-qtxt">수영장·헬스장·독서실 등록은 어떻게 하나요? <span class="hot">HOT</span></span></div>
+            <div class="faq-card-q"><span class="faq-card-num" style="background:#1565C0;">🏊</span>
+              <span class="faq-card-qtxt">수영장·헬스장·독서실 등록은 어떻게 하나요?</span></div>
             <div class="faq-card-a">매월 지정된 신청일에 <strong>바이비 앱</strong> 또는 커뮤니티센터 현장에서 등록합니다.<br><br>수영장은 얼굴인식 별도 등록 필요. 독서실은 일일권 결제 필수. 사이트 오류 시 현장 방문 접수로 대체됩니다.<br><span class="faq-cnt">📊 관련 민원 71건</span><br><button class="faq-go" onclick="goTab('community')">→ 커뮤니티 안내 보기</button></div>
           </div>
 
-          <!-- Q5 -->
+          <!-- Q4 (수리·하자) -->
           <div class="faq-card">
-            <div class="faq-card-q"><span class="faq-card-num">Q5</span>
-              <span class="faq-card-qtxt">커뮤니티 얼굴인식 등록 오류가 생겼어요.</span></div>
-            <div class="faq-card-a">커뮤니티센터 현장에서 재등록하거나 관리사무소에 방문 접수하시면 됩니다.<br><br>앱 오류와 별개로 현장 등록이 가능하므로 신청일 당일 방문을 권장합니다.<br><span class="faq-cnt">📊 관련 민원 50건</span><br><button class="faq-go" onclick="goTab('community')">→ 커뮤니티 안내 보기</button></div>
+            <div class="faq-card-q"><span class="faq-card-num" style="background:var(--green);">🛠️</span>
+              <span class="faq-card-qtxt">집에 누수·결로·곰팡이가 생겼어요.</span></div>
+            <div class="faq-card-a">관리사무소(☎ <a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)에 <strong>동·호수와 위치(천장·벽·화장실 등)</strong>를 알려주시면 하자보수 업체를 연결해 드립니다.<br><br>입주 후 10년 이내 구조·방수 하자는 시공사 하자보수 대상입니다.<br><span class="faq-cnt">📊 관련 민원 67건</span><br><button class="faq-go" onclick="goPage('repair')">→ 수리·하자 안내 보기</button></div>
           </div>
+
+          <!-- Q5 (층간소음) -->
+          <div class="faq-card">
+            <div class="faq-card-q"><span class="faq-card-num" style="background:var(--amber);">🔇</span>
+              <span class="faq-card-qtxt">층간소음 민원 절차가 어떻게 되나요?</span></div>
+            <div class="faq-card-a">타워동은 구조 특성상 발생 세대 특정이 어렵습니다. <strong>소음 시간대·위치(천장·벽 방향)</strong>를 기록해 관리사무소에 제출하면 층간소음 측정 조사를 요청할 수 있습니다.<br><br>지속 분쟁은 <strong>층간소음이웃사이센터(☎ <a href="tel:1661-2642" style="color:inherit;text-decoration:underline dotted;">1661-2642</a>)</strong>를 통한 공식 조정도 가능합니다.<br><span class="faq-cnt">📊 관련 민원 다수</span><br><button class="faq-go" onclick="goPage('complaint')">→ 민원·소음 신고 안내</button></div>
+          </div>
+
+          <!-- ── 최근 민원 HOT ── -->
+          <div class="sub-sec-label" style="margin-top:8px;">🔥 최근 민원 HOT <span class="src-tag" style="background:var(--red-bg);color:var(--red);">민원 건수순</span></div>
 
           <!-- Q6 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q6</span>
-              <span class="faq-card-qtxt">엘리베이터에서 이상한 소리·떨림이 납니다.</span></div>
-            <div class="faq-card-a">관리사무소(☎ <a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)에 <strong>동·라인 번호와 증상</strong>(층, 소리 종류)을 알려주시면 승강기 유지보수 업체에 즉시 점검 의뢰합니다.<br><br>덜컹거림·멈춤·문 오작동 등 긴급 이상 징후는 즉시 신고하세요.<br><span class="faq-cnt">📊 관련 민원 66건</span><br><button class="faq-go" onclick="goPage('repair')">→ 수리·하자 안내 보기</button></div>
+              <span class="faq-card-qtxt">주차 위반 차량을 신고하고 싶어요. <span class="hot">HOT</span></span></div>
+            <div class="faq-card-a">차량 번호와 위치를 <strong>관리사무소(☎ <a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)</strong> 또는 민원게시판에 알리면 방송·스티커 경고 조치합니다.<br><br>소화전 앞, 장애인 구역, 이중주차 포함. 지속 점유 시 견인 조치 가능. 전기자전거·킥보드 지하주차장 무단 주차도 동일하게 신고하실 수 있습니다.<br><span class="faq-cnt">📊 관련 민원 약 89건</span><br><button class="faq-go" onclick="goPage('parking')">→ 주차 안내 보기</button></div>
           </div>
 
           <!-- Q7 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q7</span>
-              <span class="faq-card-qtxt">집에 누수·결로·곰팡이가 생겼어요.</span></div>
-            <div class="faq-card-a">관리사무소(☎ <a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)에 <strong>동·호수와 위치(천장·벽·화장실 등)</strong>를 알려주시면 하자보수 업체를 연결해 드립니다.<br><br>입주 후 10년 이내 구조·방수 하자는 시공사 하자보수 대상입니다.<br><span class="faq-cnt">📊 관련 민원 67건</span><br><button class="faq-go" onclick="goPage('repair')">→ 수리·하자 안내 보기</button></div>
+              <span class="faq-card-qtxt">엘리베이터에서 이상한 소리·떨림이 납니다.</span></div>
+            <div class="faq-card-a">관리사무소(☎ <a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)에 <strong>동·라인 번호와 증상</strong>(층, 소리 종류)을 알려주시면 승강기 유지보수 업체에 즉시 점검 의뢰합니다.<br><br>덜컹거림·멈춤·문 오작동 등 긴급 이상 징후는 즉시 신고하세요.<br><span class="faq-cnt">📊 관련 민원 66건</span><br><button class="faq-go" onclick="goPage('repair')">→ 수리·하자 안내 보기</button></div>
           </div>
 
           <!-- Q8 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q8</span>
-              <span class="faq-card-qtxt">복도·주차장 청소가 안 되어 있어요.</span></div>
-            <div class="faq-card-a">위치와 상태를 <strong>민원게시판 또는 관리사무소</strong>에 신고해 주시면 청소 담당자에게 즉시 전달됩니다.<br><br>정기 청소 일정 외 긴급 오염(오물·침수 등)은 경비실을 통해 신속 조치 가능합니다.<br><span class="faq-cnt">📊 관련 민원 50건</span></div>
+              <span class="faq-card-qtxt">전기차 충전구역에 일반 차량을 주차해도 되나요? <span class="hot">HOT</span></span></div>
+            <div class="faq-card-a">'전기차 전용' 표시 구역은 충전 목적의 전기차만 주차 가능합니다.<br><br>충전 완료 후 14시간 이내 이동 의무(친환경자동차법)가 있으며, 미이동 시 과태료 대상이 될 수 있습니다. 구역 현황은 관리사무소로 문의하세요.<br><span class="faq-cnt">📊 관련 민원 약 54건</span><br><button class="faq-go" onclick="goPage('parking')">→ 주차 안내 보기</button></div>
           </div>
 
           <!-- Q9 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q9</span>
-              <span class="faq-card-qtxt">인테리어 공사 중 엘리베이터 보양재가 오래 방치돼 있어요.</span></div>
-            <div class="faq-card-a">공사 완료 후 해당 세대가 관리사무소에 철거를 요청해야 합니다. 방치되거나 분진 오염 시 <strong>동·라인 번호</strong>를 관리사무소에 알려주시면 조치합니다.<br><br>엘리베이터 장시간 독점 사용도 시정 요청 가능합니다.<br><span class="faq-cnt">📊 관련 민원 48건</span><br><button class="faq-go" onclick="goPage('living')">→ 생활편의 안내 보기</button></div>
+              <span class="faq-card-qtxt">커뮤니티 얼굴인식 등록 오류가 생겼어요.</span></div>
+            <div class="faq-card-a">커뮤니티센터 현장에서 재등록하거나 관리사무소에 방문 접수하시면 됩니다.<br><br>앱 오류와 별개로 현장 등록이 가능하므로 신청일 당일 방문을 권장합니다.<br><span class="faq-cnt">📊 관련 민원 50건</span><br><button class="faq-go" onclick="goTab('community')">→ 커뮤니티 안내 보기</button></div>
           </div>
 
           <!-- Q10 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q10</span>
-              <span class="faq-card-qtxt">음식물 쓰레기 RFID 카드가 없으면 어떻게 되나요?</span></div>
-            <div class="faq-card-a">카드 없이 투입 시 <strong>건당 200원</strong> 벌금이 부과됩니다. 카드는 1단지 관리사무소에서 발급합니다.<br><br>동절기에만 냄새·동결 방지를 위해 비닐째 투입 임시 허용(안내문 확인). 베란다에서 투척은 관리규약 위반입니다.<br><span class="faq-cnt">📊 관련 민원 약 25건</span><br><button class="faq-go" onclick="goPage('living')">→ 생활편의 안내 보기</button></div>
+              <span class="faq-card-qtxt">복도·주차장 청소가 안 되어 있어요.</span></div>
+            <div class="faq-card-a">위치와 상태를 <strong>민원게시판 또는 관리사무소</strong>에 신고해 주시면 청소 담당자에게 즉시 전달됩니다.<br><br>정기 청소 일정 외 긴급 오염(오물·침수 등)은 경비실을 통해 신속 조치 가능합니다.<br><span class="faq-cnt">📊 관련 민원 50건</span></div>
           </div>
+
+          <!-- ── 기타 자주 묻는 질문 ── -->
+          <div class="sub-sec-label" style="margin-top:8px;">📋 기타 자주 묻는 질문</div>
 
           <!-- Q11 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q11</span>
-              <span class="faq-card-qtxt">대형폐기물(소파·냉장고)은 어떻게 버리나요?</span></div>
-            <div class="faq-card-a">서대문구 다산콜 <strong>☎ <a href="tel:02-391-7171" style="color:inherit;text-decoration:underline dotted;">02-391-7171</a></strong> 또는 minwon.seoul.go.kr 에서 신청 후 납부 → 접수번호를 경비실에 알리고 배출합니다.<br><br>스티커 없이 배출 시 과태료 처분 대상입니다.<br><span class="faq-cnt">📊 관련 민원 약 14건</span><br><button class="faq-go" onclick="goPage('living')">→ 생활편의 안내 보기</button></div>
+              <span class="faq-card-qtxt">인테리어 공사 중 엘리베이터 보양재가 오래 방치돼 있어요.</span></div>
+            <div class="faq-card-a">공사 완료 후 해당 세대가 관리사무소에 철거를 요청해야 합니다. 방치되거나 분진 오염 시 <strong>동·라인 번호</strong>를 관리사무소에 알려주시면 조치합니다.<br><br>엘리베이터 장시간 독점 사용도 시정 요청 가능합니다.<br><span class="faq-cnt">📊 관련 민원 48건</span><br><button class="faq-go" onclick="goPage('living')">→ 생활편의 안내 보기</button></div>
           </div>
 
           <!-- Q12 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q12</span>
-              <span class="faq-card-qtxt">단지 조경(고사목·잡초·나무 전지) 정비를 요청하고 싶어요.</span></div>
-            <div class="faq-card-a">위치를 명시하여 <strong>민원게시판</strong>에 신고해 주세요. 조경 전지는 봄·가을 연 1~2회 정기 시행됩니다.<br><br>중기 조경 계획은 입주자대표회의 결정 사항으로 회의록을 통해 확인할 수 있습니다.<br><span class="faq-cnt">📊 관련 민원 35건</span><br><button class="faq-go" onclick="goPage('news')">→ 단지소식 보기</button></div>
+              <span class="faq-card-qtxt">음식물 쓰레기 RFID 카드가 없으면 어떻게 되나요?</span></div>
+            <div class="faq-card-a">카드 없이 투입 시 <strong>건당 200원</strong> 벌금이 부과됩니다. 카드는 1단지 관리사무소에서 발급합니다.<br><br>동절기에만 냄새·동결 방지를 위해 비닐째 투입 임시 허용(안내문 확인). 베란다에서 투척은 관리규약 위반입니다.<br><span class="faq-cnt">📊 관련 민원 약 25건</span><br><button class="faq-go" onclick="goPage('living')">→ 생활편의 안내 보기</button></div>
           </div>
 
           <!-- Q13 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q13</span>
-              <span class="faq-card-qtxt">외부인이 단지 내에 무단 출입하고 있어요.</span></div>
-            <div class="faq-card-a"><strong>경비실(☎ <a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)</strong>에 즉시 신고해 주세요. 24시간 운영 중입니다.<br><br>특정 구역 CCTV 확인이 필요한 경우 관리사무소에 요청하시면 됩니다.<br><span class="faq-cnt">📊 관련 민원 33건</span></div>
+              <span class="faq-card-qtxt">화장실·안방에서 담배 냄새가 올라옵니다.</span></div>
+            <div class="faq-card-a">배관을 통한 인근 세대 흡연이 주요 원인입니다. 관리사무소 신고 시 해당 구역 금연 방송 및 주의 안내문 발송이 가능합니다.<br><br>근본 해결을 위해 환기구 역류 방지 장치 점검을 요청하세요. 지정 흡연구역 외 흡연 적발 시 관리규약에 따라 과태료 처분 가능합니다.<br><span class="faq-cnt">📊 관련 민원 26건</span><br><button class="faq-go" onclick="goPage('complaint')">→ 민원·소음 신고 안내</button></div>
           </div>
 
           <!-- Q14 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q14</span>
-              <span class="faq-card-qtxt">공용시설(운동기구·벤치·조명 등)이 파손되었어요.</span></div>
-            <div class="faq-card-a">파손 위치와 상태를 <strong>민원게시판 또는 관리사무소</strong>에 신고해 주세요. 사진을 첨부하면 빠른 처리에 도움이 됩니다.<br><br>안전사고 위험이 있는 경우 경비실을 통해 즉시 접수하세요.<br><span class="faq-cnt">📊 관련 민원 30건</span></div>
+              <span class="faq-card-qtxt">단지 조경(고사목·잡초·나무 전지) 정비를 요청하고 싶어요.</span></div>
+            <div class="faq-card-a">위치를 명시하여 <strong>민원게시판</strong>에 신고해 주세요. 조경 전지는 봄·가을 연 1~2회 정기 시행됩니다.<br><br>중기 조경 계획은 입주자대표회의 결정 사항으로 회의록을 통해 확인할 수 있습니다.<br><span class="faq-cnt">📊 관련 민원 35건</span><br><button class="faq-go" onclick="goPage('news')">→ 단지소식 보기</button></div>
           </div>
 
           <!-- Q15 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q15</span>
-              <span class="faq-card-qtxt">화장실·안방에서 담배 냄새가 올라옵니다.</span></div>
-            <div class="faq-card-a">배관을 통한 인근 세대 흡연이 주요 원인입니다. 관리사무소 신고 시 해당 구역 금연 방송 및 주의 안내문 발송이 가능합니다.<br><br>근본 해결을 위해 환기구 역류 방지 장치 점검을 요청하세요. 지정 흡연구역 외 흡연 적발 시 관리규약에 따라 과태료 처분 가능합니다.<br><span class="faq-cnt">📊 관련 민원 26건</span><br><button class="faq-go" onclick="goPage('complaint')">→ 민원·소음 신고 안내</button></div>
+              <span class="faq-card-qtxt">대형폐기물(소파·냉장고)은 어떻게 버리나요?</span></div>
+            <div class="faq-card-a">서대문구 다산콜 <strong>☎ <a href="tel:02-391-7171" style="color:inherit;text-decoration:underline dotted;">02-391-7171</a></strong> 또는 minwon.seoul.go.kr 에서 신청 후 납부 → 접수번호를 경비실에 알리고 배출합니다.<br><br>스티커 없이 배출 시 과태료 처분 대상입니다.<br><span class="faq-cnt">📊 관련 민원 약 14건</span><br><button class="faq-go" onclick="goPage('living')">→ 생활편의 안내 보기</button></div>
           </div>
 
           <!-- Q16 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q16</span>
-              <span class="faq-card-qtxt">관리비 고지서 상세 내역을 어디서 확인하나요?</span></div>
-            <div class="faq-card-a">dmcpvx.com 로그인 후 <strong>'관리비 조회'</strong> 메뉴에서 월별 상세 내역 확인 가능합니다.<br><br>공동관리비 차감액은 단지 공용 수익(광고·임대) 환급분으로 매월 달라집니다. 회계장부·외부감사 결과는 관리사무소 열람 신청 또는 서울시 공동주택 통합정보마당에서 확인 가능합니다.<br><span class="faq-cnt">📊 관련 민원 다수</span><br><button class="faq-go" onclick="goTab('fee')">→ 관리비 안내 보기</button></div>
+              <span class="faq-card-qtxt">외부인이 단지 내에 무단 출입하고 있어요.</span></div>
+            <div class="faq-card-a"><strong>경비실(☎ <a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)</strong>에 즉시 신고해 주세요. 24시간 운영 중입니다.<br><br>특정 구역 CCTV 확인이 필요한 경우 관리사무소에 요청하시면 됩니다.<br><span class="faq-cnt">📊 관련 민원 33건</span></div>
           </div>
 
           <!-- Q17 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q17</span>
-              <span class="faq-card-qtxt">반려동물 공용공간 이용 규정이 어떻게 되나요?</span></div>
-            <div class="faq-card-a">공용공간에서는 <strong>목줄 착용 필수</strong>이며 배변 즉시 처리 의무가 있습니다.<br><br>엘리베이터·복도에서 목줄 미착용 상태로 이동 시 관리규약 위반으로 민원 접수 대상이 됩니다.<br><span class="faq-cnt">📊 관련 민원 12건</span><br><button class="faq-go" onclick="goPage('complaint')">→ 민원·규정 안내</button></div>
+              <span class="faq-card-qtxt">공용시설(운동기구·벤치·조명 등)이 파손되었어요.</span></div>
+            <div class="faq-card-a">파손 위치와 상태를 <strong>민원게시판 또는 관리사무소</strong>에 신고해 주세요. 사진을 첨부하면 빠른 처리에 도움이 됩니다.<br><br>안전사고 위험이 있는 경우 경비실을 통해 즉시 접수하세요.<br><span class="faq-cnt">📊 관련 민원 30건</span></div>
           </div>
 
           <!-- Q18 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q18</span>
-              <span class="faq-card-qtxt">소화기·비상구 등 안전시설 이상을 발견했어요.</span></div>
-            <div class="faq-card-a">위치를 명시하여 <strong>관리사무소 또는 경비실</strong>에 즉시 신고해 주세요. 긴급 상황 시 119 신고하세요.<br><br>비상구 앞 적치물, 소화기 위치 이탈 등 안전 저해 요소는 빠른 신고가 중요합니다.<br><span class="faq-cnt">📊 관련 민원 10건</span></div>
+              <span class="faq-card-qtxt">반려동물 공용공간 이용 규정이 어떻게 되나요?</span></div>
+            <div class="faq-card-a">공용공간에서는 <strong>목줄 착용 필수</strong>이며 배변 즉시 처리 의무가 있습니다.<br><br>엘리베이터·복도에서 목줄 미착용 상태로 이동 시 관리규약 위반으로 민원 접수 대상이 됩니다.<br><span class="faq-cnt">📊 관련 민원 12건</span><br><button class="faq-go" onclick="goPage('complaint')">→ 민원·규정 안내</button></div>
           </div>
 
           <!-- Q19 -->
@@ -2946,8 +3002,8 @@ window.addEventListener('DOMContentLoaded', () => {
           <!-- Q20 -->
           <div class="faq-card">
             <div class="faq-card-q"><span class="faq-card-num">Q20</span>
-              <span class="faq-card-qtxt">층간소음 민원 절차가 어떻게 되나요? <span class="hot">HOT</span></span></div>
-            <div class="faq-card-a">타워동은 구조 특성상 발생 세대 특정이 어렵습니다. <strong>소음 시간대·위치(천장·벽 방향)</strong>를 기록해 관리사무소에 제출하면 층간소음 측정 조사를 요청할 수 있습니다.<br><br>지속 분쟁은 <strong>층간소음이웃사이센터(☎ <a href="tel:1661-2642" style="color:inherit;text-decoration:underline dotted;">1661-2642</a>)</strong>를 통한 공식 조정도 가능합니다.<br><span class="faq-cnt">📊 관련 민원 다수</span><br><button class="faq-go" onclick="goPage('complaint')">→ 민원·소음 신고 안내</button></div>
+              <span class="faq-card-qtxt">소화기·비상구 등 안전시설 이상을 발견했어요.</span></div>
+            <div class="faq-card-a">위치를 명시하여 <strong>관리사무소 또는 경비실</strong>에 즉시 신고해 주세요. 긴급 상황 시 119 신고하세요.<br><br>비상구 앞 적치물, 소화기 위치 이탈 등 안전 저해 요소는 빠른 신고가 중요합니다.<br><span class="faq-cnt">📊 관련 민원 10건</span></div>
           </div>
 
         </div>
