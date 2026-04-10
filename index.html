@@ -2009,7 +2009,7 @@ async function _doSearch(q){
 }
 
 async function _fetchNaver(query){
-  const url = `/api/naver-search?query=${encodeURIComponent(query)}&type=local&display=5`;
+  const url = `https://danji-on.vercel.app/api/naver-search?query=${encodeURIComponent(query)}&type=local&display=5`;
   const res = await fetch(url);
   if(!res.ok) throw new Error('API 오류 '+res.status);
   const data = await res.json();
