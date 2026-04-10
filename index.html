@@ -1778,7 +1778,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <thead><tr>
               <th>계약일</th>
               <th>전용면적</th>
-              <th>층</th>
+              <th>동/층</th>
               <th>거래금액</th>
             </tr></thead>
             <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 데이터 불러오는 중…</td></tr></tbody>
@@ -2210,7 +2210,7 @@ function renderRETable(items) {
     return `<tr>
       <td class="re-date">${date}</td>
       <td><span class="re-area-badge">${area}㎡</span></td>
-      <td class="re-floor">${i.floor}층</td>
+      <td class="re-floor">${i.aptDong ? i.aptDong+'동 ' : ''}${i.floor}층</td>
       <td class="re-price">${priceStr}</td>
     </tr>`;
   }).join('');
