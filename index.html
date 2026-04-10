@@ -1453,6 +1453,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <a href="https://openapt.seoul.go.kr" target="_blank" style="color:var(--navy);font-weight:700;">openapt.seoul.go.kr →</a>
           </div>
         </div>
+
+        <!-- 관리사무소 공지사항 (DB 자동 동기화) -->
+        <div class="news-cat-label" style="margin-top:20px;">📋 관리사무소 공지사항</div>
+        <div class="card" style="padding:12px 16px;" id="notice-list">
+          <div style="padding:16px;text-align:center;color:var(--gray-400);font-size:13px;">불러오는 중…</div>
+        </div>
       </div>
     </div>
 
@@ -2048,10 +2054,37 @@ function goFeeTab(idx,btn){
   if(idx===3&&!window._fC3){window._fC3=true;setTimeout(initFeeYoy,50);}
 }
 
+// 관리사무소 공지사항 로드
+async function loadNotices() {
+  const el = document.getElementById('notice-list');
+  if (!el) return;
+  const { data } = await sb.from('wiki_documents')
+    .select('title,summary,body')
+    .eq('category','notice')
+    .eq('status','published')
+    .order('summary', { ascending: false });
+  if (!data || !data.length) {
+    el.innerHTML = '<div style="padding:12px;color:var(--gray-400);font-size:13px;text-align:center;">공지사항이 없습니다.</div>';
+    return;
+  }
+  el.innerHTML = data.map((n, i) => `
+    <a href="${n.body}" target="_blank" style="text-decoration:none;" rel="noopener">
+      <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;${i < data.length-1 ? 'border-bottom:1px solid var(--gray-100);' : ''}border-radius:0;">
+        <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">공지</span>
+        <div class="news-body">
+          <div class="news-title">${n.title}</div>
+          <div class="news-date">${n.summary}</div>
+        </div>
+        <span style="color:var(--gray-300);font-size:14px;flex-shrink:0;">›</span>
+      </div>
+    </a>`).join('');
+}
+
 // 초기 히스토리 세팅
 pushHistory('home');
 loadBiz();
 loadLocal();
+loadNotices();
 
 // ── iOS 감지 및 설치 안내 ────────────────────────────────────
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
