@@ -8,8 +8,15 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  const { question } = req.body || {};
-  if (!question || question.trim().length < 2) {
+  const { question, messages } = req.body || {};
+
+  // 다중 턴 대화(messages) 또는 단일 질문(question) 둘 다 지원
+  let claudeMessages;
+  if (messages && Array.isArray(messages) && messages.length > 0) {
+    claudeMessages = messages;
+  } else if (question && question.trim().length >= 2) {
+    claudeMessages = [{ role: 'user', content: question.trim() }];
+  } else {
     return res.status(400).json({ error: '질문을 입력해주세요.' });
   }
 
@@ -70,7 +77,7 @@ export default async function handler(req, res) {
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 300,
         system: CONTEXT,
-        messages: [{ role: 'user', content: question.trim() }],
+        messages: claudeMessages,
       }),
     });
 
