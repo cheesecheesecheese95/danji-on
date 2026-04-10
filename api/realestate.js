@@ -1,27 +1,84 @@
-// Vercel 서버리스 함수 — 국토부 아파트 실거래가 조회 (디버그 버전)
+// Vercel 서버리스 함수 — 국토부 아파트 실거래가 조회
+// RTMSDataSvcAptTrade (XML)
+
 export const config = { maxDuration: 20 };
 
 const KEY = process.env.REALESTATE_KEY;
+const LAWD_CD = '11440'; // 마포구 (상암 DMC)
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=7200');
 
   if (!KEY) {
-    return res.status(200).json({ error: 'API 키 없음' });
+    return res.status(200).json({ error: 'API 키가 설정되지 않았습니다.' });
   }
 
-  // 디버그: LAWD_CD와 월을 파라미터로 받아 raw 응답 반환
-  const lawd = req.query.lawd || '11440';
-  const ym = req.query.ym || '202503';
-  const url = `https://apis.data.go.kr/1613000/RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev?serviceKey=${KEY}&LAWD_CD=${lawd}&DEAL_YMD=${ym}&numOfRows=10&pageNo=1&type=json`;
+  const raw = req.query.raw === '1';
+  const months = getLastMonths(6);
+  const allItems = [];
 
-  try {
-    const r = await fetch(url);
-    const text = await r.text();
-    let parsed;
-    try { parsed = JSON.parse(text); } catch(e) { parsed = text; }
-    return res.status(200).json({ lawd, ym, url: url.replace(KEY, 'KEY_HIDDEN'), response: parsed });
-  } catch(e) {
-    return res.status(200).json({ error: e.message });
+  for (const ym of months) {
+    try {
+      const url = `https://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade?serviceKey=${KEY}&LAWD_CD=${LAWD_CD}&DEAL_YMD=${ym}&numOfRows=100&pageNo=1`;
+      const r = await fetch(url);
+      const xml = await r.text();
+      const items = parseXmlItems(xml);
+      if (raw) {
+        allItems.push(...items);
+      } else {
+        const filtered = items.filter(i =>
+          i.aptNm && (i.aptNm.includes('파크뷰자이') || i.aptNm.includes('DMC파크뷰'))
+        );
+        allItems.push(...filtered);
+      }
+    } catch (e) {
+      console.error(`[realestate] ${ym} 조회 실패:`, e.message);
+    }
   }
+
+  allItems.sort((a, b) => {
+    const da = `${a.dealYear}${String(a.dealMonth).padStart(2,'0')}${String(a.dealDay).padStart(2,'0')}`;
+    const db = `${b.dealYear}${String(b.dealMonth).padStart(2,'0')}${String(b.dealDay).padStart(2,'0')}`;
+    return db.localeCompare(da);
+  });
+
+  return res.status(200).json({ items: allItems.slice(0, 100), total: allItems.length });
+}
+
+function parseXmlItems(xml) {
+  const items = [];
+  const itemRe = /<item>([\s\S]*?)<\/item>/g;
+  let m;
+  while ((m = itemRe.exec(xml)) !== null) {
+    const block = m[1];
+    const get = (tag) => {
+      const r = new RegExp(`<${tag}>([^<]*)<\/${tag}>`);
+      const mm = r.exec(block);
+      return mm ? mm[1].trim() : '';
+    };
+    items.push({
+      aptNm: get('aptNm'),
+      dealYear: get('dealYear'),
+      dealMonth: get('dealMonth'),
+      dealDay: get('dealDay'),
+      excluUseAr: get('excluUseAr'),
+      floor: get('floor'),
+      dealAmount: get('dealAmount'),
+      buildYear: get('buildYear'),
+    });
+  }
+  return items;
+}
+
+function getLastMonths(n) {
+  const months = [];
+  const d = new Date();
+  for (let i = 0; i < n; i++) {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    months.push(`${year}${month}`);
+    d.setMonth(d.getMonth() - 1);
+  }
+  return months;
 }
