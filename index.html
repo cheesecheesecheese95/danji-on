@@ -2279,11 +2279,15 @@ function closeIOSGuide(){
   document.getElementById('ios-modal').classList.remove('open');
 }
 
+// ── SW 및 구캐시 완전 제거 ──────────────────────────────────
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('[SW] 등록 성공:', reg.scope))
-      .catch(err => console.log('[SW] 등록 실패:', err));
+  navigator.serviceWorker.getRegistrations().then(function(regs){
+    regs.forEach(function(r){ r.unregister(); });
+  });
+}
+if (typeof caches !== 'undefined') {
+  caches.keys().then(function(keys){
+    keys.forEach(function(k){ caches.delete(k); });
   });
 }
 
