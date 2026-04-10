@@ -1,12 +1,7 @@
 {
-  "functions": {
-    "api/naver-search.js":  { "runtime": "nodejs20.x" },
-    "api/notices-sync.js":  { "runtime": "nodejs20.x" },
-    "api/meeting-sync.js":  { "runtime": "nodejs20.x" }
-  },
   "crons": [
-    { "path": "/api/notices-sync", "schedule": "0 22 * * *"  },
-    { "path": "/api/meeting-sync", "schedule": "0 22 * * 0"  }
+    { "path": "/api/notices-sync", "schedule": "0 22 * * *" },
+    { "path": "/api/meeting-sync", "schedule": "0 22 * * 0" }
   ],
   "headers": [
     {
