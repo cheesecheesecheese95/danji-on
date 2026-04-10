@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>캐시 초기화 중...</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f5f7fa;}
+.box{text-align:center;}.icon{font-size:48px;margin-bottom:16px;}.msg{font-size:16px;font-weight:600;color:#333;}</style>
+</head>
+<body>
+<div class="box">
+  <div class="icon">🔄</div>
+  <div class="msg" id="msg">캐시 초기화 중...</div>
+</div>
+<script>
+async function clearAll(){
+  try{
+    if('serviceWorker' in navigator){
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r=>r.unregister()));
+    }
+    if(typeof caches!=='undefined'){
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k=>caches.delete(k)));
+    }
+    document.getElementById('msg').textContent='완료! 앱으로 이동합니다...';
+    setTimeout(()=>{ location.replace('./index.html?nocache='+Date.now()); }, 800);
+  }catch(e){
+    location.replace('./index.html');
+  }
+}
+clearAll();
+</script>
+</body>
+</html>
