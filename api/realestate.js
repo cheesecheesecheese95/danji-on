@@ -4,7 +4,7 @@
 export const config = { maxDuration: 20 };
 
 const KEY = process.env.REALESTATE_KEY;
-const LAWD_CD = '11440'; // 서대문구
+const LAWD_CD = '11440'; // 마포구 (상암 DMC)
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,6 +14,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'API 키가 설정되지 않았습니다. Vercel 환경변수 REALESTATE_KEY를 설정해주세요.' });
   }
 
+  const raw = req.query.raw === '1'; // ?raw=1 이면 필터 없이 전체 반환 (디버그용)
   const months = getLastMonths(6);
   const allItems = [];
 
@@ -24,10 +25,14 @@ export default async function handler(req, res) {
       const d = await r.json();
       const items = d?.response?.body?.items?.item || [];
       const arr = Array.isArray(items) ? items : (items ? [items] : []);
-      const filtered = arr.filter(i =>
-        i.aptNm && (i.aptNm.includes('파크뷰자이') || i.aptNm.includes('DMC파크뷰'))
-      );
-      allItems.push(...filtered);
+      if (raw) {
+        allItems.push(...arr);
+      } else {
+        const filtered = arr.filter(i =>
+          i.aptNm && (i.aptNm.includes('파크뷰자이') || i.aptNm.includes('DMC파크뷰'))
+        );
+        allItems.push(...filtered);
+      }
     } catch (e) {
       console.error(`[realestate] ${ym} 조회 실패:`, e.message);
     }
@@ -40,7 +45,7 @@ export default async function handler(req, res) {
     return db.localeCompare(da);
   });
 
-  return res.status(200).json({ items: allItems.slice(0, 60), total: allItems.length });
+  return res.status(200).json({ items: allItems.slice(0, 100), total: allItems.length });
 }
 
 function getLastMonths(n) {
