@@ -299,6 +299,19 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 /* 검색 결과 — 업체/FAQ 카드 */
 .s-item-verified{font-size:9px;font-weight:700;color:#2E7D32;background:#E8F5E9;padding:1px 5px;border-radius:4px;margin-left:4px;}
 .s-faq-a{font-size:11px;color:var(--gray-400);margin-top:2px;line-height:1.45;}
+/* Claude AI 답변 카드 */
+.s-claude-sec{padding:12px 16px;}
+.s-claude-card{background:linear-gradient(135deg,#EEF3FB 0%,#F5F0FF 100%);border:1px solid #C8D8F5;border-radius:14px;padding:14px;}
+.s-claude-head{display:flex;align-items:center;gap:7px;margin-bottom:9px;}
+.s-claude-logo{width:20px;height:20px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:800;flex-shrink:0;}
+.s-claude-label{font-size:11px;font-weight:700;color:var(--navy);}
+.s-claude-model{font-size:10px;color:var(--gray-400);margin-left:auto;}
+.s-claude-body{font-size:13px;color:var(--gray-800);line-height:1.7;white-space:pre-wrap;}
+.s-claude-loading{font-size:12px;color:var(--gray-400);display:flex;align-items:center;gap:6px;}
+.s-claude-dot{width:5px;height:5px;border-radius:50%;background:var(--navy);opacity:0.4;animation:claudePulse 1.2s infinite;flex-shrink:0;}
+.s-claude-dot:nth-child(2){animation-delay:0.2s;}
+.s-claude-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes claudePulse{0%,100%{opacity:0.2}50%{opacity:1}}
 
 /* ── 날씨·환경 대시보드 ───────────────────────────── */
 .dash-wrap{margin-bottom:16px;}
@@ -2206,11 +2219,34 @@ async function _doSearch(q){
     html += '</div>';
   }
 
+  // Claude 트리거 — 질문형이거나 결과가 없을 때
+  const _qWords = ['어떻게','어디','언제','얼마','뭐','무엇','있나','됩니','알려','가능','방법','절차','해야','하면','인가','인지','왜','차이','뭔가요','있어요','돼요','되나요','할수','받을','?'];
+  const isQuestion = ql.length >= 5 && _qWords.some(w=>ql.includes(w));
+  const noResults = !matchedPages.length && !matchedBiz.length && !matchedLocal.length && !matchedFaq.length;
+  const askClaude = isQuestion || (noResults && ql.length >= 4);
+
   // 네이버 결과 placeholder
   if(naverQ){
     html += `<div class="s-result-section" id="_naver_sec">
       <div class="s-section-label">📍 주변 장소 <span class="s-naver-badge">NAVER</span></div>
       <div class="s-loading" style="padding:12px 0;">검색 중...</div>
+    </div>`;
+  }
+
+  // Claude placeholder
+  if(askClaude){
+    html += `<div class="s-claude-sec" id="_claude_sec">
+      <div class="s-claude-card">
+        <div class="s-claude-head">
+          <div class="s-claude-logo">C</div>
+          <span class="s-claude-label">AI 답변</span>
+          <span class="s-claude-model">DMC파크뷰자이 정보 기반</span>
+        </div>
+        <div class="s-claude-loading">
+          <div class="s-claude-dot"></div><div class="s-claude-dot"></div><div class="s-claude-dot"></div>
+          <span style="margin-left:4px;">답변 생성 중…</span>
+        </div>
+      </div>
     </div>`;
   }
 
@@ -2225,35 +2261,71 @@ async function _doSearch(q){
 
   _sp.innerHTML = html;
 
-  // 네이버 비동기 로드
-  if(naverQ){
-    try{
-      const items = await _fetchNaver(naverQ);
-      const sec = document.getElementById('_naver_sec');
-      if(!sec) return;
-      if(!items||!items.length){ sec.querySelector('.s-loading').textContent='주변 검색 결과가 없어요.'; return; }
-      let nh = `<div class="s-section-label">📍 주변 장소 <span class="s-naver-badge">NAVER</span></div>`;
-      items.slice(0,5).forEach(item=>{
-        const name = item.title.replace(/<[^>]+>/g,'');
-        const addr = (item.roadAddress||item.address||'').split(' ').slice(-3).join(' ');
-        const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(name+' '+addr)}`;
-        const tel = item.telephone ? item.telephone.replace(/[^0-9\-]/g,'') : '';
-        nh += `<div class="s-item" onclick="_saveRecent('${q}');window.open('${mapUrl}','_blank')">
-          <div class="s-item-icon" style="background:#e8faf0;font-size:18px;">📍</div>
-          <div class="s-item-body">
-            <div class="s-item-title">${name}</div>
-            <div class="s-item-sub">${item.category||''} · ${addr}${tel?` · <a href="tel:${tel}" style="color:var(--navy);font-weight:600;" onclick="event.stopPropagation();">📞 전화</a>`:''}</div>
-          </div>
-          <span class="s-item-arrow" style="color:#03C75A;font-size:11px;">지도→</span>
-        </div>`;
-      });
-      sec.innerHTML = nh;
-    }catch(e){
-      const sec = document.getElementById('_naver_sec');
-      if(sec) sec.innerHTML=`<div class="s-section-label">📍 주변 장소</div><div style="padding:8px 0;font-size:12px;color:var(--gray-400);">검색 서비스를 불러올 수 없어요.</div>`;
-    }
+  // Claude + Naver 비동기 병렬 로드
+  const tasks = [];
+
+  if(askClaude) tasks.push(_loadClaude(q));
+  if(naverQ) tasks.push(_loadNaver(naverQ, q));
+  await Promise.allSettled(tasks);
+}
+
+async function _loadClaude(q){
+  const sec = document.getElementById('_claude_sec');
+  if(!sec) return;
+  try{
+    const answer = await _fetchClaude(q);
+    sec.innerHTML = `<div class="s-claude-card">
+      <div class="s-claude-head">
+        <div class="s-claude-logo">C</div>
+        <span class="s-claude-label">AI 답변</span>
+        <span class="s-claude-model">DMC파크뷰자이 정보 기반</span>
+      </div>
+      <div class="s-claude-body">${answer.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+    </div>`;
+  }catch(e){
+    sec.remove();
   }
 }
+
+async function _loadNaver(naverQ, q){
+  const sec = document.getElementById('_naver_sec');
+  if(!sec) return;
+  try{
+    const items = await _fetchNaver(naverQ);
+    if(!items||!items.length){ sec.querySelector('.s-loading').textContent='주변 검색 결과가 없어요.'; return; }
+    let nh = `<div class="s-section-label">📍 주변 장소 <span class="s-naver-badge">NAVER</span></div>`;
+    items.slice(0,5).forEach(item=>{
+      const name = item.title.replace(/<[^>]+>/g,'');
+      const addr = (item.roadAddress||item.address||'').split(' ').slice(-3).join(' ');
+      const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(name+' '+addr)}`;
+      const tel = item.telephone ? item.telephone.replace(/[^0-9\-]/g,'') : '';
+      nh += `<div class="s-item" onclick="_saveRecent('${q}');window.open('${mapUrl}','_blank')">
+        <div class="s-item-icon" style="background:#e8faf0;font-size:18px;">📍</div>
+        <div class="s-item-body">
+          <div class="s-item-title">${name}</div>
+          <div class="s-item-sub">${item.category||''} · ${addr}${tel?` · <a href="tel:${tel}" style="color:var(--navy);font-weight:600;" onclick="event.stopPropagation();">📞 전화</a>`:''}</div>
+        </div>
+        <span class="s-item-arrow" style="color:#03C75A;font-size:11px;">지도→</span>
+      </div>`;
+    });
+    sec.innerHTML = nh;
+  }catch(e){
+    if(sec) sec.innerHTML=`<div class="s-section-label">📍 주변 장소</div><div style="padding:8px 0;font-size:12px;color:var(--gray-400);">검색 서비스를 불러올 수 없어요.</div>`;
+  }
+}
+
+async function _fetchClaude(question){
+  const res = await fetch('https://danji-on.vercel.app/api/claude', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ question })
+  });
+  if(!res.ok) throw new Error('Claude API '+res.status);
+  const data = await res.json();
+  if(data.error) throw new Error(data.error);
+  return data.answer || '답변을 생성할 수 없어요.';
+}
+
 
 async function _fetchNaver(query){
   const url = `https://danji-on.vercel.app/api/naver-search?query=${encodeURIComponent(query)}&type=local&display=5`;
