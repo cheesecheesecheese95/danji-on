@@ -2125,6 +2125,14 @@ loadLocal();
 loadNotices();
 loadMeetings();
 
+// faq.html 등 외부 페이지에서 넘어올 때 특정 페이지로 이동
+(function(){
+  const _nav = localStorage.getItem('_nav_to');
+  const _tab = localStorage.getItem('_tab_to');
+  if(_nav){ localStorage.removeItem('_nav_to'); setTimeout(()=>goPage(_nav), 80); }
+  else if(_tab){ localStorage.removeItem('_tab_to'); setTimeout(()=>goTab(_tab), 80); }
+})();
+
 // ── iOS 감지 및 설치 안내 ────────────────────────────────────
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
 const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches
