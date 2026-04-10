@@ -351,6 +351,14 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <span class="q-icon">🛠️</span>
             <span class="q-texts"><span class="q-label">수리·하자</span><span class="q-sub">누수·보일러·결로</span></span>
           </button>
+          <button class="qbtn" onclick="goPage('faq')">
+            <span class="q-icon">❓</span>
+            <span class="q-texts"><span class="q-label">자주 찾는 질문</span><span class="q-sub">주차·관리비·소음 등</span></span>
+          </button>
+          <button class="qbtn" onclick="goPage('news')">
+            <span class="q-icon">📢</span>
+            <span class="q-texts"><span class="q-label">단지소식</span><span class="q-sub">회의록·공지사항</span></span>
+          </button>
         </div>
 
         <!-- 계절형 카드 -->
@@ -413,16 +421,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="egrid" style="margin-bottom:10px;">
           <button class="ebtn" onclick="goPage('emergency')" style="text-align:left;"><span class="e-icon">🚑</span><span class="e-label">응급실 찾기</span><span class="e-phone">5개 병원 주소·지도</span></button>
           <button class="ebtn" onclick="goPageAnchor('emergency','sec-pharmacy')" style="text-align:left;"><span class="e-icon">💊</span><span class="e-label">야간약국 찾기</span><span class="e-phone">5개 약국 주소·지도</span></button>
-        </div>
-
-        <!-- 자주 찾는 질문 — 맨 아래 -->
-        <div class="sec-label" style="margin-top:14px;">자주 찾는 질문</div>
-        <div class="card" onclick="goPage('faq')" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;-webkit-tap-highlight-color:transparent;">
-          <div>
-            <div style="font-size:14px;font-weight:700;color:var(--gray-800);">입주민이 가장 많이 물어보는 질문</div>
-            <div style="font-size:12px;color:var(--gray-400);margin-top:3px;">주차 · 관리비 · 커뮤니티 · 소음 등 10가지</div>
-          </div>
-          <span style="font-size:20px;color:var(--gray-300);flex-shrink:0;">›</span>
         </div>
 
         <!-- 앱 설치 유도 -->
