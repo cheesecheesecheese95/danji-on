@@ -1,10 +1,8 @@
 // Vercel 서버리스 함수 — 국토부 아파트 실거래가 조회
-// RTMSDataSvcAptTrade (XML)
-
 export const config = { maxDuration: 20 };
 
 const KEY = process.env.REALESTATE_KEY;
-const LAWD_CD = '11440'; // 마포구 (상암 DMC)
+const DEFAULT_LAWD = '11440'; // 마포구 (기본값)
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,12 +13,13 @@ export default async function handler(req, res) {
   }
 
   const raw = req.query.raw === '1';
+  const lawd = req.query.lawd || DEFAULT_LAWD;
   const months = getLastMonths(6);
   const allItems = [];
 
   for (const ym of months) {
     try {
-      const url = `https://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade?serviceKey=${KEY}&LAWD_CD=${LAWD_CD}&DEAL_YMD=${ym}&numOfRows=100&pageNo=1`;
+      const url = `https://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade?serviceKey=${KEY}&LAWD_CD=${lawd}&DEAL_YMD=${ym}&numOfRows=100&pageNo=1`;
       const r = await fetch(url);
       const xml = await r.text();
       const items = parseXmlItems(xml);
@@ -43,7 +42,7 @@ export default async function handler(req, res) {
     return db.localeCompare(da);
   });
 
-  return res.status(200).json({ items: allItems.slice(0, 100), total: allItems.length });
+  return res.status(200).json({ items: allItems.slice(0, 100), total: allItems.length, lawd });
 }
 
 function parseXmlItems(xml) {
