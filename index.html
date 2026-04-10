@@ -564,13 +564,41 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <button class="news-more" onclick="goPage('news')">전체 소식 보기 →</button>
 
         <!-- 야간응급 상세 -->
-        <div class="sec-label" style="margin-top:4px;">야간·응급 연락처</div>
-        <!-- 단지 연락 -->
-        <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:0.05em;">🏢 단지 연락</div>
-        <div class="egrid" style="margin-bottom:10px;">
-          <a href="tel:02-931-8360" class="ebtn"><span class="e-icon">🏢</span><span class="e-label">관리사무소(방제실)</span><span class="e-phone">02-931-8360</span></a>
-          <a href="tel:02-931-8360" class="ebtn"><span class="e-icon">🛡️</span><span class="e-label">경비실 (24h)</span><span class="e-phone">02-931-8360</span></a>
+        <div class="sec-label" style="margin-top:4px;">단지 연락처</div>
+
+        <!-- 관리사무소 메인 -->
+        <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:0.05em;">🏢 관리사무소 · 02-931-8360</div>
+        <div class="card" style="padding:12px 14px;margin-bottom:10px;">
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">평일 09:00~18:00 · 내선 안내</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:12px;color:var(--gray-800);">
+            <div><span style="color:var(--navy);font-weight:700;">1번</span> 생활안내</div>
+            <div><span style="color:var(--navy);font-weight:700;">2번</span> 커뮤니티센터</div>
+            <div><span style="color:var(--navy);font-weight:700;">3번</span> 전기·설비·승강기</div>
+            <div><span style="color:var(--navy);font-weight:700;">4번</span> 관리비·전출입</div>
+            <div><span style="color:var(--navy);font-weight:700;">5번</span> SH임대</div>
+            <div><span style="color:var(--navy);font-weight:700;">6번</span> 난방·수도·전기요금</div>
+            <div><span style="color:var(--navy);font-weight:700;">7번</span> 경비·보안·초소</div>
+            <div><span style="color:var(--navy);font-weight:700;">8번</span> 미화·청소</div>
+            <div><span style="color:var(--navy);font-weight:700;">9번</span> 기타</div>
+          </div>
+          <a href="tel:02-931-8360" class="ebtn" style="margin-top:10px;width:100%;background:var(--navy-bg);border-color:#BDD0F0;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;text-decoration:none;">
+            <span style="font-size:16px;">📞</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--navy);">전화하기</div>
+              <div style="font-size:11px;color:var(--gray-600);">02-931-8360</div>
+            </div>
+          </a>
         </div>
+
+        <!-- 방재실 24시간 -->
+        <div style="font-size:11px;font-weight:700;color:#B71C1C;margin-bottom:6px;letter-spacing:0.05em;">🚨 방재실 (24시간 · 화재·재난 긴급)</div>
+        <div class="egrid" style="margin-bottom:10px;">
+          <a href="tel:070-7727-8378" class="ebtn"><span class="e-icon">🔴</span><span class="e-label">1단지 방재실</span><span class="e-phone">070-7727-8378</span></a>
+          <a href="tel:070-4285-8365" class="ebtn"><span class="e-icon">🔴</span><span class="e-label">2단지 방재실</span><span class="e-phone">070-4285-8365</span></a>
+          <a href="tel:070-7725-8374" class="ebtn"><span class="e-icon">🔴</span><span class="e-label">3단지 방재실</span><span class="e-phone">070-7725-8374</span></a>
+          <a href="tel:070-4906-8376" class="ebtn"><span class="e-icon">🔴</span><span class="e-label">4·5단지 방재실</span><span class="e-phone">070-4906-8376</span></a>
+        </div>
+
         <!-- 응급의료 바로가기 -->
         <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;letter-spacing:0.05em;">🏥 응급의료</div>
         <div class="egrid" style="margin-bottom:10px;">
@@ -863,8 +891,20 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <div class="card" style="background:var(--navy-bg);border-color:#BDD0F0;">
-          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 커뮤니티센터 문의</div>
-          <div style="font-size:13px;color:var(--gray-600);">관리사무소 <strong><a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a></strong></div>
+          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;">📞 커뮤니티센터 문의</div>
+          <div style="font-size:12px;color:var(--gray-600);display:flex;flex-direction:column;gap:4px;">
+            <div>운영사무실 <strong><a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360 (내선 2번)</a></strong></div>
+            <div style="color:var(--gray-400);">화~일 09:00~18:00 · 월 휴무</div>
+            <div style="margin-top:2px;">이메일 <strong><a href="mailto:dmccommunity@naver.com" style="color:inherit;text-decoration:underline dotted;">dmccommunity@naver.com</a></strong></div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--gray-600);display:flex;flex-direction:column;gap:3px;padding-top:10px;border-top:1px solid #BDD0F0;">
+            <div style="font-weight:700;color:var(--navy);margin-bottom:2px;">운동시설 운영시간</div>
+            <div>화~금 06:00~23:00</div>
+            <div>토~일 09:00~21:00 · 매주 월요일 휴무</div>
+            <div style="font-weight:700;color:var(--navy);margin-top:6px;margin-bottom:2px;">카페 테라스</div>
+            <div>월~금 07:00~19:00 / 토~일 08:00~19:00</div>
+            <div style="color:var(--gray-400);">라스트오더 18:30</div>
+          </div>
         </div>
 
       </div>
