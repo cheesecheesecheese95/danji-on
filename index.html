@@ -307,6 +307,17 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .grade-good{color:#10B981;}.grade-normal{color:#F59E0B;}.grade-bad{color:#EF4444;}.grade-very-bad{color:#7C3AED;}
 .dash-garbage-day{font-size:11px;color:var(--gray-500);margin-top:2px;line-height:1.4;}
 .dash-loading{text-align:center;padding:20px;font-size:13px;color:var(--gray-400);}
+.mc{background:var(--white);border:1px solid var(--gray-200);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform 0.1s;}
+.mc:active{transform:scale(0.98);}
+.mc-icon{font-size:22px;flex-shrink:0;width:36px;text-align:center;}
+.mc-body{flex:1;min-width:0;}
+.mc-title{font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:2px;}
+.mc-desc{font-size:11px;color:var(--gray-400);line-height:1.5;}
+.mc-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;flex-shrink:0;}
+.mc-badge.now{background:#FFF3E0;color:#E65100;}
+.mc-badge.soon{background:#E8F5E9;color:#2E7D32;}
+.mc-badge.done{background:var(--gray-100);color:var(--gray-400);}
+.mc-badge.alert{background:#FFEBEE;color:#C62828;}
 
 /* ── 실거래가 페이지 ─────────────────────────────── */
 .re-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
@@ -367,7 +378,11 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div class="dash-loading">🌤️ 날씨 불러오는 중…</div>
         </div>
 
-                <!-- 핵심 퀵메뉴 6개 — 2열 크게 -->
+                <!-- 이번 달 챙길 것 -->
+        <div class="sec-label">이번 달 챙길 것</div>
+        <div id="monthly-cards" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;"></div>
+
+        <!-- 핵심 퀵메뉴 6개 — 2열 크게 -->
         <div class="sec-label">메뉴</div>
         <div class="qgrid">
           <button class="qbtn" onclick="goTab('fee')">
@@ -2220,6 +2235,80 @@ function updateRESummary(items) {
   if (el3) el3.textContent = `${items.length}건`;
 }
 
+// ── 이번 달 챙길 것 ────────────────────────────────────────────
+function renderMonthlyCards() {
+  const wrap = document.getElementById('monthly-cards');
+  if (!wrap) return;
+  const now = new Date();
+  const y = now.getFullYear(), m = now.getMonth() + 1, d = now.getDate();
+  const mn = `${y}년 ${m}월`;
+
+  // ① 관리비 카드 — 매월 25일 납부마감
+  const feeDeadline = 25;
+  let feeBadge, feeDesc;
+  if (d < feeDeadline) {
+    const left = feeDeadline - d;
+    feeBadge = left <= 3 ? ['alert', `D-${left}`] : ['soon', `D-${left}`];
+    feeDesc = `${mn} 청구서 · 납부 마감 ${feeDeadline}일`;
+  } else {
+    feeBadge = ['done', '완료'];
+    feeDesc = `${mn} 납부 마감일(${feeDeadline}일) 지남`;
+  }
+
+  // ② 커뮤니티 신청 카드 — 재등록 1~20일 / 신규 20~24일 / 현장 25~28일
+  let comBadge, comTitle, comDesc;
+  if (d >= 1 && d < 20) {
+    const left = 20 - d;
+    comBadge = ['now', '진행중'];
+    comTitle = '재등록·취소 기간';
+    comDesc = `온라인(바이비 앱) · ~${m}월 20일 12:00 마감 (D-${left})`;
+  } else if (d >= 20 && d < 25) {
+    comBadge = ['now', '진행중'];
+    comTitle = '신규 등록 기간';
+    comDesc = `온라인(바이비 앱) · ~${m}월 24일 24:00 마감`;
+  } else if (d >= 25 && d <= 28) {
+    comBadge = ['now', '진행중'];
+    comTitle = '현장 등록·취소 기간';
+    comDesc = `커뮤니티 데스크 방문 · ~${m}월 28일 12:00`;
+  } else {
+    comBadge = ['done', '대기중'];
+    comTitle = '다음 달 신청';
+    comDesc = `다음 달 1일부터 재등록 시작`;
+  }
+
+  // ③ 이번 달 변경사항 카드
+  const changes = m >= 5
+    ? { icon:'📱', title:'바이비(ByB) 앱 신청', desc:'5월부터 커뮤니티 프로그램 신청은 바이비 앱에서만 가능', badge:['alert','변경'] }
+    : { icon:'📋', title:'4월 이용규정 개정 시행', desc:'출입·등록일정·분실물 규정 변경 · 4월은 기존 사이트 신청', badge:['soon','확인'] };
+
+  wrap.innerHTML = [
+    `<div class="mc" onclick="goTab('fee')">
+      <div class="mc-icon">💰</div>
+      <div class="mc-body">
+        <div class="mc-title">관리비 납부</div>
+        <div class="mc-desc">${feeDesc}</div>
+      </div>
+      <span class="mc-badge ${feeBadge[0]}">${feeBadge[1]}</span>
+    </div>`,
+    `<div class="mc" onclick="goTab('community')">
+      <div class="mc-icon">🏊</div>
+      <div class="mc-body">
+        <div class="mc-title">커뮤니티 ${comTitle}</div>
+        <div class="mc-desc">${comDesc}</div>
+      </div>
+      <span class="mc-badge ${comBadge[0]}">${comBadge[1]}</span>
+    </div>`,
+    `<div class="mc" onclick="goTab('community')">
+      <div class="mc-icon">${changes.icon}</div>
+      <div class="mc-body">
+        <div class="mc-title">${changes.title}</div>
+        <div class="mc-desc">${changes.desc}</div>
+      </div>
+      <span class="mc-badge ${changes.badge[0]}">${changes.badge[1]}</span>
+    </div>`
+  ].join('');
+}
+
 async function loadDashboard(){
   const LAT=37.5737, LON=126.9042;
   const el=document.getElementById('dashboard');
@@ -2369,6 +2458,7 @@ pushHistory('home');
 loadBiz();
 loadLocal();
 loadDashboard();
+renderMonthlyCards();
 loadNotices();
 loadMeetings();
 
