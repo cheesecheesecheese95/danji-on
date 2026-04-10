@@ -1459,6 +1459,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="card" style="padding:12px 16px;" id="notice-list">
           <div style="padding:16px;text-align:center;color:var(--gray-400);font-size:13px;">불러오는 중…</div>
         </div>
+
+        <!-- 입주자대표회의 회의록 (DB 자동 동기화, 매주 일요일 갱신) -->
+        <div class="news-cat-label" style="margin-top:20px;">📄 입주자대표회의 회의록</div>
+        <div class="card" style="padding:12px 16px;" id="meeting-list">
+          <div style="padding:16px;text-align:center;color:var(--gray-400);font-size:13px;">불러오는 중…</div>
+        </div>
       </div>
     </div>
 
@@ -2080,11 +2086,37 @@ async function loadNotices() {
     </a>`).join('');
 }
 
+async function loadMeetings() {
+  const el = document.getElementById('meeting-list');
+  if (!el) return;
+  const { data } = await sb.from('wiki_documents')
+    .select('title,summary,body')
+    .eq('category','meeting')
+    .eq('status','published')
+    .order('summary', { ascending: false });
+  if (!data || !data.length) {
+    el.innerHTML = '<div style="padding:12px;color:var(--gray-400);font-size:13px;text-align:center;">회의록이 없습니다.</div>';
+    return;
+  }
+  el.innerHTML = data.map((n, i) => `
+    <a href="${n.body}" target="_blank" style="text-decoration:none;" rel="noopener">
+      <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;${i < data.length-1 ? 'border-bottom:1px solid var(--gray-100);' : ''}border-radius:0;">
+        <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">PDF</span>
+        <div class="news-body">
+          <div class="news-title">${n.title}</div>
+          <div class="news-date">${n.summary}</div>
+        </div>
+        <span style="color:var(--gray-300);font-size:14px;flex-shrink:0;">›</span>
+      </div>
+    </a>`).join('');
+}
+
 // 초기 히스토리 세팅
 pushHistory('home');
 loadBiz();
 loadLocal();
 loadNotices();
+loadMeetings();
 
 // ── iOS 감지 및 설치 안내 ────────────────────────────────────
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
