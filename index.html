@@ -1963,13 +1963,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <input id="input-name" type="text" placeholder="예) 홍길동" style="width:100%;border:1.5px solid var(--gray-200);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;color:var(--gray-800);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--gray-200)'">
           </div>
 
-          <!-- 연락처 -->
-          <div style="margin-bottom:24px;">
-            <div style="font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">연락처 *</div>
-            <input id="input-phone" type="tel" inputmode="numeric" placeholder="예) <a href="tel:010-1234-5678" style="color:inherit;text-decoration:underline dotted;">010-1234-5678</a>" style="width:100%;border:1.5px solid var(--gray-200);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;color:var(--gray-800);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--gray-200)'" oninput="formatPhone(this)">
-            <div style="font-size:11px;color:var(--gray-400);margin-top:6px;">입력하신 연락처는 기기에만 저장되며 외부에 공개되지 않아요.</div>
-          </div>
-
           <!-- 확인 버튼 -->
           <button onclick="submitRegister()" style="width:100%;background:var(--navy);color:#fff;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:-0.01em;">
             입주민 인증하기
@@ -3117,12 +3110,11 @@ function submitRegister(){
   const dong = document.getElementById('input-dong').value.trim();
   const ho = document.getElementById('input-ho').value.trim();
   const name = document.getElementById('input-name').value.trim();
-  const phone = document.getElementById('input-phone').value.trim();
-  if(!dong || !ho || !name || !phone){
+  if(!dong || !ho || !name){
     alert('모든 항목을 입력해주세요.');
     return;
   }
-  const info = { danji: selectedDanji, dong, ho, name, phone, date: new Date().toLocaleDateString('ko-KR') };
+  const info = { danji: selectedDanji, dong, ho, name, date: new Date().toLocaleDateString('ko-KR') };
   localStorage.setItem('resident-info', JSON.stringify(info));
   window._savedResident = info;
   showRegistered(info);
