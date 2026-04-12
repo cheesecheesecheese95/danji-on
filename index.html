@@ -2486,7 +2486,13 @@ async function _loadClaude(q){
       <div class="s-claude-body">${answer.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
     </div>`;
   }catch(e){
-    sec.remove();
+    sec.innerHTML = `<div class="s-claude-card">
+      <div class="s-claude-head">
+        <div class="s-claude-logo">C</div>
+        <span class="s-claude-label">AI 답변</span>
+      </div>
+      <div class="s-claude-body">향후 업데이트를 통해 반영하도록 노력하겠습니다.</div>
+    </div>`;
   }
 }
 
