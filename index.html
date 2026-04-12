@@ -355,17 +355,17 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
 /* ── 날씨·환경 대시보드 ───────────────────────────── */
 .dash-wrap{margin-bottom:16px;}
-.dash-main{background:linear-gradient(135deg,#1B3A6B 0%,#2a5298 100%);border-radius:18px;padding:16px;color:#fff;margin-bottom:8px;position:relative;overflow:hidden;}
-.dash-main::before{content:'';position:absolute;top:-30px;right:-20px;width:120px;height:120px;background:rgba(255,255,255,0.06);border-radius:50%;}
-.dash-main::after{content:'';position:absolute;bottom:-20px;right:30px;width:80px;height:80px;background:rgba(255,255,255,0.04);border-radius:50%;}
-.dash-weather-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
-.dash-emoji{font-size:36px;line-height:1;}
+.dash-main{background:linear-gradient(135deg,#1B3A6B 0%,#2a5298 100%);border-radius:18px;padding:10px 14px;color:#fff;margin-bottom:8px;position:relative;overflow:hidden;}
+.dash-main::before{content:'';position:absolute;top:-20px;right:-14px;width:80px;height:80px;background:rgba(255,255,255,0.06);border-radius:50%;}
+.dash-main::after{content:'';position:absolute;bottom:-14px;right:20px;width:54px;height:54px;background:rgba(255,255,255,0.04);border-radius:50%;}
+.dash-weather-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.dash-emoji{font-size:24px;line-height:1;}
 .dash-temp-block{flex:1;}
-.dash-temp{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1;}
-.dash-desc{font-size:12px;opacity:.8;margin-top:2px;}
-.dash-loc{font-size:11px;opacity:.6;margin-left:auto;text-align:right;}
-.dash-minmax{font-size:12px;opacity:.75;margin-top:2px;}
-.dash-meta{display:flex;gap:14px;font-size:12px;opacity:.75;}
+.dash-temp{font-size:19px;font-weight:800;letter-spacing:-.03em;line-height:1;}
+.dash-desc{font-size:11px;opacity:.8;margin-top:1px;}
+.dash-loc{font-size:10px;opacity:.6;margin-left:auto;text-align:right;}
+.dash-minmax{font-size:11px;opacity:.75;margin-top:1px;}
+.dash-meta{display:flex;gap:10px;font-size:11px;opacity:.75;}
 .dash-meta span{display:flex;align-items:center;gap:4px;}
 .dash-sub-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
 .dash-sub{background:#fff;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
@@ -475,26 +475,18 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
     <!-- ═══ 홈 ═══ -->
     <div class="page active" id="page-home">
-      <div class="sec" style="padding-top:20px;">        <div style="margin-bottom:16px;font-size:13px;color:var(--gray-500);line-height:1.6;text-align:center;">입주민의 한 사람으로서, 요긴한 정보들로만 구성해보았습니다.</div>
-
+      <div class="sec" style="padding-top:20px;">
         <!-- ── 날씨·환경 대시보드 ── -->
         <div class="dash-wrap" id="dashboard">
           <div class="dash-loading">🌤️ 날씨 불러오는 중…</div>
         </div>
 
-                <!-- 이번 달 챙길 것 -->
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-          <div style="font-size:13px;font-weight:800;color:var(--gray-800);letter-spacing:-0.01em;">이번 달 챙길 것</div>
-          <span id="monthly-month" style="font-size:11px;color:var(--gray-400);font-weight:600;"></span>
-        </div>
-        <div id="monthly-cards" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;"></div>
-
-        <!-- 핵심 퀵메뉴 6개 — 2열 크게 -->
+        <!-- 핵심 퀵메뉴 — 2열 -->
         <div class="sec-label">메뉴</div>
         <div class="qgrid">
           <button class="qbtn" onclick="goTab('fee')">
             <span class="q-icon">💰</span>
-            <span class="q-texts"><span class="q-label">관리비</span><span class="q-sub">항목·이의제기·충당금</span></span>
+            <span class="q-texts"><span class="q-label">관리비</span><span class="q-sub">이의제기·충당금</span></span>
           </button>
           <button class="qbtn" onclick="goPage('complaint')">
             <span class="q-icon">🔊</span>
@@ -502,15 +494,15 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </button>
           <button class="qbtn" onclick="goTab('community')">
             <span class="q-icon">🏊</span>
-            <span class="q-texts"><span class="q-label">커뮤니티<span class="q-new">NEW</span></span><span class="q-sub">시뮬레이터 추가 예정</span></span>
+            <span class="q-texts"><span class="q-label">커뮤니티</span><span class="q-sub">신청앱 변경 안내</span></span>
           </button>
           <button class="qbtn" onclick="goPage('living')">
             <span class="q-icon">🏠</span>
-            <span class="q-texts"><span class="q-label">생활편의</span><span class="q-sub">분리수거·이사·공사</span></span>
+            <span class="q-texts"><span class="q-label">생활편의</span><span class="q-sub">분리수거·이사</span></span>
           </button>
           <button class="qbtn" onclick="goPage('parking')">
             <span class="q-icon">🚗</span>
-            <span class="q-texts"><span class="q-label">주차·차량<span class="q-new">변경</span></span><span class="q-sub">150시간 무료 확정</span></span>
+            <span class="q-texts"><span class="q-label">주차·차량</span><span class="q-sub">150시간 무료 확정</span></span>
           </button>
           <button class="qbtn" onclick="goPage('repair')">
             <span class="q-icon">🛠️</span>
@@ -518,7 +510,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </button>
           <button class="qbtn" onclick="location.href='./faq.html'">
             <span class="q-icon">❓</span>
-            <span class="q-texts"><span class="q-label">자주 찾는 질문</span><span class="q-sub">주차·관리비·소음 등</span></span>
+            <span class="q-texts"><span class="q-label">자주 찾는 질문</span><span class="q-sub">주차·관리비·소음</span></span>
           </button>
           <button class="qbtn" onclick="goPage('realestate')">
             <span class="q-icon">🏠</span>
@@ -530,9 +522,16 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </button>
           <button class="qbtn" onclick="goPage('culture')">
             <span class="q-icon">🎪</span>
-            <span class="q-texts"><span class="q-label">문화·행사<span class="q-new">NEW</span></span><span class="q-sub">서대문구 공식 행사</span></span>
+            <span class="q-texts"><span class="q-label">문화·행사</span><span class="q-sub">서울 공식 문화행사</span></span>
           </button>
         </div>
+
+        <!-- 이번 달 챙길 것 -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:4px;">
+          <div class="sec-label" style="margin-bottom:0;">이번 달 챙길 것</div>
+          <span id="monthly-month" style="font-size:11px;color:var(--gray-400);font-weight:600;"></span>
+        </div>
+        <div id="monthly-cards" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;"></div>
 
         <!-- 계절형 카드 -->
         <div class="sec-label" style="margin-top:4px;">지금 이 시기에</div>
@@ -561,30 +560,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="news-title">제6기 입주자대표회의 출범</div>
             <div class="news-desc">회장 배영준(109·111동) 선출. 제5기에서 제6기로 전환.</div>
             <div class="news-date">2026.03.24</div>
-          </div>
-        </div>
-        <div class="news-card" onclick="goPageAnchor('news','news-ev')">
-          <span class="news-badge" style="background:var(--green-bg);color:var(--green);">완료</span>
-          <div class="news-body">
-            <div class="news-title">전기차 충전기 신규 모델 무상 교체</div>
-            <div class="news-desc">에버온과 7년 재계약. 기존 설비를 신규 모델로 무상 교체. 6개월간 0원 프로모션 적용.</div>
-            <div class="news-date">2026.03.24</div>
-          </div>
-        </div>
-        <div class="news-card" onclick="goPageAnchor('news','news-lobby')">
-          <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">진행중</span>
-          <div class="news-body">
-            <div class="news-title">공동현관 로비폰 전체 교체 추진</div>
-            <div class="news-desc">61동 88개 라인 전체 교체 예정. 장기수선계획 반영, 서대문구 자문 신청 완료.</div>
-            <div class="news-date">2026.01~진행중</div>
-          </div>
-        </div>
-        <div class="news-card" onclick="goPageAnchor('news','news-parking')">
-          <span class="news-badge" style="background:var(--navy-bg);color:var(--navy);">의결</span>
-          <div class="news-body">
-            <div class="news-title">방문차량 무료 주차 월 150시간 규정 확정</div>
-            <div class="news-desc">초과 시 30분당 500원 부과. 명절 연휴 차감 없음. 2026.03.01부터 시행.</div>
-            <div class="news-date">2026.02.10</div>
           </div>
         </div>
         <button class="news-more" onclick="goPage('news')">전체 소식 보기 →</button>
@@ -1955,6 +1930,10 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
 
         <!-- 인증 안내 -->
+        <div class="notice" style="background:var(--green-bg);border:1px solid #A9DFBF;margin-bottom:12px;">
+          <span class="n-icon">✅</span>
+          <div class="n-text" style="color:var(--green);">현재는 입주민 인증을 하지 않아도 서비스 사용에 아무런 지장이 없습니다.</div>
+        </div>
         <div class="notice" style="background:var(--blue-bg);border:1px solid #BBDEFB;margin-bottom:20px;">
           <span class="n-icon">🔒</span>
           <div class="n-text" style="color:var(--blue);">입력하신 정보는 입주민 확인 용도로만 사용되며, 외부에 공개되지 않아요.</div>
@@ -2027,6 +2006,10 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
         <div class="sec-title">🏠 실거래가</div>
         <div class="sec-sub">DMC파크뷰자이 · 최근 6개월 매매 실거래</div>
+        <div class="notice" style="background:var(--amber-bg);border:1px solid #F5CBA7;margin:10px 0;">
+          <span class="n-icon">⏳</span>
+          <div class="n-text" style="color:var(--amber);">데이터를 불러오는데 다소 시간이 소요될 수 있습니다.</div>
+        </div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:4px;margin-bottom:4px;flex-wrap:wrap;">
           <span class="src-tag o">출처: 국토교통부 실거래가 공개시스템</span>
           <span class="src-tag" style="font-size:10px;">단위: 만원 · *동은 추정</span>
