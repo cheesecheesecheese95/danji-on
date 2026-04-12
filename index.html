@@ -971,7 +971,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="card" id="living-wiki">
           <!-- 기본 콘텐츠 (DB 없어도 보임) -->
           <div class="witem"><div class="w-icon" style="background:#F0F0EF;">🗑️</div><div class="w-body"><div class="w-title">분리수거 일정 및 장소</div><div class="w-desc">월·수·금 저녁 8시~10시, B1층 분리수거장. 재활용품은 품목별 분리 필수</div></div></div>
-          <div class="witem"><div class="w-icon" style="background:#F0F0EF;">📦</div><div class="w-body"><div class="w-title">택배 보관 및 찾는 방법</div><div class="w-desc">B1층 무인택배함 24시간 운영. 보관 3일 초과 시 관리사무소로 이전됨</div></div></div>
           <div class="witem"><div class="w-icon" style="background:#EEF3FB;">🚗</div><div class="w-body"><div class="w-title">주차 등록 방법</div><div class="w-desc">관리사무소 방문, 차량등록증 지참. 세대당 1대 기본 배정</div></div></div>
           <div class="witem"><div class="w-icon" style="background:#FEF0EB;">🔨</div><div class="w-body"><div class="w-title">인테리어·공사 신고</div><div class="w-desc">공사 3일 전 관리사무소 신청서 제출. 허용 시간: 평일 9시~17시 (주말 불가)</div></div></div>
           <div class="witem" style="border-bottom:none;padding-bottom:0;"><div class="w-icon" style="background:#FEF6E6;">🐕</div><div class="w-body"><div class="w-title">반려동물 관련 규정</div><div class="w-desc">엘리베이터 내 캐리어·목줄 필수. 공용공간 배변패드 지참 의무</div></div></div>
@@ -2220,7 +2219,6 @@ const faqIndex = [
   { q:'대형폐기물 처리 방법', a:'서대문구 다산콜 ☎ 02-391-7171 신청 후 배출', kw:['대형폐기물','소파','냉장고','폐기물'], page:'living' },
   { q:'담배 냄새 흡연 민원', a:'관리사무소 신고 시 금연 방송·안내문 발송 가능', kw:['담배','흡연','냄새'], page:'complaint' },
   { q:'반려동물 공용공간 규정', a:'공용공간 목줄 필수 · 배변 즉시 처리 의무', kw:['반려동물','강아지','고양이','목줄'], page:'complaint' },
-  { q:'택배 무인함 비밀번호 분실', a:'관리사무소 ☎ 02-931-8360 문의', kw:['택배','무인함','비밀번호'], page:'living' },
   { q:'장기수선충당금 환급', a:'임차인이 납부 시 이사할 때 임대인에게 청구 가능', kw:['장기수선','충당금','환급'], page:'fee', tab:true },
 ];
 
@@ -3639,12 +3637,6 @@ window.addEventListener('DOMContentLoaded', () => {
             <div class="faq-card-a">공용공간에서는 <strong>목줄 착용 필수</strong>이며 배변 즉시 처리 의무가 있습니다.<br><br>엘리베이터·복도에서 목줄 미착용 상태로 이동 시 관리규약 위반으로 민원 접수 대상이 됩니다.<br><span class="faq-cnt">📊 관련 민원 12건</span><br><button class="faq-go" onclick="goPage('complaint')">→ 민원·규정 안내</button></div>
           </div>
 
-          <!-- Q19 -->
-          <div class="faq-card">
-            <div class="faq-card-q"><span class="faq-card-num">Q19</span>
-              <span class="faq-card-qtxt">택배 무인함 비밀번호를 못 받았거나 분실됐어요.</span></div>
-            <div class="faq-card-a">문자 미수신 시 <strong>관리사무소(☎ <a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)</strong>에 문의하시면 확인해 드립니다.<br><br>보관 기간 초과 시 반송 처리될 수 있으므로 빠른 수령을 권장합니다.<br><span class="faq-cnt">📊 관련 민원 8건</span></div>
-          </div>
 
           <!-- Q20 -->
           <div class="faq-card">
