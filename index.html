@@ -3367,16 +3367,139 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>
     </div>
 
-    <!-- ═══ 문화·행사 (준비중) ═══ -->
+    <!-- ═══ 문화·행사 ═══ -->
     <div class="page" id="page-culture">
       <div class="sec" style="padding-top:20px;padding-bottom:32px;">
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
         <div class="sec-title">🎪 문화·행사</div>
-        <div style="text-align:center;padding:60px 20px;color:var(--gray-400);">
-          <div style="font-size:36px;margin-bottom:14px;">🎪</div>
-          <div style="font-size:15px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">준비 중입니다</div>
-          <div style="font-size:13px;line-height:1.7;">향후 업데이트를 통해<br>신뢰있는 정보를 드릴 수 있도록 노력하겠습니다.</div>
+        <div class="sec-sub">서대문구 2026년 4월 · 주민 생활 정보</div>
+
+        <!-- 봄빛 축제 -->
+        <div class="sub-sec-label">🌸 이달의 축제</div>
+        <div class="card" style="margin-bottom:10px;">
+          <div style="font-size:14px;font-weight:800;color:var(--gray-800);margin-bottom:6px;">2026 서대문 봄빛축제</div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;margin-bottom:10px;">안산~홍제천~신촌 일대. 벚나무 3천여 그루가 만개하는 봄 축제.</div>
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--gray-800);">
+            <div style="display:flex;gap:8px;"><span style="color:var(--navy);font-weight:700;min-width:60px;">본행사</span><span>4. 3.(금)~4. 5.(일) · 안산 벚꽃마당 + 홍제폭포 광장</span></div>
+            <div style="display:flex;gap:8px;"><span style="color:var(--navy);font-weight:700;min-width:60px;">버스킹</span><span>4. 6.(월)~4. 12.(일) · 안산·카페「폭포」 일대</span></div>
+            <div style="display:flex;gap:8px;"><span style="color:var(--navy);font-weight:700;min-width:60px;">신촌버스킹</span><span>4. 4.(토)~4. 5.(일) · 신촌 연세로</span></div>
+            <div style="display:flex;gap:8px;"><span style="color:var(--navy);font-weight:700;min-width:60px;">포토존</span><span>4. 1.(수)~4. 30.(목) · 안산~홍제천 경관조명</span></div>
+            <div style="display:flex;gap:8px;"><span style="color:var(--navy);font-weight:700;min-width:60px;">체험·푸드트럭</span><span>4. 4.(토)~4. 5.(일) 10:00~18:00</span></div>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:var(--gray-400);">문의 문화체육과 ☎ 02-330-1410</div>
         </div>
+
+        <!-- 주요 행사 일정표 -->
+        <div class="card" style="margin-bottom:10px;padding:12px 14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--gray-800);margin-bottom:8px;">🎤 주요 공연 일정</div>
+          <table style="width:100%;font-size:11px;border-collapse:collapse;">
+            <thead><tr style="background:var(--gray-100);">
+              <th style="padding:5px 8px;text-align:left;font-weight:700;border-radius:4px 0 0 4px;">일시</th>
+              <th style="padding:5px 8px;text-align:left;font-weight:700;">장소</th>
+              <th style="padding:5px 8px;text-align:left;font-weight:700;">내용</th>
+            </tr></thead>
+            <tbody style="color:var(--gray-700);">
+              <tr style="border-bottom:1px solid var(--gray-100);"><td style="padding:6px 8px;">4/3 14:00</td><td style="padding:6px 8px;">안산 벚꽃마당</td><td style="padding:6px 8px;">서대문 벚꽃 한마당 (김수찬, 국악, 댄스)</td></tr>
+              <tr style="border-bottom:1px solid var(--gray-100);background:#fafafa;"><td style="padding:6px 8px;">4/3 17:00</td><td style="padding:6px 8px;">안산</td><td style="padding:6px 8px;">마당놀이 &lt;도는놈 뛰는놈 나는놈&gt;</td></tr>
+              <tr style="border-bottom:1px solid var(--gray-100);"><td style="padding:6px 8px;">4/4 12:00</td><td style="padding:6px 8px;">홍제폭포 광장</td><td style="padding:6px 8px;">가곡으로 만나는 봄 (여성합창단)</td></tr>
+              <tr style="border-bottom:1px solid var(--gray-100);background:#fafafa;"><td style="padding:6px 8px;">4/4 15:00</td><td style="padding:6px 8px;">홍제폭포 광장</td><td style="padding:6px 8px;">봄빛 음악회 (서대문오케스트라)</td></tr>
+              <tr style="border-bottom:1px solid var(--gray-100);"><td style="padding:6px 8px;">4/5 12:00</td><td style="padding:6px 8px;">홍제폭포 광장</td><td style="padding:6px 8px;">가족 뮤지컬·넌버벌 퍼포먼스 &lt;난타&gt;</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:6px 8px;">4/5 15:00</td><td style="padding:6px 8px;">홍제폭포 광장</td><td style="padding:6px 8px;">봄빛 가왕전 (린, 테이, 박구윤)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 체육 프로그램 -->
+        <div class="sub-sec-label" style="margin-top:4px;">🏃 체육·스포츠 프로그램</div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">생활체육교실</div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">운영기간 2026. 4.~12. · 서대문구민 대상<br>건강 소마교실, 라인댄스, 필라테스 등 다양한 프로그램<br>신청 일정은 구청 누리집 참고</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 문화체육과 ☎ 02-330-4977</div>
+        </div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">풋살교실 (2026. 4.~7.)</div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">
+            장소: 풋살스퀘어 (백련사길 39, 서대문문화체육회관 1층)<br>
+            초등반 금 14:00~16:00 (저학년 15명) · 청소년반 화 19:00~21:00 · 여성반 목 19:00~21:00<br>
+            신청기간 3월 · 하반기 8월
+          </div>
+          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 문화체육과 ☎ 02-330-1938</div>
+        </div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">서대문구 다목적체육시설</div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">위치: 거북골로 34, 명지대 MCC관 1층<br>농구·배드민턴·탁구·피클볼, 스크린파크골프(4타석)<br>온라인(서울시 공공서비스예약) 또는 키오스크 현장 접수</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 ☎ 02-330-8826 / 02-3140-8320</div>
+        </div>
+
+        <!-- 자연 & 산책 -->
+        <div class="sub-sec-label" style="margin-top:4px;">🌿 자연·산책 (신규)</div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">백련산 숲속치유센터 개소 <span style="font-size:10px;font-weight:700;color:var(--green);background:var(--green-bg);padding:1px 6px;border-radius:10px;margin-left:4px;">2026.4.2 오픈</span></div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">백련산 맨발길(2km)과 연결. 3,200본 초화류·정비된 보행로.<br>코스: 숲속치유센터 → 백련산 맨발길 → 백련근린공원</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 푸른도시과 ☎ 02-330-1907</div>
+        </div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:6px;">봄 산책 추천 코스</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
+            <div style="background:var(--green-bg);border-radius:10px;padding:8px 10px;">
+              <div style="font-weight:700;color:var(--green);margin-bottom:2px;">🌸 안산 코스</div>
+              <div style="color:var(--gray-700);">안산 황톳길 → 안산허브원 → 홍제폭포</div>
+            </div>
+            <div style="background:var(--blue-bg);border-radius:10px;padding:8px 10px;">
+              <div style="font-weight:700;color:var(--blue);margin-bottom:2px;">🌊 불광천 코스</div>
+              <div style="color:var(--gray-700);">해담는다리 → 불광천 벚꽃길 → 해담는도서관</div>
+              <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">해담는다리에서 북한산 11개 봉우리 조망</div>
+            </div>
+            <div style="background:var(--amber-bg);border-radius:10px;padding:8px 10px;">
+              <div style="font-weight:700;color:var(--amber);margin-bottom:2px;">☕ 철학자의 길 코스</div>
+              <div style="color:var(--gray-700);">철학자의 길 → 홍제천 음악분수 → 카페「폭포」</div>
+              <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">음악분수 1일 5회 운영 (11:00, 14:00, 18:00, 19:00, 20:00)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 아이·가족 -->
+        <div class="sub-sec-label" style="margin-top:4px;">👶 아이·가족</div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">서울형 키즈카페 남가좌1동점 <span style="font-size:10px;font-weight:700;color:var(--green);background:var(--green-bg);padding:1px 6px;border-radius:10px;margin-left:4px;">2026.5 오픈 예정</span></div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">대상: 6개월(영영아)~47개월 · 운영: 월~토 10:00~18:00<br>위치: 모래내로15길 31, 2층</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 ☎ 02-3217-6551</div>
+        </div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">가재울청소년센터</div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">위치: 거북골로 103 · 화~금 9:00~21:00, 토 13:00~21:00, 일 9:00~18:00</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 ☎ 02-336-9240</div>
+        </div>
+
+        <!-- 생활편의 신규 서비스 -->
+        <div class="sub-sec-label" style="margin-top:4px;">🆕 신규 서비스</div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">신규 전입 세대 환영 물품</div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">서대문구로 이사 온 신규 관외 전입 세대 대상 (관내 전입 제외)<br>공구세트 / 주방용품세트 / 종량제봉투(20ℓ×20개) 중 1개 선택</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 자치행정과 ☎ 02-330-1074</div>
+        </div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">서치부동산 카카오톡 챗봇</div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">서대문구 부동산 정보 AI 챗봇. 토지거래허가, 부동산거래신고, 전세사기 예방 등<br>카카오톡 채널 '서치부동산' 추가 후 이용</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 부동산정보과 ☎ 02-330-1237</div>
+        </div>
+
+        <div class="card" style="margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">주민참여예산 제안 공모</div>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">2027년 예산 반영 사업 제안. 집중 공모: 2026. 4. 1.~5. 31.<br>서대문구에서 거주·근무·학습하는 누구나 신청 가능</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 기획예산과 ☎ 02-330-8430</div>
+        </div>
+
+        <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--gray-400);">출처: 서대문마당 2026년 4월호 (VOL.597)</div>
       </div>
     </div>
 
