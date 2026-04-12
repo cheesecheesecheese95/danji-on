@@ -1,0 +1,43 @@
+name: 문화·행사 자동 업데이트
+
+on:
+  schedule:
+    # 매월 26일 오전 10시 (KST = UTC+9 → UTC 01:00)
+    - cron: '0 1 26 * *'
+  workflow_dispatch:  # 수동 실행 가능
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성 설치
+        run: pip install requests beautifulsoup4 pdfminer.six
+
+      - name: culture.html 업데이트 실행
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/update_culture.py
+
+      - name: 변경사항 커밋 & 푸시
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add culture.html
+          if git diff --cached --quiet; then
+            echo "변경사항 없음 — 커밋 건너뜀"
+          else
+            MONTH=$(date +'%Y년 %-m월')
+            git commit -m "🎪 문화·행사 자동 업데이트 — ${MONTH}호"
+            git push
+          fi
