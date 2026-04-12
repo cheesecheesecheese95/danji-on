@@ -547,6 +547,14 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <!-- 단지 최근 소식 -->
         <div class="sec-label" style="margin-top:4px;">단지 최근 소식</div>
+        <div class="news-card" onclick="goPage('news')">
+          <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">공구</span>
+          <div class="news-body">
+            <div class="news-title">전열교환기 공동구매 120만원 (행사기간)</div>
+            <div class="news-desc">신우시스템㈜ SW-200CA. 180만→120만원 (33%↓), 2년 무상A/S. 032-583-2477</div>
+            <div class="news-date">2026.04.14</div>
+          </div>
+        </div>
         <div class="news-card" onclick="goPageAnchor('news','news-6ki')">
           <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">NEW</span>
           <div class="news-body">
@@ -1058,7 +1066,13 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="w-icon" style="background:var(--blue-bg);">🚙</div>
             <div class="w-body">
               <div class="w-title">방문차량 무료 주차 시간</div>
-              <div class="w-desc" style="margin-bottom:8px;">세대당 <strong>월 150시간 무료</strong> 등록 가능<br>초과 시 <strong>30분당 500원</strong> 해당 세대에 부과<br>명절(설·추석) 연휴 방문차량은 무료시간에서 차감 안 됨<br>무료 주차시간은 세대 간 거래 불가</div>
+              <div class="w-desc" style="margin-bottom:8px;">세대당 <strong>월 150시간(9,000분) 무료</strong> 등록 가능<br>초과 시 <strong>30분당 500원</strong> 해당 세대에 부과<br>명절(설·추석) 연휴 방문차량은 무료시간에서 차감 안 됨<br>무료 주차시간은 세대 간 거래 불가</div>
+              <div style="background:var(--amber-bg);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--amber);margin-top:6px;line-height:1.6;">
+                ⚠️ <strong>앱 표시 주의</strong><br>
+                · 앱에서는 <strong>시간</strong> 단위 표시, 충전 시 <strong>분</strong> 단위 표시 (9,000분 = 150시간)<br>
+                · 입차~출차 시간 <strong>자동 차감</strong> (출차 안 하면 계속 차감됨)<br>
+                · "9,000원 충전 → 9,000분 부여" 오해 사례 있음 — 충전은 초과요금(30분당 500원) 납부 의미
+              </div>
               <span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">주차장관리규정 제14조</span>
             </div>
           </div>
@@ -1324,6 +1338,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="w-body">
               <div class="w-title">에어컨 청소 업체 (단지 주민 이용 多)</div>
               <div class="w-desc">
+                <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--gray-100);">
+                  <strong>세영에어컨</strong> <span style="font-size:10px;color:var(--gray-400);">DMC파크뷰자이 7년차 전문</span><br>
+                  시스템에어컨 세척 자격증 보유 · 일요일·공휴일 예약접수 가능<br>
+                  <span style="text-decoration:line-through;color:var(--gray-400);">130,000원</span> → <strong style="color:var(--red);">90,000원</strong> <span style="font-size:10px;color:var(--gray-400);">VAT별도 (~5/1 이전, 이후 100,000원)</span><br>
+                  <a href="tel:1544-4642" style="color:var(--navy);font-weight:700;">1544-4642</a> / <a href="tel:010-9395-4711" style="color:var(--navy);font-weight:700;">010-9395-4711</a>
+                </div>
                 <div style="margin-bottom:6px;"><strong>클린에어DMC</strong> — 가재울 인근, 실내기 5만/실외기 2만<br><a href="tel:010-1234-5678" style="color:var(--navy);font-weight:700;">010-1234-5678</a></div>
                 <div style="margin-bottom:6px;"><strong>에어클리너서대문</strong> — 서대문구, 당일예약 가능<br><a href="tel:010-2233-4455" style="color:var(--navy);font-weight:700;">010-2233-4455</a></div>
                 <div><strong>홈클린에어</strong> — 은평·서대문, 세트할인 제공<br><a href="tel:010-9988-7766" style="color:var(--navy);font-weight:700;">010-9988-7766</a></div>
@@ -1339,7 +1359,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="w-icon" style="background:var(--navy-bg);">🛗</div>
             <div class="w-body">
               <div class="w-title">엘리베이터 정지·고장</div>
-              <div class="w-desc" style="margin-bottom:8px;">갇혔을 때 → 내부 인터폰 또는 경비실(<a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)<br>고장 신고 → 관리사무소<br>엘리베이터 유지보수: 관리사무소 전담 업체</div>
+              <div class="w-desc" style="margin-bottom:8px;">갇혔을 때 → 내부 인터폰 또는 경비실(<a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)<br>고장 신고 → 관리사무소<br>엘리베이터 유지보수: <strong>현대엘리베이터</strong> (실시간 원격감시시스템 HRTS 운영)<br><br>
+                <strong>현대엘리베이터 고객케어센터:</strong> <a href="tel:1577-0603" style="color:var(--navy);font-weight:700;">1577-0603</a><br>
+                <strong>서부사무소 직통:</strong> <a href="tel:02-3143-0888" style="color:var(--navy);font-weight:700;">02-3143-0888</a></div>
+              <div style="background:var(--red-bg);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--red);margin-bottom:6px;line-height:1.6;">
+                🚫 <strong>갇혔을 때 절대 금지</strong>: 문 강제 열기 시도 — 비상호출버튼 누르고 대기
+              </div>
               <span class="w-tag" style="background:var(--red-bg);color:var(--red);">긴급 시 경비실 즉시 연락</span>
             </div>
           </div>
@@ -1389,7 +1414,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="w-icon" style="background:var(--orange-bg);">🛋️</div>
             <div class="w-body">
               <div class="w-title">대형폐기물 (소파·냉장고 등)</div>
-              <div class="w-desc">서대문구 다산콜 <strong><a href="tel:02-391-7171" style="color:inherit;text-decoration:underline dotted;">02-391-7171</a></strong> 또는 minwon.seoul.go.kr<br>신청 → 납부 → 접수증 번호 → 경비실 신고 → 배출</div>
+              <div class="w-desc">서대문구 다산콜 <strong><a href="tel:02-391-7171" style="color:inherit;text-decoration:underline dotted;">02-391-7171</a></strong> 또는 minwon.seoul.go.kr<br>신청 → 납부 → 접수증 번호 → <strong>번호 출력 또는 기재 후 배출</strong><br><span style="font-size:11px;color:var(--gray-400);">※ 경비실 별도 신고 불필요</span></div>
             </div>
           </div>
           <div class="witem">
@@ -1421,8 +1446,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div class="witem">
             <div class="w-icon" style="background:#F0F0EF;">📦</div>
             <div class="w-body">
-              <div class="w-title">택배 무인함</div>
-              <div class="w-desc">B1층 무인택배함 24시간 운영. 문자 수신 후 확인<br>보관 3일 초과 시 관리사무소로 이전됨</div>
+              <div class="w-title">택배</div>
+              <div class="w-desc">무인택배함 없음 — 택배 수령 관련 문의: 관리사무소(<a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a>)</div>
             </div>
           </div>
           <div class="witem">
@@ -1437,7 +1462,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="w-icon" style="background:#E1F5EE;">🚛</div>
             <div class="w-body">
               <div class="w-title">이사 예약 및 승강기 사용료</div>
-              <div class="w-desc">최소 2주 전 관리사무소 신청 필수<br>엘리베이터 보양재 필수, 08:00~18:00 이내 완료<br><strong>사다리차 이용 시 150,000원 / 미이용 시 70,000원</strong></div>
+              <div class="w-desc">최소 2주 전 관리사무소 신청 필수<br>엘리베이터 보양재 필수, 08:00~18:00 이내 완료<br><strong>사다리차 미이용 시 150,000원 / 이용 시 70,000원</strong></div>
               <span class="w-tag" style="background:var(--navy-bg);color:var(--navy);">승강기 사용료 별도</span>
             </div>
           </div>
@@ -1452,8 +1477,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
               <th style="padding:9px 10px;color:#fff;text-align:right;font-weight:700;">금액</th>
             </tr></thead>
             <tbody>
-              <tr><td style="padding:9px 12px;font-weight:600;">이사 — 사다리차 이용</td><td style="padding:9px 10px;text-align:right;font-weight:700;">150,000원</td></tr>
-              <tr style="background:#F8F8F8;"><td style="padding:9px 12px;font-weight:600;">이사 — 사다리차 미이용</td><td style="padding:9px 10px;text-align:right;font-weight:700;">70,000원</td></tr>
+              <tr><td style="padding:9px 12px;font-weight:600;">이사 — 사다리차 미이용</td><td style="padding:9px 10px;text-align:right;font-weight:700;">150,000원</td></tr>
+              <tr style="background:#F8F8F8;"><td style="padding:9px 12px;font-weight:600;">이사 — 사다리차 이용</td><td style="padding:9px 10px;text-align:right;font-weight:700;">70,000원</td></tr>
               <tr><td style="padding:9px 12px;font-weight:600;">공사 — 5일 이하</td><td style="padding:9px 10px;text-align:right;font-weight:700;">150,000원</td></tr>
               <tr style="background:#F8F8F8;"><td style="padding:9px 12px;font-weight:600;">공사 — 5일 초과</td><td style="padding:9px 10px;text-align:right;font-weight:700;">200,000원/5일</td></tr>
               <tr><td style="padding:9px 12px;font-weight:600;">소규모 단기 (2일 이내)</td><td style="padding:9px 10px;text-align:right;font-weight:700;">60,000원</td></tr>
@@ -1567,7 +1592,27 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div class="n-text" style="color:var(--gray-600);">입주자대표회의 결정사항을 입주민 언어로 요약한 내용이에요. 원문은 <strong>서울시 공동주택 통합정보마당</strong>에서 확인하세요.</div>
         </div>
 
-        <div class="news-cat-label">🆕 2026년 3월</div>
+        <div class="news-cat-label">🆕 2026년 4월</div>
+        <div class="card" style="padding:12px 16px;">
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
+            <span class="news-badge" style="background:var(--amber-bg);color:var(--amber);">공구</span>
+            <div class="news-body">
+              <div class="news-title">전열교환기 공동구매 (~4월 행사기간)</div>
+              <div class="news-desc">신우시스템㈜ · 공기청정형 SW-200CA<br><span style="text-decoration:line-through;color:var(--gray-400);">180만원</span> → <strong>120만원</strong> (33% 할인, 행사기간 내 2년 무상 A/S)<br>상담: <a href="tel:032-583-2477" style="color:var(--navy);">032-583-2477</a> / 정승용 소장 <a href="tel:010-9075-3755" style="color:var(--navy);">010-9075-3755</a></div>
+              <div class="news-date">2026.04.14 공고</div>
+            </div>
+          </div>
+          <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-radius:0;">
+            <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">안내</span>
+            <div class="news-body">
+              <div class="news-title">방문차량 앱 표시 유의사항</div>
+              <div class="news-desc">앱에서 시간 단위 / 충전 시 분 단위 표시 (9,000분 = 150시간)<br>입차~출차 시간 자동 차감됨 (출차 안 하면 계속 차감)<br>"9,000원 충전 = 9,000분" 오해 주의</div>
+              <div class="news-date">2026.04.08 공고</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="news-cat-label">2026년 3월</div>
         <div class="card" style="padding:12px 16px;">
           <div id="news-6ki" class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
             <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">NEW</span>
