@@ -242,6 +242,20 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .ss{font-size:11px;margin-top:4px;}
 .down{color:var(--green);}
 .up2{color:var(--red);}
+/* 문화·행사 카드 */
+.evt-card{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow-sm);cursor:pointer;text-decoration:none;display:block;transition:transform 0.1s;color:inherit;}
+.evt-card:active{transform:scale(0.98);}
+.evt-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px;}
+.evt-title{font-size:14px;font-weight:700;color:var(--gray-800);line-height:1.4;flex:1;}
+.evt-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.evt-free{font-size:10px;font-weight:700;color:var(--green);background:var(--green-bg);padding:2px 7px;border-radius:10px;}
+.evt-paid{font-size:10px;font-weight:700;color:var(--amber);background:var(--amber-bg);padding:2px 7px;border-radius:10px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.evt-cat{font-size:10px;font-weight:700;color:var(--navy);background:var(--navy-bg);padding:2px 7px;border-radius:10px;}
+.evt-meta{display:flex;flex-direction:column;gap:4px;}
+.evt-meta-row{display:flex;gap:5px;align-items:flex-start;font-size:12px;color:var(--gray-600);}
+.evt-meta-icon{flex-shrink:0;width:14px;}
+.evt-prog{font-size:11px;color:var(--gray-400);margin-top:3px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
 /* PWA 설치 배너 */
 .install-banner{display:none;position:fixed;bottom:calc(var(--tab-h)+10px);left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;background:var(--navy);border-radius:16px;padding:14px 16px;z-index:300;box-shadow:0 4px 20px rgba(0,0,0,0.3);align-items:center;gap:12px;animation:slideUp 0.3s ease;}
 @keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
@@ -513,6 +527,10 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <button class="qbtn" onclick="goPage('news')">
             <span class="q-icon">📢</span>
             <span class="q-texts"><span class="q-label">단지소식</span><span class="q-sub">회의록·공지사항</span></span>
+          </button>
+          <button class="qbtn" onclick="goPage('culture')">
+            <span class="q-icon">🎪</span>
+            <span class="q-texts"><span class="q-label">문화·행사<span class="q-new">NEW</span></span><span class="q-sub">서대문구 공식 행사</span></span>
           </button>
         </div>
 
@@ -2051,6 +2069,7 @@ function showPage(id){
   target.classList.add('active');
   window.scrollTo(0,0);
   if(id==='realestate') loadRealestate();
+  if(id==='culture') loadCulture();
   // 인증 페이지 진입 시 저장 정보 표시
   if(id === 'register' && window._savedResident){
     setTimeout(()=>showRegistered(window._savedResident), 50);
@@ -2646,6 +2665,76 @@ function goFeeTab(idx,btn){
 // ── 날씨·환경 대시보드 ────────────────────────────────────────
 
 // ── 실거래가 ─────────────────────────────────────────────────
+// ── 문화·행사 ──────────────────────────────────────────
+let _evtAll = [], _evtCat = 'all', _evtLoaded = false;
+
+async function loadCulture() {
+  if (_evtLoaded) { _renderEvt(); return; }
+  const list = document.getElementById('culture-list');
+  list.innerHTML = '<div style="text-align:center;padding:48px 16px;color:var(--gray-400);"><div style="font-size:28px;margin-bottom:10px;">⏳</div><div style="font-size:14px;">행사 정보 불러오는 중...</div></div>';
+  try {
+    const r = await fetch('https://danji-on.vercel.app/api/seoul-events');
+    const d = await r.json();
+    if (d.error) throw new Error(d.error);
+    _evtAll = d.events || [];
+    _evtLoaded = true;
+    const sub = document.getElementById('culture-subtitle');
+    if (sub) sub.textContent = `서울 열린데이터광장 · 서대문구 ${_evtAll.length}개 행사`;
+    _renderEvt();
+  } catch(e) {
+    list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--gray-400);">
+      <div style="font-size:24px;margin-bottom:8px;">⚠️</div>
+      <div style="font-size:13px;">${e.message || '불러오기 실패'}</div>
+      <button onclick="_evtLoaded=false;loadCulture()" style="margin-top:14px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:8px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">다시 시도</button>
+    </div>`;
+  }
+}
+
+function setCultureCat(cat, btn) {
+  _evtCat = cat;
+  document.querySelectorAll('#culture-cats .chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  _renderEvt();
+}
+
+const _evtCatIcon = { '교육·체험':'📚', '전시·관람':'🎨', '공연·음악':'🎵', '스포츠':'⚽', '문화·축제':'🎉', '기타':'📌' };
+
+function _renderEvt() {
+  const list = document.getElementById('culture-list');
+  if (!list) return;
+  const evts = _evtCat === 'all' ? _evtAll : _evtAll.filter(e => e.category === _evtCat);
+  if (!evts.length) {
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray-400);font-size:13px;">해당 카테고리의 행사가 없습니다.</div>';
+    return;
+  }
+  list.innerHTML = evts.map(e => {
+    const freeBadge = e.isFree
+      ? '<span class="evt-free">무료</span>'
+      : (e.fee ? `<span class="evt-paid">${e.fee}</span>` : '');
+    const sd = e.startDate ? e.startDate.slice(5).replace('-', '.') : '';
+    const ed = e.endDate   ? e.endDate.slice(5).replace('-', '.')   : '';
+    const dateStr = sd === ed ? sd : (sd && ed ? `${sd} ~ ${ed}` : sd || ed);
+    const icon = _evtCatIcon[e.category] || '📌';
+    const href = e.url ? `href="${e.url}" target="_blank" rel="noopener"` : 'href="#" onclick="return false"';
+    const prog = e.program ? `<div class="evt-prog">${e.program}</div>` : '';
+    return `<a class="evt-card" ${href}>
+      <div class="evt-head">
+        <div class="evt-title">${e.title}</div>
+        <div class="evt-badges">
+          ${freeBadge}
+          <span class="evt-cat">${icon} ${e.category}</span>
+        </div>
+      </div>
+      <div class="evt-meta">
+        ${e.place ? `<div class="evt-meta-row"><span class="evt-meta-icon">📍</span><span>${e.place}</span></div>` : ''}
+        ${dateStr ? `<div class="evt-meta-row"><span class="evt-meta-icon">📅</span><span>${dateStr}</span></div>` : ''}
+      </div>
+      ${prog}
+    </a>`;
+  }).join('');
+}
+// ──────────────────────────────────────────────────────
+
 let _reAllItems = [], _reFiltered = [];
 
 async function loadRealestate() {
@@ -3298,6 +3387,37 @@ window.addEventListener('DOMContentLoaded', () => {
       <div style="margin-top:16px;background:var(--navy-bg);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
         <span style="font-size:12px;color:var(--navy);flex:1;font-weight:600;">danji-on.vercel.app</span>
         <button onclick="navigator.clipboard.writeText('https://danji-on.vercel.app').then(()=>{this.textContent='✓ 복사됨';setTimeout(()=>this.textContent='URL 복사',1500)})" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">URL 복사</button>
+      </div>
+    </div>
+
+    <!-- ═══ 문화·행사 ═══ -->
+    <div class="page" id="page-culture">
+      <div class="sec" style="padding-top:20px;padding-bottom:32px;">
+        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <div class="sec-title">🎪 서대문 문화·행사</div>
+        <div class="sec-sub" id="culture-subtitle">서울 열린데이터광장 · 실시간 연동</div>
+
+        <!-- 카테고리 필터 -->
+        <div class="chips" id="culture-cats" style="margin-bottom:14px;">
+          <button class="chip active" onclick="setCultureCat('all',this)">전체</button>
+          <button class="chip" onclick="setCultureCat('교육·체험',this)">📚 교육·체험</button>
+          <button class="chip" onclick="setCultureCat('전시·관람',this)">🎨 전시·관람</button>
+          <button class="chip" onclick="setCultureCat('공연·음악',this)">🎵 공연·음악</button>
+          <button class="chip" onclick="setCultureCat('스포츠',this)">⚽ 스포츠</button>
+          <button class="chip" onclick="setCultureCat('문화·축제',this)">🎉 문화·축제</button>
+        </div>
+
+        <!-- 행사 목록 -->
+        <div id="culture-list">
+          <div style="text-align:center;padding:48px 16px;color:var(--gray-400);">
+            <div style="font-size:32px;margin-bottom:10px;">🎪</div>
+            <div style="font-size:14px;">페이지를 열면 자동으로 불러옵니다</div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:8px;">
+          <div style="font-size:11px;color:var(--gray-400);">출처: 서울 열린데이터광장 · 서대문구·홍제·연희·신촌 기준</div>
+        </div>
       </div>
     </div>
 
