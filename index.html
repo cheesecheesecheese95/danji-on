@@ -2095,7 +2095,6 @@ function showPage(id){
   target.classList.add('active');
   window.scrollTo(0,0);
   if(id==='realestate') loadRealestate();
-  if(id==='culture') loadCulture();
   // 인증 페이지 진입 시 저장 정보 표시
   if(id === 'register' && window._savedResident){
     setTimeout(()=>showRegistered(window._savedResident), 50);
@@ -2697,99 +2696,6 @@ function goFeeTab(idx,btn){
 // ── 날씨·환경 대시보드 ────────────────────────────────────────
 
 // ── 실거래가 ─────────────────────────────────────────────────
-// ── 문화·행사 ──────────────────────────────────────────
-let _evtAll = [], _evtCat = 'all', _evtArea = 'all', _evtLoaded = false;
-
-async function loadCulture() {
-  if (_evtLoaded) { _renderEvt(); return; }
-  const list = document.getElementById('culture-list');
-  list.innerHTML = '<div style="text-align:center;padding:48px 16px;color:var(--gray-400);"><div style="font-size:28px;margin-bottom:10px;">⏳</div><div style="font-size:14px;">행사 정보 불러오는 중...</div></div>';
-  try {
-    const r = await fetch('https://danji-on.vercel.app/api/seoul-events?region=all');
-    const d = await r.json();
-    if (d.error) throw new Error(d.error);
-    _evtAll = (d.events || []).map(e => ({
-      ...e,
-      district: _guessDistrict(e.place || '')
-    }));
-    _evtLoaded = true;
-    const sub = document.getElementById('culture-subtitle');
-    if (sub) sub.textContent = `서울 열린데이터광장 · 서울 전체 ${_evtAll.length}개 행사`;
-    _renderEvt();
-  } catch(e) {
-    list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--gray-400);">
-      <div style="font-size:24px;margin-bottom:8px;">⚠️</div>
-      <div style="font-size:13px;">${e.message || '불러오기 실패'}</div>
-      <button onclick="_evtLoaded=false;loadCulture()" style="margin-top:14px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:8px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">다시 시도</button>
-    </div>`;
-  }
-}
-
-function _guessDistrict(place) {
-  const map = {'서대문':'서대문구','마포':'마포구','은평':'은평구','종로':'종로구','중구':'중구',
-    '용산':'용산구','성동':'성동구','광진':'광진구','동대문':'동대문구','성북':'성북구',
-    '강북':'강북구','도봉':'도봉구','노원':'노원구','중랑':'중랑구','강동':'강동구',
-    '송파':'송파구','강남':'강남구','서초':'서초구','관악':'관악구','동작':'동작구',
-    '영등포':'영등포구','구로':'구로구','금천':'금천구','양천':'양천구','강서':'강서구'};
-  for (const [k,v] of Object.entries(map)) if (place.includes(k)) return v;
-  return '';
-}
-
-function setCultureArea(area, btn) {
-  _evtArea = area;
-  document.querySelectorAll('#culture-areas .chip').forEach(c => c.classList.remove('active'));
-  btn.classList.add('active');
-  _renderEvt();
-}
-
-function setCultureCat(cat, btn) {
-  _evtCat = cat;
-  document.querySelectorAll('#culture-cats .chip').forEach(c => c.classList.remove('active'));
-  btn.classList.add('active');
-  _renderEvt();
-}
-
-const _evtCatIcon = { '어린이·청소년':'👶', '가족':'👨‍👩‍👧', '어르신':'👴', '여성':'💁', '기타':'📌' };
-
-function _renderEvt() {
-  const list = document.getElementById('culture-list');
-  if (!list) return;
-  let evts = _evtAll;
-  if (_evtArea !== 'all') {
-    evts = evts.filter(e => e.district === _evtArea);
-  }
-  if (_evtCat !== 'all') evts = evts.filter(e => e.category === _evtCat);
-  if (!evts.length) {
-    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray-400);font-size:13px;">해당 조건의 행사가 없습니다.</div>';
-    return;
-  }
-  list.innerHTML = evts.map(e => {
-    const freeBadge = e.isFree
-      ? '<span class="evt-free">무료</span>'
-      : (e.fee ? `<span class="evt-paid">${e.fee}</span>` : '');
-    const sd = e.startDate ? e.startDate.slice(5).replace('-', '.') : '';
-    const ed = e.endDate   ? e.endDate.slice(5).replace('-', '.')   : '';
-    const dateStr = sd === ed ? sd : (sd && ed ? `${sd} ~ ${ed}` : sd || ed);
-    const icon = _evtCatIcon[e.category] || '📌';
-    const href = e.url ? `href="${e.url}" target="_blank" rel="noopener"` : '';
-    const prog = e.program ? `<div class="evt-prog">${e.program}</div>` : '';
-    return `<a class="evt-card" ${href}>
-      <div class="evt-head">
-        <div class="evt-title">${e.title}</div>
-        <div class="evt-badges">
-          ${freeBadge}
-          <span class="evt-cat">${icon} ${e.category}</span>
-        </div>
-      </div>
-      <div class="evt-meta">
-        ${e.place ? `<div class="evt-meta-row"><span class="evt-meta-icon">📍</span><span>${e.place}</span></div>` : ''}
-        ${dateStr ? `<div class="evt-meta-row"><span class="evt-meta-icon">📅</span><span>${dateStr}</span></div>` : ''}
-      </div>
-      ${prog}
-    </a>`;
-  }).join('');
-}
-// ──────────────────────────────────────────────────────
 
 let _reAllItems = [], _reFiltered = [];
 
@@ -3461,42 +3367,15 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>
     </div>
 
-    <!-- ═══ 문화·행사 ═══ -->
+    <!-- ═══ 문화·행사 (준비중) ═══ -->
     <div class="page" id="page-culture">
       <div class="sec" style="padding-top:20px;padding-bottom:32px;">
         <button class="back-btn" onclick="goBack()">← 뒤로</button>
-        <div class="sec-title">🎪 서울 문화·행사</div>
-        <div class="sec-sub" id="culture-subtitle">서울 열린데이터광장 · 실시간 연동</div>
-
-        <!-- 지역 필터 -->
-        <div class="chips" id="culture-areas" style="margin-bottom:6px;">
-          <button class="chip active" onclick="setCultureArea('all',this)">서울 전체</button>
-          <button class="chip" onclick="setCultureArea('서대문구',this)">서대문구</button>
-          <button class="chip" onclick="setCultureArea('마포구',this)">마포구</button>
-          <button class="chip" onclick="setCultureArea('은평구',this)">은평구</button>
-          <button class="chip" onclick="setCultureArea('종로구',this)">종로구</button>
-        </div>
-
-        <!-- 카테고리 필터 -->
-        <div class="chips" id="culture-cats" style="margin-bottom:14px;">
-          <button class="chip active" onclick="setCultureCat('all',this)">전체</button>
-          <button class="chip" onclick="setCultureCat('어린이·청소년',this)">👶 어린이·청소년</button>
-          <button class="chip" onclick="setCultureCat('가족',this)">👨‍👩‍👧 가족</button>
-          <button class="chip" onclick="setCultureCat('어르신',this)">👴 어르신</button>
-          <button class="chip" onclick="setCultureCat('여성',this)">💁 여성</button>
-          <button class="chip" onclick="setCultureCat('기타',this)">📌 기타</button>
-        </div>
-
-        <!-- 행사 목록 -->
-        <div id="culture-list">
-          <div style="text-align:center;padding:48px 16px;color:var(--gray-400);">
-            <div style="font-size:32px;margin-bottom:10px;">🎪</div>
-            <div style="font-size:14px;">페이지를 열면 자동으로 불러옵니다</div>
-          </div>
-        </div>
-
-        <div style="text-align:center;margin-top:8px;">
-          <div style="font-size:11px;color:var(--gray-400);">출처: 서울 열린데이터광장</div>
+        <div class="sec-title">🎪 문화·행사</div>
+        <div style="text-align:center;padding:60px 20px;color:var(--gray-400);">
+          <div style="font-size:36px;margin-bottom:14px;">🎪</div>
+          <div style="font-size:15px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">준비 중입니다</div>
+          <div style="font-size:13px;line-height:1.7;">향후 업데이트를 통해<br>신뢰있는 정보를 드릴 수 있도록 노력하겠습니다.</div>
         </div>
       </div>
     </div>
