@@ -24,9 +24,29 @@ jobs:
       - name: 의존성 설치
         run: pip install requests beautifulsoup4 pdfminer.six
 
+      - name: Vercel에서 ANTHROPIC_API_KEY 가져오기
+        run: |
+          PROJECT_ID="prj_DKLFRqlXOucC21WL987h72tIhN6B"
+          TOKEN="${{ secrets.VERCEL_TOKEN }}"
+
+          # 환경변수 목록에서 ANTHROPIC_API_KEY ID 추출
+          ENV_ID=$(curl -s "https://api.vercel.com/v9/projects/${PROJECT_ID}/env" \
+            -H "Authorization: Bearer ${TOKEN}" | \
+            python3 -c "
+          import sys, json
+          d = json.load(sys.stdin)
+          envs = [e for e in d.get('envs', []) if e['key'] == 'ANTHROPIC_API_KEY']
+          print(envs[0]['id'] if envs else '')
+          ")
+
+          # 실제 값 조회
+          API_KEY=$(curl -s "https://api.vercel.com/v9/projects/${PROJECT_ID}/env/${ENV_ID}" \
+            -H "Authorization: Bearer ${TOKEN}" | \
+            python3 -c "import sys, json; print(json.load(sys.stdin).get('value', ''))")
+
+          echo "ANTHROPIC_API_KEY=${API_KEY}" >> $GITHUB_ENV
+
       - name: culture.html 업데이트 실행
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scripts/update_culture.py
 
       - name: 변경사항 커밋 & 푸시
