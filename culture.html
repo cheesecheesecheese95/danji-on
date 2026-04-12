@@ -36,6 +36,9 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .sec-sub{font-size:13px;color:var(--gray-400);margin-bottom:14px;}
 .sub-sec-label{font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;margin-top:16px;}
 .card{background:var(--white);border-radius:16px;border:1px solid var(--gray-200);padding:16px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
+a.card{display:block;text-decoration:none;color:inherit;cursor:pointer;transition:transform 0.1s;}
+a.card:active{transform:scale(0.98);}
+a.card::after{content:'원문 보기 →';display:block;font-size:11px;font-weight:700;color:var(--navy);margin-top:8px;}
 </style>
 </head>
 <body>
@@ -56,7 +59,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
     <!-- 봄빛 축제 -->
     <div class="sub-sec-label">🌸 이달의 축제</div>
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=6" target="_blank" rel="noopener">
       <div style="font-size:14px;font-weight:800;color:var(--gray-800);margin-bottom:6px;">2026 서대문 봄빛축제</div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;margin-bottom:10px;">안산~홍제천~신촌 일대. 벚나무 3천여 그루가 만개하는 봄 축제.</div>
       <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--gray-800);">
@@ -67,9 +70,9 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div style="display:flex;gap:8px;"><span style="color:var(--navy);font-weight:700;min-width:70px;">체험·푸드트럭</span><span>4. 4.(토)~4. 5.(일) 10:00~18:00</span></div>
       </div>
       <div style="margin-top:10px;font-size:11px;color:var(--gray-400);">문의 문화체육과 ☎ 02-330-1410</div>
-    </div>
+    </a>
 
-    <div class="card" style="padding:12px 14px;">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=7" target="_blank" rel="noopener" style="padding:12px 14px;">
       <div style="font-size:12px;font-weight:700;color:var(--gray-800);margin-bottom:8px;">🎤 주요 공연 일정</div>
       <table style="width:100%;font-size:11px;border-collapse:collapse;">
         <thead><tr style="background:var(--gray-100);">
@@ -86,18 +89,18 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <tr style="background:#fafafa;"><td style="padding:6px 8px;">4/5 15:00</td><td style="padding:6px 8px;">홍제폭포 광장</td><td style="padding:6px 8px;">봄빛 가왕전 (린, 테이, 박구윤)</td></tr>
         </tbody>
       </table>
-    </div>
+    </a>
 
     <!-- 체육 프로그램 -->
     <div class="sub-sec-label">🏃 체육·스포츠 프로그램</div>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=8" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">생활체육교실</div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">운영기간 2026. 4.~12. · 서대문구민 대상<br>건강 소마교실, 라인댄스, 필라테스 등 다양한 프로그램<br>신청 일정은 구청 누리집 참고</div>
       <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 문화체육과 ☎ 02-330-4977</div>
-    </div>
+    </a>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=9" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">풋살교실 (2026. 4.~7.)</div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">
         장소: 풋살스퀘어 (백련사길 39, 서대문문화체육회관 1층)<br>
@@ -105,24 +108,24 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         신청기간: 3월 (상반기) · 8월 (하반기)
       </div>
       <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 문화체육과 ☎ 02-330-1938</div>
-    </div>
+    </a>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=9" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">서대문구 다목적체육시설</div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">위치: 거북골로 34, 명지대 MCC관 1층<br>농구·배드민턴·탁구·피클볼, 스크린파크골프(4타석)<br>온라인(서울시 공공서비스예약) 또는 키오스크 현장 접수</div>
       <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 ☎ 02-330-8826 / 02-3140-8320</div>
-    </div>
+    </a>
 
     <!-- 자연 & 산책 -->
     <div class="sub-sec-label">🌿 자연·산책 (신규)</div>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=10" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">백련산 숲속치유센터 <span style="font-size:10px;font-weight:700;color:var(--green);background:var(--green-bg);padding:1px 6px;border-radius:10px;margin-left:4px;">2026.4.2 오픈</span></div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">백련산 맨발길(2km)과 연결. 3,200본 초화류·정비된 보행로.<br>코스: 숲속치유센터 → 백련산 맨발길 → 백련근린공원</div>
       <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 푸른도시과 ☎ 02-330-1907</div>
-    </div>
+    </a>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=10" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:8px;">봄 산책 추천 코스</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
         <div style="background:var(--green-bg);border-radius:10px;padding:8px 10px;">
@@ -145,38 +148,38 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- 아이·가족 -->
     <div class="sub-sec-label">👶 아이·가족</div>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=12" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">서울형 키즈카페 남가좌1동점 <span style="font-size:10px;font-weight:700;color:var(--green);background:var(--green-bg);padding:1px 6px;border-radius:10px;margin-left:4px;">2026.5 오픈 예정</span></div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">대상: 6개월(영영아)~47개월 · 운영: 월~토 10:00~18:00<br>위치: 모래내로15길 31, 2층</div>
       <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 ☎ 02-3217-6551</div>
-    </div>
+    </a>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=13" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">가재울청소년센터</div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">위치: 거북골로 103<br>화~금 9:00~21:00 · 토 13:00~21:00 · 일 9:00~18:00</div>
       <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 ☎ 02-336-9240</div>
-    </div>
+    </a>
 
     <!-- 신규 서비스 -->
     <div class="sub-sec-label">🆕 신규 서비스</div>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=24" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">신규 전입 세대 환영 물품</div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">서대문구로 이사 온 신규 관외 전입 세대 대상 (관내 전입 제외)<br>공구세트 / 주방용품세트 / 종량제봉투(20ℓ×20개) 중 1개 선택</div>
       <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 자치행정과 ☎ 02-330-1074</div>
-    </div>
+    </a>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=25" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">서치부동산 카카오톡 챗봇</div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">서대문구 부동산 AI 챗봇. 토지거래허가, 전세사기 예방 등<br>카카오톡 채널 '서치부동산' 추가 후 이용</div>
       <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 부동산정보과 ☎ 02-330-1237</div>
-    </div>
+    </a>
 
-    <div class="card">
+    <a class="card" href="https://www.sdm.go.kr/fileUpload/board/92/20260331_10515825024738851.pdf#page=25" target="_blank" rel="noopener">
       <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">주민참여예산 제안 공모</div>
       <div style="font-size:12px;color:var(--gray-600);line-height:1.7;">2027년 예산 반영 사업 제안. 집중 공모: 2026. 4. 1.~5. 31.<br>서대문구 거주·근무·학습하는 누구나 신청 가능</div>
       <div style="margin-top:6px;font-size:11px;color:var(--gray-400);">문의 기획예산과 ☎ 02-330-8430</div>
-    </div>
+    </a>
 
     <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--gray-400);">출처: 서대문마당 2026년 4월호 (VOL.597)</div>
   </div>
