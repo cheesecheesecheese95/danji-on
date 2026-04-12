@@ -2673,10 +2673,13 @@ async function loadCulture() {
   const list = document.getElementById('culture-list');
   list.innerHTML = '<div style="text-align:center;padding:48px 16px;color:var(--gray-400);"><div style="font-size:28px;margin-bottom:10px;">⏳</div><div style="font-size:14px;">행사 정보 불러오는 중...</div></div>';
   try {
-    const r = await fetch('https://danji-on.vercel.app/api/seoul-events');
+    const r = await fetch('https://danji-on.vercel.app/api/seoul-events?region=all');
     const d = await r.json();
     if (d.error) throw new Error(d.error);
-    _evtAll = d.events || [];
+    _evtAll = (d.events || []).map(e => ({
+      ...e,
+      district: _guessDistrict(e.place || '')
+    }));
     _evtLoaded = true;
     const sub = document.getElementById('culture-subtitle');
     if (sub) sub.textContent = `서울 열린데이터광장 · 서울 전체 ${_evtAll.length}개 행사`;
@@ -2688,6 +2691,16 @@ async function loadCulture() {
       <button onclick="_evtLoaded=false;loadCulture()" style="margin-top:14px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:8px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">다시 시도</button>
     </div>`;
   }
+}
+
+function _guessDistrict(place) {
+  const map = {'서대문':'서대문구','마포':'마포구','은평':'은평구','종로':'종로구','중구':'중구',
+    '용산':'용산구','성동':'성동구','광진':'광진구','동대문':'동대문구','성북':'성북구',
+    '강북':'강북구','도봉':'도봉구','노원':'노원구','중랑':'중랑구','강동':'강동구',
+    '송파':'송파구','강남':'강남구','서초':'서초구','관악':'관악구','동작':'동작구',
+    '영등포':'영등포구','구로':'구로구','금천':'금천구','양천':'양천구','강서':'강서구'};
+  for (const [k,v] of Object.entries(map)) if (place.includes(k)) return v;
+  return '';
 }
 
 function setCultureArea(area, btn) {
@@ -2711,8 +2724,7 @@ function _renderEvt() {
   if (!list) return;
   let evts = _evtAll;
   if (_evtArea !== 'all') {
-    const key = _evtArea.replace('구','');
-    evts = evts.filter(e => (e.district||'').includes(_evtArea) || (e.place||'').includes(key));
+    evts = evts.filter(e => e.district === _evtArea);
   }
   if (_evtCat !== 'all') evts = evts.filter(e => e.category === _evtCat);
   if (!evts.length) {
