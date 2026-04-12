@@ -1,4 +1,4 @@
-// api/seoul-events.js — 서울 문화행사 API 프록시 (서대문구 필터)
+// api/seoul-events.js — 서울 문화행사 API 프록시
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -6,8 +6,6 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const key = process.env.SEOUL_API_KEY || '697573464e6368653130336b7a757655';
-
-  const { region = '서대문' } = req.query;
 
   try {
     // 서울 열린데이터광장 문화행사 API (최대 1000건)
@@ -17,9 +15,9 @@ export default async function handler(req, res) {
     const data = await resp.json();
 
     const raw = data?.culturalEventInfo?.row || [];
-    const code = data?.culturalEventInfo?.RESULT?.CODE || '';
-    if (!raw.length && code !== 'INFO-000') {
-      throw new Error(data?.culturalEventInfo?.RESULT?.MESSAGE || '데이터 없음');
+    if (!raw.length) {
+      const msg = data?.culturalEventInfo?.RESULT?.MESSAGE || '결과 없음';
+      throw new Error(msg);
     }
 
     // 오늘 이후 행사만
@@ -29,36 +27,33 @@ export default async function handler(req, res) {
       return !end || end >= today;
     });
 
-    // 지역 필터
-    if (region !== 'all') {
-      const keywords = ['서대문', '홍제', '홍은', '남가좌', '북가좌', '연희', '신촌', '이화'];
-      events = events.filter(e => {
-        const txt = (e.PLACE || '') + (e.ORG_NAME || '');
-        return keywords.some(k => txt.includes(k));
-      });
-    }
-
-    // 시작일 순 정렬
+    // 시작일 순 정렬 → 최대 300건
     events.sort((a, b) => (a.STRTDATE || '').localeCompare(b.STRTDATE || ''));
+    events = events.slice(0, 300);
 
     const result = events.map(e => {
       const fee = (e.USE_FEE || '').trim();
       const isFree =
         e.IS_FREE === '무료' ||
-        fee === '무료' || fee === '' || fee === '0' || fee === '0원' ||
-        fee.startsWith('무료');
+        fee === '' || fee === '무료' || fee === '0' || fee === '0원' ||
+        fee.startsWith('무료') || fee === '없음';
+
+      // 지역 추출 (PLACE에서 구 이름 파싱)
+      const place = (e.PLACE || '').trim();
+      const district = extractDistrict(place);
 
       return {
         id: e.CULTCODE || '',
         title: (e.TITLE || '').trim(),
         category: mapTheme(e.THEMECODE),
-        place: (e.PLACE || '').trim(),
+        rawTheme: (e.THEMECODE || '').trim(),
+        district,
+        place,
         org: (e.ORG_NAME || '').trim(),
         startDate: (e.STRTDATE || '').trim(),
         endDate: (e.END_DATE || '').trim(),
         isFree,
         fee: isFree ? '' : fee,
-        img: (e.MAIN_IMG || '').trim(),
         url: (e.HMPG_ADDR || e.TICKET || '').trim(),
         program: (e.PROGRAM || '').trim().slice(0, 100),
       };
@@ -71,12 +66,39 @@ export default async function handler(req, res) {
   }
 }
 
+// 서울 열린데이터광장 THEMECODE 실제 값에 맞춘 매핑
 function mapTheme(code) {
   if (!code) return '기타';
-  if (/교육|강좌|체험/.test(code)) return '교육·체험';
-  if (/전시|관람|미술|박물/.test(code)) return '전시·관람';
-  if (/공연|음악|무용|연극|뮤지컬/.test(code)) return '공연·음악';
-  if (/스포츠|체육|운동/.test(code)) return '스포츠';
-  if (/축제|이벤트|문화|관광/.test(code)) return '문화·축제';
+  const c = code.trim();
+  // 완전 일치 우선
+  const exact = {
+    '교육강좌': '교육·체험',
+    '전시/관람': '전시·관람',
+    '공연/음악/무용': '공연·음악',
+    '스포츠관람': '스포츠',
+    '문화/관광': '문화·축제',
+    '축제/이벤트': '문화·축제',
+  };
+  if (exact[c]) return exact[c];
+  // 부분 매핑
+  if (c.includes('교육') || c.includes('강좌') || c.includes('체험')) return '교육·체험';
+  if (c.includes('전시') || c.includes('관람') || c.includes('미술') || c.includes('박물')) return '전시·관람';
+  if (c.includes('공연') || c.includes('음악') || c.includes('무용') || c.includes('연극') || c.includes('뮤지컬')) return '공연·음악';
+  if (c.includes('스포츠') || c.includes('체육') || c.includes('운동')) return '스포츠';
+  if (c.includes('축제') || c.includes('이벤트') || c.includes('문화') || c.includes('관광')) return '문화·축제';
+  return '기타';
+}
+
+// PLACE 문자열에서 구 이름 추출
+function extractDistrict(place) {
+  const districts = [
+    '서대문구','마포구','은평구','종로구','중구','용산구','성동구','광진구',
+    '동대문구','성북구','강북구','도봉구','노원구','중랑구','강동구','송파구',
+    '강남구','서초구','관악구','동작구','영등포구','구로구','금천구','양천구',
+    '강서구','서대문','마포','은평','홍제','홍은','신촌','연희','남가좌','북가좌',
+  ];
+  for (const d of districts) {
+    if (place.includes(d)) return d.endsWith('구') ? d : d + '구';
+  }
   return '기타';
 }
