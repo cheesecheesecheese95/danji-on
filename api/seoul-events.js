@@ -5,8 +5,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const key = process.env.SEOUL_API_KEY;
-  if (!key) return res.status(500).json({ error: 'API 키 미설정' });
+  const key = process.env.SEOUL_API_KEY || '697573464e6368653130336b7a757655';
 
   const { region = '서대문' } = req.query;
 
