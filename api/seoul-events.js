@@ -66,39 +66,37 @@ export default async function handler(req, res) {
   }
 }
 
-// 서울 열린데이터광장 THEMECODE 실제 값에 맞춘 매핑
+// 서울 열린데이터광장 culturalEventInfo THEMECODE 실제 값 매핑
+// 실제 반환값: '기타', '어린이/청소년 문화행사', '가족 문화행사', '어르신 문화행사', '여성 문화행사'
 function mapTheme(code) {
   if (!code) return '기타';
   const c = code.trim();
-  // 완전 일치 우선
-  const exact = {
-    '교육강좌': '교육·체험',
-    '전시/관람': '전시·관람',
-    '공연/음악/무용': '공연·음악',
-    '스포츠관람': '스포츠',
-    '문화/관광': '문화·축제',
-    '축제/이벤트': '문화·축제',
-  };
-  if (exact[c]) return exact[c];
-  // 부분 매핑
-  if (c.includes('교육') || c.includes('강좌') || c.includes('체험')) return '교육·체험';
-  if (c.includes('전시') || c.includes('관람') || c.includes('미술') || c.includes('박물')) return '전시·관람';
-  if (c.includes('공연') || c.includes('음악') || c.includes('무용') || c.includes('연극') || c.includes('뮤지컬')) return '공연·음악';
-  if (c.includes('스포츠') || c.includes('체육') || c.includes('운동')) return '스포츠';
-  if (c.includes('축제') || c.includes('이벤트') || c.includes('문화') || c.includes('관광')) return '문화·축제';
+  if (c.includes('어린이') || c.includes('청소년')) return '어린이·청소년';
+  if (c.includes('가족')) return '가족';
+  if (c.includes('어르신')) return '어르신';
+  if (c.includes('여성')) return '여성';
   return '기타';
 }
 
-// PLACE 문자열에서 구 이름 추출
+// PLACE 문자열에서 구 이름 추출 (구 suffix 없는 지명도 포함)
 function extractDistrict(place) {
-  const districts = [
-    '서대문구','마포구','은평구','종로구','중구','용산구','성동구','광진구',
-    '동대문구','성북구','강북구','도봉구','노원구','중랑구','강동구','송파구',
-    '강남구','서초구','관악구','동작구','영등포구','구로구','금천구','양천구',
-    '강서구','서대문','마포','은평','홍제','홍은','신촌','연희','남가좌','북가좌',
-  ];
-  for (const d of districts) {
-    if (place.includes(d)) return d.endsWith('구') ? d : d + '구';
+  const map = {
+    '서대문구':'서대문구','마포구':'마포구','은평구':'은평구','종로구':'종로구','중구':'중구',
+    '용산구':'용산구','성동구':'성동구','광진구':'광진구','동대문구':'동대문구','성북구':'성북구',
+    '강북구':'강북구','도봉구':'도봉구','노원구':'노원구','중랑구':'중랑구','강동구':'강동구',
+    '송파구':'송파구','강남구':'강남구','서초구':'서초구','관악구':'관악구','동작구':'동작구',
+    '영등포구':'영등포구','구로구':'구로구','금천구':'금천구','양천구':'양천구','강서구':'강서구',
+    // 구 suffix 없는 지명
+    '서대문':'서대문구','마포':'마포구','은평':'은평구','종로':'종로구',
+    '용산':'용산구','성동':'성동구','광진':'광진구','동대문':'동대문구','성북':'성북구',
+    '강북':'강북구','도봉':'도봉구','노원':'노원구','중랑':'중랑구','강동':'강동구',
+    '송파':'송파구','강남':'강남구','서초':'서초구','관악':'관악구','동작':'동작구',
+    '영등포':'영등포구','구로':'구로구','금천':'금천구','양천':'양천구','강서':'강서구',
+  };
+  // 긴 키 먼저 매칭 (오탐 방지)
+  const keys = Object.keys(map).sort((a,b) => b.length - a.length);
+  for (const k of keys) {
+    if (place.includes(k)) return map[k];
   }
   return '기타';
 }

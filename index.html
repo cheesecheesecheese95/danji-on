@@ -2717,7 +2717,7 @@ function setCultureCat(cat, btn) {
   _renderEvt();
 }
 
-const _evtCatIcon = { '교육·체험':'📚', '전시·관람':'🎨', '공연·음악':'🎵', '스포츠':'⚽', '문화·축제':'🎉', '기타':'📌' };
+const _evtCatIcon = { '어린이·청소년':'👶', '가족':'👨‍👩‍👧', '어르신':'👴', '여성':'💁', '기타':'📌' };
 
 function _renderEvt() {
   const list = document.getElementById('culture-list');
@@ -3433,11 +3433,11 @@ window.addEventListener('DOMContentLoaded', () => {
         <!-- 카테고리 필터 -->
         <div class="chips" id="culture-cats" style="margin-bottom:14px;">
           <button class="chip active" onclick="setCultureCat('all',this)">전체</button>
-          <button class="chip" onclick="setCultureCat('교육·체험',this)">📚 교육·체험</button>
-          <button class="chip" onclick="setCultureCat('전시·관람',this)">🎨 전시·관람</button>
-          <button class="chip" onclick="setCultureCat('공연·음악',this)">🎵 공연·음악</button>
-          <button class="chip" onclick="setCultureCat('스포츠',this)">⚽ 스포츠</button>
-          <button class="chip" onclick="setCultureCat('문화·축제',this)">🎉 문화·축제</button>
+          <button class="chip" onclick="setCultureCat('어린이·청소년',this)">👶 어린이·청소년</button>
+          <button class="chip" onclick="setCultureCat('가족',this)">👨‍👩‍👧 가족</button>
+          <button class="chip" onclick="setCultureCat('어르신',this)">👴 어르신</button>
+          <button class="chip" onclick="setCultureCat('여성',this)">💁 여성</button>
+          <button class="chip" onclick="setCultureCat('기타',this)">📌 기타</button>
         </div>
 
         <!-- 행사 목록 -->
