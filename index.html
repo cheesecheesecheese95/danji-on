@@ -2110,7 +2110,14 @@ function updateNavBtns(){
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const target = document.getElementById('page-'+id);
-  if(!target){ console.warn('페이지 없음: page-'+id); return; }
+  if(!target){
+    // 페이지가 없으면 최신 버전 강제 로드
+    console.warn('페이지 없음: page-'+id);
+    sessionStorage.removeItem('_rv');
+    localStorage.removeItem('_appV');
+    location.reload(true);
+    return;
+  }
   target.classList.add('active');
   window.scrollTo(0,0);
   if(id==='realestate') loadRealestate();
@@ -3312,6 +3319,21 @@ function showIOSGuide(){
 function closeIOSGuide(){
   document.getElementById('ios-modal').classList.remove('open');
 }
+
+// ── 앱 버전 캐시 강제 갱신 ─────────────────────────────────
+(function(){
+  var V = '20260413';
+  try {
+    if (localStorage.getItem('_appV') !== V) {
+      localStorage.setItem('_appV', V);
+      // 처음 방문이거나 버전이 다르면 강제 새로고침 (1회만)
+      if (!sessionStorage.getItem('_rv')) {
+        sessionStorage.setItem('_rv', '1');
+        location.reload(true);
+      }
+    }
+  } catch(e) {}
+})();
 
 // ── SW 및 구캐시 완전 제거 ──────────────────────────────────
 if ('serviceWorker' in navigator) {
