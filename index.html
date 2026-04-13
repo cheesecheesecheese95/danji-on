@@ -851,14 +851,18 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <!-- 분석 결과 -->
           <div id="my-fee-result" style="display:none;">
 
-            <!-- 헤더 -->
+            <!-- 헤더 + 저장 버튼 -->
             <div class="card" style="margin-bottom:10px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
                 <div>
                   <div style="font-size:15px;font-weight:700;color:var(--gray-800)" id="my-fee-month-label">분석 결과</div>
                   <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">AI 추출 결과</div>
                 </div>
                 <div style="font-size:24px;font-weight:800;color:var(--navy)" id="my-fee-total-label"></div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button onclick="saveFeeRecord()" style="flex:1;background:var(--navy);color:#fff;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">💾 저장하기</button>
+                <button onclick="resetFeeUpload()" style="background:var(--gray-100);color:var(--gray-600);border:none;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">다시</button>
               </div>
             </div>
 
@@ -874,27 +878,20 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
               <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:12px;">🏢 단지 평균 비교</div>
               <div style="height:90px;"><canvas id="feeAvgChart"></canvas></div>
               <div id="my-fee-avg-insight" style="margin-top:12px;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.7;"></div>
-              <div style="font-size:10px;color:var(--gray-400);margin-top:6px;">* 단지 평균은 추정값이며, 데이터가 쌓일수록 정확해져요</div>
+              <!-- 항목별 평균 대비 -->
+              <div id="my-fee-item-insights" style="margin-top:10px;"></div>
+              <div style="font-size:10px;color:var(--gray-400);margin-top:8px;">* 단지 평균은 추정값이며, 데이터가 쌓일수록 정확해져요</div>
             </div>
 
-            <!-- ③ 세부 항목 -->
-            <div class="card">
-              <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:10px;">📋 세부 항목 <span style="font-size:11px;font-weight:400;color:var(--gray-400);">— 수정 가능</span></div>
-              <div id="my-fee-items"></div>
-              <div style="display:flex;gap:8px;margin-top:16px;">
-                <button onclick="saveFeeRecord()"
-                  style="flex:1;background:var(--navy);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">
-                  💾 저장하기
-                </button>
-                <button onclick="resetFeeUpload()"
-                  style="background:var(--gray-100);color:var(--gray-600);border:none;border-radius:12px;padding:13px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
-                  다시
-                </button>
-              </div>
+            <!-- ③ 사용량 추이 -->
+            <div class="card" style="margin-bottom:10px;">
+              <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:12px;">📈 우리 호실 사용량 추이</div>
+              <div style="height:180px;"><canvas id="feeTrendChart"></canvas></div>
+              <div id="my-fee-trend-insight" style="margin-top:12px;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.7;"></div>
             </div>
 
-            <!-- 숨겨진 플래그 (compare 트리거용) -->
             <div id="my-fee-compare-section" style="display:none;"></div>
+            <div id="my-fee-items" style="display:none;"></div>
           </div>
 
           <!-- 저장된 내역 -->
@@ -3579,6 +3576,16 @@ let _feeAvgChart = null;
 
 // 단지 평균 관리비 추정값 (DMC파크뷰자이 84㎡ 기준)
 const COMPLEX_AVG_TOTAL = 285000;
+const COMPLEX_ITEM_AVG = {
+  '일반관리비':42000,'청소비':22000,'경비비':35000,'소독비':2000,
+  '수선유지비':12000,'승강기유지비':7000,'위탁관리비':10000,'보험료':3000,
+  '입주자대표회의':500,'선거관리운영비':200,'장기수선충당금':25000,
+  '커뮤니티기본료':7000,'커뮤니티이용료':3000,'커피숍이용료':0,
+  '세대전기료':32000,'공동전기료':7000,'승강기전기료':4500,'TV수신료':2500,
+  '세대수도료':16000,'세대난방비':22000,'기본난방비':5000,'세대급탕비':18000,
+  '음식물사용료':4500,'공동관리비차감':-3700,
+};
+let _feeTrendChart = null;
 
 function loadMyFeeHistory() {
   const records = JSON.parse(localStorage.getItem(MY_FEE_KEY) || '[]');
@@ -3721,6 +3728,9 @@ function showFeeCompare(data) {
   // 단지 평균 비교
   renderFeeAvgChart(data);
   renderFeeAvgInsight(data);
+
+  // 추이 차트
+  renderFeeTrendChart(data);
 }
 
 function renderFeePrevChart(curr, prev) {
@@ -3809,10 +3819,116 @@ function renderFeeAvgInsight(curr) {
   const higher = diff > 0;
   const el = document.getElementById('my-fee-avg-insight');
   el.innerHTML = higher
-    ? `🏠 단지 평균보다 <strong>${diffW}만원 높아요.</strong><br>냉난방비·수도료 등 사용량을 점검해보세요.`
-    : `✅ 단지 평균보다 <strong>${diffW}만원 낮아요.</strong><br>에너지 절약을 잘 실천하고 계세요!`;
+    ? `🏠 단지 평균보다 <strong>${diffW}만원 높아요.</strong>`
+    : `✅ 단지 평균보다 <strong>${diffW}만원 낮아요.</strong>`;
   el.style.background = higher ? '#FEF0EB' : '#E8F5EE';
   el.style.color = higher ? 'var(--red)' : '#1A6E3C';
+
+  // 항목별 평균 대비 인사이트
+  const itemEl = document.getElementById('my-fee-item-insights');
+  const hiItems = [], loItems = [];
+  (curr.items || []).forEach(item => {
+    const avg = COMPLEX_ITEM_AVG[item.name];
+    if (!avg || avg <= 0) return;
+    const ratio = item.amount / avg;
+    if (ratio >= 1.3) hiItems.push({ name: item.name, amount: item.amount, avg, ratio });
+    else if (ratio <= 0.7) loItems.push({ name: item.name, amount: item.amount, avg, ratio });
+  });
+  hiItems.sort((a,b) => b.ratio - a.ratio);
+  loItems.sort((a,b) => a.ratio - b.ratio);
+
+  let html = '';
+  if (hiItems.length) {
+    html += `<div style="margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:var(--red);">📈 평균보다 높은 항목</span></div>`;
+    html += hiItems.slice(0,4).map(i => {
+      const diff = Math.round((i.amount - i.avg)/1000);
+      return `<div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--gray-100);">
+        <span style="color:var(--gray-700);">${i.name}</span>
+        <span style="color:var(--red);font-weight:700;">+${diff}천원 <span style="font-size:10px;color:var(--gray-400);">(평균 ${Math.round(i.avg/1000)}천)</span></span>
+      </div>`;
+    }).join('');
+  }
+  if (loItems.length) {
+    html += `<div style="margin-top:${hiItems.length?10:0}px;margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:#1A6E3C;">📉 평균보다 낮은 항목</span></div>`;
+    html += loItems.slice(0,4).map(i => {
+      const diff = Math.round((i.avg - i.amount)/1000);
+      return `<div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--gray-100);">
+        <span style="color:var(--gray-700);">${i.name}</span>
+        <span style="color:#1A6E3C;font-weight:700;">-${diff}천원 <span style="font-size:10px;color:var(--gray-400);">(평균 ${Math.round(i.avg/1000)}천)</span></span>
+      </div>`;
+    }).join('');
+  }
+  if (!html) html = `<div style="font-size:12px;color:var(--gray-400);margin-top:6px;">대부분의 항목이 평균 범위 내에 있어요.</div>`;
+  itemEl.innerHTML = html;
+}
+
+function renderFeeTrendChart(curr) {
+  if (_feeTrendChart) { _feeTrendChart.destroy(); _feeTrendChart = null; }
+  const records = JSON.parse(localStorage.getItem(MY_FEE_KEY) || '[]');
+  // 저장된 내역 + 현재 분석 데이터 합산
+  const all = [...records.filter(r => r.ym !== curr.ym), curr]
+    .sort((a,b) => a.ym.localeCompare(b.ym));
+
+  if (all.length < 1) return;
+
+  const labels = all.map(r => r.ym.replace('-','년 ')+'월');
+  const totals = all.map(r => Math.round(r.total / 1000));
+  const avgs   = all.map(() => Math.round(COMPLEX_AVG_TOTAL / 1000));
+  const isCurr = all.map(r => r.ym === curr.ym);
+
+  const ctx = document.getElementById('feeTrendChart').getContext('2d');
+  _feeTrendChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '내 관리비',
+          data: totals,
+          backgroundColor: isCurr.map(c => c ? 'rgba(26,60,110,0.9)' : 'rgba(26,60,110,0.45)'),
+          borderRadius: 6,
+          order: 2,
+        },
+        {
+          label: '단지 평균',
+          data: avgs,
+          type: 'line',
+          borderColor: 'rgba(184,134,11,0.8)',
+          borderWidth: 2,
+          borderDash: [4,3],
+          pointRadius: 0,
+          fill: false,
+          order: 1,
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { font: { size: 10 }, boxWidth: 10 } } },
+      scales: {
+        y: { ticks: { font: { size: 9 }, callback: v => v+'천' }, grid: { color: 'rgba(0,0,0,0.04)' } },
+        x: { ticks: { font: { size: 9 } }, grid: { display: false } }
+      }
+    }
+  });
+
+  // 추이 인사이트
+  const trendEl = document.getElementById('my-fee-trend-insight');
+  if (all.length === 1) {
+    trendEl.innerHTML = '💡 고지서를 더 저장하면 월별 추이와 절약 팁을 확인할 수 있어요.';
+    trendEl.style.background = '#F4F5F7'; trendEl.style.color = 'var(--gray-600)';
+    return;
+  }
+  const maxR = all.reduce((a,b) => a.total > b.total ? a : b);
+  const minR = all.reduce((a,b) => a.total < b.total ? a : b);
+  const recentTrend = all.length >= 2 ? all[all.length-1].total - all[all.length-2].total : 0;
+  let insight = '';
+  if (recentTrend > 5000) insight += `📈 최근 월 대비 ${Math.round(recentTrend/1000)}천원 증가했어요.<br>`;
+  else if (recentTrend < -5000) insight += `📉 최근 월 대비 ${Math.round(Math.abs(recentTrend)/1000)}천원 감소했어요.<br>`;
+  insight += `🔺 최고: <strong>${maxR.ym.replace('-','년 ')}월</strong> ${Math.round(maxR.total/10000)}만원 · `;
+  insight += `🔻 최저: <strong>${minR.ym.replace('-','년 ')}월</strong> ${Math.round(minR.total/10000)}만원`;
+  trendEl.innerHTML = insight;
+  trendEl.style.background = '#EEF3FB'; trendEl.style.color = 'var(--navy)';
 }
 
 function updatePendingFee(input) {
@@ -3854,7 +3970,8 @@ function resetFeeUpload() {
   document.getElementById('my-fee-upload').style.display = 'block';
   document.getElementById('my-fee-prev-section').style.display = 'none';
   if (_feePrevChart) { _feePrevChart.destroy(); _feePrevChart = null; }
-  if (_feeAvgChart) { _feeAvgChart.destroy(); _feeAvgChart = null; }
+  if (_feeAvgChart)  { _feeAvgChart.destroy();  _feeAvgChart  = null; }
+  if (_feeTrendChart){ _feeTrendChart.destroy(); _feeTrendChart= null; }
 }
 
 function resizeImage(file, maxPx) {
