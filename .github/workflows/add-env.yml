@@ -1,0 +1,66 @@
+name: Vercel 환경변수 추가 (1회용)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  add-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DATA4LIBRARY_KEY 환경변수 추가
+        run: |
+          PROJECT_ID="prj_DKLFRqlXOucC21WL987h72tIhN6B"
+          TOKEN="${{ secrets.VERCEL_TOKEN }}"
+
+          # 기존 키 있으면 삭제 후 재등록
+          EXISTING=$(curl -s "https://api.vercel.com/v9/projects/${PROJECT_ID}/env" \
+            -H "Authorization: Bearer ${TOKEN}" | \
+            python3 -c "
+          import sys, json
+          d = json.load(sys.stdin)
+          envs = [e for e in d.get('envs', []) if e['key'] == 'DATA4LIBRARY_KEY']
+          print(envs[0]['id'] if envs else '')
+          ")
+
+          if [ -n "$EXISTING" ]; then
+            curl -s -X DELETE "https://api.vercel.com/v9/projects/${PROJECT_ID}/env/${EXISTING}" \
+              -H "Authorization: Bearer ${TOKEN}"
+            echo "기존 키 삭제 완료"
+          fi
+
+          # 신규 등록
+          curl -s -X POST "https://api.vercel.com/v10/projects/${PROJECT_ID}/env" \
+            -H "Authorization: Bearer ${TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "key": "DATA4LIBRARY_KEY",
+              "value": "e6cf0ecf122d82eb7b9299ae46bd4d00af460553dbc2aee11f82d2622eda24ea",
+              "type": "encrypted",
+              "target": ["production", "preview", "development"]
+            }'
+          echo "환경변수 등록 완료"
+
+      - name: 최신 배포 재배포 트리거
+        run: |
+          PROJECT_ID="prj_DKLFRqlXOucC21WL987h72tIhN6B"
+          TOKEN="${{ secrets.VERCEL_TOKEN }}"
+
+          # 최신 배포 ID 조회
+          DEPLOY_ID=$(curl -s "https://api.vercel.com/v6/deployments?projectId=${PROJECT_ID}&limit=1" \
+            -H "Authorization: Bearer ${TOKEN}" | \
+            python3 -c "
+          import sys, json
+          d = json.load(sys.stdin)
+          deps = d.get('deployments', [])
+          print(deps[0]['uid'] if deps else '')
+          ")
+
+          if [ -n "$DEPLOY_ID" ]; then
+            curl -s -X POST "https://api.vercel.com/v13/deployments" \
+              -H "Authorization: Bearer ${TOKEN}" \
+              -H "Content-Type: application/json" \
+              -d "{\"deploymentId\": \"${DEPLOY_ID}\", \"name\": \"danji-on\", \"target\": \"production\"}"
+            echo "재배포 트리거 완료: ${DEPLOY_ID}"
+          else
+            echo "배포 ID를 찾지 못했습니다"
+          fi
