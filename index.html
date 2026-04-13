@@ -3036,11 +3036,27 @@ async function loadDashboard(){
   const now=new Date();
   const dow=now.getDay(), hr=now.getHours();
   const isCollectionDay=(d,h)=>{
-    if([0,1,3,4].includes(d)&&h>=18) return true;
-    if([1,2,4,5].includes(d)&&h<10) return true;
+    // 일요일 18시 이후 (→ 월요일로 넘어감)
+    if(d===0 && h>=18) return true;
+    // 월요일 10시 이전 (일요일 밤 연장)
+    if(d===1 && h<10) return true;
+    // 수요일 18시 이후 (→ 목요일로 넘어감)
+    if(d===3 && h>=18) return true;
+    // 목요일 10시 이전 (수요일 밤 연장)
+    if(d===4 && h<10) return true;
     return false;
   };
   const canDispose=isCollectionDay(dow,hr);
+  const _nextDispose=(d,h)=>{
+    if(d===0&&h<18) return '오늘 18시부터';
+    if(d===1&&h>=10) return '이번 주 수요일 18시부터';
+    if(d===2) return '내일(수) 18시부터';
+    if(d===3&&h<18) return '오늘 18시부터';
+    if(d===4&&h>=10) return '이번 주 일요일 18시부터';
+    if(d===5||d===6) return '이번 주 일요일 18시부터';
+    return '일·수요일 18시';
+  };
+  const disposeDesc=canDispose?'지금 배출 가능':_nextDispose(dow,hr);
 
   const fetchWithTimeout=(url,ms=6000)=>{
     const ctrl=new AbortController();
@@ -3064,8 +3080,6 @@ async function loadDashboard(){
     function pm10Grade(v){if(v<=30)return['🟢','좋음','grade-good'];if(v<=80)return['🟡','보통','grade-normal'];if(v<=150)return['🟠','나쁨','grade-bad'];return['🔴','매우나쁨','grade-very-bad'];}
     function pm25Grade(v){if(v<=15)return['🟢','좋음','grade-good'];if(v<=35)return['🟡','보통','grade-normal'];if(v<=75)return['🟠','나쁨','grade-bad'];return['🔴','매우나쁨','grade-very-bad'];}
     
-    const disposeDesc=canDispose?'지금 배출 가능':'오늘 배출 불가';
-
     // Weather
     let emoji='🌡️',desc='불러오기 실패',temp='—',maxT='—',minT='—',wind='—',hum='—';
     if(w&&w.current){
@@ -3122,7 +3136,6 @@ async function loadDashboard(){
       </div>`;
   }catch(e){
     console.warn('[dashboard]',e);
-    const disposeDesc=canDispose?'지금 배출 가능':'오늘 배출 불가';
     el.innerHTML=`
       <div style="background:var(--gray-100);border-radius:14px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:10px;">
         <span style="font-size:20px;">🌥️</span>
