@@ -36,7 +36,7 @@ export default async function handler(req, res) {
   if (action === 'search') {
     if (!q) return res.status(400).json({ error: '검색어를 입력하세요' });
     try {
-      const data = await apiFetch('srchBooks', { title: q, pageSize: 8 });
+      const data = await apiFetch('srchBooks', { keyword: q, pageSize: 8 });
       const docs = data?.response?.docs || [];
       const books = docs.map(d => ({
         title:            d.doc?.title            || '',
