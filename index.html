@@ -632,6 +632,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <button class="fee-tab" onclick="goFeeTab(2,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">항목 분석</button>
         <button class="fee-tab" onclick="goFeeTab(3,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">전년 비교</button>
         <button class="fee-tab" onclick="goFeeTab(4,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">FAQ</button>
+        <button class="fee-tab" onclick="goFeeTab(5,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--red);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">📸 내 고지서</button>
       </div>
 
       <!-- 서브탭 0: 이번 달 -->
@@ -805,6 +806,74 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📞 관리비 문의</div>
             <div style="font-size:13px;color:var(--gray-600);">관리사무소 <strong><a href="tel:02-931-8360" style="color:inherit;text-decoration:underline dotted;">02-931-8360</a></strong> (평일 09:00~18:00)</div>
           </div>
+        </div>
+      </div>
+      <!-- 서브탭 5: 내 고지서 -->
+      <div class="fee-page" id="fee5">
+        <div class="sec" style="padding-top:16px;">
+
+          <!-- 업로드 카드 -->
+          <div id="my-fee-upload" class="card" style="text-align:center;padding:24px 16px;">
+            <div style="font-size:32px;margin-bottom:8px;">📸</div>
+            <div style="font-size:15px;font-weight:700;color:var(--gray-800);margin-bottom:6px;">고지서 사진 올리기</div>
+            <div style="font-size:12px;color:var(--gray-400);line-height:1.6;margin-bottom:16px;">
+              매달 받는 관리비 고지서를 찍으면<br>항목별 금액을 자동으로 분석해드려요
+            </div>
+            <input type="file" id="fee-file-input" accept="image/*" capture="environment" style="display:none" onchange="handleFeeImage(this)">
+            <button onclick="document.getElementById('fee-file-input').click()"
+              style="background:var(--navy);color:#fff;border:none;border-radius:14px;padding:13px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">
+              📷 사진 찍기 / 갤러리에서 선택
+            </button>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:10px;">사진은 서버에 저장되지 않아요 · 이 기기에만 보관</div>
+          </div>
+
+          <!-- 분석 중 -->
+          <div id="my-fee-loading" style="display:none;" class="card" style="text-align:center;padding:32px 16px;">
+            <div style="font-size:28px;margin-bottom:12px;">🔍</div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;">고지서 분석 중…</div>
+            <div style="font-size:12px;color:var(--gray-400);">Claude AI가 항목별 금액을 읽는 중이에요</div>
+            <div style="margin-top:16px;height:4px;background:var(--gray-200);border-radius:99px;overflow:hidden;">
+              <div id="fee-progress-bar" style="height:100%;width:0%;background:var(--navy);border-radius:99px;transition:width 0.3s;"></div>
+            </div>
+          </div>
+
+          <!-- 분석 결과 -->
+          <div id="my-fee-result" style="display:none;">
+            <div class="card">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <div>
+                  <div style="font-size:15px;font-weight:700;color:var(--gray-800)" id="my-fee-month-label">분석 결과</div>
+                  <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">AI가 추출한 항목 — 수정 가능</div>
+                </div>
+                <div style="font-size:22px;font-weight:800;color:var(--navy)" id="my-fee-total-label"></div>
+              </div>
+              <div id="my-fee-items"></div>
+              <div style="display:flex;gap:8px;margin-top:16px;">
+                <button onclick="saveFeeRecord()"
+                  style="flex:1;background:var(--navy);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">
+                  💾 저장하기
+                </button>
+                <button onclick="resetFeeUpload()"
+                  style="background:var(--gray-100);color:var(--gray-600);border:none;border-radius:12px;padding:13px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+                  다시
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 저장된 내역 -->
+          <div id="my-fee-history" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div class="sec-label" style="margin:0;">저장된 내 고지서</div>
+              <button onclick="resetFeeUpload()" style="font-size:12px;color:var(--navy);background:none;border:none;cursor:pointer;font-weight:600;font-family:inherit;">+ 새 고지서 추가</button>
+            </div>
+            <div class="card">
+              <div style="font-size:13px;font-weight:700;margin-bottom:12px;">월별 합계 추이</div>
+              <div style="height:180px;position:relative;"><canvas id="myFeeChart"></canvas></div>
+            </div>
+            <div id="my-fee-history-list"></div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -3269,6 +3338,200 @@ window.addEventListener('DOMContentLoaded', () => {
   if (dismissed && Date.now() - Number(dismissed) < 7*24*60*60*1000) {
     const banner = document.getElementById('install-banner');
     if (banner) banner.style.display = 'none';
+  }
+});
+
+// ── 내 고지서 분석 ────────────────────────────────────────
+const MY_FEE_KEY = 'my-fee-records';
+let _pendingFeeData = null;
+let _myFeeChart = null;
+
+function loadMyFeeHistory() {
+  const records = JSON.parse(localStorage.getItem(MY_FEE_KEY) || '[]');
+  const histEl = document.getElementById('my-fee-history');
+  const uploadEl = document.getElementById('my-fee-upload');
+  if (!records.length) {
+    histEl.style.display = 'none';
+    uploadEl.style.display = 'block';
+    return;
+  }
+  uploadEl.style.display = 'none';
+  histEl.style.display = 'block';
+  renderFeeHistory(records);
+}
+
+function renderFeeHistory(records) {
+  const sorted = [...records].sort((a,b) => a.ym.localeCompare(b.ym));
+  // 차트
+  const labels = sorted.map(r => r.ym.replace('-', '년 ') + '월');
+  const data   = sorted.map(r => Math.round(r.total / 10000));
+  const ctx = document.getElementById('myFeeChart');
+  if (_myFeeChart) _myFeeChart.destroy();
+  _myFeeChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data, backgroundColor: '#1A3C6E', borderRadius: 6, borderSkipped: false }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { ticks: { callback: v => v + '만', font: { size: 10 } }, grid: { color: '#F0F0F0' } },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+  // 리스트
+  const list = document.getElementById('my-fee-history-list');
+  list.innerHTML = [...sorted].reverse().map(r => {
+    const prev = sorted[sorted.indexOf(r) - 1];
+    const diff = prev ? r.total - prev.total : null;
+    const diffStr = diff !== null
+      ? `<span style="font-size:11px;font-weight:700;color:${diff>0?'var(--red)':'var(--green)'};">${diff>0?'▲':'▼'} ${Math.abs(Math.round(diff/10000))}만원</span>`
+      : '';
+    const items = r.items.slice(0,4).map(i =>
+      `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--gray-100);">
+        <span style="color:var(--gray-600);">${i.name}</span>
+        <span style="font-weight:600;">${i.amount.toLocaleString()}원</span>
+      </div>`
+    ).join('');
+    return `<div class="card" style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:14px;font-weight:700;">${r.ym.replace('-','년 ')}월</div>
+        <div style="display:flex;align-items:center;gap:8px;">${diffStr}<span style="font-size:16px;font-weight:800;color:var(--navy);">${Math.round(r.total/10000)}만원</span></div>
+      </div>
+      ${items}
+      <button onclick="deleteFeeRecord('${r.ym}')" style="margin-top:10px;font-size:11px;color:var(--gray-400);background:none;border:none;cursor:pointer;font-family:inherit;">삭제</button>
+    </div>`;
+  }).join('');
+}
+
+async function handleFeeImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('my-fee-upload').style.display = 'none';
+  document.getElementById('my-fee-loading').style.display = 'block';
+  document.getElementById('my-fee-result').style.display = 'none';
+
+  // 진행바 애니메이션
+  let prog = 0;
+  const bar = document.getElementById('fee-progress-bar');
+  const progTimer = setInterval(() => { prog = Math.min(prog + 3, 85); bar.style.width = prog + '%'; }, 200);
+
+  try {
+    // 이미지 리사이즈 (800px 이하)
+    const b64 = await resizeImage(file, 800);
+    const mediaType = file.type || 'image/jpeg';
+
+    const res = await fetch('/api/extract-fee', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: b64, mediaType }),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+
+    clearInterval(progTimer);
+    bar.style.width = '100%';
+    setTimeout(() => {
+      document.getElementById('my-fee-loading').style.display = 'none';
+      showFeeResult(data);
+    }, 400);
+    _pendingFeeData = data;
+  } catch(e) {
+    clearInterval(progTimer);
+    document.getElementById('my-fee-loading').style.display = 'none';
+    document.getElementById('my-fee-upload').style.display = 'block';
+    alert('분석에 실패했어요. 고지서 사진이 잘 보이는지 확인 후 다시 시도해주세요.\n\n' + e.message);
+  }
+  input.value = '';
+}
+
+function showFeeResult(data) {
+  document.getElementById('my-fee-result').style.display = 'block';
+  document.getElementById('my-fee-month-label').textContent = data.ym ? data.ym.replace('-','년 ')+'월 고지서' : '분석 결과';
+  document.getElementById('my-fee-total-label').textContent = Math.round(data.total/10000) + '만원';
+  const container = document.getElementById('my-fee-items');
+  container.innerHTML = data.items.map((item, idx) => `
+    <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--gray-100);">
+      <input type="text" value="${item.name}" data-idx="${idx}" data-field="name"
+        style="flex:1;border:none;font-size:13px;font-family:inherit;color:var(--gray-700);background:transparent;outline:none;"
+        onchange="updatePendingFee(this)">
+      <input type="number" value="${item.amount}" data-idx="${idx}" data-field="amount"
+        style="width:90px;border:1px solid var(--gray-200);border-radius:8px;padding:4px 8px;font-size:13px;font-family:inherit;text-align:right;outline:none;"
+        onchange="updatePendingFee(this)">
+      <span style="font-size:12px;color:var(--gray-400);">원</span>
+    </div>`).join('');
+}
+
+function updatePendingFee(input) {
+  const idx = parseInt(input.dataset.idx);
+  const field = input.dataset.field;
+  if (field === 'amount') {
+    _pendingFeeData.items[idx].amount = parseInt(input.value) || 0;
+    _pendingFeeData.total = _pendingFeeData.items.reduce((s,i)=>s+i.amount,0);
+    document.getElementById('my-fee-total-label').textContent = Math.round(_pendingFeeData.total/10000) + '만원';
+  } else {
+    _pendingFeeData.items[idx].name = input.value;
+  }
+}
+
+function saveFeeRecord() {
+  if (!_pendingFeeData) return;
+  const records = JSON.parse(localStorage.getItem(MY_FEE_KEY) || '[]');
+  const existing = records.findIndex(r => r.ym === _pendingFeeData.ym);
+  if (existing >= 0) records[existing] = _pendingFeeData;
+  else records.push(_pendingFeeData);
+  localStorage.setItem(MY_FEE_KEY, JSON.stringify(records));
+  _pendingFeeData = null;
+  document.getElementById('my-fee-result').style.display = 'none';
+  loadMyFeeHistory();
+  track('fee:save');
+}
+
+function deleteFeeRecord(ym) {
+  if (!confirm(`${ym.replace('-','년 ')}월 고지서를 삭제할까요?`)) return;
+  const records = JSON.parse(localStorage.getItem(MY_FEE_KEY) || '[]').filter(r => r.ym !== ym);
+  localStorage.setItem(MY_FEE_KEY, JSON.stringify(records));
+  loadMyFeeHistory();
+}
+
+function resetFeeUpload() {
+  _pendingFeeData = null;
+  document.getElementById('my-fee-result').style.display = 'none';
+  document.getElementById('my-fee-loading').style.display = 'none';
+  document.getElementById('my-fee-upload').style.display = 'block';
+}
+
+function resizeImage(file, maxPx) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const scale = Math.min(1, maxPx / Math.max(img.width, img.height));
+      const w = Math.round(img.width * scale);
+      const h = Math.round(img.height * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', 0.85).split(',')[1]);
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+// fee5 탭 진입 시 히스토리 로드
+const _origGoFeeTab = window.goFeeTab;
+document.addEventListener('DOMContentLoaded', () => {
+  const orig = window.goFeeTab;
+  if (typeof orig === 'function') {
+    window.goFeeTab = function(idx, btn) {
+      orig(idx, btn);
+      if (idx === 5) loadMyFeeHistory();
+    };
   }
 });
 
