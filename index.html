@@ -3459,17 +3459,25 @@ async function searchLibBooks() {
 }
 
 function renderLibBooks(books) {
+  const sorted = [...books].sort((a,b) =>
+    (parseInt(b.publication_year)||0) - (parseInt(a.publication_year)||0)
+  );
   const list = document.getElementById('lib-books-list');
-  list.innerHTML = books.map(b => `
-    <div class="card" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:8px;cursor:pointer;padding:12px 14px;"
+  list.innerHTML = sorted.map(b => `
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start;margin-bottom:10px;cursor:pointer;padding:14px 16px;"
       onclick="checkLibAvailability('${b.isbn13}','${b.title.replace(/'/g,"\\'")}','${b.author.replace(/'/g,"\\'")}','${b.bookImageURL}')">
-      ${b.bookImageURL ? `<img src="${b.bookImageURL}" alt="" style="width:44px;border-radius:5px;flex-shrink:0;">` : '<div style="width:44px;height:60px;background:var(--gray-100);border-radius:5px;flex-shrink:0;"></div>'}
-      <div style="min-width:0;">
-        <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${b.title}</div>
-        <div style="font-size:11px;color:var(--gray-400);">${b.author}</div>
-        <div style="font-size:10px;color:var(--gray-400);margin-top:2px;">${b.publisher} ${b.publication_year ? '· '+b.publication_year : ''}</div>
+      ${b.bookImageURL
+        ? `<img src="${b.bookImageURL}" alt="" style="width:52px;border-radius:6px;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,0.12);">`
+        : '<div style="width:52px;height:72px;background:var(--gray-100);border-radius:6px;flex-shrink:0;"></div>'}
+      <div style="min-width:0;flex:1;">
+        <div style="font-size:15px;font-weight:700;color:var(--gray-800);margin-bottom:5px;line-height:1.4;">${b.title}</div>
+        <div style="font-size:13px;color:var(--gray-600);margin-bottom:4px;">${b.author}</div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:12px;color:var(--gray-400);">${b.publisher}</span>
+          ${b.publication_year ? `<span style="font-size:11px;font-weight:700;color:var(--navy);background:#EEF3FB;padding:1px 7px;border-radius:10px;">${b.publication_year}</span>` : ''}
+        </div>
       </div>
-      <div style="margin-left:auto;font-size:18px;flex-shrink:0;align-self:center;">›</div>
+      <div style="font-size:20px;flex-shrink:0;align-self:center;color:var(--gray-400);">›</div>
     </div>`).join('');
   libShow('lib-books');
 }
