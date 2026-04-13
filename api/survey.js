@@ -5,8 +5,9 @@ const VALID = ['very_needed', 'needed', 'unsure', 'not_needed'];
 const LABELS = { very_needed:'매우 필요하다', needed:'필요하다', unsure:'아직 모르겠다', not_needed:'필요하지 않다' };
 
 async function redis(...args) {
-  const url   = process.env.UPSTASH_REDIS_URL;
-  const token = process.env.UPSTASH_REDIS_TOKEN;
+  const url   = process.env.UPSTASH_REDIS_REST_URL   || process.env.UPSTASH_REDIS_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.UPSTASH_REDIS_TOKEN;
+  if (!url || !token) throw new Error('Upstash 환경변수 누락: UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN');
   const res = await fetch(url, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
@@ -34,8 +35,12 @@ export default async function handler(req, res) {
 
   // GET — 현재 집계
   if (req.method === 'GET') {
-    const { counts, total } = await getCounts();
-    return res.json({ counts, labels: LABELS, total });
+    try {
+      const { counts, total } = await getCounts();
+      return res.json({ counts, labels: LABELS, total });
+    } catch(e) {
+      return res.status(500).json({ error: e.message });
+    }
   }
 
   // POST — 투표
