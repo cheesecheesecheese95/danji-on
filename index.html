@@ -850,35 +850,37 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
           <!-- 분석 결과 -->
           <div id="my-fee-result" style="display:none;">
-            <div class="card">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+
+            <!-- 헤더 -->
+            <div class="card" style="margin-bottom:10px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
                 <div>
                   <div style="font-size:15px;font-weight:700;color:var(--gray-800)" id="my-fee-month-label">분석 결과</div>
-                  <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">AI가 추출한 항목 — 수정 가능</div>
+                  <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">AI 추출 결과</div>
                 </div>
-                <div style="font-size:22px;font-weight:800;color:var(--navy)" id="my-fee-total-label"></div>
+                <div style="font-size:24px;font-weight:800;color:var(--navy)" id="my-fee-total-label"></div>
               </div>
+            </div>
+
+            <!-- ① 전월 비교 -->
+            <div id="my-fee-prev-section" class="card" style="display:none;margin-bottom:10px;">
+              <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:12px;">📅 전월 비교</div>
+              <div style="height:175px;"><canvas id="feePrevChart"></canvas></div>
+              <div id="my-fee-prev-insight" style="margin-top:12px;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.7;"></div>
+            </div>
+
+            <!-- ② 단지 평균 비교 -->
+            <div class="card" style="margin-bottom:10px;">
+              <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:12px;">🏢 단지 평균 비교</div>
+              <div style="height:90px;"><canvas id="feeAvgChart"></canvas></div>
+              <div id="my-fee-avg-insight" style="margin-top:12px;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.7;"></div>
+              <div style="font-size:10px;color:var(--gray-400);margin-top:6px;">* 단지 평균은 추정값이며, 데이터가 쌓일수록 정확해져요</div>
+            </div>
+
+            <!-- ③ 세부 항목 -->
+            <div class="card">
+              <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:10px;">📋 세부 항목 <span style="font-size:11px;font-weight:400;color:var(--gray-400);">— 수정 가능</span></div>
               <div id="my-fee-items"></div>
-
-              <!-- 비교 분석 -->
-              <div id="my-fee-compare-section" style="display:none;margin-top:16px;border-top:1px solid var(--gray-100);padding-top:16px;">
-
-                <!-- 전월 비교 -->
-                <div id="my-fee-prev-section" style="margin-bottom:18px;">
-                  <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:10px;">📅 전월 비교</div>
-                  <div style="height:170px;"><canvas id="feePrevChart"></canvas></div>
-                  <div id="my-fee-prev-insight" style="margin-top:10px;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.7;"></div>
-                </div>
-
-                <!-- 단지 평균 비교 -->
-                <div>
-                  <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:10px;">🏢 단지 평균 비교</div>
-                  <div style="height:90px;"><canvas id="feeAvgChart"></canvas></div>
-                  <div id="my-fee-avg-insight" style="margin-top:10px;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.7;"></div>
-                  <div style="font-size:10px;color:var(--gray-400);margin-top:6px;">* 단지 평균은 제출된 고지서 기반 추정값이에요</div>
-                </div>
-              </div>
-
               <div style="display:flex;gap:8px;margin-top:16px;">
                 <button onclick="saveFeeRecord()"
                   style="flex:1;background:var(--navy);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">
@@ -890,6 +892,9 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
                 </button>
               </div>
             </div>
+
+            <!-- 숨겨진 플래그 (compare 트리거용) -->
+            <div id="my-fee-compare-section" style="display:none;"></div>
           </div>
 
           <!-- 저장된 내역 -->
@@ -3704,8 +3709,6 @@ function showFeeCompare(data) {
   const prevRecs = records.filter(r => r.ym < (data.ym || '9999')).sort((a,b) => b.ym.localeCompare(a.ym));
   const prev = prevRecs[0] || null;
 
-  document.getElementById('my-fee-compare-section').style.display = 'block';
-
   // 전월 비교
   if (prev) {
     document.getElementById('my-fee-prev-section').style.display = 'block';
@@ -3849,7 +3852,7 @@ function resetFeeUpload() {
   document.getElementById('my-fee-result').style.display = 'none';
   document.getElementById('my-fee-loading').style.display = 'none';
   document.getElementById('my-fee-upload').style.display = 'block';
-  document.getElementById('my-fee-compare-section').style.display = 'none';
+  document.getElementById('my-fee-prev-section').style.display = 'none';
   if (_feePrevChart) { _feePrevChart.destroy(); _feePrevChart = null; }
   if (_feeAvgChart) { _feeAvgChart.destroy(); _feeAvgChart = null; }
 }
