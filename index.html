@@ -3506,17 +3506,20 @@ function renderLibAvailability(libs, title, author, coverUrl) {
   document.getElementById('lib-avail-list').innerHTML = libs.length === 0
     ? '<div class="card" style="text-align:center;color:var(--gray-400);font-size:13px;padding:20px;">근처 도서관에 소장 정보가 없습니다.</div>'
     : libs.map(l => `
-      <div class="card" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:12px 14px;">
-        <div>
-          <div style="font-size:13px;font-weight:700;color:var(--gray-800);">${l.libName}</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">${l.region}${l.distKm < 99 ? ' · 단지에서 ' + l.distKm + 'km' : ''}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          ${l.available
-            ? '<span style="font-size:12px;font-weight:700;color:var(--green);background:var(--green-bg);padding:4px 10px;border-radius:20px;">대출 가능 ✅</span>'
-            : '<span style="font-size:12px;font-weight:700;color:var(--red);background:var(--red-bg,#FEF0EB);padding:4px 10px;border-radius:20px;">대출 중 ❌</span>'
-          }
-          ${l.homepage ? `<a href="${l.homepage}" target="_blank" rel="noopener" style="font-size:11px;color:var(--navy);">홈피 ›</a>` : ''}
+      <div class="card" style="margin-bottom:8px;padding:12px 14px;">
+        <div style="font-size:11px;color:var(--gray-400);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">📖 ${title}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--gray-800);">${l.libName}</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">${l.region}${l.distKm < 99 ? ' · 단지에서 ' + l.distKm + 'km' : ''}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            ${l.available
+              ? '<span style="font-size:12px;font-weight:700;color:var(--green);background:var(--green-bg);padding:4px 10px;border-radius:20px;">대출 가능 ✅</span>'
+              : '<span style="font-size:12px;font-weight:700;color:var(--red);background:var(--red-bg,#FEF0EB);padding:4px 10px;border-radius:20px;">대출 중 ❌</span>'
+            }
+            ${l.homepage ? `<a href="${l.homepage}" target="_blank" rel="noopener" style="font-size:11px;color:var(--navy);">홈피 ›</a>` : ''}
+          </div>
         </div>
       </div>`).join('');
 
