@@ -627,16 +627,16 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <div class="page" id="page-fee">
       <!-- 관리비 서브탭 -->
       <div style="display:flex;background:var(--white);border-bottom:1px solid var(--gray-200);overflow-x:auto;scrollbar-width:none;position:sticky;top:108px;z-index:90;">
-        <button class="fee-tab active" onclick="goFeeTab(0,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">이번 달</button>
-        <button class="fee-tab" onclick="goFeeTab(1,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">월별 추이</button>
-        <button class="fee-tab" onclick="goFeeTab(2,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">항목 분석</button>
-        <button class="fee-tab" onclick="goFeeTab(3,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">전년 비교</button>
-        <button class="fee-tab" onclick="goFeeTab(4,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">FAQ</button>
-        <button class="fee-tab" onclick="goFeeTab(5,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--red);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">📸 내 고지서</button>
+        <button class="fee-tab active" onclick="goFeeTab(0,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--red);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">📸 내 고지서</button>
+        <button class="fee-tab" onclick="goFeeTab(1,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">이번 달</button>
+        <button class="fee-tab" onclick="goFeeTab(2,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">월별 추이</button>
+        <button class="fee-tab" onclick="goFeeTab(3,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">항목 분석</button>
+        <button class="fee-tab" onclick="goFeeTab(4,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">전년 비교</button>
+        <button class="fee-tab" onclick="goFeeTab(5,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">FAQ</button>
       </div>
 
-      <!-- 서브탭 0: 이번 달 -->
-      <div class="fee-page active" id="fee0">
+      <!-- 서브탭 1: 이번 달 -->
+      <div class="fee-page" id="fee1">
         <div class="sec" style="padding-top:16px;">
           <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px;"><span class="src-tag o">출처: 관리비 고지서 · 2026.02</span></div>
           <div class="stat-grid2">
@@ -669,7 +669,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
 
       <!-- 서브탭 1: 월별 추이 -->
-      <div class="fee-page" id="fee1">
+      <div class="fee-page" id="fee2">
         <div class="sec" style="padding-top:16px;">
           <div class="card">
             <div style="font-size:14px;font-weight:700;margin-bottom:4px;">월별 총 관리비</div>
@@ -711,7 +711,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
 
       <!-- 서브탭 2: 항목 분석 -->
-      <div class="fee-page" id="fee2">
+      <div class="fee-page" id="fee3">
         <div class="sec" style="padding-top:16px;">
           <div class="card">
             <div style="font-size:14px;font-weight:700;margin-bottom:4px;">🔥 난방비+급탕비 추이</div>
@@ -737,7 +737,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
 
       <!-- 서브탭 3: 전년 비교 -->
-      <div class="fee-page" id="fee3">
+      <div class="fee-page" id="fee4">
         <div class="sec" style="padding-top:16px;">
           <div class="card">
             <div style="font-size:14px;font-weight:700;margin-bottom:4px;">2025 vs 2026 비교 (1~2월)</div>
@@ -772,7 +772,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
 
       <!-- 서브탭 4: FAQ -->
-      <div class="fee-page" id="fee4">
+      <div class="fee-page" id="fee5">
         <div class="sec" style="padding-top:16px;">
           <div class="card">
             <div class="faq-item"><div class="faq-t" style="font-weight:700;">관리비가 왜 매달 달라요?</div></div>
@@ -808,8 +808,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </div>
         </div>
       </div>
-      <!-- 서브탭 5: 내 고지서 -->
-      <div class="fee-page" id="fee5">
+      <!-- 서브탭 0: 내 고지서 -->
+      <div class="fee-page active" id="fee0">
         <div class="sec" style="padding-top:16px;">
 
           <!-- 업로드 카드 -->
@@ -3530,7 +3530,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof orig === 'function') {
     window.goFeeTab = function(idx, btn) {
       orig(idx, btn);
-      if (idx === 5) loadMyFeeHistory();
+      if (idx === 0) loadMyFeeHistory();
     };
   }
 });
