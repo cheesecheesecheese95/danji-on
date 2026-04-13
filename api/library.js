@@ -19,7 +19,7 @@ function distKm(lat1, lng1, lat2, lng2) {
 }
 
 async function apiFetch(path, params) {
-  const qs = new URLSearchParams({ authKey: KEY, format: 'json', ...params });
+  const qs = new URLSearchParams({ authKey: KEY, format: 'json', ...params }).toString().replace(/\+/g, '%20');
   const res = await fetch(`${BASE}/${path}?${qs}`);
   if (!res.ok) throw new Error(`API 오류 ${res.status}`);
   return res.json();

@@ -2225,9 +2225,8 @@ function pushHistory(id){
   histStack.push(id);
   histPos=histStack.length-1;
   updateNavBtns();
-  // URL 해시 동기화 (홈은 # 없이)
-  const hash = id === 'home' ? ' ' : '#' + id;
-  history.pushState({ page: id }, '', id === 'home' ? location.pathname : '#' + id);
+  // URL 해시 동기화 (홈은 # 없이) — histPos를 state에 저장
+  history.pushState({ page: id, histPos: histPos }, '', id === 'home' ? location.pathname : '#' + id);
 }
 function updateNavBtns(){
   const back=document.getElementById('btn-back');
@@ -2259,15 +2258,11 @@ function showPage(id){
 }
 function goHistoryBack(){
   if(histPos<=0) return;
-  histPos--;
-  showPage(histStack[histPos]);
-  updateNavBtns();
+  history.back();
 }
 function goHistoryForward(){
   if(histPos>=histStack.length-1) return;
-  histPos++;
-  showPage(histStack[histPos]);
-  updateNavBtns();
+  history.forward();
 }
 
 function goTab(id){
@@ -3194,9 +3189,13 @@ async function loadMeetings() {
 window.addEventListener('popstate', function(e){
   const page = (e.state && e.state.page) || location.hash.replace('#','') || 'home';
   showPage(page);
-  // 스택에서 해당 페이지 위치로 복원
-  const idx = histStack.lastIndexOf(page);
-  if(idx >= 0) histPos = idx;
+  // state에 저장된 histPos 우선 사용, 없으면 스택에서 검색
+  if(e.state && typeof e.state.histPos === 'number'){
+    histPos = e.state.histPos;
+  } else {
+    const idx = histStack.lastIndexOf(page);
+    if(idx >= 0) histPos = idx;
+  }
   updateNavBtns();
 });
 
@@ -3204,7 +3203,7 @@ window.addEventListener('popstate', function(e){
 const _initHash = location.hash.replace('#','');
 const _initPage = _initHash || 'home';
 showPage(_initPage);
-history.replaceState({ page: _initPage }, '', _initHash ? '#' + _initHash : location.pathname);
+history.replaceState({ page: _initPage, histPos: 0 }, '', _initHash ? '#' + _initHash : location.pathname);
 pushHistory(_initPage);
 loadBiz();
 loadLocal();
