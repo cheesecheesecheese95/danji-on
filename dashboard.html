@@ -108,14 +108,15 @@
       <div class="updated" id="survey-updated"></div>
     </div>
 
-    <!-- 방문·클릭 통계 -->
+    <!-- 방문·메뉴 통계 -->
     <div class="section">
-      <div class="section-title">👆 방문 · 메뉴 클릭</div>
-      <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:20px;">
+      <div class="section-title">👆 방문 · 메뉴별 클릭 <span class="badge badge-live">LIVE</span></div>
+      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px;">
         <div class="stat"><div class="stat-num" id="t-visit">—</div><div class="stat-label">총 방문</div></div>
         <div class="stat"><div class="stat-num" id="t-today">—</div><div class="stat-label">오늘 방문</div></div>
+        <div class="stat"><div class="stat-num" id="t-menus">—</div><div class="stat-label">총 메뉴클릭</div></div>
       </div>
-      <div id="click-list" style="font-size:13px;color:var(--gray-600);">불러오는 중…</div>
+      <div id="menu-stat-list">불러오는 중…</div>
       <button class="refresh-btn" onclick="loadTrack()">↻ 새로고침</button>
     </div>
 
@@ -139,25 +140,6 @@
       <button class="refresh-btn" onclick="loadResidents()">↻ 새로고침</button>
     </div>
 
-    <!-- 메뉴 바로가기 -->
-    <div class="section">
-      <div class="section-title">🔗 메뉴 바로가기</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-        <a href="/#fee"        class="menu-link">💰 관리비</a>
-        <a href="/#community"  class="menu-link">🏊 커뮤니티</a>
-        <a href="/#parking"    class="menu-link">🚗 주차·차량</a>
-        <a href="/#repair"     class="menu-link">🛠️ 수리·하자</a>
-        <a href="/#living"     class="menu-link">🧺 생활편의</a>
-        <a href="/#complaint"  class="menu-link">📋 민원·규정</a>
-        <a href="/#news"       class="menu-link">📢 단지소식</a>
-        <a href="/#emergency"  class="menu-link">🏥 응급의료</a>
-        <a href="/#library"    class="menu-link">📚 도서관</a>
-        <a href="/#realestate" class="menu-link">🏠 실거래가</a>
-        <a href="/#faq"        class="menu-link">❓ 자주찾는질문</a>
-        <a href="/culture.html" class="menu-link">🎪 문화·행사</a>
-      </div>
-    </div>
-
     <a class="home-link" href="/">← 홈으로</a>
   </div>
 </div>
@@ -166,12 +148,22 @@
 const PW_KEY = 'dash-auth';
 const CORRECT = 'parkview2024';
 
-const PAGE_LABELS = {
-  'visit':'홈 방문','tab:home':'홈','tab:fee':'관리비','tab:community':'커뮤니티',
-  'page:complaint':'민원·규정','page:living':'생활편의','page:parking':'주차·차량',
-  'page:repair':'수리·하자','page:news':'단지소식','page:emergency':'응급의료',
-  'page:register':'입주민인증','page:realestate':'실거래가','page:faq':'자주찾는질문',
-};
+// 메뉴 정의: [트래킹키, 아이콘, 레이블, 링크URL]
+const MENUS = [
+  ['tab:fee',       '💰', '관리비',     '/#fee'],
+  ['tab:community', '🏊', '커뮤니티',   '/#community'],
+  ['page:parking',  '🚗', '주차·차량',  '/#parking'],
+  ['page:repair',   '🛠️', '수리·하자',  '/#repair'],
+  ['page:living',   '🧺', '생활편의',   '/#living'],
+  ['page:complaint','📋', '민원·규정',  '/#complaint'],
+  ['page:news',     '📢', '단지소식',   '/#news'],
+  ['page:emergency','🏥', '응급의료',   '/#emergency'],
+  ['page:library',  '📚', '도서관',     '/#library'],
+  ['page:realestate','🏠','실거래가',   '/#realestate'],
+  ['page:faq',      '❓', '자주찾는질문','/#faq'],
+  ['page:register', '🔑', '입주민인증', '/#register'],
+  ['culture',       '🎪', '문화·행사',  '/culture.html'],
+];
 
 function checkPw(){
   const v = document.getElementById('pw-input').value;
@@ -259,31 +251,42 @@ async function loadTrack(){
     const r = await fetch('/api/track-stats');
     const d = await r.json();
 
-    document.getElementById('t-visit').textContent = (d.total['visit'] || 0).toLocaleString();
-    document.getElementById('t-today').textContent = (d.today['visit'] || 0).toLocaleString();
+    const totalVisit = d.total['visit'] || 0;
+    const todayVisit = d.today['visit'] || 0;
+    document.getElementById('t-visit').textContent = totalVisit.toLocaleString();
+    document.getElementById('t-today').textContent = todayVisit.toLocaleString();
 
-    // 클릭 순위 (visit 제외, 상위 10개)
-    const entries = Object.entries(d.total)
-      .filter(([k]) => k !== 'visit')
-      .sort((a,b) => b[1]-a[1])
-      .slice(0, 10);
+    // 메뉴 클릭 합계
+    const totalMenuClicks = MENUS.reduce((s,[k]) => s + (d.total[k]||0), 0);
+    document.getElementById('t-menus').textContent = totalMenuClicks.toLocaleString();
 
-    const max = entries[0]?.[1] || 1;
-    const html = entries.map(([k,v]) => {
-      const label = PAGE_LABELS[k] || k;
-      const pct = Math.round(v/max*100);
-      return `<div style="margin-bottom:10px;">
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
-          <span style="font-weight:600;color:var(--gray-800)">${label}</span>
-          <span style="color:var(--gray-400)">${v.toLocaleString()}회</span>
-        </div>
-        <div style="background:var(--gray-200);border-radius:99px;height:7px;overflow:hidden;">
-          <div style="width:${pct}%;height:100%;background:var(--navy);border-radius:99px;"></div>
-        </div>
-      </div>`;
+    // 메뉴별 통계 (클릭 많은 순 정렬)
+    const menuData = MENUS.map(([key, icon, label, url]) => ({
+      key, icon, label, url,
+      total: d.total[key] || 0,
+      today: d.today[key] || 0,
+    })).sort((a, b) => b.total - a.total);
+
+    const max = menuData[0]?.total || 1;
+
+    const html = menuData.map(m => {
+      const pct = Math.round(m.total / max * 100);
+      const todayBadge = m.today > 0
+        ? `<span style="font-size:10px;font-weight:700;color:var(--green);background:#E8F5EE;padding:1px 6px;border-radius:8px;margin-left:6px;">+${m.today}오늘</span>`
+        : '';
+      return `
+        <a href="${m.url}" target="_blank" style="display:block;text-decoration:none;margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;color:var(--gray-800);">${m.icon} ${m.label}${todayBadge}</span>
+            <span style="font-size:12px;color:var(--gray-400);">${m.total.toLocaleString()}회</span>
+          </div>
+          <div style="background:var(--gray-200);border-radius:99px;height:6px;overflow:hidden;">
+            <div style="width:${pct}%;height:100%;background:var(--navy);border-radius:99px;transition:width 0.6s ease;"></div>
+          </div>
+        </a>`;
     }).join('');
 
-    document.getElementById('click-list').innerHTML = html || '<span style="color:var(--gray-400)">데이터 없음</span>';
+    document.getElementById('menu-stat-list').innerHTML = html || '<span style="color:var(--gray-400)">데이터 없음</span>';
   } catch(e) { console.error(e); }
 }
 
