@@ -820,8 +820,11 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div id="my-fee-upload" class="card" style="text-align:center;padding:24px 16px;">
             <div style="font-size:32px;margin-bottom:8px;">📸</div>
             <div style="font-size:15px;font-weight:700;color:var(--gray-800);margin-bottom:6px;">고지서 사진 올리기</div>
-            <div style="font-size:12px;color:var(--gray-400);line-height:1.6;margin-bottom:16px;">
+            <div style="font-size:12px;color:var(--gray-400);line-height:1.6;margin-bottom:12px;">
               매달 받는 관리비 고지서를 찍으면<br>항목별 금액을 자동으로 분석해드려요
+            </div>
+            <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:10px 14px;font-size:12px;color:#7B5800;line-height:1.6;text-align:left;margin-bottom:16px;">
+              📌 <strong>앞장(명세서)이 아닌 제일 뒷장</strong>의<br><strong>관리비 부과현황</strong>을 찍어주세요
             </div>
             <input type="file" id="fee-file-input" accept="image/*" capture="environment" style="display:none" onchange="handleFeeImage(this)">
             <button onclick="document.getElementById('fee-file-input').click()"
