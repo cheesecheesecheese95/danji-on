@@ -3606,7 +3606,9 @@ function renderFeeHistory(records) {
         <div style="display:flex;align-items:center;gap:8px;">${diffStr}<span style="font-size:16px;font-weight:800;color:var(--navy);">${Math.round(r.total/10000)}만원</span></div>
       </div>
       ${items}
-      <button onclick="deleteFeeRecord('${r.ym}')" style="margin-top:10px;font-size:11px;color:var(--gray-400);background:none;border:none;cursor:pointer;font-family:inherit;">삭제</button>
+      <div style="margin-top:12px;text-align:right;">
+        <button onclick="deleteFeeRecord('${r.ym}')" style="font-size:12px;font-weight:600;color:var(--red);background:#FEF0EB;border:none;border-radius:8px;padding:6px 14px;cursor:pointer;font-family:inherit;">🗑 삭제</button>
+      </div>
     </div>`;
   }).join('');
 }
