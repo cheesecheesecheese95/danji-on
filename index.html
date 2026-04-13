@@ -3512,7 +3512,7 @@ function renderLibAvailability(libs, title, author, coverUrl) {
       <div class="card" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:12px 14px;">
         <div>
           <div style="font-size:13px;font-weight:700;color:var(--gray-800);">${l.libName}</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">${l.region}</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">${l.region}${l.distKm < 99 ? ' · 단지에서 ' + l.distKm + 'km' : ''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
           ${l.available

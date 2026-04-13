@@ -2,8 +2,21 @@
 const KEY = process.env.DATA4LIBRARY_KEY;
 const BASE = 'http://data4library.kr/api';
 
+// DMC파크뷰자이 중심 좌표
+const HOME = { lat: 37.5733, lng: 126.9198 };
+
 // 근처 구 필터 (주소 기준)
 const TARGET_GU = ['서대문구', '은평구', '마포구'];
+
+// Haversine 거리 계산 (km)
+function distKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2
+    + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
 
 async function apiFetch(path, params) {
   const qs = new URLSearchParams({ authKey: KEY, format: 'json', ...params });
@@ -66,6 +79,9 @@ export default async function handler(req, res) {
             .then(d => {
               const result = d?.response?.result || {};
               const gu = TARGET_GU.find(g => (lib.address || '').includes(g)) || '';
+              const lat = parseFloat(lib.latitude);
+              const lng = parseFloat(lib.longitude);
+              const dist = (lat && lng) ? distKm(HOME.lat, HOME.lng, lat, lng) : 999;
               return {
                 libCode:   lib.libCode,
                 libName:   lib.libName,
@@ -74,6 +90,7 @@ export default async function handler(req, res) {
                 homepage:  lib.homepage || '',
                 hasBook:   result.hasBook === 'Y',
                 available: result.loanAvailable === 'Y',
+                distKm:    Math.round(dist * 10) / 10,
               };
             })
             .catch(() => null)
@@ -83,7 +100,7 @@ export default async function handler(req, res) {
       const libs = results
         .filter(Boolean)
         .filter(l => l.hasBook)
-        .sort((a, b) => b.available - a.available);
+        .sort((a, b) => a.distKm - b.distKm);
 
       return res.json({ libs });
     } catch (e) {
