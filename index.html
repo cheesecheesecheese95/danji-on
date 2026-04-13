@@ -2104,11 +2104,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <!-- 도서관 대출 현황 -->
         <div id="lib-availability" style="display:none;">
           <div id="lib-book-info" style="margin-bottom:14px;" class="card">
-            <div style="display:flex;gap:12px;align-items:flex-start;">
-              <img id="lib-book-cover" src="" alt="" style="width:52px;border-radius:6px;flex-shrink:0;display:none;">
-              <div>
-                <div style="font-size:14px;font-weight:700;color:var(--gray-800)" id="lib-book-title"></div>
-                <div style="font-size:12px;color:var(--gray-400);margin-top:3px" id="lib-book-author"></div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <img id="lib-book-cover" src="" alt="" style="width:72px;height:100px;object-fit:cover;border-radius:8px;flex-shrink:0;display:none;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+              <div style="min-width:0;flex:1;">
+                <div style="font-size:10px;font-weight:700;color:var(--gray-400);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">선택한 책</div>
+                <div style="font-size:16px;font-weight:700;color:var(--gray-800);line-height:1.4;margin-bottom:6px;" id="lib-book-title"></div>
+                <div style="font-size:13px;color:var(--gray-600);" id="lib-book-author"></div>
               </div>
             </div>
           </div>
@@ -3500,6 +3501,7 @@ function renderLibAvailability(libs, title, author, coverUrl) {
   document.getElementById('lib-book-author').textContent = author;
   const cover = document.getElementById('lib-book-cover');
   if (coverUrl) { cover.src = coverUrl; cover.style.display = 'block'; }
+  else { cover.style.display = 'none'; }
 
   const available = libs.filter(l => l.available).length;
   document.getElementById('lib-avail-summary').textContent =
