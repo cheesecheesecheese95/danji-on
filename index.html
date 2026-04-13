@@ -3463,7 +3463,7 @@ function renderLibBooks(books) {
   );
   const list = document.getElementById('lib-books-list');
   list.innerHTML = sorted.map(b => {
-    const authorName = (b.author || '').split(/[;,·\/\|]/)[0].replace(/\s*(지음|글|그림|저|역|옮김|편|엮음|감수|외).*$/,'').trim() || '—';
+    const authorName = (b.author || '').trim() || '—';
     return `
     <div class="card" style="display:flex;gap:16px;align-items:flex-start;margin-bottom:12px;cursor:pointer;padding:16px;"
       onclick="checkLibAvailability('${b.isbn13}','${b.title.replace(/'/g,"\\'")}','${b.author.replace(/'/g,"\\'")}','${b.bookImageURL}')">
