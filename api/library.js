@@ -2,6 +2,10 @@
 const KEY = process.env.DATA4LIBRARY_KEY;
 const BASE = 'http://data4library.kr/api';
 
+// 네이버 Books API
+const NAVER_ID     = process.env.NAVER_CLIENT_ID;
+const NAVER_SECRET = process.env.NAVER_CLIENT_SECRET;
+
 // DMC파크뷰자이 중심 좌표
 const HOME = { lat: 37.5733, lng: 126.9198 };
 
@@ -28,24 +32,38 @@ async function apiFetch(path, params) {
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method !== 'GET') return res.status(405).end();
-  if (!KEY) return res.status(500).json({ error: 'API 키 누락' });
+  if (!KEY) return res.status(500).json({ error: 'DATA4LIBRARY_KEY 누락' });
 
   const { action, q, isbn } = req.query;
 
-  // ── 1. 도서 검색 ──────────────────────────────────────
+  // ── 1. 도서 검색 (네이버 Books API) ───────────────────
   if (action === 'search') {
     if (!q) return res.status(400).json({ error: '검색어를 입력하세요' });
+    if (!NAVER_ID || !NAVER_SECRET) return res.status(500).json({ error: 'NAVER API 키 누락' });
     try {
-      const data = await apiFetch('srchBooks', { keyword: q, pageSize: 8 });
-      const docs = data?.response?.docs || [];
-      const books = docs.map(d => ({
-        title:            d.doc?.title            || '',
-        author:           d.doc?.author           || '',
-        isbn13:           d.doc?.isbn13           || '',
-        publisher:        d.doc?.publisher        || '',
-        publication_year: d.doc?.publication_year || '',
-        bookImageURL:     d.doc?.bookImageURL     || '',
-      })).filter(b => b.isbn13);
+      const qs = new URLSearchParams({ query: q, display: 10, sort: 'sim' });
+      const r = await fetch(`https://openapi.naver.com/v1/search/book.json?${qs}`, {
+        headers: {
+          'X-Naver-Client-Id': NAVER_ID,
+          'X-Naver-Client-Secret': NAVER_SECRET,
+        },
+      });
+      if (!r.ok) throw new Error(`네이버 API 오류 ${r.status}`);
+      const data = await r.json();
+      const books = (data.items || []).map(item => {
+        // isbn 필드: "ISBN10 ISBN13" 또는 "ISBN13" 형식
+        const isbnParts = (item.isbn || '').trim().split(/\s+/);
+        const isbn13 = isbnParts.find(s => s.length === 13) || isbnParts[isbnParts.length - 1] || '';
+        const pubYear = (item.pubdate || '').slice(0, 4);
+        return {
+          title:            item.title?.replace(/<[^>]+>/g, '') || '',
+          author:           item.author?.replace(/<[^>]+>/g, '') || '',
+          isbn13,
+          publisher:        item.publisher || '',
+          publication_year: pubYear,
+          bookImageURL:     item.image || '',
+        };
+      }).filter(b => b.isbn13);
       return res.json({ books });
     } catch (e) {
       return res.status(502).json({ error: e.message });
