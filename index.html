@@ -540,6 +540,10 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <span class="q-icon">🎪</span>
             <span class="q-texts"><span class="q-label">문화·행사</span><span class="q-sub">서대문구 행사·프로그램</span></span>
           </a>
+          <button class="qbtn" onclick="goPage('library')">
+            <span class="q-icon">📚</span>
+            <span class="q-texts"><span class="q-label">도서관 책 찾기</span><span class="q-sub">근처 도서관 대출 가능 여부</span></span>
+          </button>
         </div>
 
         <!-- 이번 달 챙길 것 -->
@@ -2068,6 +2072,59 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
     </div>
 
+    <!-- ═══ 도서관 책 찾기 ═══ -->
+    <div class="page" id="page-library">
+      <div class="sec" style="padding-top:20px;">
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
+        <div class="sec-title">📚 도서관 책 찾기</div>
+        <div class="sec-sub">서대문·은평·마포구 도서관 실시간 대출 가능 여부</div>
+
+        <!-- 검색창 -->
+        <div style="position:relative;margin-bottom:16px;">
+          <input id="lib-search-input" type="search" placeholder="책 제목을 입력하세요…"
+            style="width:100%;border:1.5px solid var(--gray-200);border-radius:14px;padding:13px 48px 13px 16px;font-size:15px;font-family:inherit;outline:none;color:var(--gray-800);transition:border-color 0.15s;"
+            onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--gray-200)'"
+            onkeydown="if(event.key==='Enter')searchLibBooks()">
+          <button onclick="searchLibBooks()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:20px;">🔍</button>
+        </div>
+
+        <!-- 검색 결과: 도서 목록 -->
+        <div id="lib-books" style="display:none;">
+          <div style="font-size:12px;font-weight:700;color:var(--gray-400);margin-bottom:10px;">검색 결과 — 책을 선택하면 근처 도서관을 확인해요</div>
+          <div id="lib-books-list"></div>
+        </div>
+
+        <!-- 로딩 -->
+        <div id="lib-loading" style="display:none;text-align:center;padding:32px 0;">
+          <div style="font-size:28px;margin-bottom:10px;">🔍</div>
+          <div style="font-size:13px;color:var(--gray-400)" id="lib-loading-msg">검색 중…</div>
+        </div>
+
+        <!-- 도서관 대출 현황 -->
+        <div id="lib-availability" style="display:none;">
+          <div id="lib-book-info" style="margin-bottom:14px;" class="card">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <img id="lib-book-cover" src="" alt="" style="width:52px;border-radius:6px;flex-shrink:0;display:none;">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gray-800)" id="lib-book-title"></div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:3px" id="lib-book-author"></div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:var(--gray-400);margin-bottom:10px;" id="lib-avail-summary"></div>
+          <div id="lib-avail-list"></div>
+          <button onclick="resetLibSearch()" style="width:100%;margin-top:8px;background:var(--gray-100);color:var(--gray-600);border:none;border-radius:12px;padding:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">← 다른 책 찾기</button>
+        </div>
+
+        <!-- 빈 결과 -->
+        <div id="lib-empty" style="display:none;text-align:center;padding:32px 0;">
+          <div style="font-size:32px;margin-bottom:10px;">📭</div>
+          <div style="font-size:13px;color:var(--gray-400);">검색 결과가 없어요.<br>다른 제목으로 찾아보세요.</div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- ═══ 실거래가 ═══ -->
     <div class="page" id="page-realestate">
       <div class="sec" style="padding-top:20px;padding-bottom:32px;">
@@ -3340,6 +3397,96 @@ window.addEventListener('DOMContentLoaded', () => {
     if (banner) banner.style.display = 'none';
   }
 });
+
+// ── 도서관 책 찾기 ────────────────────────────────────────
+function libShow(id) {
+  ['lib-books','lib-loading','lib-availability','lib-empty'].forEach(el => {
+    document.getElementById(el).style.display = el === id ? 'block' : 'none';
+  });
+}
+
+async function searchLibBooks() {
+  const q = document.getElementById('lib-search-input').value.trim();
+  if (!q) return;
+  libShow('lib-loading');
+  document.getElementById('lib-loading-msg').textContent = '도서 검색 중…';
+  track('library:search');
+  try {
+    const r = await fetch(`/api/library?action=search&q=${encodeURIComponent(q)}`);
+    const d = await r.json();
+    if (!d.books || d.books.length === 0) { libShow('lib-empty'); return; }
+    renderLibBooks(d.books);
+  } catch(e) {
+    libShow('lib-empty');
+  }
+}
+
+function renderLibBooks(books) {
+  const list = document.getElementById('lib-books-list');
+  list.innerHTML = books.map(b => `
+    <div class="card" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:8px;cursor:pointer;padding:12px 14px;"
+      onclick="checkLibAvailability('${b.isbn13}','${b.title.replace(/'/g,"\\'")}','${b.author.replace(/'/g,"\\'")}','${b.bookImageURL}')">
+      ${b.bookImageURL ? `<img src="${b.bookImageURL}" alt="" style="width:44px;border-radius:5px;flex-shrink:0;">` : '<div style="width:44px;height:60px;background:var(--gray-100);border-radius:5px;flex-shrink:0;"></div>'}
+      <div style="min-width:0;">
+        <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${b.title}</div>
+        <div style="font-size:11px;color:var(--gray-400);">${b.author}</div>
+        <div style="font-size:10px;color:var(--gray-400);margin-top:2px;">${b.publisher} ${b.publication_year ? '· '+b.publication_year : ''}</div>
+      </div>
+      <div style="margin-left:auto;font-size:18px;flex-shrink:0;align-self:center;">›</div>
+    </div>`).join('');
+  libShow('lib-books');
+}
+
+async function checkLibAvailability(isbn, title, author, coverUrl) {
+  libShow('lib-loading');
+  document.getElementById('lib-loading-msg').textContent = '근처 도서관 확인 중… (서대문·은평·마포구)';
+  track('library:availability');
+  try {
+    const r = await fetch(`/api/library?action=availability&isbn=${isbn}`);
+    const d = await r.json();
+    renderLibAvailability(d.libs || [], title, author, coverUrl);
+  } catch(e) {
+    libShow('lib-empty');
+  }
+}
+
+function renderLibAvailability(libs, title, author, coverUrl) {
+  document.getElementById('lib-book-title').textContent = title;
+  document.getElementById('lib-book-author').textContent = author;
+  const cover = document.getElementById('lib-book-cover');
+  if (coverUrl) { cover.src = coverUrl; cover.style.display = 'block'; }
+
+  const available = libs.filter(l => l.available).length;
+  document.getElementById('lib-avail-summary').textContent =
+    libs.length === 0 ? '근처 도서관에 소장된 곳이 없어요'
+    : `${libs.length}개 도서관 소장 · 지금 빌릴 수 있는 곳 ${available}곳`;
+
+  document.getElementById('lib-avail-list').innerHTML = libs.length === 0
+    ? '<div class="card" style="text-align:center;color:var(--gray-400);font-size:13px;padding:20px;">근처 도서관에 소장 정보가 없습니다.</div>'
+    : libs.map(l => `
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:12px 14px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);">${l.libName}</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">${l.region}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${l.available
+            ? '<span style="font-size:12px;font-weight:700;color:var(--green);background:var(--green-bg);padding:4px 10px;border-radius:20px;">대출 가능 ✅</span>'
+            : '<span style="font-size:12px;font-weight:700;color:var(--red);background:var(--red-bg,#FEF0EB);padding:4px 10px;border-radius:20px;">대출 중 ❌</span>'
+          }
+          ${l.homepage ? `<a href="${l.homepage}" target="_blank" rel="noopener" style="font-size:11px;color:var(--navy);">홈피 ›</a>` : ''}
+        </div>
+      </div>`).join('');
+
+  libShow('lib-availability');
+}
+
+function resetLibSearch() {
+  document.getElementById('lib-search-input').value = '';
+  libShow('lib-books');
+  document.getElementById('lib-books-list').innerHTML = '';
+  document.getElementById('lib-books').style.display = 'none';
+}
 
 // ── 내 고지서 분석 ────────────────────────────────────────
 const MY_FEE_KEY = 'my-fee-records';
