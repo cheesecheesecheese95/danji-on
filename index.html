@@ -823,8 +823,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div style="font-size:12px;color:var(--gray-400);line-height:1.6;margin-bottom:12px;">
               매달 받는 관리비 고지서를 찍으면<br>항목별 금액을 자동으로 분석해드려요
             </div>
-            <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:10px 14px;font-size:12px;color:#7B5800;line-height:1.6;text-align:left;margin-bottom:16px;">
-              📌 <strong>앞장(명세서)이 아닌 제일 뒷장</strong>의<br><strong>관리비 부과현황</strong>을 찍어주세요
+            <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:12px;padding:12px 16px;text-align:left;margin-bottom:16px;">
+              <div style="font-size:11px;font-weight:700;color:#B8860B;margin-bottom:6px;letter-spacing:0.04em;">📌 촬영 가이드</div>
+              <div style="font-size:13px;color:#5C4200;line-height:1.7;">
+                앞장 <span style="background:#FFE082;padding:1px 5px;border-radius:4px;font-weight:700;">납입영수증 ✕</span><br>
+                뒷장 <span style="background:#A5D6A7;padding:1px 5px;border-radius:4px;font-weight:700;">관리비 부과현황 ✓</span> 을 찍어주세요
+              </div>
             </div>
             <input type="file" id="fee-file-input" accept="image/*" capture="environment" style="display:none" onchange="handleFeeImage(this)">
             <button onclick="document.getElementById('fee-file-input').click()"
