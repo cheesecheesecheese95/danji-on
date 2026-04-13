@@ -4,7 +4,7 @@ const BASE = 'http://data4library.kr/api';
 
 // 단지 근처 도서관 권역 (서대문·은평·마포)
 const REGIONS = [
-  { region: '11', dtl: '11230', name: '서대문구' },
+  { region: '11', dtl: '11410', name: '서대문구' },
   { region: '11', dtl: '11380', name: '은평구' },
   { region: '11', dtl: '11440', name: '마포구' },
 ];
