@@ -128,6 +128,17 @@
       </a>
     </div>
 
+    <!-- 입주민 인증 목록 -->
+    <div class="section">
+      <div class="section-title">🏠 입주민 인증 목록</div>
+      <div id="resident-stats" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;">
+        <div class="stat"><div class="stat-num" id="r-total">—</div><div class="stat-label">총 인증</div></div>
+        <div class="stat"><div class="stat-num" id="r-danji">—</div><div class="stat-label">단지 수</div></div>
+      </div>
+      <div id="resident-list" style="font-size:13px;color:var(--gray-600);">불러오는 중…</div>
+      <button class="refresh-btn" onclick="loadResidents()">↻ 새로고침</button>
+    </div>
+
     <!-- 메뉴 바로가기 -->
     <div class="section">
       <div class="section-title">🔗 메뉴 바로가기</div>
@@ -180,7 +191,40 @@ if(sessionStorage.getItem(PW_KEY)==='1'){
   document.getElementById('dashboard').style.display='block';
 }
 
-function loadAll(){ loadSurvey(); loadTrack(); }
+function loadAll(){ loadSurvey(); loadTrack(); loadResidents(); }
+
+async function loadResidents(){
+  try {
+    const r = await fetch('/api/register?secret=' + CORRECT);
+    const d = await r.json();
+    const list = d.list || [];
+
+    document.getElementById('r-total').textContent = list.length;
+    const danjiSet = new Set(list.map(l => l.danji));
+    document.getElementById('r-danji').textContent = danjiSet.size;
+
+    if(list.length === 0){
+      document.getElementById('resident-list').innerHTML = '<span style="color:var(--gray-400)">아직 인증한 주민이 없어요</span>';
+      return;
+    }
+
+    // 최신순 정렬
+    const sorted = [...list].sort((a,b) => (b.ts||'').localeCompare(a.ts||''));
+    const html = sorted.map(l => {
+      const date = l.ts ? new Date(l.ts).toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : l.date || '';
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gray-200);">
+        <div>
+          <span style="font-weight:700;color:var(--gray-800);">${l.danji} ${l.dong}동 ${l.ho}호</span>
+          <span style="color:var(--gray-600);margin-left:8px;">${l.name}</span>
+        </div>
+        <span style="font-size:11px;color:var(--gray-400);white-space:nowrap;">${date}</span>
+      </div>`;
+    }).join('');
+    document.getElementById('resident-list').innerHTML = html;
+  } catch(e) {
+    document.getElementById('resident-list').innerHTML = '<span style="color:var(--red)">불러오기 실패</span>';
+  }
+}
 
 async function loadSurvey(){
   try {

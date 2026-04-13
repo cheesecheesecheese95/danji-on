@@ -2056,7 +2056,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             입주민 인증하기
           </button>
           <div style="text-align:center;font-size:11px;color:var(--gray-400);margin-top:12px;line-height:1.6;">
-            인증 후 단지 맞춤 정보를 더 정확하게 볼 수 있어요.<br>현재 버전은 별도 서버 저장 없이 기기에만 저장됩니다.
+            인증 후 단지 맞춤 정보를 더 정확하게 볼 수 있어요.<br>입력하신 정보는 운영자만 확인할 수 있어요.
           </div>
         </div>
 
@@ -3296,6 +3296,12 @@ function submitRegister(){
   window._savedResident = info;
   showRegistered(info);
   updateBadge(info);
+  // 서버에도 저장 (대시보드 조회용)
+  fetch('/api/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ danji: selectedDanji, dong, ho, name }),
+  }).catch(() => {});
 }
 
 function showRegistered(info){
