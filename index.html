@@ -481,6 +481,19 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div class="dash-loading">🌤️ 날씨 불러오는 중…</div>
         </div>
 
+        <!-- ── 설문 레이어 ── -->
+        <div id="survey-box" style="background:#fff;border-radius:16px;border:1px solid var(--gray-200);padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm);">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">💬 주민 의견 한 마디</div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:12px;line-height:1.5;">이 서비스가 단지 주민분들께 유용한가요?</div>
+          <div id="survey-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <button class="sv-btn" onclick="submitSurvey('very_needed')" style="background:var(--navy);color:#fff;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">매우<br>필요하다</button>
+            <button class="sv-btn" onclick="submitSurvey('needed')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">필요하다</button>
+            <button class="sv-btn" onclick="submitSurvey('unsure')" style="background:#FEF6E6;color:#92670C;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">아직<br>모르겠다</button>
+            <button class="sv-btn" onclick="submitSurvey('not_needed')" style="background:#FEF0EB;color:#9B2A1A;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">필요하지<br>않다</button>
+          </div>
+          <div id="survey-result" style="display:none;"></div>
+        </div>
+
         <!-- 핵심 퀵메뉴 — 2열 -->
         <div class="sec-label">메뉴</div>
         <div class="qgrid">
@@ -3255,6 +3268,70 @@ window.addEventListener('DOMContentLoaded', () => {
     if (banner) banner.style.display = 'none';
   }
 });
+
+// ── 설문 ──────────────────────────────────────────────────
+(function initSurvey(){
+  const box = document.getElementById('survey-box');
+  const btns = document.getElementById('survey-btns');
+  const result = document.getElementById('survey-result');
+  if (!box) return;
+
+  const LABELS = { very_needed:'매우 필요하다', needed:'필요하다', unsure:'아직 모르겠다', not_needed:'필요하지 않다' };
+  const ORDER = ['very_needed','needed','unsure','not_needed'];
+
+  function renderResult(d, myVote){
+    btns.style.display = 'none';
+    const total = d.total || 0;
+    const bars = ORDER.map(opt => {
+      const cnt = (d.counts && d.counts[opt]) || 0;
+      const pct = total > 0 ? Math.round(cnt/total*100) : 0;
+      const colors = { very_needed:'#1A3C6E', needed:'#2E7D52', unsure:'#B8860B', not_needed:'#C0392B' };
+      const mine = opt === myVote ? ' ✓' : '';
+      return `<div style="margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;">
+          <span style="font-weight:${opt===myVote?'700':'500'};color:var(--gray-800)">${LABELS[opt]}${mine}</span>
+          <span style="color:var(--gray-400)">${cnt}표 (${pct}%)</span>
+        </div>
+        <div style="background:var(--gray-200);border-radius:99px;height:8px;overflow:hidden;">
+          <div style="width:${pct}%;height:100%;background:${colors[opt]};border-radius:99px;transition:width 0.5s;"></div>
+        </div>
+      </div>`;
+    }).join('');
+    result.style.display = 'block';
+    result.innerHTML = `<div style="font-size:11px;color:var(--gray-400);margin-bottom:10px;">총 ${total}명 참여</div>${bars}`;
+  }
+
+  // 이미 투표한 경우 로딩 시 결과 표시
+  const prev = localStorage.getItem('survey-voted');
+  if(prev){
+    fetch('/api/survey').then(r=>r.json()).then(d => renderResult(d, prev)).catch(()=>{});
+    return;
+  }
+
+  window.submitSurvey = async function(opt){
+    const allBtns = btns.querySelectorAll('button');
+    allBtns.forEach(b => { b.disabled = true; b.style.opacity='0.5'; });
+    try {
+      const r = await fetch('/api/survey', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ option: opt })
+      });
+      const d = await r.json();
+      if(r.status === 409){
+        // 이미 투표 (다른 기기에서)
+        localStorage.setItem('survey-voted', d.prevVote || opt);
+        renderResult(d, d.prevVote || opt);
+        return;
+      }
+      localStorage.setItem('survey-voted', opt);
+      renderResult(d, opt);
+    } catch(e) {
+      allBtns.forEach(b => { b.disabled = false; b.style.opacity='1'; });
+      alert('잠시 후 다시 시도해주세요.');
+    }
+  };
+})();
 </script>
 
   <!-- iOS 설치 가이드 모달 -->
