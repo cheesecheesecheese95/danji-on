@@ -3377,7 +3377,6 @@ function updateBadge(info){
     document.getElementById('badge-default').style.display = 'none';
     document.getElementById('btn-installed').style.display = 'inline-block';
   } else if (isIOS) {
-    document.getElementById('badge-default').style.display = 'none';
     document.getElementById('btn-install-ios').style.display = 'inline-block';
     // 첫 방문 시 3초 후 자동으로 가이드 표시
     if (!localStorage.getItem('ios-guide-shown')) {
