@@ -216,7 +216,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 /* 민원 섹션 구분 */
 .sub-sec-label{font-size:12px;font-weight:700;color:var(--gray-400);margin:14px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--gray-200);}
 
-.back-btn{font-size:13px;color:var(--gray-400);background:none;border:none;cursor:pointer;margin-bottom:16px;}
+.back-btn{font-size:13px;font-weight:600;color:var(--navy);background:var(--gray-100);border:none;border-radius:20px;padding:7px 14px 7px 10px;cursor:pointer;margin-bottom:16px;display:inline-flex;align-items:center;gap:4px;font-family:inherit;}
+.back-btn:active{opacity:0.7;}
 /* 단지 소식 */
 .news-card{background:var(--white);border-radius:16px;border:1px solid var(--gray-200);padding:14px 16px;margin-bottom:8px;box-shadow:var(--shadow-sm);display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:transform 0.1s;}
 .news-card:active{transform:scale(0.98);}
@@ -1032,7 +1033,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- ═══ 서브: 주차·차량 ═══ -->
     <div class="page" id="page-parking">
       <div class="sec" style="padding-top:20px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">🚗 주차·차량</div>
         <div class="sec-sub">방문주차 · 등록 · 위반 · 요금 · 규정</div>
 
@@ -1185,7 +1186,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- ═══ 서브: 수리·하자 ═══ -->
     <div class="page" id="page-repair">
       <div class="sec" style="padding-top:20px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">🛠️ 수리·하자</div>
         <div class="sec-sub">증상별 대처법 + 동네 업체 연락처</div>
         <div class="notice" style="background:var(--amber-bg);border:1px solid #F5D08A;">
@@ -1366,7 +1367,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- ═══ 서브: 생활편의 ═══ -->
     <div class="page" id="page-living">
       <div class="sec" style="padding-top:20px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">🧺 생활편의</div>
         <div class="sec-sub">분리수거 · 택배 · 대형폐기물 · 공사신고</div>
 
@@ -1478,7 +1479,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- ═══ 서브: 민원·규정 ═══ -->
     <div class="page" id="page-complaint">
       <div class="sec" style="padding-top:20px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">📋 민원·규정</div>
         <div class="sec-sub">신고 절차 · 생활 규정</div>
 
@@ -1569,7 +1570,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- ═══ 서브: 단지 소식 ═══ -->
     <div class="page" id="page-news">
       <div class="sec" style="padding-top:20px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">📢 단지 소식</div>
         <div class="sec-sub">입주자대표회의 결정사항 요약 (2025.09~2026.03)</div>
 
@@ -1775,7 +1776,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- ═══ 응급의료 ═══ -->
     <div class="page" id="page-emergency">
       <div class="sec" style="padding-top:20px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">🏥 응급의료</div>
         <div class="sec-sub">응급실 · 야간약국 — 주소 및 네이버지도</div>
 
@@ -1923,7 +1924,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- ═══ 입주민 인증 ═══ -->
     <div class="page" id="page-register">
       <div class="sec" style="padding-top:20px;padding-bottom:20px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
 
         <!-- 헤더 -->
         <div style="text-align:center;margin-bottom:28px;">
@@ -1999,7 +2000,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- ═══ 실거래가 ═══ -->
     <div class="page" id="page-realestate">
       <div class="sec" style="padding-top:20px;padding-bottom:32px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">🏠 실거래가</div>
         <div class="sec-sub">DMC파크뷰자이 · 최근 6개월 매매 실거래</div>
         <div class="notice" style="background:var(--amber-bg);border:1px solid #F5CBA7;margin:10px 0;">
@@ -3437,7 +3438,7 @@ window.addEventListener('DOMContentLoaded', () => {
     <!-- ═══ 문화·행사 ═══ -->
     <div class="page" id="page-culture">
       <div class="sec" style="padding-top:20px;padding-bottom:32px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">🎪 문화·행사</div>
         <div class="sec-sub">서대문구 2026년 4월 · 주민 생활 정보</div>
 
@@ -3573,7 +3574,7 @@ window.addEventListener('DOMContentLoaded', () => {
     <!-- ═══ FAQ ═══ -->
     <div class="page" id="page-faq">
       <div class="sec" style="padding-top:20px;padding-bottom:32px;">
-        <button class="back-btn" onclick="goBack()">← 뒤로</button>
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">❓ 자주 찾는 질문</div>
         <div class="sec-sub">2024~2026년 실제 민원 734건 기반 · 20개 항목</div>
 
