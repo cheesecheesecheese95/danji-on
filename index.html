@@ -634,9 +634,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <button class="fee-tab active" onclick="goFeeTab(0,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--red);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">📸 내 고지서</button>
         <button class="fee-tab" onclick="goFeeTab(1,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">이번 달</button>
         <button class="fee-tab" onclick="goFeeTab(2,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">월별 추이</button>
-        <button class="fee-tab" onclick="goFeeTab(3,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">항목 분석</button>
-        <button class="fee-tab" onclick="goFeeTab(4,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">전년 비교</button>
-        <button class="fee-tab" onclick="goFeeTab(5,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">FAQ</button>
+        <button class="fee-tab" onclick="goFeeTab(3,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">전년 비교</button>
+        <button class="fee-tab" onclick="goFeeTab(4,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">FAQ</button>
       </div>
 
       <!-- 서브탭 1: 이번 달 -->
@@ -714,34 +713,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
       </div>
 
-      <!-- 서브탭 2: 항목 분석 -->
-      <div class="fee-page" id="fee3">
-        <div class="sec" style="padding-top:16px;">
-          <div class="card">
-            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">🔥 난방비+급탕비 추이</div>
-            <div style="font-size:11px;color:var(--gray-400);margin-bottom:12px;">겨울·여름 계절 요인이 가장 큰 변동 원인 (세대당, 만원)</div>
-            <div style="height:190px;position:relative;"><canvas id="feeHeating"></canvas></div>
-          </div>
-          <div class="card">
-            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">⚡ 전기료 추이</div>
-            <div style="font-size:11px;color:var(--gray-400);margin-bottom:12px;">여름(7~8월) 냉방으로 급증 (세대당, 만원)</div>
-            <div style="height:190px;position:relative;"><canvas id="feeElectric"></canvas></div>
-          </div>
-          <div class="card">
-            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">고정 항목 (매월 거의 변동 없음)</div>
-            <div class="irow"><div class="i-label">🏗️ 장기수선충당금</div><div class="i-val"><div class="i-main">19,675원</div><div class="i-note">14개월 전 기간 동일</div></div></div>
-            <div class="irow"><div class="i-label">🛗 승강기유지비</div><div class="i-val"><div class="i-main">2,865원</div><div class="i-note">2025.02 이후 고정</div></div></div>
-            <div class="irow"><div class="i-label">🛡️ 경비비</div><div class="i-val"><div class="i-main">37,802~40,178원</div><div class="i-note">±3% 이내</div></div></div>
-            <div class="irow"><div class="i-label">🧹 청소비</div><div class="i-val"><div class="i-main">24,710~26,980원</div><div class="i-note">±4% 이내</div></div></div>
-          </div>
-          <div class="notice" style="background:var(--red-bg);border:1px solid #F5B7B1;"><span class="n-icon">❄️</span><div><div class="n-text" style="color:var(--red);"><strong>겨울(12~2월)</strong> — 난방비 세대당 12~17만원. 전체의 30~40% 차지.</div></div></div>
-          <div class="notice" style="background:var(--blue-bg);border:1px solid #BBDEFB;"><span class="n-icon">☀️</span><div><div class="n-text" style="color:var(--blue);"><strong>여름(7~8월)</strong> — 냉방 전기료 세대당 11~15만원으로 연중 최고.</div></div></div>
-          <div class="notice" style="background:var(--green-bg);border:1px solid #A9D6BD;"><span class="n-icon">🌸</span><div><div class="n-text" style="color:var(--green);"><strong>봄·가을(4~5월, 10월)</strong> — 세대당 28~31만원. 연중 가장 저렴.</div></div></div>
-        </div>
-      </div>
-
       <!-- 서브탭 3: 전년 비교 -->
-      <div class="fee-page" id="fee4">
+      <div class="fee-page" id="fee3">
         <div class="sec" style="padding-top:16px;">
           <div class="card">
             <div style="font-size:14px;font-weight:700;margin-bottom:4px;">2025 vs 2026 비교 (1~2월)</div>
@@ -776,7 +749,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
 
       <!-- 서브탭 4: FAQ -->
-      <div class="fee-page" id="fee5">
+      <div class="fee-page" id="fee4">
         <div class="sec" style="padding-top:16px;">
           <div class="card">
             <div class="faq-item"><div class="faq-t" style="font-weight:700;">관리비가 왜 매달 달라요?</div></div>
