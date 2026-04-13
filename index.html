@@ -3459,11 +3459,8 @@ async function searchLibBooks() {
 }
 
 function renderLibBooks(books) {
-  const sorted = [...books].sort((a,b) =>
-    (parseInt(b.publication_year)||0) - (parseInt(a.publication_year)||0)
-  );
   const list = document.getElementById('lib-books-list');
-  list.innerHTML = sorted.map(b => {
+  list.innerHTML = books.map(b => {
     const authorName = (b.author || '').trim() || '—';
     return `
     <div class="card" style="display:flex;gap:16px;align-items:flex-start;margin-bottom:12px;cursor:pointer;padding:16px;"
