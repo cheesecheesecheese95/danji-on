@@ -2230,6 +2230,9 @@ function pushHistory(id){
   histStack.push(id);
   histPos=histStack.length-1;
   updateNavBtns();
+  // URL 해시 동기화 (홈은 # 없이)
+  const hash = id === 'home' ? ' ' : '#' + id;
+  history.pushState({ page: id }, '', id === 'home' ? location.pathname : '#' + id);
 }
 function updateNavBtns(){
   const back=document.getElementById('btn-back');
@@ -3192,8 +3195,22 @@ async function loadMeetings() {
   }
 }
 
+// 브라우저 뒤로/앞으로 버튼 → 앱 내 페이지 전환
+window.addEventListener('popstate', function(e){
+  const page = (e.state && e.state.page) || location.hash.replace('#','') || 'home';
+  showPage(page);
+  // 스택에서 해당 페이지 위치로 복원
+  const idx = histStack.lastIndexOf(page);
+  if(idx >= 0) histPos = idx;
+  updateNavBtns();
+});
+
 // 초기 히스토리 세팅
-pushHistory('home');
+const _initHash = location.hash.replace('#','');
+const _initPage = _initHash || 'home';
+showPage(_initPage);
+history.replaceState({ page: _initPage }, '', _initHash ? '#' + _initHash : location.pathname);
+pushHistory(_initPage);
 loadBiz();
 loadLocal();
 loadDashboard();
