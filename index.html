@@ -3462,20 +3462,23 @@ function renderLibBooks(books) {
     (parseInt(b.publication_year)||0) - (parseInt(a.publication_year)||0)
   );
   const list = document.getElementById('lib-books-list');
-  list.innerHTML = sorted.map(b => `
+  list.innerHTML = sorted.map(b => {
+    const authorName = (b.author || '').split(/[;,·\/\|]/)[0].replace(/\s*(지음|글|그림|저|역|옮김|편|엮음|감수|외).*$/,'').trim() || '—';
+    return `
     <div class="card" style="display:flex;gap:16px;align-items:flex-start;margin-bottom:12px;cursor:pointer;padding:16px;"
       onclick="checkLibAvailability('${b.isbn13}','${b.title.replace(/'/g,"\\'")}','${b.author.replace(/'/g,"\\'")}','${b.bookImageURL}')">
       ${b.bookImageURL
-        ? `<img src="${b.bookImageURL}" alt="" style="width:72px;height:100px;object-fit:cover;border-radius:8px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);">`
-        : '<div style="width:72px;height:100px;background:var(--gray-100);border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;">📖</div>'}
+        ? `<img src="${b.bookImageURL}" alt="" style="width:90px;height:126px;object-fit:cover;border-radius:8px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);">`
+        : '<div style="width:90px;height:126px;background:var(--gray-100);border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;">📖</div>'}
       <div style="min-width:0;flex:1;">
         <div style="font-size:16px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.45;">${b.title}</div>
-        <div style="font-size:13px;color:var(--gray-600);margin-bottom:4px;">저자 · ${b.author || '—'}</div>
+        <div style="font-size:13px;color:var(--gray-600);margin-bottom:4px;">저자 · ${authorName}</div>
         <div style="font-size:13px;color:var(--gray-600);margin-bottom:8px;">출판 · ${b.publisher || '—'}</div>
         ${b.publication_year ? `<span style="font-size:12px;font-weight:700;color:var(--navy);background:#EEF3FB;padding:2px 9px;border-radius:10px;">${b.publication_year}년</span>` : ''}
       </div>
       <div style="font-size:20px;flex-shrink:0;align-self:center;color:var(--gray-400);">›</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   libShow('lib-books');
 }
 
