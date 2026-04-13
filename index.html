@@ -3049,11 +3049,11 @@ async function loadDashboard(){
   const canDispose=isCollectionDay(dow,hr);
   const _nextDispose=(d,h)=>{
     if(d===0&&h<18) return '오늘 18시부터';
-    if(d===1&&h>=10) return '이번 주 수요일 18시부터';
+    if(d===1&&h>=10) return '수요일 18시부터';
     if(d===2) return '내일(수) 18시부터';
     if(d===3&&h<18) return '오늘 18시부터';
-    if(d===4&&h>=10) return '이번 주 일요일 18시부터';
-    if(d===5||d===6) return '이번 주 일요일 18시부터';
+    if(d===4&&h>=10) return '일요일 18시부터';
+    if(d===5||d===6) return '일요일 18시부터';
     return '일·수요일 18시';
   };
   const disposeDesc=canDispose?'지금 배출 가능':_nextDispose(dow,hr);
