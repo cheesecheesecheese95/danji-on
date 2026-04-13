@@ -1,5 +1,4 @@
 {
-  "analytics": { "disabled": false },
   "crons": [
     { "path": "/api/notices-sync", "schedule": "0 22 * * 0" },
     { "path": "/api/meeting-sync", "schedule": "0 22 * * 0" }
