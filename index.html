@@ -429,6 +429,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .re-floor{color:var(--gray-500);}
 .re-empty{text-align:center;padding:32px;color:var(--gray-400);font-size:13px;}
 </style>
+<!-- Vercel Analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 <div class="app">
@@ -3267,6 +3269,29 @@ window.addEventListener('DOMContentLoaded', () => {
   if (dismissed && Date.now() - Number(dismissed) < 7*24*60*60*1000) {
     const banner = document.getElementById('install-banner');
     if (banner) banner.style.display = 'none';
+  }
+});
+
+// ── 트래킹 ────────────────────────────────────────────────
+function track(event) {
+  fetch('/api/track', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ event }),
+  }).catch(() => {});
+}
+// 방문 카운트
+track('visit');
+
+// goPage / goTab 자동 트래킹 래핑 (함수 정의 완료 후 실행)
+document.addEventListener('DOMContentLoaded', function(){
+  const _goPage = window.goPage;
+  const _goTab  = window.goTab;
+  if(typeof _goPage === 'function'){
+    window.goPage = function(p){ track('page:' + p); return _goPage(p); };
+  }
+  if(typeof _goTab === 'function'){
+    window.goTab = function(t){ track('tab:' + t); return _goTab(t); };
   }
 });
 

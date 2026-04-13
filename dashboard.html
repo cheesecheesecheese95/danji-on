@@ -102,8 +102,28 @@
         <div class="bar-track"><div class="bar-fill c-not" id="bf-not" style="width:0%"></div></div>
       </div>
 
-      <button class="refresh-btn" onclick="loadSurvey()">↻ 새로고침</button>
+      <button class="refresh-btn" onclick="loadAll()">↻ 새로고침</button>
       <div class="updated" id="survey-updated"></div>
+    </div>
+
+    <!-- 방문·클릭 통계 -->
+    <div class="section">
+      <div class="section-title">👆 방문 · 메뉴 클릭</div>
+      <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:20px;">
+        <div class="stat"><div class="stat-num" id="t-visit">—</div><div class="stat-label">총 방문</div></div>
+        <div class="stat"><div class="stat-num" id="t-today">—</div><div class="stat-label">오늘 방문</div></div>
+      </div>
+      <div id="click-list" style="font-size:13px;color:var(--gray-600);">불러오는 중…</div>
+      <button class="refresh-btn" onclick="loadTrack()">↻ 새로고침</button>
+    </div>
+
+    <!-- Vercel Analytics 바로가기 -->
+    <div class="section" style="text-align:center;padding:16px;">
+      <div style="font-size:12px;color:var(--gray-400);margin-bottom:8px;">상세 방문자 분석 (디바이스·지역·경로)</div>
+      <a href="https://vercel.com/cheesecheesecheese95/danji-on/analytics" target="_blank"
+         style="display:inline-block;background:var(--navy);color:#fff;border-radius:12px;padding:10px 24px;font-size:13px;font-weight:700;text-decoration:none;">
+        Vercel Analytics 보기 →
+      </a>
     </div>
 
     <a class="home-link" href="/">← 홈으로</a>
@@ -114,24 +134,32 @@
 const PW_KEY = 'dash-auth';
 const CORRECT = 'parkview2024';
 
+const PAGE_LABELS = {
+  'visit':'홈 방문','tab:home':'홈','tab:fee':'관리비','tab:community':'커뮤니티',
+  'page:complaint':'민원·규정','page:living':'생활편의','page:parking':'주차·차량',
+  'page:repair':'수리·하자','page:news':'단지소식','page:emergency':'응급의료',
+  'page:register':'입주민인증','page:realestate':'실거래가','page:faq':'자주찾는질문',
+};
+
 function checkPw(){
   const v = document.getElementById('pw-input').value;
   if(v === CORRECT){
     sessionStorage.setItem(PW_KEY,'1');
     document.getElementById('gate').style.display='none';
     document.getElementById('dashboard').style.display='block';
-    loadSurvey();
+    loadAll();
   } else {
     document.getElementById('pw-err').textContent='비밀번호가 올바르지 않습니다.';
     document.getElementById('pw-input').value='';
   }
 }
 
-// 이미 인증된 경우
 if(sessionStorage.getItem(PW_KEY)==='1'){
   document.getElementById('gate').style.display='none';
   document.getElementById('dashboard').style.display='block';
 }
+
+function loadAll(){ loadSurvey(); loadTrack(); }
 
 async function loadSurvey(){
   try {
@@ -152,9 +180,7 @@ async function loadSurvey(){
     const now = new Date().toLocaleTimeString('ko-KR');
     document.getElementById('survey-updated').textContent = `마지막 업데이트: ${now}`;
     document.getElementById('last-updated').textContent = now;
-  } catch(e) {
-    console.error(e);
-  }
+  } catch(e) { console.error(e); }
 }
 
 function setBar(id, count, total){
@@ -163,7 +189,40 @@ function setBar(id, count, total){
   document.getElementById(`bf-${id}`).style.width = pct + '%';
 }
 
-if(sessionStorage.getItem(PW_KEY)==='1') loadSurvey();
+async function loadTrack(){
+  try {
+    const r = await fetch('/api/track-stats');
+    const d = await r.json();
+
+    document.getElementById('t-visit').textContent = (d.total['visit'] || 0).toLocaleString();
+    document.getElementById('t-today').textContent = (d.today['visit'] || 0).toLocaleString();
+
+    // 클릭 순위 (visit 제외, 상위 10개)
+    const entries = Object.entries(d.total)
+      .filter(([k]) => k !== 'visit')
+      .sort((a,b) => b[1]-a[1])
+      .slice(0, 10);
+
+    const max = entries[0]?.[1] || 1;
+    const html = entries.map(([k,v]) => {
+      const label = PAGE_LABELS[k] || k;
+      const pct = Math.round(v/max*100);
+      return `<div style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
+          <span style="font-weight:600;color:var(--gray-800)">${label}</span>
+          <span style="color:var(--gray-400)">${v.toLocaleString()}회</span>
+        </div>
+        <div style="background:var(--gray-200);border-radius:99px;height:7px;overflow:hidden;">
+          <div style="width:${pct}%;height:100%;background:var(--navy);border-radius:99px;"></div>
+        </div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('click-list').innerHTML = html || '<span style="color:var(--gray-400)">데이터 없음</span>';
+  } catch(e) { console.error(e); }
+}
+
+if(sessionStorage.getItem(PW_KEY)==='1') loadAll();
 </script>
 </body>
 </html>
