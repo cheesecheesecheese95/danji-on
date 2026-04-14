@@ -3012,7 +3012,31 @@ function renderMonthlyCards() {
       <div class="mc2-cta">등록 일정 전체 보기 →</div>
     </button>`,
 
-    // 카드 3: 이번 달 바뀐 것
+    // 카드 3: 지하 주차장 대청소
+    ...(()=>{
+      const start = new Date(2026,3,21), end = new Date(2026,4,27);
+      const today = new Date(y,m-1,d);
+      if(today > end) return [];
+      const dToStart = Math.ceil((start-today)/(1000*60*60*24));
+      let badge, phase;
+      if(today < start){ badge=['alert',`D-${dToStart}`]; phase=`4월 21일 시작 · 지금 단지별 일정 확인`; }
+      else { badge=['now','진행중']; phase=`~5월 27일까지 · 오늘도 09:00~15:30`; }
+      return [`<div class="mc2" style="cursor:default;">
+        <div class="mc2-head">
+          <span class="mc2-label">🚗 지하 주차장 대청소</span>
+          <span class="mc-badge ${badge[0]}">${badge[1]}</span>
+        </div>
+        <div class="mc2-main">차량 이동 필수</div>
+        <div class="mc2-items">
+          <div class="mc2-item"><span class="mc2-item-dot"></span>기간: 4월 21일(화) ~ 5월 27일(수) · 총 20일</div>
+          <div class="mc2-item"><span class="mc2-item-dot"></span>시간: 09:00 ~ 15:30</div>
+          <div class="mc2-item"><span class="mc2-item-dot"></span>순서: 1단지 → 2단지 → 3단지 → 4·5단지</div>
+          <div class="mc2-item"><span class="mc2-item-dot"></span>해당 일자에 차량을 반드시 다른 구역으로 이동해 주세요</div>
+        </div>
+      </div>`];
+    })(),
+
+    // 카드 4: 이번 달 바뀐 것
     `<button class="mc2" onclick="${m >= 5 ? "goTab('community')" : "goTab('community')"}">
       <div class="mc2-head">
         <span class="mc2-label">📋 이번 달 바뀐 것</span>
