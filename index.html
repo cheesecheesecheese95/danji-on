@@ -484,17 +484,18 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div class="dash-loading">🌤️ 날씨 불러오는 중…</div>
         </div>
 
-        <!-- ── 설문 레이어 ── -->
-        <div id="survey-box" style="background:#fff;border-radius:16px;border:1px solid var(--gray-200);padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm);">
-          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">💬 주민 의견 한 마디</div>
-          <div style="font-size:12px;color:var(--gray-600);margin-bottom:12px;line-height:1.5;">이 서비스가 단지 주민분들께 유용한가요?</div>
-          <div id="survey-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <button class="sv-btn" onclick="submitSurvey('very_needed')" style="background:var(--navy);color:#fff;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">매우<br>필요하다</button>
-            <button class="sv-btn" onclick="submitSurvey('needed')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">필요하다</button>
-            <button class="sv-btn" onclick="submitSurvey('unsure')" style="background:#FEF6E6;color:#92670C;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">아직<br>모르겠다</button>
-            <button class="sv-btn" onclick="submitSurvey('not_needed')" style="background:#FEF0EB;color:#9B2A1A;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">필요하지<br>않다</button>
+        <!-- 🚗 지하 주차장 대청소 공지 (4/21~5/27) -->
+        <div id="parking-clean-notice" style="background:#FFF8E1;border:1px solid #FFE082;border-radius:14px;padding:14px 16px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div style="font-size:13px;font-weight:800;color:#E65100;">🚗 지하 주차장 대청소</div>
+            <span style="background:#FFECB3;color:#E65100;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;" id="parking-clean-badge">진행 중</span>
           </div>
-          <div id="survey-result" style="display:none;"></div>
+          <div style="font-size:12px;color:#5D4037;line-height:1.8;">
+            <div>📅 기간: <strong>4월 21일(화) ~ 5월 27일(수)</strong> · 총 20일간</div>
+            <div>⏰ 시간: <strong>09:00 ~ 15:30</strong></div>
+            <div>🗺️ 순서: 1단지 → 2단지 → 3단지 → 4·5단지</div>
+            <div style="margin-top:6px;padding:8px 10px;background:#FFF3E0;border-radius:8px;font-weight:700;color:#BF360C;">⚠️ 해당 일자에 차량을 반드시 다른 구역으로 이동해 주세요</div>
+          </div>
         </div>
 
         <!-- 핵심 퀵메뉴 — 2열 -->
@@ -546,6 +547,19 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </button>
         </div>
 
+        <!-- ── 설문 레이어 ── -->
+        <div id="survey-box" style="background:#fff;border-radius:16px;border:1px solid var(--gray-200);padding:16px;margin-bottom:16px;margin-top:8px;box-shadow:var(--shadow-sm);">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">💬 주민 의견 한 마디</div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:12px;line-height:1.5;">이 서비스가 단지 주민분들께 유용한가요?</div>
+          <div id="survey-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <button class="sv-btn" onclick="submitSurvey('very_needed')" style="background:var(--navy);color:#fff;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">매우<br>필요하다</button>
+            <button class="sv-btn" onclick="submitSurvey('needed')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">필요하다</button>
+            <button class="sv-btn" onclick="submitSurvey('unsure')" style="background:#FEF6E6;color:#92670C;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">아직<br>모르겠다</button>
+            <button class="sv-btn" onclick="submitSurvey('not_needed')" style="background:#FEF0EB;color:#9B2A1A;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">필요하지<br>않다</button>
+          </div>
+          <div id="survey-result" style="display:none;"></div>
+        </div>
+
         <!-- 이번 달 챙길 것 -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:4px;">
           <div class="sec-label" style="margin-bottom:0;">이번 달 챙길 것</div>
@@ -566,12 +580,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <!-- 단지 최근 소식 -->
         <div class="sec-label" style="margin-top:4px;">단지 최근 소식</div>
-        <div class="news-card" onclick="goPageAnchor('news','news-6ki')">
-          <span class="news-badge" style="background:var(--blue-bg);color:var(--blue);">NEW</span>
+        <div class="news-card" onclick="goPage('news')">
+          <span class="news-badge" style="background:#FFF3E0;color:#E65100;">NEW</span>
           <div class="news-body">
-            <div class="news-title">제6기 입주자대표회의 출범</div>
-            <div class="news-desc">회장 배영준(109·111동) 선출. 제5기에서 제6기로 전환.</div>
-            <div class="news-date">2026.03.24</div>
+            <div class="news-title">제4기 제2차 입주자대표회의 소집 공고 (임시)</div>
+            <div class="news-desc">4월 14일(화) 오후 7시 · 1단지 커뮤니티센터 2층<br>안건: 전기차 충전기 선정, 전기용량 증설, 정보통신 공사업체 선정 등 7건</div>
+            <div class="news-date">2026.04.10 공고</div>
           </div>
         </div>
         <button class="news-more" onclick="goPage('news')">전체 소식 보기 →</button>
@@ -3031,31 +3045,7 @@ function renderMonthlyCards() {
       <div class="mc2-cta">등록 일정 전체 보기 →</div>
     </button>`,
 
-    // 카드 3: 지하 주차장 대청소
-    ...(()=>{
-      const start = new Date(2026,3,21), end = new Date(2026,4,27);
-      const today = new Date(y,m-1,d);
-      if(today > end) return [];
-      const dToStart = Math.ceil((start-today)/(1000*60*60*24));
-      let badge, phase;
-      if(today < start){ badge=['alert',`D-${dToStart}`]; phase=`4월 21일 시작 · 지금 단지별 일정 확인`; }
-      else { badge=['now','진행중']; phase=`~5월 27일까지 · 오늘도 09:00~15:30`; }
-      return [`<div class="mc2" style="cursor:default;">
-        <div class="mc2-head">
-          <span class="mc2-label">🚗 지하 주차장 대청소</span>
-          <span class="mc-badge ${badge[0]}">${badge[1]}</span>
-        </div>
-        <div class="mc2-main">차량 이동 필수</div>
-        <div class="mc2-items">
-          <div class="mc2-item"><span class="mc2-item-dot"></span>기간: 4월 21일(화) ~ 5월 27일(수) · 총 20일</div>
-          <div class="mc2-item"><span class="mc2-item-dot"></span>시간: 09:00 ~ 15:30</div>
-          <div class="mc2-item"><span class="mc2-item-dot"></span>순서: 1단지 → 2단지 → 3단지 → 4·5단지</div>
-          <div class="mc2-item"><span class="mc2-item-dot"></span>해당 일자에 차량을 반드시 다른 구역으로 이동해 주세요</div>
-        </div>
-      </div>`];
-    })(),
-
-    // 카드 4: 이번 달 바뀐 것
+    // 카드 3: 이번 달 바뀐 것
     `<button class="mc2" onclick="${m >= 5 ? "goTab('community')" : "goTab('community')"}">
       <div class="mc2-head">
         <span class="mc2-label">📋 이번 달 바뀐 것</span>
@@ -4071,6 +4061,20 @@ document.addEventListener('DOMContentLoaded', function(){
     window.goTab = function(t){ track('tab:' + t); return _goTab(t); };
   }
 });
+
+// ── 지하 주차장 대청소 공지 표시/숨김 ──────────────────────────
+(function(){
+  const el = document.getElementById('parking-clean-notice');
+  const badge = document.getElementById('parking-clean-badge');
+  if (!el) return;
+  const now = new Date();
+  const start = new Date(2026,3,21), end = new Date(2026,4,28);
+  if (now > end) { el.style.display='none'; return; }
+  if (now < start) {
+    const dLeft = Math.ceil((start-now)/(1000*60*60*24));
+    if (badge) badge.textContent = `D-${dLeft}`;
+  }
+})();
 
 // ── 설문 ──────────────────────────────────────────────────
 (function initSurvey(){
