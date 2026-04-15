@@ -484,19 +484,83 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div class="dash-loading">🌤️ 날씨 불러오는 중…</div>
         </div>
 
-        <!-- 🚗 지하 주차장 대청소 공지 (4/21~5/27) -->
-        <div id="parking-clean-notice" style="background:#FFF8E1;border:1px solid #FFE082;border-radius:14px;padding:14px 16px;margin-bottom:12px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <div style="font-size:13px;font-weight:800;color:#E65100;">🚗 지하 주차장 대청소</div>
-            <span style="background:#FFECB3;color:#E65100;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;" id="parking-clean-badge">진행 중</span>
+        <!-- 🚗 지하 주차장 대청소 공지 (4/21~5/27) - 개선버전 -->
+        <div id="parking-clean-notice" style="background:#fff;border-radius:18px;overflow:hidden;border:1.5px solid #FFB74D;margin-bottom:16px;box-shadow:0 4px 20px rgba(230,81,0,0.13);">
+          <!-- 헤더 배너 -->
+          <div style="background:linear-gradient(135deg,#BF360C 0%,#E65100 50%,#FF8F00 100%);padding:15px 16px 13px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+              <div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:700;letter-spacing:0.08em;margin-bottom:4px;">DMC파크뷰자이아파트 관리사무소</div>
+                <div style="font-size:17px;font-weight:900;color:#fff;letter-spacing:-0.02em;">🚗 지하 주차장 대청소</div>
+              </div>
+              <span id="parking-clean-badge" style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.35);color:#fff;font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;flex-shrink:0;margin-top:2px;">확인 중</span>
+            </div>
+            <!-- 진행 기간 바 -->
+            <div style="margin-top:12px;">
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.65);margin-bottom:5px;">
+                <span>4월 21일(화) 시작</span>
+                <span id="parking-progress-txt"></span>
+                <span>5월 27일(화) 종료</span>
+              </div>
+              <div style="background:rgba(255,255,255,0.2);border-radius:6px;height:7px;overflow:hidden;">
+                <div id="parking-progress-bar" style="background:#fff;height:100%;border-radius:6px;width:0%;transition:width 0.6s ease;"></div>
+              </div>
+            </div>
           </div>
-          <div style="font-size:12px;color:#5D4037;line-height:1.8;">
-            <div>📅 기간: <strong>4월 21일(화) ~ 5월 27일(수)</strong> · 총 20일간</div>
-            <div>⏰ 시간: <strong>09:00 ~ 15:30</strong></div>
-            <div>🗺️ 순서: 1단지 → 2단지 → 3단지 → 4·5단지</div>
-            <div style="margin-top:6px;padding:8px 10px;background:#FFF3E0;border-radius:8px;font-weight:700;color:#BF360C;">⚠️ 해당 일자에 차량을 반드시 다른 구역으로 이동해 주세요</div>
+
+          <!-- 오늘 청소 구역 (JS로 동적 표시) -->
+          <div id="today-parking-zone" style="display:none;padding:11px 16px;background:#FFF8E1;border-bottom:1px solid #FFE082;">
+            <div style="font-size:10px;font-weight:700;color:#F57F17;letter-spacing:0.05em;margin-bottom:4px;">📍 오늘 청소 구역</div>
+            <div id="today-zone-text" style="font-size:13px;font-weight:800;color:#BF360C;line-height:1.5;"></div>
           </div>
-          <button onclick="goPageAnchor('news','news-parking-clean')" style="margin-top:10px;width:100%;background:#fff;border:1px solid #FFE082;border-radius:10px;padding:9px;font-size:12px;font-weight:700;color:#E65100;cursor:pointer;font-family:inherit;">일정 자세히 보기 →</button>
+
+          <!-- 핵심 정보 그리드 -->
+          <div style="padding:14px 16px 0;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+              <div style="background:#FFF8E1;border-radius:12px;padding:11px 13px;">
+                <div style="font-size:10px;color:#F57F17;font-weight:700;margin-bottom:4px;">📅 기간</div>
+                <div style="font-size:13px;font-weight:800;color:#3E2723;line-height:1.4;">4/21 ~ 5/27</div>
+                <div style="font-size:11px;color:#8D6E63;margin-top:2px;">총 20일간</div>
+              </div>
+              <div style="background:#FFF8E1;border-radius:12px;padding:11px 13px;">
+                <div style="font-size:10px;color:#F57F17;font-weight:700;margin-bottom:4px;">⏰ 작업 시간</div>
+                <div style="font-size:13px;font-weight:800;color:#3E2723;line-height:1.4;">09:00 ~ 15:30</div>
+                <div style="font-size:11px;color:#8D6E63;margin-top:2px;">주중 + 토요일</div>
+              </div>
+            </div>
+
+            <!-- 단지 순서 -->
+            <div style="background:#FEF6E6;border-radius:12px;padding:11px 13px;margin-bottom:12px;">
+              <div style="font-size:10px;color:#A0620A;font-weight:700;margin-bottom:6px;">🗺️ 청소 순서</div>
+              <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
+                <span style="background:#fff;border:1px solid #FFD54F;border-radius:8px;padding:4px 9px;font-size:12px;font-weight:700;color:#E65100;">1단지</span>
+                <span style="color:#BDBDBD;font-size:12px;">→</span>
+                <span style="background:#fff;border:1px solid #FFD54F;border-radius:8px;padding:4px 9px;font-size:12px;font-weight:700;color:#E65100;">3단지</span>
+                <span style="color:#BDBDBD;font-size:12px;">→</span>
+                <span style="background:#fff;border:1px solid #FFD54F;border-radius:8px;padding:4px 9px;font-size:12px;font-weight:700;color:#E65100;">4단지</span>
+                <span style="color:#BDBDBD;font-size:12px;">→</span>
+                <span style="background:#fff;border:1px solid #FFD54F;border-radius:8px;padding:4px 9px;font-size:12px;font-weight:700;color:#E65100;">5단지</span>
+                <span style="color:#BDBDBD;font-size:12px;">→</span>
+                <span style="background:#fff;border:1px solid #FFD54F;border-radius:8px;padding:4px 9px;font-size:12px;font-weight:700;color:#E65100;">2·6단지</span>
+              </div>
+            </div>
+
+            <!-- 경고 -->
+            <div style="background:#FFF3E0;border:1.5px solid #FFCCBC;border-radius:12px;padding:11px 13px;margin-bottom:12px;display:flex;gap:9px;align-items:flex-start;">
+              <span style="font-size:18px;flex-shrink:0;line-height:1.2;">⚠️</span>
+              <div>
+                <div style="font-size:13px;font-weight:800;color:#BF360C;line-height:1.4;">해당 일자에 차량을 반드시<br>다른 구역으로 이동해 주세요</div>
+                <div style="font-size:11px;color:#A1887F;margin-top:3px;">미이동 시 작업에 지장이 생길 수 있습니다</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 상세 일정 버튼 -->
+          <div style="padding:0 16px 14px;">
+            <button onclick="goPageAnchor('news','news-parking-clean')" style="width:100%;background:linear-gradient(135deg,#E65100,#FF8F00);border:none;border-radius:13px;padding:13px;font-size:13px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;letter-spacing:0.01em;box-shadow:0 3px 10px rgba(230,81,0,0.3);">
+              📋 단지별 상세 일정 보기 →
+            </button>
+          </div>
         </div>
 
         <!-- 핵심 퀵메뉴 — 2열 -->
@@ -545,6 +609,10 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <button class="qbtn" onclick="goPage('library')">
             <span class="q-icon">📚</span>
             <span class="q-texts"><span class="q-label">도서관 책 찾기</span><span class="q-sub">근처 대출가능 도서 찾기</span></span>
+          </button>
+          <button class="qbtn" onclick="goPage('law')">
+            <span class="q-icon">⚖️</span>
+            <span class="q-texts"><span class="q-label">AI 법률상담</span><span class="q-sub">무료·24시간·전문 변호사</span></span>
           </button>
         </div>
 
@@ -1673,6 +1741,141 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     </div>
 
     <!-- ═══ 서브: 단지 소식 ═══ -->
+    <!-- ═══ AI 법률상담 ═══ -->
+    <div class="page" id="page-law">
+      <div class="sec" style="padding-top:20px;">
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
+
+        <!-- 헤더 배너 -->
+        <div style="background:linear-gradient(135deg,#1A237E 0%,#283593 60%,#3949AB 100%);border-radius:18px;padding:20px 18px 18px;margin-bottom:16px;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);font-weight:700;letter-spacing:0.08em;margin-bottom:6px;">DMC파크뷰자이 입주민 전용</div>
+          <div style="font-size:22px;font-weight:900;color:#fff;line-height:1.3;letter-spacing:-0.02em;margin-bottom:4px;">우리 아파트에<br>변호사가 생겼습니다</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.6;margin-top:8px;">AI 기반 전문 법률상담 서비스를<br>입주민 전원 무료로 이용하실 수 있습니다</div>
+          <!-- 뱃지 -->
+          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;">
+            <span style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;">🆓 무료</span>
+            <span style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;">🕐 24시간</span>
+            <span style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;">👨‍⚖️ 전문 변호사</span>
+            <span style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;">📱 앱 연동</span>
+          </div>
+        </div>
+
+        <!-- 특징 4가지 -->
+        <div class="sec-label">서비스 특징</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+          <div style="background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px;box-shadow:var(--shadow-sm);">
+            <div style="font-size:24px;margin-bottom:8px;">🆓</div>
+            <div style="font-size:13px;font-weight:800;color:var(--gray-800);margin-bottom:3px;">완전 무료</div>
+            <div style="font-size:12px;color:var(--gray-400);line-height:1.5;">입주민이라면<br>누구나 무료 이용</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px;box-shadow:var(--shadow-sm);">
+            <div style="font-size:24px;margin-bottom:8px;">🕐</div>
+            <div style="font-size:13px;font-weight:800;color:var(--gray-800);margin-bottom:3px;">24시간 운영</div>
+            <div style="font-size:12px;color:var(--gray-400);line-height:1.5;">야간·공휴일도<br>언제든지 이용</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px;box-shadow:var(--shadow-sm);">
+            <div style="font-size:24px;margin-bottom:8px;">👨‍⚖️</div>
+            <div style="font-size:13px;font-weight:800;color:var(--gray-800);margin-bottom:3px;">전문 변호사 AI</div>
+            <div style="font-size:12px;color:var(--gray-400);line-height:1.5;">복잡한 법률 문제도<br>전문성 있게 답변</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px;box-shadow:var(--shadow-sm);">
+            <div style="font-size:24px;margin-bottom:8px;">⚡</div>
+            <div style="font-size:13px;font-weight:800;color:var(--gray-800);margin-bottom:3px;">즉시 답변</div>
+            <div style="font-size:12px;color:var(--gray-400);line-height:1.5;">대기 없이<br>바로 상담 가능</div>
+          </div>
+        </div>
+
+        <!-- 상담 분야 -->
+        <div class="sec-label">상담 가능 분야</div>
+        <div class="card" style="margin-bottom:16px;">
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100);">
+              <span style="font-size:20px;width:28px;text-align:center;flex-shrink:0;">🔊</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">층간소음 · 생활소음</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">신고 절차, 손해배상, 분쟁 조정</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100);">
+              <span style="font-size:20px;width:28px;text-align:center;flex-shrink:0;">🔧</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">하자 · 수리 분쟁</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">하자 담보책임, 보수 청구, 손해배상</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100);">
+              <span style="font-size:20px;width:28px;text-align:center;flex-shrink:0;">📄</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">임대차 · 계약 분쟁</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">전세사기, 보증금 반환, 계약 해지</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100);">
+              <span style="font-size:20px;width:28px;text-align:center;flex-shrink:0;">💰</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">관리비 분쟁</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">관리비 이의제기, 부당 청구 대응</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100);">
+              <span style="font-size:20px;width:28px;text-align:center;flex-shrink:0;">🚗</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">주차 · 차량 사고</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">단지 내 접촉사고, 주차 분쟁 해결</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 0;">
+              <span style="font-size:20px;width:28px;text-align:center;flex-shrink:0;">⚖️</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">기타 법률 문제</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">일상생활 속 법률 궁금증 전반</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 이용 방법 -->
+        <div class="sec-label">이용 방법</div>
+        <div class="card" style="margin-bottom:16px;">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;align-items:flex-start;gap:14px;">
+              <span style="width:28px;height:28px;background:#1A237E;color:#fff;border-radius:50%;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">homelawyer.kr 접속</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:3px;line-height:1.5;">아래 바로가기 버튼을 눌러 사이트에 접속하세요</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px;">
+              <span style="width:28px;height:28px;background:#1A237E;color:#fff;border-radius:50%;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">DMC파크뷰자이 단지 선택</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:3px;">우리 단지를 선택해 입주민 인증을 완료하세요</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px;">
+              <span style="width:28px;height:28px;background:#1A237E;color:#fff;border-radius:50%;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">상담 내용 입력</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:3px;">상황을 자세히 입력할수록 더 정확한 답변을 받을 수 있어요</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px;">
+              <span style="width:28px;height:28px;background:#1A237E;color:#fff;border-radius:50%;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--gray-800);">AI 전문 법률 답변 확인</div>
+                <div style="font-size:12px;color:var(--gray-400);margin-top:3px;">즉시 전문적인 법률 답변을 확인하세요</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 접속 버튼 -->
+        <a href="https://www.homelawyer.kr/" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:linear-gradient(135deg,#1A237E,#3949AB);border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;box-shadow:0 3px 12px rgba(26,35,126,0.3);text-decoration:none;box-sizing:border-box;margin-bottom:16px;">
+          ⚖️ AI 법률상담 바로가기
+        </a>
+      </div>
+    </div>
+
     <div class="page" id="page-news">
       <div class="sec" style="padding-top:20px;">
         <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
@@ -1688,56 +1891,190 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="card" style="padding:12px 16px;">
 
           <!-- 지하 주차장 대청소 일정 -->
-          <div id="news-parking-clean" class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
-            <span class="news-badge" style="background:#FFF8E1;color:#F57F17;">공지</span>
-            <div class="news-body">
-              <div class="news-title">지하 주차장 대청소 일정 안내</div>
-              <div class="news-desc">
-                📅 기간: <strong>2026년 4월 21일(화) ~ 5월 27일(수) · 총 20일간</strong><br>
-                ⏰ 시간: 09:00 ~ 15:30<br>
-                ⚠️ 해당 일자에 차량을 반드시 다른 구역으로 이동해 주세요.
-              </div>
-              <div style="margin-top:10px;overflow-x:auto;">
-                <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
-                  <thead>
-                    <tr style="background:#FFF3E0;">
-                      <th style="padding:6px 8px;text-align:center;color:#E65100;font-weight:700;border-bottom:2px solid #FFE082;white-space:nowrap;">순번</th>
-                      <th style="padding:6px 8px;text-align:center;color:#E65100;font-weight:700;border-bottom:2px solid #FFE082;white-space:nowrap;">날짜</th>
-                      <th style="padding:6px 8px;text-align:left;color:#E65100;font-weight:700;border-bottom:2px solid #FFE082;">청소 구역</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr style="background:#FFFDE7;"><td colspan="3" style="padding:5px 8px;font-size:11px;font-weight:700;color:#F57F17;">🏢 1단지</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">1</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">4/21 (화)</td><td style="padding:5px 8px;">B1층 · 101·102·103동</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">2</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">4/22 (수)</td><td style="padding:5px 8px;">B1층 · 104·105·106·107동</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">3</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">4/23 (목)</td><td style="padding:5px 8px;">B2층 · 전체</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">4</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">4/24 (금)</td><td style="padding:5px 8px;">B3층 · 전체</td></tr>
-                    <tr style="background:#FFFDE7;"><td colspan="3" style="padding:5px 8px;font-size:11px;font-weight:700;color:#F57F17;">🏢 2단지</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">5</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">4/28 (화)</td><td style="padding:5px 8px;">B1층 · 201·202·203·204동</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">6</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">4/29 (수)</td><td style="padding:5px 8px;">B1층 · 205·206·207·208동</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">7</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">4/30 (목)</td><td style="padding:5px 8px;">B2층 · 전체</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">8</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/4 (월)</td><td style="padding:5px 8px;">B3층 · 전체</td></tr>
-                    <tr style="background:#FFFDE7;"><td colspan="3" style="padding:5px 8px;font-size:11px;font-weight:700;color:#F57F17;">🏢 3단지</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">9</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/6 (수)</td><td style="padding:5px 8px;">B1층 · 211·212·213·214동</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">10</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/7 (목)</td><td style="padding:5px 8px;">B1층 · 301·302·303동</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">11</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/8 (금)</td><td style="padding:5px 8px;">B2층 · 301·302·303동</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">12</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/11 (월)</td><td style="padding:5px 8px;">B2층 · 304·305동</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">13</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/12 (화)</td><td style="padding:5px 8px;">B3층 · 301·302·303·304·305동</td></tr>
-                    <tr style="background:#FFFDE7;"><td colspan="3" style="padding:5px 8px;font-size:11px;font-weight:700;color:#F57F17;">🏢 4단지</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">14</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/13 (수)</td><td style="padding:5px 8px;">B1층 · 401·402·403·404동</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">15</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/14 (목)</td><td style="padding:5px 8px;">B1층 · 405·406·407·408동</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">16</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/15 (금)</td><td style="padding:5px 8px;">B2층 · 전체</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">17</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/19 (화)</td><td style="padding:5px 8px;">B3층 · 전체</td></tr>
-                    <tr style="background:#FFFDE7;"><td colspan="3" style="padding:5px 8px;font-size:11px;font-weight:700;color:#F57F17;">🏢 5단지</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">18</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/20 (수)</td><td style="padding:5px 8px;">B1층 · 501·502·503동</td></tr>
-                    <tr><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">19</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/21 (목)</td><td style="padding:5px 8px;">B2층 · 전체</td></tr>
-                    <tr style="background:#FAFAFA;"><td style="padding:5px 8px;text-align:center;color:var(--gray-600);">20</td><td style="padding:5px 8px;text-align:center;white-space:nowrap;font-weight:600;">5/27 (수)</td><td style="padding:5px 8px;">B3층 · 전체</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div style="margin-top:8px;font-size:11px;color:var(--gray-400);">※ 공휴일(근로자의날 5/1, 어린이날 5/5 등) 제외 · 정확한 동별 구역은 관리사무소 공고문 확인</div>
+          <div id="news-parking-clean" style="padding:14px 0 4px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <span style="background:#FFF8E1;color:#E65100;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid #FFE082;">공지</span>
+              <div style="font-size:15px;font-weight:800;color:var(--gray-800);">지하 주차장 대청소 일정 안내</div>
             </div>
-            <div class="news-date" style="margin-top:6px;">2026.04.10 공고 · DMC파크뷰자이아파트 관리사무소</div>
+
+            <!-- 요약 정보 칩 -->
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+              <span style="background:#FFF3E0;color:#E65100;font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;">📅 4/21(화) ~ 5/27(화)</span>
+              <span style="background:#FFF3E0;color:#E65100;font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;">⏰ 09:00 ~ 15:30</span>
+              <span style="background:#FFF3E0;color:#E65100;font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;">📋 총 20일</span>
+            </div>
+
+            <!-- 경고 -->
+            <div style="background:#FFF3E0;border-left:3px solid #E65100;border-radius:0 8px 8px 0;padding:9px 12px;margin-bottom:14px;font-size:12px;font-weight:700;color:#BF360C;line-height:1.5;">
+              ⚠️ 해당 일자에 차량을 반드시 다른 구역으로 이동해 주세요
+            </div>
+
+            <!-- 단지별 일정 카드 -->
+            <!-- 1단지 -->
+            <div style="margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                <span style="background:#E65100;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;">1단지</span>
+                <span style="font-size:11px;color:var(--gray-400);">4월 21일 ~ 22일</span>
+              </div>
+              <div style="background:#FAFAFA;border-radius:12px;overflow:hidden;border:1px solid var(--gray-200);">
+                <div style="display:grid;grid-template-columns:80px 1fr;border-bottom:1px solid var(--gray-200);">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">4/21 화</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 1</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B1층 전체</div>
+                    <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">218~103호, 106S~114호</div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:80px 1fr;">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">4/22 수</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 2</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B2층 전체</div>
+                    <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">1018~103호, 1065~114호</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3단지 -->
+            <div style="margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                <span style="background:#E65100;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;">3단지</span>
+                <span style="font-size:11px;color:var(--gray-400);">4월 23일 ~ 25일</span>
+              </div>
+              <div style="background:#FAFAFA;border-radius:12px;overflow:hidden;border:1px solid var(--gray-200);">
+                <div style="display:grid;grid-template-columns:80px 1fr;border-bottom:1px solid var(--gray-200);">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">4/23 목</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 3</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B1층 전체</div>
+                    <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">301~305호 구역</div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:80px 1fr;border-bottom:1px solid var(--gray-200);">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">4/24 금</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 4</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B1층 301~305호</div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:80px 1fr;">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">4/25 토</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 5</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B2층 301~305호</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4단지 -->
+            <div style="margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                <span style="background:#E65100;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;">4단지</span>
+                <span style="font-size:11px;color:var(--gray-400);">4월 28일 ~ 29일</span>
+              </div>
+              <div style="background:#FAFAFA;border-radius:12px;overflow:hidden;border:1px solid var(--gray-200);">
+                <div style="display:grid;grid-template-columns:80px 1fr;border-bottom:1px solid var(--gray-200);">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">4/28 월</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 6</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B1층 전체</div>
+                    <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">401~408호, 1084~1103호, 1134~1178호</div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:80px 1fr;">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">4/29 화</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 7</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B2층 전체</div>
+                    <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">401~408호, 1084~1103호, 1134~1178호</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5단지 -->
+            <div style="margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                <span style="background:#E65100;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;">5단지</span>
+                <span style="font-size:11px;color:var(--gray-400);">4월 30일 ~ 5월 1일</span>
+              </div>
+              <div style="background:#FAFAFA;border-radius:12px;overflow:hidden;border:1px solid var(--gray-200);">
+                <div style="display:grid;grid-template-columns:80px 1fr;border-bottom:1px solid var(--gray-200);">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">4/30 수</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 8</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B1층 전체</div>
+                    <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">501~508호</div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:80px 1fr;">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">5/01 목</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 9</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B2층 전체</div>
+                    <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">501~508호</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2단지 -->
+            <div style="margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                <span style="background:#E65100;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;">2단지</span>
+                <span style="font-size:11px;color:var(--gray-400);">5월 2일 ~ 이후</span>
+              </div>
+              <div style="background:#FAFAFA;border-radius:12px;overflow:hidden;border:1px solid var(--gray-200);">
+                <div style="display:grid;grid-template-columns:80px 1fr;border-bottom:1px solid var(--gray-200);">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">5/02 금</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 10~</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">B1층 전체</div>
+                    <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">201~206호, 211호</div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:80px 1fr;">
+                  <div style="padding:9px 12px;background:#FFF8E1;border-right:1px solid var(--gray-200);">
+                    <div style="font-size:12px;font-weight:800;color:#E65100;">5/06~</div>
+                    <div style="font-size:10px;color:#8D6E63;margin-top:1px;">순번 11~20</div>
+                  </div>
+                  <div style="padding:9px 12px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--gray-800);">2·6단지 잔여 구역</div>
+                    <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">5/27(화)까지 순차 진행</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:var(--gray-100);border-radius:10px;padding:10px 12px;margin-top:4px;margin-bottom:8px;">
+              <div style="font-size:11px;color:var(--gray-600);line-height:1.7;">
+                ※ 공휴일(근로자의날 5/1·어린이날 5/5) 해당 구역 일정은 조정될 수 있음<br>
+                ※ 정확한 구역 및 주차 번호는 단지 내 게시 공고문 확인
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--gray-400);padding-bottom:10px;">2026.04.14 공고 · DMC파크뷰자이아파트 관리사무소</div>
           </div>
 
           <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
@@ -4117,17 +4454,60 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 });
 
-// ── 지하 주차장 대청소 공지 표시/숨김 ──────────────────────────
+// ── 지하 주차장 대청소 공지 ──────────────────────────
 (function(){
   const el = document.getElementById('parking-clean-notice');
   const badge = document.getElementById('parking-clean-badge');
+  const bar = document.getElementById('parking-progress-bar');
+  const barTxt = document.getElementById('parking-progress-txt');
+  const todayZone = document.getElementById('today-parking-zone');
+  const todayTxt = document.getElementById('today-zone-text');
   if (!el) return;
+
   const now = new Date();
-  const start = new Date(2026,3,21), end = new Date(2026,4,28);
-  if (now > end) { el.style.display='none'; return; }
-  if (now < start) {
-    const dLeft = Math.ceil((start-now)/(1000*60*60*24));
-    if (badge) badge.textContent = `D-${dLeft}`;
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const start = new Date(2026,3,21); // 4/21
+  const end   = new Date(2026,4,27); // 5/27
+
+  // 기간 지난 경우 숨김
+  if (today > end) { el.style.display='none'; return; }
+
+  // 진행률 바
+  if (bar && barTxt) {
+    if (today < start) {
+      const dLeft = Math.ceil((start-today)/(1000*60*60*24));
+      if (badge) badge.textContent = `D-${dLeft}`;
+      barTxt.textContent = `시작까지 ${dLeft}일`;
+      bar.style.width = '0%';
+    } else {
+      const total = end - start;
+      const elapsed = today - start;
+      const pct = Math.min(100, Math.round(elapsed/total*100));
+      if (badge) badge.textContent = '진행 중';
+      barTxt.textContent = `${pct}% 진행`;
+      bar.style.width = pct + '%';
+    }
+  }
+
+  // 오늘 청소 구역 매핑 (날짜→구역)
+  const schedule = {
+    '2026-04-21': '1단지 B1층 (218~103호, 106S~114호)',
+    '2026-04-22': '1단지 B2층 (1018~103호, 1065~114호)',
+    '2026-04-23': '3단지 B1층 전체',
+    '2026-04-24': '3단지 B1층 301~305호',
+    '2026-04-25': '3단지 B2층 301~305호',
+    '2026-04-28': '4단지 B1층 (401~408호, 1084~1103호, 1134~1178호)',
+    '2026-04-29': '4단지 B2층 (401~408호, 1084~1103호, 1134~1178호)',
+    '2026-04-30': '5단지 B1층 (501~508호)',
+    '2026-05-01': '5단지 B2층 (501~508호)',
+    '2026-05-02': '2단지 B1층 (201~206호, 211호)',
+    '2026-05-06': '2·6단지 잔여 구역 (순번 11~)',
+  };
+  const todayKey = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  const zone = schedule[todayKey];
+  if (zone && todayZone && todayTxt) {
+    todayZone.style.display = 'block';
+    todayTxt.textContent = zone;
   }
 })();
 
