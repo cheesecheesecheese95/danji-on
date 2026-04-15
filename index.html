@@ -434,6 +434,10 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .re-date{color:var(--gray-400);font-size:11px;}
 .re-floor{color:var(--gray-500);}
 .re-empty{text-align:center;padding:32px;color:var(--gray-400);font-size:13px;}
+.re-chart-wrap{background:#fff;border-radius:16px;padding:14px 14px 6px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.re-chart-label{font-size:11px;font-weight:700;color:var(--gray-400);margin-bottom:6px;}
+.re-record{display:inline-block;font-size:9px;font-weight:800;background:#FF3B30;color:#fff;border-radius:4px;padding:1px 5px;margin-right:3px;vertical-align:middle;line-height:1.6;}
+.re-loading-notice{display:flex;align-items:flex-start;gap:9px;background:#EEF4FF;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#1B3A6B;line-height:1.5;}
 </style>
 <!-- Vercel Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
@@ -2535,6 +2539,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="sec-title">🏠 실거래가</div>
         <div class="sec-sub">DMC파크뷰자이 · 최근 6개월</div>
 
+        <!-- 로딩 공지 -->
+        <div class="re-loading-notice">
+          <span style="font-size:15px;flex-shrink:0;">ℹ️</span>
+          <span>처음 접속 시 데이터를 불러오는 데 수 초가 걸릴 수 있습니다. 잠시 기다려 주세요.</span>
+        </div>
+
         <!-- 매매 / 전세 / 월세 탭 -->
         <div class="re-type-tabs">
           <button class="re-type-tab active" id="re-tab-trade"   onclick="switchREType('trade')">매매</button>
@@ -2559,6 +2569,12 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="re-sum-val" id="re-count">—</div>
             <div class="re-sum-sub">최근 6개월</div>
           </div>
+        </div>
+
+        <!-- 월별 가격 추이 차트 -->
+        <div class="re-chart-wrap" id="re-chart-wrap" style="display:none;">
+          <div class="re-chart-label" id="re-chart-label">월별 평균가 추이</div>
+          <div id="re-chart"></div>
         </div>
 
         <!-- 업데이트 시각 + 출처 -->
@@ -3289,8 +3305,81 @@ function applyREData({ items }) {
     : _reType === 'jeonse'  ? items.filter(i => i.type === 'jeonse')
     : items.filter(i => i.type === 'monthly');
   buildREFilters(_reAllItems);
+  renderREChart(_reAllItems);
   renderRETable(_reAllItems);
   updateRESummary(_reAllItems);
+}
+
+function renderREChart(items) {
+  const wrap = document.getElementById('re-chart-wrap');
+  const el   = document.getElementById('re-chart');
+  const lbl  = document.getElementById('re-chart-label');
+  if (!wrap || !el) return;
+  if (!items.length) { wrap.style.display = 'none'; return; }
+
+  // 월별 집계
+  const byMonth = {};
+  items.forEach(i => {
+    const ym = `${i.dealYear}-${String(i.dealMonth).padStart(2,'0')}`;
+    if (!byMonth[ym]) byMonth[ym] = [];
+    byMonth[ym].push(i);
+  });
+  const months = Object.keys(byMonth).sort();
+  if (months.length < 2) { wrap.style.display = 'none'; return; }
+
+  // 월 평균가 계산
+  const avgs = months.map(ym => {
+    const arr = byMonth[ym];
+    if (_reType === 'trade') {
+      const ps = arr.map(i => parseInt((i.dealAmount||'0').replace(/,/g,'')));
+      return Math.round(ps.reduce((a,b)=>a+b,0)/ps.length);
+    } else {
+      const ps = arr.map(i => parseInt((i.deposit||'0').replace(/,/g,'')));
+      return Math.round(ps.reduce((a,b)=>a+b,0)/ps.length);
+    }
+  });
+  const cnts = months.map(ym => byMonth[ym].length);
+
+  const maxVal = Math.max(...avgs);
+  const minVal = Math.min(...avgs);
+  const range  = maxVal - minVal || maxVal * 0.2 || 1;
+
+  // 차트 레이블 업데이트
+  if (lbl) lbl.textContent = _reType === 'trade' ? '월별 평균 매매가' : '월별 평균 보증금';
+
+  // SVG 생성
+  const n    = months.length;
+  const W    = 320, barAreaH = 80, padX = 8, topPad = 22, botPad = 18;
+  const H    = topPad + barAreaH + botPad;
+  const slot = Math.floor((W - padX*2) / n);
+  const barW = Math.max(12, slot - 6);
+
+  let svgContent = '';
+  months.forEach((ym, idx) => {
+    const val  = avgs[idx];
+    const cnt  = cnts[idx];
+    const pct  = (val - minVal) / range;
+    const bH   = Math.max(14, Math.round(pct * (barAreaH - 14)) + 14);
+    const x    = padX + idx * slot;
+    const bX   = x + (slot - barW) / 2;
+    const bY   = topPad + barAreaH - bH;
+    const isMax = val === maxVal;
+    const isLast = idx === months.length - 1;
+    const barColor = isMax ? '#1B3A6B' : '#A8C4E0';
+    const mo   = parseInt(ym.split('-')[1]);
+    const priceLabel = val >= 10000
+      ? `${(val/10000).toFixed(val%10000===0?0:1)}억`
+      : `${Math.round(val/1000)}천`;
+
+    svgContent += `
+      <rect x="${bX.toFixed(1)}" y="${bY}" width="${barW}" height="${bH}" fill="${barColor}" rx="3"/>
+      <text x="${(bX+barW/2).toFixed(1)}" y="${(bY-4).toFixed(1)}" text-anchor="middle" font-size="9" fill="${isMax?'#1B3A6B':'#aaa'}" font-weight="${isMax?'700':'400'}">${priceLabel}${isMax?' ↑':''}</text>
+      <text x="${(bX+barW/2).toFixed(1)}" y="${(topPad+barAreaH+13).toFixed(1)}" text-anchor="middle" font-size="9" fill="${isLast?'#1B3A6B':'#999'}" font-weight="${isLast?'700':'400'}">${mo}월${isLast?' ▼':''}</text>
+      <text x="${(bX+barW/2).toFixed(1)}" y="${(topPad+barAreaH+22).toFixed(1)}" text-anchor="middle" font-size="8" fill="#bbb">${cnt}건</text>`;
+  });
+
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H+8}" width="100%" style="display:block;overflow:visible;">${svgContent}</svg>`;
+  wrap.style.display = '';
 }
 
 function switchREType(type) {
@@ -3331,6 +3420,7 @@ function filterRE(el, area) {
   document.querySelectorAll('#re-filters .re-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   const filtered = area === 'all' ? _reAllItems : _reAllItems.filter(i => Math.round(parseFloat(i.excluUseAr)) == area);
+  renderREChart(filtered);
   renderRETable(filtered);
   updateRESummary(filtered);
 }
@@ -3343,17 +3433,28 @@ function renderRETable(items) {
   const tbody = document.getElementById('re-tbody');
   if (!tbody) return;
   if (!items.length) { tbody.innerHTML = '<tr><td colspan="4" class="re-empty">해당 조건의 거래 내역이 없습니다.</td></tr>'; return; }
+
+  // 신고가 탐지 (매매만)
+  let maxTradePrice = 0;
+  if (_reType === 'trade') {
+    items.forEach(i => {
+      const p = parseInt((i.dealAmount||'0').replace(/,/g,''));
+      if (p > maxTradePrice) maxTradePrice = p;
+    });
+  }
+
   tbody.innerHTML = items.map(i => {
     const area  = parseFloat(i.excluUseAr).toFixed(1);
     const date  = `${i.dealYear}.${String(i.dealMonth).padStart(2,'0')}.${String((i.dealDay||'1')).padStart(2,'0')}`;
     const dong  = i.aptDong ? `${i.aptDong}동${i.dongInferred?'<span style="font-size:9px;color:var(--gray-400)">*</span>':''} ` : '';
     if (i.type === 'trade') {
       const p = parseInt((i.dealAmount||'0').replace(/,/g,''));
-      return `<tr>
+      const isRecord = maxTradePrice > 0 && p === maxTradePrice;
+      return `<tr${isRecord?' style="background:#FFF5F5;"':''}>
         <td class="re-date">${date}</td>
         <td><span class="re-area-badge">${area}㎡</span></td>
         <td class="re-floor">${dong}${i.floor}층</td>
-        <td class="re-price">${fmtPrice(p)}</td>
+        <td class="re-price">${isRecord?'<span class="re-record">신고가</span>':''}${fmtPrice(p)}</td>
       </tr>`;
     } else {
       const dep = parseInt((i.deposit||'0').replace(/,/g,''));
