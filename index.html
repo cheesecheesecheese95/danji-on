@@ -406,11 +406,14 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .sub-sec-label{font-size:12px;font-weight:700;color:var(--gray-400);margin:14px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;}
 
 /* ── 실거래가 페이지 ─────────────────────────────── */
-.re-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.re-sum-card{background:var(--navy-bg);border-radius:14px;padding:12px 14px;}
+.re-type-tabs{display:flex;gap:0;background:#fff;border-radius:14px;padding:4px;margin-bottom:14px;box-shadow:var(--shadow-sm);}
+.re-type-tab{flex:1;padding:9px 4px;border:none;background:none;border-radius:10px;font-size:13px;font-weight:700;color:var(--gray-400);cursor:pointer;font-family:inherit;transition:all .15s;}
+.re-type-tab.active{background:var(--navy);color:#fff;}
+.re-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+.re-sum-card{background:var(--navy-bg);border-radius:14px;padding:11px 12px;}
 .re-sum-label{font-size:10px;font-weight:700;color:var(--navy);letter-spacing:.04em;margin-bottom:4px;}
-.re-sum-val{font-size:17px;font-weight:800;color:var(--navy);}
-.re-sum-sub{font-size:11px;color:var(--gray-400);margin-top:2px;}
+.re-sum-val{font-size:16px;font-weight:800;color:var(--navy);line-height:1.2;}
+.re-sum-sub{font-size:10px;color:var(--gray-400);margin-top:2px;}
 .re-filter-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:12px;}
 .re-filter-row::-webkit-scrollbar{display:none;}
 .re-chip{flex-shrink:0;background:#fff;border:1.5px solid var(--gray-200);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;}
@@ -424,6 +427,9 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .re-table tr:last-child td{border-bottom:none;}
 .re-table tr:hover td{background:var(--gray-50);}
 .re-price{font-weight:800;color:var(--navy);}
+.re-rent-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;margin-right:3px;}
+.re-rent-j{background:#E3F0FF;color:var(--blue);}
+.re-rent-m{background:#FEF0EB;color:var(--orange);}
 .re-area-badge{display:inline-block;background:var(--navy-bg);color:var(--navy);border-radius:6px;padding:2px 6px;font-size:11px;font-weight:700;}
 .re-date{color:var(--gray-400);font-size:11px;}
 .re-floor{color:var(--gray-500);}
@@ -2527,20 +2533,39 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       <div class="sec" style="padding-top:20px;padding-bottom:32px;">
         <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
         <div class="sec-title">🏠 실거래가</div>
-        <div class="sec-sub">DMC파크뷰자이 · 최근 6개월 매매 실거래</div>
-        <div class="notice" style="background:var(--amber-bg);border:1px solid #F5CBA7;margin:10px 0;">
-          <span class="n-icon">⏳</span>
-          <div class="n-text" style="color:var(--amber);">데이터를 불러오는데 다소 시간이 소요될 수 있습니다.</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;margin-top:4px;margin-bottom:4px;flex-wrap:wrap;">
-          <span class="src-tag o">출처: 국토교통부 실거래가 공개시스템</span>
-          <span class="src-tag" style="font-size:10px;">단위: 만원 · *동은 추정</span>
+        <div class="sec-sub">DMC파크뷰자이 · 최근 6개월</div>
+
+        <!-- 매매 / 전세 / 월세 탭 -->
+        <div class="re-type-tabs">
+          <button class="re-type-tab active" id="re-tab-trade"   onclick="switchREType('trade')">매매</button>
+          <button class="re-type-tab"        id="re-tab-jeonse"  onclick="switchREType('jeonse')">전세</button>
+          <button class="re-type-tab"        id="re-tab-monthly" onclick="switchREType('monthly')">월세</button>
         </div>
 
         <!-- 요약 카드 -->
-        <div class="re-summary" id="re-summary" style="margin-top:14px;">
-          <div class="re-sum-card"><div class="re-sum-label">최근 거래</div><div class="re-sum-val" id="re-latest-price">—</div><div class="re-sum-sub" id="re-latest-info">불러오는 중</div></div>
-          <div class="re-sum-card"><div class="re-sum-label">거래 건수</div><div class="re-sum-val" id="re-count">—</div><div class="re-sum-sub">최근 6개월</div></div>
+        <div class="re-summary" id="re-summary" style="margin-top:0;">
+          <div class="re-sum-card">
+            <div class="re-sum-label">최근 거래</div>
+            <div class="re-sum-val" id="re-latest-price">—</div>
+            <div class="re-sum-sub" id="re-latest-info">불러오는 중</div>
+          </div>
+          <div class="re-sum-card">
+            <div class="re-sum-label">평균가</div>
+            <div class="re-sum-val" id="re-avg-price">—</div>
+            <div class="re-sum-sub" id="re-avg-info">6개월 기준</div>
+          </div>
+          <div class="re-sum-card">
+            <div class="re-sum-label">거래 건수</div>
+            <div class="re-sum-val" id="re-count">—</div>
+            <div class="re-sum-sub">최근 6개월</div>
+          </div>
+        </div>
+
+        <!-- 업데이트 시각 + 출처 -->
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+          <span class="src-tag o">출처: 국토교통부 실거래가 공개시스템</span>
+          <span class="src-tag" id="re-updated-tag" style="font-size:10px;display:none;"></span>
+          <span class="src-tag" style="font-size:10px;">*동 추정 포함</span>
         </div>
 
         <!-- 면적 필터 -->
@@ -2550,16 +2575,19 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <!-- 거래 목록 -->
         <div class="re-table-wrap">
-          <table class="re-table">
-            <thead><tr>
-              <th>계약일</th>
-              <th>전용면적</th>
-              <th>동/층</th>
-              <th>거래금액</th>
+          <table class="re-table" id="re-table">
+            <thead id="re-thead"><tr>
+              <th>계약일</th><th>면적</th><th>동/층</th><th>거래금액</th>
             </tr></thead>
-            <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 데이터 불러오는 중…</td></tr></tbody>
+            <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr></tbody>
           </table>
         </div>
+
+        <!-- 상세 보기 링크 -->
+        <a href="https://estate.worldnews-one.com/complex/671" target="_blank" rel="noopener"
+           style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:13px;background:#fff;border:1.5px solid var(--gray-200);border-radius:14px;text-decoration:none;font-size:13px;font-weight:700;color:var(--navy);box-shadow:var(--shadow-sm);">
+          📊 오늘의부동산에서 더 보기 →
+        </a>
 
       </div>
     </div>
@@ -3225,23 +3253,69 @@ function goFeeTab(idx,btn){
 
 // ── 실거래가 ─────────────────────────────────────────────────
 
-let _reAllItems = [], _reFiltered = [];
+const _reCache = { trade: null, rent: null }; // 매매 / 전세+월세
+let _reType = 'trade'; // 현재 탭
+let _reAllItems = [];   // 현재 탭 전체 아이템
 
 async function loadRealestate() {
-  if (_reAllItems.length) return; // 이미 로드됨
+  if (_reCache[_reType === 'trade' ? 'trade' : 'rent']) {
+    applyREData(_reCache[_reType === 'trade' ? 'trade' : 'rent']);
+    return;
+  }
+  document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr>';
   try {
-    const r = await fetch('https://danji-on.vercel.app/api/realestate');
+    const apiType = _reType === 'trade' ? 'trade' : 'rent';
+    const r = await fetch(`/api/realestate?type=${apiType}`);
     const d = await r.json();
     if (d.error) {
       document.getElementById('re-tbody').innerHTML = `<tr><td colspan="4" class="re-empty">⚠️ ${d.error}</td></tr>`;
       return;
     }
-    _reAllItems = d.items || [];
-    renderRETable(_reAllItems);
-    buildREFilters(_reAllItems);
-    updateRESummary(_reAllItems);
+    _reCache[apiType] = { items: d.items || [], updatedAt: d.updatedAt };
+    // 업데이트 시각 표시
+    if (d.updatedAt) {
+      const tag = document.getElementById('re-updated-tag');
+      if (tag) { tag.textContent = `업데이트: ${d.updatedAt}`; tag.style.display=''; }
+    }
+    applyREData(_reCache[apiType]);
   } catch(e) {
     document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">데이터를 불러올 수 없습니다.</td></tr>';
+  }
+}
+
+function applyREData({ items }) {
+  // _reType 기준으로 필터
+  _reAllItems = _reType === 'trade' ? items
+    : _reType === 'jeonse'  ? items.filter(i => i.type === 'jeonse')
+    : items.filter(i => i.type === 'monthly');
+  buildREFilters(_reAllItems);
+  renderRETable(_reAllItems);
+  updateRESummary(_reAllItems);
+}
+
+function switchREType(type) {
+  _reType = type;
+  ['trade','jeonse','monthly'].forEach(t => {
+    document.getElementById(`re-tab-${t}`)?.classList.toggle('active', t === type);
+  });
+  // 테이블 헤더 전환
+  const thead = document.getElementById('re-thead');
+  if (thead) {
+    if (type === 'trade') {
+      thead.innerHTML = '<tr><th>계약일</th><th>면적</th><th>동/층</th><th>거래금액</th></tr>';
+    } else if (type === 'jeonse') {
+      thead.innerHTML = '<tr><th>계약일</th><th>면적</th><th>층</th><th>보증금</th></tr>';
+    } else {
+      thead.innerHTML = '<tr><th>계약일</th><th>면적</th><th>층</th><th>보증금/월세</th></tr>';
+    }
+  }
+  // rent 캐시가 있으면 바로 적용, 없으면 fetch
+  const cacheKey = type === 'trade' ? 'trade' : 'rent';
+  if (_reCache[cacheKey]) {
+    applyREData(_reCache[cacheKey]);
+  } else {
+    _reAllItems = [];
+    loadRealestate();
   }
 }
 
@@ -3261,35 +3335,78 @@ function filterRE(el, area) {
   updateRESummary(filtered);
 }
 
+function fmtPrice(wan) {
+  return wan >= 10000 ? `${Math.floor(wan/10000)}억${wan%10000?` ${wan%10000}만`:''}` : `${wan}만`;
+}
+
 function renderRETable(items) {
   const tbody = document.getElementById('re-tbody');
   if (!tbody) return;
   if (!items.length) { tbody.innerHTML = '<tr><td colspan="4" class="re-empty">해당 조건의 거래 내역이 없습니다.</td></tr>'; return; }
   tbody.innerHTML = items.map(i => {
-    const price = parseInt((i.dealAmount||'0').replace(/,/g,''));
-    const priceStr = price >= 10000 ? `${Math.floor(price/10000)}억${price%10000?` ${price%10000}만`:''}` : `${price}만`;
-    const area = parseFloat(i.excluUseAr).toFixed(1);
-    const date = `${i.dealYear}.${String(i.dealMonth).padStart(2,'0')}.${String(i.dealDay).padStart(2,'0')}`;
-    return `<tr>
-      <td class="re-date">${date}</td>
-      <td><span class="re-area-badge">${area}㎡</span></td>
-      <td class="re-floor">${i.aptDong ? `<span style="color:var(--gray-700)">${i.aptDong}동</span>${i.dongInferred ? '<span style="font-size:9px;color:var(--gray-400)">*</span>' : ''} ` : ''}${i.floor}층</td>
-      <td class="re-price">${priceStr}</td>
-    </tr>`;
+    const area  = parseFloat(i.excluUseAr).toFixed(1);
+    const date  = `${i.dealYear}.${String(i.dealMonth).padStart(2,'0')}.${String((i.dealDay||'1')).padStart(2,'0')}`;
+    const dong  = i.aptDong ? `${i.aptDong}동${i.dongInferred?'<span style="font-size:9px;color:var(--gray-400)">*</span>':''} ` : '';
+    if (i.type === 'trade') {
+      const p = parseInt((i.dealAmount||'0').replace(/,/g,''));
+      return `<tr>
+        <td class="re-date">${date}</td>
+        <td><span class="re-area-badge">${area}㎡</span></td>
+        <td class="re-floor">${dong}${i.floor}층</td>
+        <td class="re-price">${fmtPrice(p)}</td>
+      </tr>`;
+    } else {
+      const dep = parseInt((i.deposit||'0').replace(/,/g,''));
+      const mon = parseInt((i.monthlyRent||'0').replace(/,/g,''));
+      const badge = i.type === 'jeonse'
+        ? `<span class="re-rent-badge re-rent-j">전세</span>`
+        : `<span class="re-rent-badge re-rent-m">월세</span>`;
+      const priceStr = i.type === 'jeonse'
+        ? fmtPrice(dep)
+        : `${fmtPrice(dep)} / ${mon}만`;
+      return `<tr>
+        <td class="re-date">${date}</td>
+        <td><span class="re-area-badge">${area}㎡</span></td>
+        <td class="re-floor">${i.floor}층</td>
+        <td class="re-price">${badge}${priceStr}</td>
+      </tr>`;
+    }
   }).join('');
 }
 
 function updateRESummary(items) {
-  if (!items.length) return;
-  const latest = items[0];
-  const price = parseInt((latest.dealAmount||'0').replace(/,/g,''));
-  const priceStr = price >= 10000 ? `${Math.floor(price/10000)}억${price%10000?` ${price%10000}만`:''}` : `${price}만`;
   const el1 = document.getElementById('re-latest-price');
   const el2 = document.getElementById('re-latest-info');
   const el3 = document.getElementById('re-count');
-  if (el1) el1.textContent = priceStr;
-  if (el2) el2.textContent = `${latest.dealYear}.${String(latest.dealMonth).padStart(2,'0')} · ${parseFloat(latest.excluUseAr).toFixed(0)}㎡ ${latest.floor}층`;
+  const el4 = document.getElementById('re-avg-price');
+  if (!items.length) {
+    [el1,el2,el3,el4].forEach(e => { if(e) e.textContent = '—'; });
+    return;
+  }
+  const latest = items[0];
   if (el3) el3.textContent = `${items.length}건`;
+
+  if (latest.type === 'trade') {
+    const p = parseInt((latest.dealAmount||'0').replace(/,/g,''));
+    if (el1) el1.textContent = fmtPrice(p);
+    if (el2) el2.textContent = `${latest.dealYear}.${String(latest.dealMonth).padStart(2,'0')} · ${parseFloat(latest.excluUseAr).toFixed(0)}㎡ ${latest.floor}층`;
+    // 평균
+    const prices = items.map(i => parseInt((i.dealAmount||'0').replace(/,/g,'')));
+    const avg = Math.round(prices.reduce((a,b)=>a+b,0)/prices.length);
+    if (el4) el4.textContent = fmtPrice(avg);
+    const avgEl = document.getElementById('re-avg-info');
+    if (avgEl) avgEl.textContent = '6개월 기준';
+  } else {
+    const dep = parseInt((latest.deposit||'0').replace(/,/g,''));
+    const mon = parseInt((latest.monthlyRent||'0').replace(/,/g,''));
+    if (el1) el1.textContent = latest.type === 'jeonse' ? fmtPrice(dep) : `${fmtPrice(dep)}/${mon}만`;
+    if (el2) el2.textContent = `${latest.dealYear}.${String(latest.dealMonth).padStart(2,'0')} · ${parseFloat(latest.excluUseAr).toFixed(0)}㎡ ${latest.floor}층`;
+    const deps = items.map(i => parseInt((i.deposit||'0').replace(/,/g,'')));
+    const avg = Math.round(deps.reduce((a,b)=>a+b,0)/deps.length);
+    if (el4) el4.textContent = fmtPrice(avg);
+    const avgEl = document.getElementById('re-avg-info');
+    if (avgEl) avgEl.textContent = '보증금 평균';
+  }
 }
 
 // ── 이번 달 챙길 것 ────────────────────────────────────────────
