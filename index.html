@@ -580,7 +580,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="news-card" onclick="goPage('news')">
           <span class="news-badge" style="background:#FFF3E0;color:#E65100;">NEW</span>
           <div class="news-body">
-            <div class="news-title">제4기 제2차 입주자대표회의 소집 공고 (임시)</div>
+            <div class="news-title">제6기 제2차 입주자대표회의 소집 공고 (임시)</div>
             <div class="news-desc">4월 14일(화) 오후 7시 · 1단지 커뮤니티센터 2층<br>안건: 전기차 충전기 선정, 전기용량 증설, 정보통신 공사업체 선정 등 7건</div>
             <div class="news-date">2026.04.10 공고</div>
           </div>
@@ -2026,20 +2026,23 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-bottom:1px solid var(--gray-100);border-radius:0;">
             <span class="news-badge" style="background:#FFF3E0;color:#E65100;">회의공고</span>
             <div class="news-body">
-              <div class="news-title">제4기 제2차 입주자대표회의 소집 공고 (임시)</div>
+              <div class="news-title">제6기 제2차 입주자대표회의 소집 공고 (임시)</div>
               <div class="news-desc">
                 📅 일시: 2026년 04월 14일(화) 오후 7:00~<br>
-                📍 장소: 1단지 커뮤니티센터 2층 회의실<br><br>
-                <strong>안건</strong><br>
-                1호. 업무보고 (회계 수의계약)<br>
-                2호. 전기 작업 관련 장기수선충당금 계획서 (수의계약)<br>
-                3호. 소방 펌프 관련 장기수선충당금 계획서 및 사용안<br>
-                4호. 전기차 충전기 운영업체 선정 및 장기수선충당금 사용안<br>
-                5호. 단지 전기용량 증설 단계별 구성 승인안<br>
-                6호. 정보통신 공사업체 공모(입찰) 선정안<br>
-                7호. 서대문구 카시트 장착 시 개인정보 처리방침 관련 보고
+                📍 장소: 1단지 커뮤니티센터 2층 입주자대표회의실<br><br>
+                <strong>Ⅲ. 안건</strong><br>
+                제1호. 업무보고 (회계 수의계약) 안<br>
+                제2호. 전기 작업(수의계약)에 따른 장기수선충당금 계획서(수의계약) 안<br>
+                제3호. 소방 펌프 관련 장기수선충당금 계획서 및 사용 안<br>
+                제4호. 전기차충전기 운영업체 선정(공모) 및 장기수선충당금 사용 안<br>
+                제5호. 단지 전기용량 증설 단계별 구성 승인 안<br>
+                제6호. 정보통신 공사업체 공모(입찰) 선정 안<br>
+                제7호. 서대문구 카시트 장착 시 개인정보 처리방침 관련 보고<br><br>
+                <strong>Ⅳ. 보고</strong><br>
+                1. 카바나파크 이의신청 사례 보고<br>
+                2. 오늘의부동산 홈페이지 시세 자료 검증 시 개인정보 표기 관련 전달 보고
               </div>
-              <div class="news-date">2026.04.10 공고 · 입주자대표회의 회장</div>
+              <div class="news-date">2026.04.10 공고 · 입주자대표회의 회장(직인생략)</div>
             </div>
           </div>
           <div class="news-card" style="border:none;padding:10px 0;margin-bottom:0;box-shadow:none;border-radius:0;">
@@ -3330,55 +3333,94 @@ function renderREChart(items) {
   // 월 평균가 계산
   const avgs = months.map(ym => {
     const arr = byMonth[ym];
-    if (_reType === 'trade') {
-      const ps = arr.map(i => parseInt((i.dealAmount||'0').replace(/,/g,'')));
-      return Math.round(ps.reduce((a,b)=>a+b,0)/ps.length);
-    } else {
-      const ps = arr.map(i => parseInt((i.deposit||'0').replace(/,/g,'')));
-      return Math.round(ps.reduce((a,b)=>a+b,0)/ps.length);
-    }
+    const ps = _reType === 'trade'
+      ? arr.map(i => parseInt((i.dealAmount||'0').replace(/,/g,'')))
+      : arr.map(i => parseInt((i.deposit||'0').replace(/,/g,'')));
+    return Math.round(ps.reduce((a,b)=>a+b,0)/ps.length);
   });
   const cnts = months.map(ym => byMonth[ym].length);
 
-  const maxVal = Math.max(...avgs);
-  const minVal = Math.min(...avgs);
-  const range  = maxVal - minVal || maxVal * 0.2 || 1;
-
-  // 차트 레이블 업데이트
   if (lbl) lbl.textContent = _reType === 'trade' ? '월별 평균 매매가' : '월별 평균 보증금';
 
-  // SVG 생성
-  const n    = months.length;
-  const W    = 320, barAreaH = 80, padX = 8, topPad = 22, botPad = 18;
-  const H    = topPad + barAreaH + botPad;
-  const slot = Math.floor((W - padX*2) / n);
-  const barW = Math.max(12, slot - 6);
+  // 레이아웃
+  const W = 320, H = 130;
+  const padL = 42, padR = 12, padT = 24, padB = 28;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
 
-  let svgContent = '';
-  months.forEach((ym, idx) => {
-    const val  = avgs[idx];
-    const cnt  = cnts[idx];
-    const pct  = (val - minVal) / range;
-    const bH   = Math.max(14, Math.round(pct * (barAreaH - 14)) + 14);
-    const x    = padX + idx * slot;
-    const bX   = x + (slot - barW) / 2;
-    const bY   = topPad + barAreaH - bH;
-    const isMax = val === maxVal;
-    const isLast = idx === months.length - 1;
-    const barColor = isMax ? '#1B3A6B' : '#A8C4E0';
-    const mo   = parseInt(ym.split('-')[1]);
-    const priceLabel = val >= 10000
-      ? `${(val/10000).toFixed(val%10000===0?0:1)}억`
-      : `${Math.round(val/1000)}천`;
+  const maxVal = Math.max(...avgs);
+  const minVal = Math.min(...avgs);
+  const valRange = (maxVal - minVal) || maxVal * 0.15 || 1;
+  const displayMin = Math.max(0, minVal - valRange * 0.3);
+  const displayRange = maxVal - displayMin || 1;
 
-    svgContent += `
-      <rect x="${bX.toFixed(1)}" y="${bY}" width="${barW}" height="${bH}" fill="${barColor}" rx="3"/>
-      <text x="${(bX+barW/2).toFixed(1)}" y="${(bY-4).toFixed(1)}" text-anchor="middle" font-size="9" fill="${isMax?'#1B3A6B':'#aaa'}" font-weight="${isMax?'700':'400'}">${priceLabel}${isMax?' ↑':''}</text>
-      <text x="${(bX+barW/2).toFixed(1)}" y="${(topPad+barAreaH+13).toFixed(1)}" text-anchor="middle" font-size="9" fill="${isLast?'#1B3A6B':'#999'}" font-weight="${isLast?'700':'400'}">${mo}월${isLast?' ▼':''}</text>
-      <text x="${(bX+barW/2).toFixed(1)}" y="${(topPad+barAreaH+22).toFixed(1)}" text-anchor="middle" font-size="8" fill="#bbb">${cnt}건</text>`;
-  });
+  const n = months.length;
+  const xOf = idx => padL + (idx / (n - 1)) * chartW;
+  const yOf = val => padT + chartH - ((val - displayMin) / displayRange) * chartH;
 
-  el.innerHTML = `<svg viewBox="0 0 ${W} ${H+8}" width="100%" style="display:block;overflow:visible;">${svgContent}</svg>`;
+  // 포인트
+  const pts = avgs.map((v, i) => ({ x: xOf(i), y: yOf(v), v, cnt: cnts[i], ym: months[i] }));
+
+  // 부드러운 베지어 경로
+  function smoothPath(points) {
+    if (points.length < 2) return '';
+    let d = `M ${points[0].x.toFixed(1)},${points[0].y.toFixed(1)}`;
+    for (let i = 1; i < points.length; i++) {
+      const prev = points[i - 1], cur = points[i];
+      const cpx = (prev.x + cur.x) / 2;
+      d += ` C ${cpx.toFixed(1)},${prev.y.toFixed(1)} ${cpx.toFixed(1)},${cur.y.toFixed(1)} ${cur.x.toFixed(1)},${cur.y.toFixed(1)}`;
+    }
+    return d;
+  }
+
+  const linePath = smoothPath(pts);
+  // 그라디언트 채우기 경로
+  const areaPath = linePath
+    + ` L ${pts[pts.length-1].x.toFixed(1)},${(padT+chartH).toFixed(1)}`
+    + ` L ${pts[0].x.toFixed(1)},${(padT+chartH).toFixed(1)} Z`;
+
+  // Y축 레이블 (상·하 2개)
+  function fmtV(v) {
+    return v >= 10000 ? `${(v/10000).toFixed(v%10000===0?0:1)}억` : `${Math.round(v/1000)}천`;
+  }
+  const yLabels = [
+    { v: maxVal, y: yOf(maxVal) },
+    { v: Math.round((maxVal+displayMin)/2), y: yOf(Math.round((maxVal+displayMin)/2)) },
+  ];
+
+  // 포인트 레이블 및 점
+  const maxPt = pts.reduce((a,b) => a.v >= b.v ? a : b);
+  const dotsSvg = pts.map((p, i) => {
+    const isMax = p.v === maxVal;
+    const isLast = i === pts.length - 1;
+    const showLabel = isMax || isLast || i === 0;
+    const priceLabel = fmtV(p.v);
+    const mo = parseInt(p.ym.split('-')[1]);
+    const labelY = p.y - 9;
+    return `
+      <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${isMax?4.5:3}" fill="${isMax?'#1B3A6B':'#5A8FBF'}" stroke="#fff" stroke-width="1.5"/>
+      ${showLabel ? `<text x="${p.x.toFixed(1)}" y="${(labelY).toFixed(1)}" text-anchor="middle" font-size="9" fill="${isMax?'#1B3A6B':'#888'}" font-weight="${isMax?'800':'400'}">${priceLabel}${isMax?' ↑':''}</text>` : ''}
+      <text x="${p.x.toFixed(1)}" y="${(padT+chartH+14).toFixed(1)}" text-anchor="middle" font-size="9" fill="${isLast?'#1B3A6B':'#aaa'}" font-weight="${isLast?'700':'400'}">${mo}월</text>
+      <text x="${p.x.toFixed(1)}" y="${(padT+chartH+24).toFixed(1)}" text-anchor="middle" font-size="8" fill="#ccc">${p.cnt}건</text>`;
+  }).join('');
+
+  const yGridSvg = yLabels.map(({v,y}) =>
+    `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${(W-padR).toFixed(1)}" y2="${y.toFixed(1)}" stroke="#f0f0f0" stroke-width="1"/>
+     <text x="${(padL-4).toFixed(1)}" y="${(y+3.5).toFixed(1)}" text-anchor="end" font-size="8.5" fill="#bbb">${fmtV(v)}</text>`
+  ).join('');
+
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;overflow:visible;">
+    <defs>
+      <linearGradient id="reGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1B3A6B" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#1B3A6B" stop-opacity="0.01"/>
+      </linearGradient>
+    </defs>
+    ${yGridSvg}
+    <path d="${areaPath}" fill="url(#reGrad)"/>
+    <path d="${linePath}" fill="none" stroke="#1B3A6B" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dotsSvg}
+  </svg>`;
   wrap.style.display = '';
 }
 
