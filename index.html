@@ -3473,7 +3473,7 @@ function renderFeedList(items) {
     el.innerHTML = '<div class="re-feed-empty">관련 소식이 없습니다</div>';
     return;
   }
-  el.innerHTML = items.slice(0, 15).map(item => {
+  el.innerHTML = items.slice(0, 20).map(item => {
     const typeLabel = { news: '뉴스', blog: '블로그', cafe: '카페' }[item.type] || item.type;
     const date = formatFeedDate(item.pubDate);
     return `<a class="re-feed-item" href="${item.link}" target="_blank" rel="noopener">
