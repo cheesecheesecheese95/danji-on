@@ -318,7 +318,8 @@ async function hgnnFetch(path) {
     headers: { 'User-Agent': HGNN_UA, 'Accept': 'application/json' },
   });
   if (!r.ok) return null;
-  return r.json();
+  const json = await r.json();
+  return json.data ?? json;  // 호갱노노 API는 { data: ... } 래핑
 }
 
 async function runHogangnono() {
@@ -350,21 +351,15 @@ async function runHogangnono() {
 
     // 관심도 (최근 7일 평균 조회수)
     let avgVisitors = null;
-    if (visitor && Array.isArray(visitor)) {
-      const recent7 = visitor.slice(-7);
-      if (recent7.length) {
-        avgVisitors = Math.round(recent7.reduce((a, v) => a + (v.count || 0), 0) / recent7.length);
-      }
+    const visitorList = visitor?.list || (Array.isArray(visitor) ? visitor : []);
+    if (visitorList.length) {
+      const recent7 = visitorList.slice(-7);
+      avgVisitors = Math.round(recent7.reduce((a, v) => a + (v.total || v.count || 0), 0) / recent7.length);
     }
 
     // 평형 타입
-    const areas = roomTypes
-      ? (Array.isArray(roomTypes) ? roomTypes : []).map(rt => ({
-          code: rt.roomTypeCode || rt.areaNo,
-          area: rt.area || rt.supplyArea,
-          exclusiveArea: rt.exclusiveArea || rt.privateArea,
-        })).filter(a => a.area || a.exclusiveArea)
-      : [];
+    const rtList = roomTypes?.zigbangRoomTypes || (Array.isArray(roomTypes) ? roomTypes : []);
+    const areas = rtList.map(rt => rt.zigbangRoomType || rt.roomTypeCode || '').filter(Boolean);
 
     results.push({
       danjiId: danji.id,
