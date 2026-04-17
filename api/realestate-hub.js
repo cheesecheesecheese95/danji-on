@@ -69,8 +69,27 @@ export default async function handler(req, res) {
           if (rows.length && rows[0].body) all.push(...JSON.parse(rows[0].body));
         }
       }
-      all.sort((a, b) => (b.pubDate || '').localeCompare(a.pubDate || ''));
-      return res.status(200).json({ items: all.slice(0, 50), total: all.length });
+      // 날짜 정규화 (YYYYMMDD / RFC 2822 → ISO)
+      for (const item of all) {
+        if (/^\d{8}$/.test(item.pubDate)) {
+          item._sortDate = `${item.pubDate.slice(0,4)}-${item.pubDate.slice(4,6)}-${item.pubDate.slice(6,8)}`;
+        } else if (item.pubDate) {
+          try { item._sortDate = new Date(item.pubDate).toISOString().slice(0,10); } catch(_) { item._sortDate = ''; }
+        } else { item._sortDate = ''; }
+      }
+      // 최신순 정렬
+      all.sort((a, b) => (b._sortDate || '').localeCompare(a._sortDate || ''));
+      // 중복 제목 제거
+      const seen = new Set();
+      const deduped = all.filter(item => {
+        const key = item.title.replace(/\s+/g, '').slice(0, 30);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      // _sortDate 필드 제거
+      for (const item of deduped) delete item._sortDate;
+      return res.status(200).json({ items: deduped.slice(0, 80), total: deduped.length });
     }
 
     // daily-comment, weekly-insight: 단일 카테고리

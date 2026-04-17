@@ -2579,7 +2579,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <div class="re-hl-date" id="re-hl-date"></div>
             <div class="re-hl-text" id="re-hl-text">불러오는 중…</div>
             <div class="re-hl-bullets" id="re-hl-bullets"></div>
-            <div class="re-hl-sub">국토교통부 실거래가 기반 · AI 요약</div>
+            <div class="re-hl-sub">AI 요약</div>
           </div>
         </div>
 
@@ -3498,108 +3498,61 @@ function formatFeedDate(d) {
 // ── L5: 이웃 단지 비교 ─────────────────────────────────────
 async function loadNeighborData() {
   try {
-    const [nbRes, homeRes] = await Promise.all([
-      fetch('/api/realestate?type=trade&scope=neighbor'),
-      fetch('/api/realestate?type=trade&scope=home'),
-    ]);
-    const nbData = await nbRes.json();
-    const homeData = await homeRes.json();
-    renderNeighborGrid(nbData.items || [], homeData.items || []);
+    const r = await fetch('/api/realestate?type=trade&scope=neighbor');
+    const d = await r.json();
+    renderNeighborGrid(d.items || []);
   } catch(_) {
     document.getElementById('re-neighbor-grid').innerHTML = '<div class="re-nb-empty">이웃 단지 데이터를 불러올 수 없습니다</div>';
   }
 }
 
-function renderNeighborGrid(items, homeItems) {
+function renderNeighborGrid(items) {
   const el = document.getElementById('re-neighbor-grid');
-  const summaryEl = document.getElementById('re-neighbor-summary');
   if (!el) return;
   if (!items.length) {
     el.innerHTML = '<div class="re-nb-empty">이웃 단지 거래 내역이 없습니다</div>';
     return;
   }
 
-  // 홈 단지 면적별 평균가 (비교 기준)
-  const homeByArea = {};
-  homeItems.forEach(i => {
-    const area = Math.round(parseFloat(i.excluUseAr));
-    if (!homeByArea[area]) homeByArea[area] = [];
-    homeByArea[area].push(parseInt((i.dealAmount||'0').replace(/,/g,'')));
-  });
-  const homeAreaAvg = {};
-  Object.entries(homeByArea).forEach(([a, ps]) => {
-    homeAreaAvg[a] = Math.round(ps.reduce((x,y)=>x+y,0)/ps.length);
-  });
+  // 최근 1달 기준
+  const now = new Date();
+  const monthAgo = new Date(now); monthAgo.setMonth(now.getMonth()-1);
+  const md = `${monthAgo.getFullYear()}${String(monthAgo.getMonth()+1).padStart(2,'0')}${String(monthAgo.getDate()).padStart(2,'0')}`;
+  const toDateStr = (i) => `${i.dealYear}${i.dealMonth.padStart(2,'0')}${(i.dealDay||'01').padStart(2,'0')}`;
 
-  // 단지별 + 면적별 집계
+  // 단지별 집계
   const byDanji = {};
   items.forEach(i => {
     const name = i.danjiName || i.aptNm;
-    const area = Math.round(parseFloat(i.excluUseAr));
     const p = parseInt((i.dealAmount||'0').replace(/,/g,''));
-    const dt = `${i.dealYear}.${i.dealMonth.padStart(2,'0')}`;
-    if (!byDanji[name]) byDanji[name] = { areas: {}, count: 0, latestDate: '', latestPrice: 0, latestArea: 0 };
-    byDanji[name].count++;
-    if (!byDanji[name].areas[area]) byDanji[name].areas[area] = [];
-    byDanji[name].areas[area].push(p);
     const fullDt = `${i.dealYear}.${i.dealMonth.padStart(2,'0')}.${(i.dealDay||'01').padStart(2,'0')}`;
+    const isRecent = toDateStr(i) >= md;
+    if (!byDanji[name]) byDanji[name] = { latestDate: '', latestPrice: 0, latestArea: 0, recentCount: 0 };
+    if (isRecent) byDanji[name].recentCount++;
     if (fullDt > byDanji[name].latestDate) {
       byDanji[name].latestDate = fullDt;
       byDanji[name].latestPrice = p;
-      byDanji[name].latestArea = area;
-      byDanji[name].latestMonth = dt;
+      byDanji[name].latestArea = Math.round(parseFloat(i.excluUseAr));
     }
   });
 
-  const sorted = Object.entries(byDanji).sort((a,b) => b[1].count - a[1].count);
-
-  // 요약 텍스트 생성
-  let summaryParts = [];
+  const sorted = Object.entries(byDanji).sort((a,b) => b[1].latestDate.localeCompare(a[1].latestDate));
   el.innerHTML = sorted.map(([name, data]) => {
-    const latestP = data.latestPrice;
-    const latestA = data.latestArea;
-
-    // 같은 면적 우리 단지 대비 비교
-    const closestHomeArea = Object.keys(homeAreaAvg).reduce((best, a) =>
-      Math.abs(a - latestA) < Math.abs(best - latestA) ? a : best, Object.keys(homeAreaAvg)[0] || 0);
-    const homeP = homeAreaAvg[closestHomeArea];
-    let changeHtml = '';
-    let changeText = '';
-    if (homeP && closestHomeArea && Math.abs(closestHomeArea - latestA) <= 10) {
-      const diff = latestP - homeP;
-      const pct = ((diff / homeP) * 100).toFixed(1);
-      const cls = diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat';
-      const sign = diff > 0 ? '+' : '';
-      changeHtml = `<div class="re-nb-change ${cls}">파크뷰자이 대비 ${sign}${pct}%</div>`;
-      changeText = `${name}은 파크뷰자이 ${closestHomeArea}㎡ 대비 ${sign}${pct}%`;
-    }
-
-    // 면적 목록
-    const areaList = Object.entries(data.areas)
-      .sort((a,b) => a[0]-b[0])
-      .map(([a, ps]) => `${a}㎡`)
-      .join(', ');
-
-    if (changeText) summaryParts.push(changeText);
-
     return `<div class="re-nb-card">
       <div class="re-nb-left">
         <div class="re-nb-name">${name}</div>
-        <div class="re-nb-area">${areaList}</div>
-        <div class="re-nb-meta">${data.latestMonth} · ${data.count}건</div>
+        <div class="re-nb-meta">${data.latestDate} · ${data.latestArea}㎡ · ${fmtPrice(data.latestPrice)}</div>
       </div>
       <div class="re-nb-right">
-        <div class="re-nb-price">${fmtPrice(latestP)}</div>
-        <div class="re-nb-count">${latestA}㎡ 최근 거래</div>
-        ${changeHtml}
+        <div class="re-nb-price">${data.recentCount}건</div>
+        <div class="re-nb-count">최근 1개월</div>
       </div>
     </div>`;
   }).join('');
 
-  // 요약 블록
-  if (summaryEl && summaryParts.length) {
-    summaryEl.innerHTML = '💡 ' + summaryParts.slice(0, 3).join(' / ');
-    summaryEl.style.display = '';
+  // 요약 블록 숨김
+  const summaryEl = document.getElementById('re-neighbor-summary');
+  if (summaryEl) summaryEl.style.display = 'none';
   }
 }
 
