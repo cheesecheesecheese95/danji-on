@@ -513,6 +513,27 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .re-listing-bar-fill{height:100%;background:var(--navy);border-radius:3px;transition:width .3s;}
 .re-listing-visitors{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:var(--gray-500);}
 .re-nb-listings{font-size:10px;color:var(--gray-400);margin-top:1px;}
+
+/* 통합 단지 카드 */
+.re-uni-card{background:#fff;border-radius:16px;padding:14px 16px;box-shadow:var(--shadow-sm);margin-bottom:8px;}
+.re-uni-card.home{border:2px solid var(--navy);background:var(--navy-bg);}
+.re-uni-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.re-uni-name{font-size:14px;font-weight:800;color:var(--navy);}
+.re-uni-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:var(--navy);color:#fff;}
+.re-uni-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.re-uni-cell{padding:8px;background:var(--gray-50);border-radius:10px;}
+.re-uni-cell-label{font-size:10px;color:var(--gray-400);margin-bottom:2px;}
+.re-uni-cell-val{font-size:15px;font-weight:800;color:var(--navy);}
+.re-uni-cell-sub{font-size:10px;color:var(--gray-400);margin-top:1px;}
+.re-uni-gap{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:10px;font-size:12px;margin-bottom:6px;}
+.re-uni-gap.up{background:#FFF5F5;color:#E53935;}
+.re-uni-gap.down{background:#E3F0FF;color:#1565C0;}
+.re-uni-gap.flat{background:var(--gray-50);color:var(--gray-500);}
+.re-uni-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--gray-500);}
+.re-uni-meta-item{display:flex;align-items:center;gap:3px;}
+.re-uni-items{margin-top:10px;border-top:1px solid var(--gray-100);padding-top:8px;}
+.re-uni-item{display:flex;align-items:center;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid var(--gray-50);}
+.re-uni-item:last-child{border-bottom:none;}
 </style>
 <!-- Vercel Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
@@ -2588,14 +2609,14 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </div>
         </div>
 
-        <!-- ── 매물 현황 (호갱노노) ── -->
-        <div class="re-layer" id="re-layer-listings">
-          <div class="re-layer-title"><span class="re-lt-icon">📦</span> 매물 현황</div>
-          <!-- 우리 단지 매물 -->
-          <div id="re-home-listings" style="margin-bottom:10px;"></div>
-          <!-- 이웃 단지 매물 비교 -->
-          <div id="re-listings-grid" class="re-neighbor-grid"></div>
-          <div style="margin-top:6px;font-size:10px;color:var(--gray-400);text-align:center;">호갱노노 기준 · 매일 06:15 업데이트</div>
+        <!-- ── 단지 비교 (실거래 + 매물 통합) ── -->
+        <div class="re-layer" id="re-layer-unified">
+          <div class="re-layer-title"><span class="re-lt-icon">🏘️</span> 단지 비교</div>
+          <!-- 우리 단지 카드 -->
+          <div id="re-unified-home" style="margin-bottom:12px;"></div>
+          <!-- 이웃 단지 카드 -->
+          <div id="re-unified-grid" class="re-neighbor-grid"></div>
+          <div style="margin-top:8px;font-size:10px;color:var(--gray-400);text-align:center;">실거래: 국토교통부 · 매물: 호갱노노 · 매일 업데이트</div>
         </div>
 
         <!-- ── L3: AI의 관점 (주간) ── -->
@@ -2624,15 +2645,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </div>
         </div>
 
-        <!-- ── L5: 동네 맥락 ── -->
-        <div class="re-layer" id="re-layer5">
-          <div class="re-layer-title"><span class="re-lt-icon">🏘️</span> 동네 맥락 · 이웃 단지</div>
-          <div id="re-neighbor-summary" style="display:none;background:var(--navy-bg);border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:12px;color:var(--navy);line-height:1.6;"></div>
-          <div class="re-neighbor-grid" id="re-neighbor-grid">
-            <div class="re-nb-empty">이웃 단지 데이터를 불러오는 중…</div>
-          </div>
-          <div style="margin-top:8px;font-size:10px;color:var(--gray-400);text-align:center;">최근 6개월 매매 기준 · 국토교통부 실거래가</div>
-        </div>
+        <!-- L5 동네 맥락: re-layer-unified로 통합됨 -->
 
         <!-- ── L2: 우리 단지 실거래 내역 ── -->
         <div class="re-layer" id="re-layer2">
@@ -3396,10 +3409,8 @@ async function loadRealestate() {
       applyNewsFeed(d.news || [], d.blog || [], d.cafe || []);
 
       // L5: 이웃 단지
-      renderNeighborGrid(d.neighborTrade || []);
-
-      // 매물 현황 (호갱노노)
-      if (d.hogangnono) applyHogangnono(d.hogangnono);
+      // 통합 단지 비교 (실거래 + 호갱노노)
+      renderUnifiedGrid(d.neighborTrade || [], d.homeTrade || [], d.hogangnono);
     } catch(e) {
       document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">데이터를 불러올 수 없습니다.</td></tr>';
     }
@@ -3514,143 +3525,148 @@ function formatFeedDate(d) {
   catch(_) { return d; }
 }
 
-// ── L5: 이웃 단지 비교 ─────────────────────────────────────
-async function loadNeighborData() {
-  try {
-    const r = await fetch('/api/realestate?type=trade&scope=neighbor');
-    const d = await r.json();
-    renderNeighborGrid(d.items || []);
-  } catch(_) {
-    document.getElementById('re-neighbor-grid').innerHTML = '<div class="re-nb-empty">이웃 단지 데이터를 불러올 수 없습니다</div>';
-  }
-}
+// ── 통합 단지 비교 (실거래 + 호갱노노) ──────────────────────
+function renderUnifiedGrid(neighborTrade, homeTrade, hogangnono) {
+  const homeEl = document.getElementById('re-unified-home');
+  const gridEl = document.getElementById('re-unified-grid');
+  if (!homeEl || !gridEl) return;
 
-function renderNeighborGrid(items) {
-  const el = document.getElementById('re-neighbor-grid');
-  if (!el) return;
-  if (!items.length) {
-    el.innerHTML = '<div class="re-nb-empty">이웃 단지 거래 내역이 없습니다</div>';
-    return;
-  }
-
-  // 최근 1달 기준
+  const hgItems = hogangnono?.items || [];
+  const toDateStr = (i) => `${i.dealYear}${i.dealMonth.padStart(2,'0')}${(i.dealDay||'01').padStart(2,'0')}`;
+  const parsePrice = (s) => parseInt((s||'0').replace(/,/g,''));
   const now = new Date();
   const monthAgo = new Date(now); monthAgo.setMonth(now.getMonth()-1);
   const md = `${monthAgo.getFullYear()}${String(monthAgo.getMonth()+1).padStart(2,'0')}${String(monthAgo.getDate()).padStart(2,'0')}`;
-  const toDateStr = (i) => `${i.dealYear}${i.dealMonth.padStart(2,'0')}${(i.dealDay||'01').padStart(2,'0')}`;
 
-  // 단지별 집계
-  const byDanji = {};
-  items.forEach(i => {
+  // 실거래 집계 (홈)
+  const homeRecent = homeTrade.filter(i => toDateStr(i) >= md);
+  const homeLatest = homeTrade.length ? homeTrade[0] : null;
+  const homeLatestPrice = homeLatest ? parsePrice(homeLatest.dealAmount) : 0;
+  const homeLatestArea = homeLatest ? Math.round(parseFloat(homeLatest.excluUseAr)) : 0;
+  const homeLatestDate = homeLatest ? `${homeLatest.dealYear}.${homeLatest.dealMonth.padStart(2,'0')}.${(homeLatest.dealDay||'01').padStart(2,'0')}` : '';
+
+  // 호갱노노 (홈)
+  const homeHg = hgItems.find(i => i.isHome);
+  const homeListing = homeHg?.listings || { total:0, trade:0, deposit:0, rent:0, items:[] };
+
+  // 호가 vs 실거래 갭 (매매 호가 평균 vs 최근 실거래)
+  const homeTradeListings = (homeListing.items || []).filter(it => it.tradeType === 0);
+  const homeAvgAsk = homeTradeListings.length
+    ? Math.round(homeTradeListings.reduce((a,it) => a + it.deposit, 0) / homeTradeListings.length)
+    : 0;
+  const homeGap = homeLatestPrice && homeAvgAsk
+    ? ((homeAvgAsk - homeLatestPrice) / homeLatestPrice * 100).toFixed(1)
+    : null;
+
+  // 우리 단지 카드
+  homeEl.innerHTML = `<div class="re-uni-card home">
+    <div class="re-uni-header">
+      <div class="re-uni-name">${homeHg?.danjiName || 'DMC파크뷰자이'}</div>
+      <span class="re-uni-badge">우리 단지</span>
+    </div>
+    <div class="re-uni-row">
+      <div class="re-uni-cell">
+        <div class="re-uni-cell-label">최근 실거래</div>
+        <div class="re-uni-cell-val">${homeLatestPrice ? fmtPrice(homeLatestPrice) : '—'}</div>
+        <div class="re-uni-cell-sub">${homeLatestDate} · ${homeLatestArea}㎡</div>
+      </div>
+      <div class="re-uni-cell">
+        <div class="re-uni-cell-label">현재 호가 평균</div>
+        <div class="re-uni-cell-val">${homeAvgAsk ? fmtPrice(homeAvgAsk) : '—'}</div>
+        <div class="re-uni-cell-sub">매매 매물 ${homeListing.trade}건</div>
+      </div>
+    </div>
+    ${homeGap !== null ? `<div class="re-uni-gap ${parseFloat(homeGap) > 0 ? 'up' : parseFloat(homeGap) < 0 ? 'down' : 'flat'}">
+      <span>호가 vs 실거래 갭</span>
+      <span style="font-weight:800;">${parseFloat(homeGap) > 0 ? '+' : ''}${homeGap}%</span>
+    </div>` : ''}
+    <div class="re-uni-meta">
+      <span class="re-uni-meta-item">📦 매물 ${homeListing.total}건 (매매${homeListing.trade} 전세${homeListing.deposit} 월세${homeListing.rent})</span>
+      <span class="re-uni-meta-item">📊 거래 ${homeRecent.length}건/월</span>
+      ${homeHg?.avgVisitors ? `<span class="re-uni-meta-item">👀 ${homeHg.avgVisitors}명/일</span>` : ''}
+    </div>
+    ${homeListing.items && homeListing.items.length ? `<div class="re-uni-items">
+      ${homeListing.items.map(it => {
+        const tl = it.tradeType === 0 ? '매매' : it.tradeType === 1 ? '전세' : '월세';
+        const tc = it.tradeType === 0 ? 're-rent-j' : 're-rent-m';
+        const pr = it.tradeType === 2 ? fmtPrice(it.deposit)+'/'+it.rent+'만' : fmtPrice(it.deposit);
+        return `<div class="re-uni-item">
+          <div><span class="re-rent-badge ${tc}">${tl}</span> ${it.roomType||''} · ${it.dong||''} ${it.floor}층</div>
+          <div style="font-weight:800;color:var(--navy);">${pr}</div>
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+    ${homeHg ? `<a href="${homeHg.hgnnUrl}" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:10px;font-size:11px;color:var(--navy);font-weight:700;text-decoration:none;">호갱노노에서 더 보기 →</a>` : ''}
+  </div>`;
+
+  // 이웃 단지 집계
+  const nbByDanji = {};
+  neighborTrade.forEach(i => {
     const name = i.danjiName || i.aptNm;
-    const p = parseInt((i.dealAmount||'0').replace(/,/g,''));
-    const fullDt = `${i.dealYear}.${i.dealMonth.padStart(2,'0')}.${(i.dealDay||'01').padStart(2,'0')}`;
+    const p = parsePrice(i.dealAmount);
+    const dt = `${i.dealYear}.${i.dealMonth.padStart(2,'0')}.${(i.dealDay||'01').padStart(2,'0')}`;
     const isRecent = toDateStr(i) >= md;
-    if (!byDanji[name]) byDanji[name] = { latestDate: '', latestPrice: 0, latestArea: 0, recentCount: 0 };
-    if (isRecent) byDanji[name].recentCount++;
-    if (fullDt > byDanji[name].latestDate) {
-      byDanji[name].latestDate = fullDt;
-      byDanji[name].latestPrice = p;
-      byDanji[name].latestArea = Math.round(parseFloat(i.excluUseAr));
+    if (!nbByDanji[name]) nbByDanji[name] = { latestDate:'', latestPrice:0, latestArea:0, recentCount:0 };
+    if (isRecent) nbByDanji[name].recentCount++;
+    if (dt > nbByDanji[name].latestDate) {
+      nbByDanji[name].latestDate = dt;
+      nbByDanji[name].latestPrice = p;
+      nbByDanji[name].latestArea = Math.round(parseFloat(i.excluUseAr));
     }
   });
 
-  const sorted = Object.entries(byDanji).sort((a,b) => b[1].latestDate.localeCompare(a[1].latestDate));
-  el.innerHTML = sorted.map(([name, data]) => {
-    return `<div class="re-nb-card">
-      <div class="re-nb-left">
-        <div class="re-nb-name">${name}</div>
-        <div class="re-nb-meta">${data.latestDate} · ${data.latestArea}㎡ · ${fmtPrice(data.latestPrice)}</div>
+  // 이웃 호갱노노 매핑
+  const nbHgMap = {};
+  hgItems.filter(i => !i.isHome).forEach(i => { nbHgMap[i.danjiName] = i; });
+
+  // 모든 이웃 단지 (실거래 or 호갱노노에 있는 것)
+  const allNames = new Set([...Object.keys(nbByDanji), ...Object.keys(nbHgMap)]);
+  const nbCards = [...allNames].map(name => {
+    const trade = nbByDanji[name] || { latestDate:'', latestPrice:0, latestArea:0, recentCount:0 };
+    const hg = nbHgMap[name] || {};
+    const listing = hg.listings || { total:0, trade:0, deposit:0, rent:0, items:[] };
+
+    // 호가 vs 실거래 갭
+    const askItems = (listing.items || []).filter(it => it.tradeType === 0);
+    const avgAsk = askItems.length ? Math.round(askItems.reduce((a,it) => a+it.deposit, 0) / askItems.length) : 0;
+    const gap = trade.latestPrice && avgAsk ? ((avgAsk - trade.latestPrice) / trade.latestPrice * 100).toFixed(1) : null;
+
+    return { name, trade, hg, listing, avgAsk, gap, score: trade.recentCount + listing.total };
+  }).sort((a,b) => b.score - a.score);
+
+  if (!nbCards.length) {
+    gridEl.innerHTML = '<div class="re-nb-empty">이웃 단지 데이터가 없습니다</div>';
+    return;
+  }
+
+  gridEl.innerHTML = nbCards.map(({ name, trade, hg, listing, avgAsk, gap }) => {
+    const gapHtml = gap !== null
+      ? `<div class="re-uni-gap ${parseFloat(gap) > 0 ? 'up' : parseFloat(gap) < 0 ? 'down' : 'flat'}" style="padding:4px 8px;font-size:11px;margin:0;">갭 ${parseFloat(gap)>0?'+':''}${gap}%</div>`
+      : '';
+    return `<a class="re-uni-card" href="${hg.hgnnUrl || '#'}" target="_blank" rel="noopener" style="text-decoration:none;display:block;">
+      <div class="re-uni-header" style="margin-bottom:6px;">
+        <div class="re-uni-name" style="font-size:13px;">${name}</div>
+        ${gapHtml}
       </div>
-      <div class="re-nb-right">
-        <div class="re-nb-price">${data.recentCount}건</div>
-        <div class="re-nb-count">최근 1개월</div>
+      <div class="re-uni-row" style="margin-bottom:4px;">
+        <div class="re-uni-cell" style="padding:6px;">
+          <div class="re-uni-cell-label">실거래</div>
+          <div class="re-uni-cell-val" style="font-size:13px;">${trade.latestPrice ? fmtPrice(trade.latestPrice) : '—'}</div>
+          <div class="re-uni-cell-sub">${trade.latestDate || '—'} · ${trade.latestArea || '—'}㎡</div>
+        </div>
+        <div class="re-uni-cell" style="padding:6px;">
+          <div class="re-uni-cell-label">호가</div>
+          <div class="re-uni-cell-val" style="font-size:13px;">${avgAsk ? fmtPrice(avgAsk) : '—'}</div>
+          <div class="re-uni-cell-sub">매물 ${listing.total}건</div>
+        </div>
       </div>
-    </div>`;
+      <div class="re-uni-meta" style="font-size:10px;">
+        <span class="re-uni-meta-item">📊 ${trade.recentCount}건/월</span>
+        ${hg.avgVisitors ? `<span class="re-uni-meta-item">👀 ${hg.avgVisitors}명/일</span>` : ''}
+        <span class="re-uni-meta-item">📦 매매${listing.trade} 전세${listing.deposit} 월세${listing.rent}</span>
+      </div>
+    </a>`;
   }).join('');
-
-  // 요약 블록 숨김
-  const summaryEl = document.getElementById('re-neighbor-summary');
-  if (summaryEl) summaryEl.style.display = 'none';
-}
-
-// ── 매물 현황 (호갱노노) ────────────────────────────────────
-function applyHogangnono(data) {
-  const items = data?.items || [];
-  if (!items.length) return;
-
-  const home = items.find(i => i.isHome);
-  const neighbors = items.filter(i => !i.isHome);
-
-  // 우리 단지 매물 카드
-  const homeEl = document.getElementById('re-home-listings');
-  if (homeEl && home && home.listings) {
-    const l = home.listings;
-    const barWidth = Math.min(parseFloat(home.listingRate || 0) * 10, 100);
-    homeEl.innerHTML = `<div class="re-listing-home">
-      <div class="re-listing-home-title">${home.danjiName}</div>
-      <div class="re-listing-stats">
-        <div class="re-listing-stat">
-          <div class="re-listing-stat-val">${l.total}</div>
-          <div class="re-listing-stat-label">전체</div>
-        </div>
-        <div class="re-listing-stat">
-          <div class="re-listing-stat-val">${l.trade}</div>
-          <div class="re-listing-stat-label">매매</div>
-        </div>
-        <div class="re-listing-stat">
-          <div class="re-listing-stat-val">${l.deposit}</div>
-          <div class="re-listing-stat-label">전세</div>
-        </div>
-        <div class="re-listing-stat">
-          <div class="re-listing-stat-val">${l.rent}</div>
-          <div class="re-listing-stat-label">월세</div>
-        </div>
-      </div>
-      <div class="re-listing-rate">
-        <span>세대수 대비 매물 비율</span>
-        <span class="re-listing-rate-val">${home.listingRate}%</span>
-      </div>
-      <div class="re-listing-bar"><div class="re-listing-bar-fill" style="width:${barWidth}%"></div></div>
-      ${home.avgVisitors ? `<div class="re-listing-visitors">👀 일평균 ${home.avgVisitors}명 조회 (최근 7일)</div>` : ''}
-      ${l.items && l.items.length ? `<div style="margin-top:12px;border-top:1px solid var(--gray-100);padding-top:10px;">
-        <div style="font-size:11px;font-weight:700;color:var(--gray-500);margin-bottom:8px;">현재 매물</div>
-        ${l.items.map(it => {
-          const typeLabel = it.tradeType === 0 ? '매매' : it.tradeType === 1 ? '전세' : '월세';
-          const typeCls = it.tradeType === 0 ? 're-rent-j' : it.tradeType === 2 ? 're-rent-m' : 're-rent-j';
-          const price = it.tradeType === 2
-            ? fmtPrice(it.deposit) + '/' + it.rent + '만'
-            : fmtPrice(it.deposit);
-          return `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--gray-50);font-size:12px;">
-            <div><span class="re-rent-badge ${typeCls}">${typeLabel}</span> ${it.roomType || ''} · ${it.dong || ''} ${it.floor}층</div>
-            <div style="font-weight:800;color:var(--navy);">${price}</div>
-          </div>`;
-        }).join('')}
-      </div>` : ''}
-      <a href="${home.hgnnUrl}" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:10px;font-size:11px;color:var(--navy);font-weight:700;text-decoration:none;">호갱노노에서 더 보기 →</a>
-    </div>`;
-  }
-
-  // 이웃 단지 매물 비교
-  const gridEl = document.getElementById('re-listings-grid');
-  if (gridEl && neighbors.length) {
-    gridEl.innerHTML = neighbors
-      .sort((a, b) => (b.listings?.total || 0) - (a.listings?.total || 0))
-      .map(n => {
-        const l = n.listings || { total: 0, trade: 0, deposit: 0, rent: 0 };
-        return `<a class="re-nb-card" href="${n.hgnnUrl}" target="_blank" rel="noopener" style="text-decoration:none;">
-          <div class="re-nb-left">
-            <div class="re-nb-name">${n.danjiName}</div>
-            <div class="re-nb-listings">매매 ${l.trade} · 전세 ${l.deposit} · 월세 ${l.rent}</div>
-            <div class="re-nb-meta">${n.sedaeCount}세대 · 비율 ${n.listingRate}%</div>
-          </div>
-          <div class="re-nb-right">
-            <div class="re-nb-price">${l.total}건</div>
-            <div class="re-nb-count">매물</div>
-          </div>
-        </a>`;
-      }).join('');
-  }
 }
 
 function applyREData({ items }) {
