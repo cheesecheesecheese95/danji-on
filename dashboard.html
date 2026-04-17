@@ -249,7 +249,7 @@ function setBar(id, count, total){
 
 async function loadTrack(){
   try {
-    const r = await fetch('/api/track-stats');
+    const r = await fetch('/api/track');
     const d = await r.json();
 
     const totalVisit = d.total['visit'] || 0;

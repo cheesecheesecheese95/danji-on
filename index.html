@@ -3181,7 +3181,7 @@ async function _fetchClaude(question){
 
 
 async function _fetchNaver(query){
-  const url = `https://danji-on.vercel.app/api/naver-search?query=${encodeURIComponent(query)}&type=local&display=5`;
+  const url = `/api/realestate-hub?section=naver-search&query=${encodeURIComponent(query)}&type=local&display=5`;
   const res = await fetch(url);
   if(!res.ok) throw new Error('API 오류 '+res.status);
   const data = await res.json();
@@ -3391,7 +3391,7 @@ async function loadDailyComment() {
   const el = document.getElementById('re-hl-text');
   const dateEl = document.getElementById('re-hl-date');
   try {
-    const r = await fetch('/api/daily-comment');
+    const r = await fetch('/api/realestate-hub?section=daily-comment');
     const d = await r.json();
     if (d.comment) {
       if (el) el.textContent = d.comment;
@@ -3409,7 +3409,7 @@ async function loadDailyComment() {
 // ── L3: AI 관점 ─────────────────────────────────────────────
 async function loadWeeklyInsight() {
   try {
-    const r = await fetch('/api/weekly-insight');
+    const r = await fetch('/api/realestate-hub?section=weekly-insight');
     const d = await r.json();
     if (!d.title) {
       document.getElementById('re-insight-title').textContent = '이번 주 관점을 준비 중이에요';
@@ -3444,7 +3444,7 @@ async function loadWeeklyInsight() {
 // ── L4: 소식 피드 ───────────────────────────────────────────
 async function loadNewsFeed() {
   try {
-    const r = await fetch('/api/news-feed');
+    const r = await fetch('/api/realestate-hub?section=news-feed');
     const d = await r.json();
     _reFeedCache = d.items || [];
     renderFeedList(_reFeedCache);
