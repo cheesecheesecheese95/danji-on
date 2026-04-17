@@ -449,6 +449,9 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .re-headline::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.06);}
 .re-hl-date{font-size:10px;opacity:0.7;margin-bottom:6px;}
 .re-hl-text{font-size:15px;font-weight:700;line-height:1.5;}
+.re-hl-bullets{margin-top:10px;display:flex;flex-direction:column;gap:5px;}
+.re-hl-bullet{font-size:12px;opacity:0.85;line-height:1.5;padding-left:14px;position:relative;}
+.re-hl-bullet::before{content:'·';position:absolute;left:0;font-weight:800;}
 .re-hl-sub{font-size:11px;opacity:0.6;margin-top:8px;}
 
 /* L3: AI 관점 */
@@ -490,6 +493,11 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .re-nb-right{text-align:right;}
 .re-nb-price{font-size:14px;font-weight:800;color:var(--navy);}
 .re-nb-count{font-size:10px;color:var(--gray-400);margin-top:2px;}
+.re-nb-area{font-size:10px;color:var(--gray-500);margin-top:1px;}
+.re-nb-change{font-size:11px;font-weight:700;margin-top:2px;}
+.re-nb-change.up{color:#E53935;}
+.re-nb-change.down{color:#1E88E5;}
+.re-nb-change.flat{color:var(--gray-400);}
 .re-nb-empty{text-align:center;padding:20px;color:var(--gray-400);font-size:12px;}
 </style>
 <!-- Vercel Analytics -->
@@ -2565,81 +2573,17 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <div class="sec-title">🏠 부동산</div>
         <div class="sec-sub">DMC파크뷰자이 · 동네 부동산 정보</div>
 
-        <!-- ── L1: 오늘의 요지 ── -->
+        <!-- ── L1: 오늘의 브리핑 ── -->
         <div class="re-layer" id="re-layer1">
           <div class="re-headline" id="re-headline">
             <div class="re-hl-date" id="re-hl-date"></div>
             <div class="re-hl-text" id="re-hl-text">불러오는 중…</div>
-            <div class="re-hl-sub">국토교통부 실거래가 기반</div>
+            <div class="re-hl-bullets" id="re-hl-bullets"></div>
+            <div class="re-hl-sub">국토교통부 실거래가 기반 · AI 요약</div>
           </div>
         </div>
 
-        <!-- ── L2: 우리 단지 스냅샷 ── -->
-        <div class="re-layer" id="re-layer2">
-          <div class="re-layer-title"><span class="re-lt-icon">📊</span> 우리 단지 스냅샷</div>
-
-          <!-- 로딩 공지 -->
-          <div class="re-loading-notice">
-            <span style="font-size:15px;flex-shrink:0;">ℹ️</span>
-            <span>처음 접속 시 데이터를 불러오는 데 수 초가 걸릴 수 있습니다.</span>
-          </div>
-
-          <!-- 매매 / 전세 / 월세 탭 -->
-          <div class="re-type-tabs">
-            <button class="re-type-tab active" id="re-tab-trade"   onclick="switchREType('trade')">매매</button>
-            <button class="re-type-tab"        id="re-tab-jeonse"  onclick="switchREType('jeonse')">전세</button>
-            <button class="re-type-tab"        id="re-tab-monthly" onclick="switchREType('monthly')">월세</button>
-          </div>
-
-          <!-- 요약 카드 -->
-          <div class="re-summary" id="re-summary" style="margin-top:0;">
-            <div class="re-sum-card">
-              <div class="re-sum-label">최근 거래</div>
-              <div class="re-sum-val" id="re-latest-price">—</div>
-              <div class="re-sum-sub" id="re-latest-info">불러오는 중</div>
-            </div>
-            <div class="re-sum-card">
-              <div class="re-sum-label">평균가</div>
-              <div class="re-sum-val" id="re-avg-price">—</div>
-              <div class="re-sum-sub" id="re-avg-info">6개월 기준</div>
-            </div>
-            <div class="re-sum-card">
-              <div class="re-sum-label">거래 건수</div>
-              <div class="re-sum-val" id="re-count">—</div>
-              <div class="re-sum-sub">최근 6개월</div>
-            </div>
-          </div>
-
-          <!-- 월별 가격 추이 차트 -->
-          <div class="re-chart-wrap" id="re-chart-wrap" style="display:none;">
-            <div class="re-chart-label" id="re-chart-label">월별 평균가 추이</div>
-            <div id="re-chart"></div>
-          </div>
-
-          <!-- 업데이트 시각 + 출처 -->
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
-            <span class="src-tag o">출처: 국토교통부 실거래가 공개시스템</span>
-            <span class="src-tag" id="re-updated-tag" style="font-size:10px;display:none;"></span>
-            <span class="src-tag" style="font-size:10px;">*동 추정 포함</span>
-          </div>
-
-          <!-- 면적 필터 -->
-          <div class="re-filter-row" id="re-filters">
-            <div class="re-chip active" onclick="filterRE(this,'all')">전체</div>
-          </div>
-
-          <!-- 거래 목록 -->
-          <div class="re-table-wrap">
-            <table class="re-table" id="re-table">
-              <thead id="re-thead"><tr>
-                <th>계약일</th><th>면적</th><th>동/층</th><th>거래금액</th>
-              </tr></thead>
-              <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- ── L3: AI의 관점 ── -->
+        <!-- ── L3: AI의 관점 (주간) ── -->
         <div class="re-layer" id="re-layer3">
           <div class="re-layer-title"><span class="re-lt-icon">🤖</span> AI의 관점</div>
           <div class="re-insight-card" id="re-insight">
@@ -2668,10 +2612,64 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <!-- ── L5: 동네 맥락 ── -->
         <div class="re-layer" id="re-layer5">
           <div class="re-layer-title"><span class="re-lt-icon">🏘️</span> 동네 맥락 · 이웃 단지</div>
+          <div id="re-neighbor-summary" style="display:none;background:var(--navy-bg);border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:12px;color:var(--navy);line-height:1.6;"></div>
           <div class="re-neighbor-grid" id="re-neighbor-grid">
             <div class="re-nb-empty">이웃 단지 데이터를 불러오는 중…</div>
           </div>
           <div style="margin-top:8px;font-size:10px;color:var(--gray-400);text-align:center;">최근 6개월 매매 기준 · 국토교통부 실거래가</div>
+        </div>
+
+        <!-- ── L2: 우리 단지 실거래 내역 ── -->
+        <div class="re-layer" id="re-layer2">
+          <div class="re-layer-title"><span class="re-lt-icon">📊</span> 우리 단지 실거래 내역</div>
+
+          <!-- 매매 / 전세 / 월세 탭 -->
+          <div class="re-type-tabs">
+            <button class="re-type-tab active" id="re-tab-trade"   onclick="switchREType('trade')">매매</button>
+            <button class="re-type-tab"        id="re-tab-jeonse"  onclick="switchREType('jeonse')">전세</button>
+            <button class="re-type-tab"        id="re-tab-monthly" onclick="switchREType('monthly')">월세</button>
+          </div>
+
+          <!-- 요약 카드 -->
+          <div class="re-summary" id="re-summary" style="margin-top:0;">
+            <div class="re-sum-card">
+              <div class="re-sum-label">최근 거래</div>
+              <div class="re-sum-val" id="re-latest-price">—</div>
+              <div class="re-sum-sub" id="re-latest-info">불러오는 중</div>
+            </div>
+            <div class="re-sum-card">
+              <div class="re-sum-label">평균가</div>
+              <div class="re-sum-val" id="re-avg-price">—</div>
+              <div class="re-sum-sub" id="re-avg-info">6개월 기준</div>
+            </div>
+            <div class="re-sum-card">
+              <div class="re-sum-label">거래 건수</div>
+              <div class="re-sum-val" id="re-count">—</div>
+              <div class="re-sum-sub">최근 6개월</div>
+            </div>
+          </div>
+
+          <!-- 업데이트 시각 + 출처 -->
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+            <span class="src-tag o">출처: 국토교통부 실거래가 공개시스템</span>
+            <span class="src-tag" id="re-updated-tag" style="font-size:10px;display:none;"></span>
+            <span class="src-tag" style="font-size:10px;">*동 추정 포함</span>
+          </div>
+
+          <!-- 면적 필터 -->
+          <div class="re-filter-row" id="re-filters">
+            <div class="re-chip active" onclick="filterRE(this,'all')">전체</div>
+          </div>
+
+          <!-- 거래 목록 -->
+          <div class="re-table-wrap">
+            <table class="re-table" id="re-table">
+              <thead id="re-thead"><tr>
+                <th>계약일</th><th>면적</th><th>동/층</th><th>거래금액</th>
+              </tr></thead>
+              <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr></tbody>
+            </table>
+          </div>
         </div>
 
         <!-- 상세 보기 링크 -->
@@ -3390,14 +3388,20 @@ async function loadRealestate() {
 async function loadDailyComment() {
   const el = document.getElementById('re-hl-text');
   const dateEl = document.getElementById('re-hl-date');
+  const bulletsEl = document.getElementById('re-hl-bullets');
   try {
     const r = await fetch('/api/realestate-hub?section=daily-comment');
     const d = await r.json();
-    if (d.comment) {
-      if (el) el.textContent = d.comment;
-      if (dateEl && d.generatedAt) {
-        dateEl.textContent = d.generatedAt.slice(0, 10) + ' 기준';
+    if (d.headline) {
+      if (el) el.textContent = d.headline;
+      if (dateEl && d.generatedAt) dateEl.textContent = d.generatedAt.slice(0, 10) + ' 기준';
+      if (bulletsEl && d.bullets && d.bullets.length) {
+        bulletsEl.innerHTML = d.bullets.map(b => `<div class="re-hl-bullet">${b}</div>`).join('');
       }
+    } else if (d.comment) {
+      // 이전 형식 호환
+      if (el) el.textContent = d.comment;
+      if (dateEl && d.generatedAt) dateEl.textContent = d.generatedAt.slice(0, 10) + ' 기준';
     } else {
       if (el) el.textContent = '오늘의 실거래 요약을 준비 중이에요';
     }
@@ -3494,48 +3498,109 @@ function formatFeedDate(d) {
 // ── L5: 이웃 단지 비교 ─────────────────────────────────────
 async function loadNeighborData() {
   try {
-    const r = await fetch('/api/realestate?type=trade&scope=neighbor');
-    const d = await r.json();
-    const items = d.items || [];
-    renderNeighborGrid(items);
+    const [nbRes, homeRes] = await Promise.all([
+      fetch('/api/realestate?type=trade&scope=neighbor'),
+      fetch('/api/realestate?type=trade&scope=home'),
+    ]);
+    const nbData = await nbRes.json();
+    const homeData = await homeRes.json();
+    renderNeighborGrid(nbData.items || [], homeData.items || []);
   } catch(_) {
     document.getElementById('re-neighbor-grid').innerHTML = '<div class="re-nb-empty">이웃 단지 데이터를 불러올 수 없습니다</div>';
   }
 }
 
-function renderNeighborGrid(items) {
+function renderNeighborGrid(items, homeItems) {
   const el = document.getElementById('re-neighbor-grid');
+  const summaryEl = document.getElementById('re-neighbor-summary');
   if (!el) return;
   if (!items.length) {
     el.innerHTML = '<div class="re-nb-empty">이웃 단지 거래 내역이 없습니다</div>';
     return;
   }
-  // 단지별 집계
+
+  // 홈 단지 면적별 평균가 (비교 기준)
+  const homeByArea = {};
+  homeItems.forEach(i => {
+    const area = Math.round(parseFloat(i.excluUseAr));
+    if (!homeByArea[area]) homeByArea[area] = [];
+    homeByArea[area].push(parseInt((i.dealAmount||'0').replace(/,/g,'')));
+  });
+  const homeAreaAvg = {};
+  Object.entries(homeByArea).forEach(([a, ps]) => {
+    homeAreaAvg[a] = Math.round(ps.reduce((x,y)=>x+y,0)/ps.length);
+  });
+
+  // 단지별 + 면적별 집계
   const byDanji = {};
   items.forEach(i => {
     const name = i.danjiName || i.aptNm;
-    if (!byDanji[name]) byDanji[name] = { prices: [], count: 0, latest: null };
+    const area = Math.round(parseFloat(i.excluUseAr));
     const p = parseInt((i.dealAmount||'0').replace(/,/g,''));
-    byDanji[name].prices.push(p);
+    const dt = `${i.dealYear}.${i.dealMonth.padStart(2,'0')}`;
+    if (!byDanji[name]) byDanji[name] = { areas: {}, count: 0, latestDate: '', latestPrice: 0, latestArea: 0 };
     byDanji[name].count++;
-    const dt = `${i.dealYear}.${i.dealMonth.padStart(2,'0')}.${(i.dealDay||'01').padStart(2,'0')}`;
-    if (!byDanji[name].latest || dt > byDanji[name].latest) byDanji[name].latest = dt;
+    if (!byDanji[name].areas[area]) byDanji[name].areas[area] = [];
+    byDanji[name].areas[area].push(p);
+    const fullDt = `${i.dealYear}.${i.dealMonth.padStart(2,'0')}.${(i.dealDay||'01').padStart(2,'0')}`;
+    if (fullDt > byDanji[name].latestDate) {
+      byDanji[name].latestDate = fullDt;
+      byDanji[name].latestPrice = p;
+      byDanji[name].latestArea = area;
+      byDanji[name].latestMonth = dt;
+    }
   });
 
   const sorted = Object.entries(byDanji).sort((a,b) => b[1].count - a[1].count);
+
+  // 요약 텍스트 생성
+  let summaryParts = [];
   el.innerHTML = sorted.map(([name, data]) => {
-    const avg = Math.round(data.prices.reduce((a,b)=>a+b,0) / data.prices.length);
+    const latestP = data.latestPrice;
+    const latestA = data.latestArea;
+
+    // 같은 면적 우리 단지 대비 비교
+    const closestHomeArea = Object.keys(homeAreaAvg).reduce((best, a) =>
+      Math.abs(a - latestA) < Math.abs(best - latestA) ? a : best, Object.keys(homeAreaAvg)[0] || 0);
+    const homeP = homeAreaAvg[closestHomeArea];
+    let changeHtml = '';
+    let changeText = '';
+    if (homeP && closestHomeArea && Math.abs(closestHomeArea - latestA) <= 10) {
+      const diff = latestP - homeP;
+      const pct = ((diff / homeP) * 100).toFixed(1);
+      const cls = diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat';
+      const sign = diff > 0 ? '+' : '';
+      changeHtml = `<div class="re-nb-change ${cls}">파크뷰자이 대비 ${sign}${pct}%</div>`;
+      changeText = `${name}은 파크뷰자이 ${closestHomeArea}㎡ 대비 ${sign}${pct}%`;
+    }
+
+    // 면적 목록
+    const areaList = Object.entries(data.areas)
+      .sort((a,b) => a[0]-b[0])
+      .map(([a, ps]) => `${a}㎡`)
+      .join(', ');
+
+    if (changeText) summaryParts.push(changeText);
+
     return `<div class="re-nb-card">
       <div class="re-nb-left">
         <div class="re-nb-name">${name}</div>
-        <div class="re-nb-meta">최근 거래 ${data.latest}</div>
+        <div class="re-nb-area">${areaList}</div>
+        <div class="re-nb-meta">${data.latestMonth} · ${data.count}건</div>
       </div>
       <div class="re-nb-right">
-        <div class="re-nb-price">${fmtPrice(avg)}</div>
-        <div class="re-nb-count">${data.count}건 (6개월)</div>
+        <div class="re-nb-price">${fmtPrice(latestP)}</div>
+        <div class="re-nb-count">${latestA}㎡ 최근 거래</div>
+        ${changeHtml}
       </div>
     </div>`;
   }).join('');
+
+  // 요약 블록
+  if (summaryEl && summaryParts.length) {
+    summaryEl.innerHTML = '💡 ' + summaryParts.slice(0, 3).join(' / ');
+    summaryEl.style.display = '';
+  }
 }
 
 function applyREData({ items }) {
@@ -3544,7 +3609,6 @@ function applyREData({ items }) {
     : _reType === 'jeonse'  ? items.filter(i => i.type === 'jeonse')
     : items.filter(i => i.type === 'monthly');
   buildREFilters(_reAllItems);
-  renderREChart(_reAllItems);
   renderRETable(_reAllItems);
   updateRESummary(_reAllItems);
 }
@@ -3698,7 +3762,6 @@ function filterRE(el, area) {
   document.querySelectorAll('#re-filters .re-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   const filtered = area === 'all' ? _reAllItems : _reAllItems.filter(i => Math.round(parseFloat(i.excluUseAr)) == area);
-  renderREChart(filtered);
   renderRETable(filtered);
   updateRESummary(filtered);
 }
