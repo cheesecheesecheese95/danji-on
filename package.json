@@ -1,5 +1,8 @@
 {
   "name": "danji-on",
   "version": "1.0.0",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "acorn": "^8.16.0"
+  }
 }
