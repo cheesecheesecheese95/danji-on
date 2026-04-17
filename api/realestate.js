@@ -1,5 +1,6 @@
 // 실거래가 조회 — Supabase 캐시 우선, fallback 국토부 직접
 // type 파라미터: trade(매매, 기본) | rent(전월세)
+// scope 파라미터: home(기본) | neighbor | all
 export const config = { maxDuration: 25 };
 
 const KEY     = process.env.REALESTATE_KEY;
@@ -13,29 +14,41 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=7200');
 
   const type = req.query?.type === 'rent' ? 'rent' : 'trade';
-  const category = `realestate_${type}`;
+  const scope = req.query?.scope || 'home'; // home | neighbor | all
+
+  // 조회할 카테고리 결정
+  const categories = [];
+  if (scope === 'home' || scope === 'all') categories.push(`realestate_${type}`);
+  if (scope === 'neighbor' || scope === 'all') categories.push(`realestate_neighbor_${type}`);
 
   // ── 1. Supabase 캐시 시도 ──────────────────────────────────
   try {
-    const r = await fetch(
-      `${SB_URL}/rest/v1/wiki_documents?category=eq.${category}&select=body,title&limit=1`,
-      { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }
-    );
-    if (r.ok) {
-      const rows = await r.json();
-      if (rows.length && rows[0].body) {
-        const items = JSON.parse(rows[0].body);
-        return res.status(200).json({
-          items: items.slice(0, 60),
-          total: items.length,
-          updatedAt: rows[0].title, // ISO date
-          source: 'cache',
-        });
+    let allItems = [];
+    let updatedAt = null;
+    for (const category of categories) {
+      const r = await fetch(
+        `${SB_URL}/rest/v1/wiki_documents?category=eq.${category}&select=body,title&limit=1`,
+        { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }
+      );
+      if (r.ok) {
+        const rows = await r.json();
+        if (rows.length && rows[0].body) {
+          allItems.push(...JSON.parse(rows[0].body));
+          if (!updatedAt) updatedAt = rows[0].title;
+        }
       }
+    }
+    if (allItems.length) {
+      return res.status(200).json({
+        items: allItems.slice(0, 100),
+        total: allItems.length,
+        updatedAt,
+        source: 'cache',
+      });
     }
   } catch(_) {}
 
-  // ── 2. Fallback: 국토부 직접 호출 ─────────────────────────
+  // ── 2. Fallback: 국토부 직접 호출 (홈 단지만) ─────────────
   if (!KEY) return res.status(200).json({ error: 'API 키가 설정되지 않았습니다.' });
 
   try {

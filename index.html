@@ -438,6 +438,59 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .re-chart-label{font-size:11px;font-weight:700;color:var(--gray-400);margin-bottom:6px;}
 .re-record{display:inline-block;font-size:9px;font-weight:800;background:#FF3B30;color:#fff;border-radius:4px;padding:1px 5px;margin-right:3px;vertical-align:middle;line-height:1.6;}
 .re-loading-notice{display:flex;align-items:flex-start;gap:9px;background:#EEF4FF;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:#1B3A6B;line-height:1.5;}
+
+/* ── 부동산 허브 5-레이어 ─────────────────────────── */
+.re-layer{margin-bottom:16px;}
+.re-layer-title{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.re-layer-title .re-lt-icon{font-size:15px;}
+
+/* L1: 오늘의 요지 */
+.re-headline{background:linear-gradient(135deg,#1B3A6B 0%,#2D5AA0 100%);border-radius:16px;padding:18px 18px 14px;color:#fff;position:relative;overflow:hidden;}
+.re-headline::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.06);}
+.re-hl-date{font-size:10px;opacity:0.7;margin-bottom:6px;}
+.re-hl-text{font-size:15px;font-weight:700;line-height:1.5;}
+.re-hl-sub{font-size:11px;opacity:0.6;margin-top:8px;}
+
+/* L3: AI 관점 */
+.re-insight-card{background:#fff;border-radius:16px;padding:16px;box-shadow:var(--shadow-sm);}
+.re-insight-title{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.re-insight-summary{font-size:12px;color:var(--gray-500);margin-bottom:12px;}
+.re-perspective{display:flex;gap:8px;padding:8px 0;border-top:1px solid var(--gray-100);}
+.re-perspective:first-child{border-top:none;}
+.re-persp-icon{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px;}
+.re-persp-positive .re-persp-icon{background:#E8F5E9;color:#2E7D32;}
+.re-persp-cautious .re-persp-icon{background:#FFF3E0;color:#E65100;}
+.re-persp-text{font-size:12px;color:var(--gray-700);line-height:1.6;}
+.re-insight-context{font-size:11px;color:var(--gray-500);line-height:1.6;margin-top:10px;padding:10px;background:var(--gray-50);border-radius:10px;}
+.re-insight-disclaimer{font-size:10px;color:var(--gray-400);margin-top:10px;text-align:center;font-style:italic;}
+
+/* L4: 소식 피드 */
+.re-feed-tabs{display:flex;gap:0;background:var(--gray-50);border-radius:10px;padding:3px;margin-bottom:10px;}
+.re-feed-tab{flex:1;padding:7px 4px;border:none;background:none;border-radius:8px;font-size:11px;font-weight:700;color:var(--gray-400);cursor:pointer;font-family:inherit;transition:all .15s;}
+.re-feed-tab.active{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+.re-feed-list{display:flex;flex-direction:column;gap:2px;}
+.re-feed-item{display:flex;gap:10px;padding:10px 12px;background:#fff;border-radius:12px;text-decoration:none;transition:background .15s;}
+.re-feed-item:active{background:var(--gray-50);}
+.re-feed-type{flex-shrink:0;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;height:fit-content;margin-top:2px;}
+.re-feed-type.news{background:#E3F0FF;color:var(--blue);}
+.re-feed-type.blog{background:#E8F5E9;color:#2E7D32;}
+.re-feed-type.cafe{background:#FFF3E0;color:#E65100;}
+.re-feed-body{flex:1;min-width:0;}
+.re-feed-title{font-size:12px;font-weight:600;color:var(--gray-800);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.re-feed-desc{font-size:11px;color:var(--gray-400);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.re-feed-date{font-size:10px;color:var(--gray-300);margin-top:3px;}
+.re-feed-empty{text-align:center;padding:24px;color:var(--gray-400);font-size:12px;}
+
+/* L5: 이웃 단지 비교 */
+.re-neighbor-grid{display:flex;flex-direction:column;gap:8px;}
+.re-nb-card{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;align-items:center;justify-content:space-between;}
+.re-nb-left{display:flex;flex-direction:column;gap:2px;}
+.re-nb-name{font-size:13px;font-weight:700;color:var(--gray-800);}
+.re-nb-meta{font-size:10px;color:var(--gray-400);}
+.re-nb-right{text-align:right;}
+.re-nb-price{font-size:14px;font-weight:800;color:var(--navy);}
+.re-nb-count{font-size:10px;color:var(--gray-400);margin-top:2px;}
+.re-nb-empty{text-align:center;padding:20px;color:var(--gray-400);font-size:12px;}
 </style>
 <!-- Vercel Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
@@ -542,7 +595,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </button>
           <button class="qbtn" onclick="goPage('realestate')">
             <span class="q-icon">🏠</span>
-            <span class="q-texts"><span class="q-label">실거래가</span><span class="q-sub">매매·전월세 실거래</span></span>
+            <span class="q-texts"><span class="q-label">부동산</span><span class="q-sub">실거래·소식·AI관점</span></span>
           </button>
           <button class="qbtn" onclick="goPage('news')">
             <span class="q-icon">📢</span>
@@ -2505,71 +2558,120 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
     </div>
 
-    <!-- ═══ 실거래가 ═══ -->
+    <!-- ═══ 부동산 정보 허브 ═══ -->
     <div class="page" id="page-realestate">
       <div class="sec" style="padding-top:20px;padding-bottom:32px;">
         <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
-        <div class="sec-title">🏠 실거래가</div>
-        <div class="sec-sub">DMC파크뷰자이 · 최근 6개월</div>
+        <div class="sec-title">🏠 부동산</div>
+        <div class="sec-sub">DMC파크뷰자이 · 동네 부동산 정보</div>
 
-        <!-- 로딩 공지 -->
-        <div class="re-loading-notice">
-          <span style="font-size:15px;flex-shrink:0;">ℹ️</span>
-          <span>처음 접속 시 데이터를 불러오는 데 수 초가 걸릴 수 있습니다. 잠시 기다려 주세요.</span>
-        </div>
-
-        <!-- 매매 / 전세 / 월세 탭 -->
-        <div class="re-type-tabs">
-          <button class="re-type-tab active" id="re-tab-trade"   onclick="switchREType('trade')">매매</button>
-          <button class="re-type-tab"        id="re-tab-jeonse"  onclick="switchREType('jeonse')">전세</button>
-          <button class="re-type-tab"        id="re-tab-monthly" onclick="switchREType('monthly')">월세</button>
-        </div>
-
-        <!-- 요약 카드 -->
-        <div class="re-summary" id="re-summary" style="margin-top:0;">
-          <div class="re-sum-card">
-            <div class="re-sum-label">최근 거래</div>
-            <div class="re-sum-val" id="re-latest-price">—</div>
-            <div class="re-sum-sub" id="re-latest-info">불러오는 중</div>
-          </div>
-          <div class="re-sum-card">
-            <div class="re-sum-label">평균가</div>
-            <div class="re-sum-val" id="re-avg-price">—</div>
-            <div class="re-sum-sub" id="re-avg-info">6개월 기준</div>
-          </div>
-          <div class="re-sum-card">
-            <div class="re-sum-label">거래 건수</div>
-            <div class="re-sum-val" id="re-count">—</div>
-            <div class="re-sum-sub">최근 6개월</div>
+        <!-- ── L1: 오늘의 요지 ── -->
+        <div class="re-layer" id="re-layer1">
+          <div class="re-headline" id="re-headline">
+            <div class="re-hl-date" id="re-hl-date"></div>
+            <div class="re-hl-text" id="re-hl-text">불러오는 중…</div>
+            <div class="re-hl-sub">국토교통부 실거래가 기반</div>
           </div>
         </div>
 
-        <!-- 월별 가격 추이 차트 -->
-        <div class="re-chart-wrap" id="re-chart-wrap" style="display:none;">
-          <div class="re-chart-label" id="re-chart-label">월별 평균가 추이</div>
-          <div id="re-chart"></div>
+        <!-- ── L2: 우리 단지 스냅샷 ── -->
+        <div class="re-layer" id="re-layer2">
+          <div class="re-layer-title"><span class="re-lt-icon">📊</span> 우리 단지 스냅샷</div>
+
+          <!-- 로딩 공지 -->
+          <div class="re-loading-notice">
+            <span style="font-size:15px;flex-shrink:0;">ℹ️</span>
+            <span>처음 접속 시 데이터를 불러오는 데 수 초가 걸릴 수 있습니다.</span>
+          </div>
+
+          <!-- 매매 / 전세 / 월세 탭 -->
+          <div class="re-type-tabs">
+            <button class="re-type-tab active" id="re-tab-trade"   onclick="switchREType('trade')">매매</button>
+            <button class="re-type-tab"        id="re-tab-jeonse"  onclick="switchREType('jeonse')">전세</button>
+            <button class="re-type-tab"        id="re-tab-monthly" onclick="switchREType('monthly')">월세</button>
+          </div>
+
+          <!-- 요약 카드 -->
+          <div class="re-summary" id="re-summary" style="margin-top:0;">
+            <div class="re-sum-card">
+              <div class="re-sum-label">최근 거래</div>
+              <div class="re-sum-val" id="re-latest-price">—</div>
+              <div class="re-sum-sub" id="re-latest-info">불러오는 중</div>
+            </div>
+            <div class="re-sum-card">
+              <div class="re-sum-label">평균가</div>
+              <div class="re-sum-val" id="re-avg-price">—</div>
+              <div class="re-sum-sub" id="re-avg-info">6개월 기준</div>
+            </div>
+            <div class="re-sum-card">
+              <div class="re-sum-label">거래 건수</div>
+              <div class="re-sum-val" id="re-count">—</div>
+              <div class="re-sum-sub">최근 6개월</div>
+            </div>
+          </div>
+
+          <!-- 월별 가격 추이 차트 -->
+          <div class="re-chart-wrap" id="re-chart-wrap" style="display:none;">
+            <div class="re-chart-label" id="re-chart-label">월별 평균가 추이</div>
+            <div id="re-chart"></div>
+          </div>
+
+          <!-- 업데이트 시각 + 출처 -->
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+            <span class="src-tag o">출처: 국토교통부 실거래가 공개시스템</span>
+            <span class="src-tag" id="re-updated-tag" style="font-size:10px;display:none;"></span>
+            <span class="src-tag" style="font-size:10px;">*동 추정 포함</span>
+          </div>
+
+          <!-- 면적 필터 -->
+          <div class="re-filter-row" id="re-filters">
+            <div class="re-chip active" onclick="filterRE(this,'all')">전체</div>
+          </div>
+
+          <!-- 거래 목록 -->
+          <div class="re-table-wrap">
+            <table class="re-table" id="re-table">
+              <thead id="re-thead"><tr>
+                <th>계약일</th><th>면적</th><th>동/층</th><th>거래금액</th>
+              </tr></thead>
+              <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr></tbody>
+            </table>
+          </div>
         </div>
 
-        <!-- 업데이트 시각 + 출처 -->
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
-          <span class="src-tag o">출처: 국토교통부 실거래가 공개시스템</span>
-          <span class="src-tag" id="re-updated-tag" style="font-size:10px;display:none;"></span>
-          <span class="src-tag" style="font-size:10px;">*동 추정 포함</span>
+        <!-- ── L3: AI의 관점 ── -->
+        <div class="re-layer" id="re-layer3">
+          <div class="re-layer-title"><span class="re-lt-icon">🤖</span> AI의 관점</div>
+          <div class="re-insight-card" id="re-insight">
+            <div class="re-insight-title" id="re-insight-title">관점을 준비 중이에요</div>
+            <div class="re-insight-summary" id="re-insight-summary"></div>
+            <div id="re-insight-perspectives"></div>
+            <div class="re-insight-context" id="re-insight-context" style="display:none;"></div>
+            <div class="re-insight-disclaimer" id="re-insight-disclaimer"></div>
+          </div>
         </div>
 
-        <!-- 면적 필터 -->
-        <div class="re-filter-row" id="re-filters">
-          <div class="re-chip active" onclick="filterRE(this,'all')">전체</div>
+        <!-- ── L4: 오늘의 소식 피드 ── -->
+        <div class="re-layer" id="re-layer4">
+          <div class="re-layer-title"><span class="re-lt-icon">📰</span> 오늘의 소식</div>
+          <div class="re-feed-tabs">
+            <button class="re-feed-tab active" onclick="switchFeedTab(this,'all')">전체</button>
+            <button class="re-feed-tab" onclick="switchFeedTab(this,'news')">뉴스</button>
+            <button class="re-feed-tab" onclick="switchFeedTab(this,'blog')">블로그</button>
+            <button class="re-feed-tab" onclick="switchFeedTab(this,'cafe')">카페</button>
+          </div>
+          <div class="re-feed-list" id="re-feed-list">
+            <div class="re-feed-empty">소식을 불러오는 중…</div>
+          </div>
         </div>
 
-        <!-- 거래 목록 -->
-        <div class="re-table-wrap">
-          <table class="re-table" id="re-table">
-            <thead id="re-thead"><tr>
-              <th>계약일</th><th>면적</th><th>동/층</th><th>거래금액</th>
-            </tr></thead>
-            <tbody id="re-tbody"><tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr></tbody>
-          </table>
+        <!-- ── L5: 동네 맥락 ── -->
+        <div class="re-layer" id="re-layer5">
+          <div class="re-layer-title"><span class="re-lt-icon">🏘️</span> 동네 맥락 · 이웃 단지</div>
+          <div class="re-neighbor-grid" id="re-neighbor-grid">
+            <div class="re-nb-empty">이웃 단지 데이터를 불러오는 중…</div>
+          </div>
+          <div style="margin-top:8px;font-size:10px;color:var(--gray-400);text-align:center;">최근 6개월 매매 기준 · 국토교통부 실거래가</div>
         </div>
 
         <!-- 상세 보기 링크 -->
@@ -2754,7 +2856,7 @@ const appPages = [
   { kw:['소식','공지','회의록','대표회의'], page:'news', icon:'📢', label:'단지 소식', sub:'입주자대표회의 결정사항' },
   { kw:['응급','병원','응급실','야간약국','약국'], page:'emergency', icon:'🏥', label:'응급의료', sub:'응급실·야간약국' },
   { kw:['입주민','인증','세대','호수'], page:'register', icon:'🔑', label:'입주민 인증', sub:'동·호수·연락처 등록' },
-  { kw:['실거래','매매','거래가','시세'], page:'realestate', icon:'🏠', label:'실거래가', sub:'최근 6개월 매매 실거래' },
+  { kw:['실거래','매매','거래가','시세','부동산','전세','월세'], page:'realestate', icon:'🏠', label:'부동산', sub:'실거래·소식·AI관점' },
   { kw:['faq','자주묻는','민원','신고'], page:'faq', icon:'❓', label:'자주 찾는 질문', sub:'734건 기반 20개 항목' },
 ];
 
@@ -3240,36 +3342,200 @@ function goFeeTab(idx,btn){
 
 // ── 날씨·환경 대시보드 ────────────────────────────────────────
 
-// ── 실거래가 ─────────────────────────────────────────────────
+// ── 부동산 허브 ──────────────────────────────────────────────
 
 const _reCache = { trade: null, rent: null }; // 매매 / 전세+월세
 let _reType = 'trade'; // 현재 탭
 let _reAllItems = [];   // 현재 탭 전체 아이템
+let _reFeedCache = null; // 소식 피드 캐시
+let _reFeedFilter = 'all';
+let _reHubLoaded = false; // 전체 허브 로드 여부
 
 async function loadRealestate() {
+  // L2: 기존 스냅샷 로드
   if (_reCache[_reType === 'trade' ? 'trade' : 'rent']) {
     applyREData(_reCache[_reType === 'trade' ? 'trade' : 'rent']);
-    return;
+  } else {
+    document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr>';
+    try {
+      const apiType = _reType === 'trade' ? 'trade' : 'rent';
+      const r = await fetch(`/api/realestate?type=${apiType}`);
+      const d = await r.json();
+      if (d.error) {
+        document.getElementById('re-tbody').innerHTML = `<tr><td colspan="4" class="re-empty">⚠️ ${d.error}</td></tr>`;
+      } else {
+        _reCache[apiType] = { items: d.items || [], updatedAt: d.updatedAt };
+        if (d.updatedAt) {
+          const tag = document.getElementById('re-updated-tag');
+          if (tag) { tag.textContent = `업데이트: ${d.updatedAt}`; tag.style.display=''; }
+        }
+        applyREData(_reCache[apiType]);
+      }
+    } catch(e) {
+      document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">데이터를 불러올 수 없습니다.</td></tr>';
+    }
   }
-  document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr>';
+
+  // 나머지 레이어는 최초 1회만 로드
+  if (!_reHubLoaded) {
+    _reHubLoaded = true;
+    loadDailyComment();
+    loadWeeklyInsight();
+    loadNewsFeed();
+    loadNeighborData();
+  }
+}
+
+// ── L1: 오늘의 한 줄 ────────────────────────────────────────
+async function loadDailyComment() {
+  const el = document.getElementById('re-hl-text');
+  const dateEl = document.getElementById('re-hl-date');
   try {
-    const apiType = _reType === 'trade' ? 'trade' : 'rent';
-    const r = await fetch(`/api/realestate?type=${apiType}`);
+    const r = await fetch('/api/daily-comment');
     const d = await r.json();
-    if (d.error) {
-      document.getElementById('re-tbody').innerHTML = `<tr><td colspan="4" class="re-empty">⚠️ ${d.error}</td></tr>`;
+    if (d.comment) {
+      if (el) el.textContent = d.comment;
+      if (dateEl && d.generatedAt) {
+        dateEl.textContent = d.generatedAt.slice(0, 10) + ' 기준';
+      }
+    } else {
+      if (el) el.textContent = '오늘의 실거래 요약을 준비 중이에요';
+    }
+  } catch(_) {
+    if (el) el.textContent = '데이터를 불러올 수 없습니다';
+  }
+}
+
+// ── L3: AI 관점 ─────────────────────────────────────────────
+async function loadWeeklyInsight() {
+  try {
+    const r = await fetch('/api/weekly-insight');
+    const d = await r.json();
+    if (!d.title) {
+      document.getElementById('re-insight-title').textContent = '이번 주 관점을 준비 중이에요';
       return;
     }
-    _reCache[apiType] = { items: d.items || [], updatedAt: d.updatedAt };
-    // 업데이트 시각 표시
-    if (d.updatedAt) {
-      const tag = document.getElementById('re-updated-tag');
-      if (tag) { tag.textContent = `업데이트: ${d.updatedAt}`; tag.style.display=''; }
+    document.getElementById('re-insight-title').textContent = d.title;
+    document.getElementById('re-insight-summary').textContent = d.summary || '';
+
+    const perspEl = document.getElementById('re-insight-perspectives');
+    if (perspEl && d.perspectives) {
+      perspEl.innerHTML = d.perspectives.map(p => `
+        <div class="re-perspective re-persp-${p.direction}">
+          <div class="re-persp-icon">${p.direction === 'positive' ? '📈' : '📉'}</div>
+          <div class="re-persp-text">${p.text}</div>
+        </div>
+      `).join('');
     }
-    applyREData(_reCache[apiType]);
-  } catch(e) {
-    document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">데이터를 불러올 수 없습니다.</td></tr>';
+
+    const ctxEl = document.getElementById('re-insight-context');
+    if (ctxEl && d.context) {
+      ctxEl.textContent = d.context;
+      ctxEl.style.display = '';
+    }
+
+    const discEl = document.getElementById('re-insight-disclaimer');
+    if (discEl) discEl.textContent = d.disclaimer || '부동산 거래는 전문가 상담을 권장합니다';
+  } catch(_) {
+    document.getElementById('re-insight-title').textContent = '관점을 불러올 수 없습니다';
   }
+}
+
+// ── L4: 소식 피드 ───────────────────────────────────────────
+async function loadNewsFeed() {
+  try {
+    const r = await fetch('/api/news-feed');
+    const d = await r.json();
+    _reFeedCache = d.items || [];
+    renderFeedList(_reFeedCache);
+  } catch(_) {
+    document.getElementById('re-feed-list').innerHTML = '<div class="re-feed-empty">소식을 불러올 수 없습니다</div>';
+  }
+}
+
+function switchFeedTab(el, type) {
+  document.querySelectorAll('.re-feed-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  _reFeedFilter = type;
+  if (!_reFeedCache) return;
+  const filtered = type === 'all' ? _reFeedCache : _reFeedCache.filter(i => i.type === type);
+  renderFeedList(filtered);
+}
+
+function renderFeedList(items) {
+  const el = document.getElementById('re-feed-list');
+  if (!el) return;
+  if (!items.length) {
+    el.innerHTML = '<div class="re-feed-empty">관련 소식이 없습니다</div>';
+    return;
+  }
+  el.innerHTML = items.slice(0, 15).map(item => {
+    const typeLabel = { news: '뉴스', blog: '블로그', cafe: '카페' }[item.type] || item.type;
+    const date = formatFeedDate(item.pubDate);
+    return `<a class="re-feed-item" href="${item.link}" target="_blank" rel="noopener">
+      <span class="re-feed-type ${item.type}">${typeLabel}</span>
+      <div class="re-feed-body">
+        <div class="re-feed-title">${item.title}</div>
+        <div class="re-feed-desc">${item.description || ''}</div>
+        <div class="re-feed-date">${date}${item.bloggerName ? ' · '+item.bloggerName : ''}${item.cafeName ? ' · '+item.cafeName : ''}</div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+function formatFeedDate(d) {
+  if (!d) return '';
+  // YYYYMMDD (블로그) 또는 RFC 2822 (뉴스)
+  if (/^\d{8}$/.test(d)) return `${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}`;
+  try { const dt = new Date(d); return `${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,'0')}.${String(dt.getDate()).padStart(2,'0')}`; }
+  catch(_) { return d; }
+}
+
+// ── L5: 이웃 단지 비교 ─────────────────────────────────────
+async function loadNeighborData() {
+  try {
+    const r = await fetch('/api/realestate?type=trade&scope=neighbor');
+    const d = await r.json();
+    const items = d.items || [];
+    renderNeighborGrid(items);
+  } catch(_) {
+    document.getElementById('re-neighbor-grid').innerHTML = '<div class="re-nb-empty">이웃 단지 데이터를 불러올 수 없습니다</div>';
+  }
+}
+
+function renderNeighborGrid(items) {
+  const el = document.getElementById('re-neighbor-grid');
+  if (!el) return;
+  if (!items.length) {
+    el.innerHTML = '<div class="re-nb-empty">이웃 단지 거래 내역이 없습니다</div>';
+    return;
+  }
+  // 단지별 집계
+  const byDanji = {};
+  items.forEach(i => {
+    const name = i.danjiName || i.aptNm;
+    if (!byDanji[name]) byDanji[name] = { prices: [], count: 0, latest: null };
+    const p = parseInt((i.dealAmount||'0').replace(/,/g,''));
+    byDanji[name].prices.push(p);
+    byDanji[name].count++;
+    const dt = `${i.dealYear}.${i.dealMonth.padStart(2,'0')}.${(i.dealDay||'01').padStart(2,'0')}`;
+    if (!byDanji[name].latest || dt > byDanji[name].latest) byDanji[name].latest = dt;
+  });
+
+  const sorted = Object.entries(byDanji).sort((a,b) => b[1].count - a[1].count);
+  el.innerHTML = sorted.map(([name, data]) => {
+    const avg = Math.round(data.prices.reduce((a,b)=>a+b,0) / data.prices.length);
+    return `<div class="re-nb-card">
+      <div class="re-nb-left">
+        <div class="re-nb-name">${name}</div>
+        <div class="re-nb-meta">최근 거래 ${data.latest}</div>
+      </div>
+      <div class="re-nb-right">
+        <div class="re-nb-price">${fmtPrice(avg)}</div>
+        <div class="re-nb-count">${data.count}건 (6개월)</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function applyREData({ items }) {
