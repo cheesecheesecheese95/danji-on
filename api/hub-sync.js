@@ -127,59 +127,100 @@ async function runNewsSync() {
 // JOB 2: 오늘의 한 줄
 // ═══════════════════════════════════════════════════════════════
 const DAILY_SYSTEM = `당신은 DMC파크뷰자이(4,300세대) 아파트 입주민 커뮤니티 앱의 부동산 데이터 요약 봇입니다.
+
+역할: 매매·전세·월세 실거래 데이터를 종합해 입주민이 한눈에 시장 분위기를 파악할 수 있는 "오늘의 브리핑"을 작성합니다.
+
 규칙:
-- 반드시 20~40자 이내 한 문장
-- 팩트 기반, 매수/매도 추천 금지, 가격 예측 금지
+- 팩트 기반 — 데이터에 있는 수치만 인용
+- 매수/매도 추천 금지, 가격 예측 금지
 - "~했어요", "~이에요" 부드러운 톤
-- 거래가 없으면 "어제는 새로운 거래 등록이 없었어요"`;
+
+출력 형식 (JSON만, 마크다운 없이):
+{
+  "headline": "핵심 한 줄 (30~50자)",
+  "bullets": [
+    "매매 관련 요약 (가격 변동, 거래량 등)",
+    "전세·월세 관련 요약 (매물 유무, 보증금 수준 등)",
+    "종합 시장 분위기 한 줄"
+  ]
+}`;
 
 async function runDailyComment() {
-  const [tradeItems, rentItems] = await Promise.all([
+  const [tradeItems, rentItems, neighborTrade] = await Promise.all([
     loadCache('realestate_trade'),
     loadCache('realestate_rent'),
+    loadCache('realestate_neighbor_trade'),
   ]);
 
   const toDateStr = (i) => `${i.dealYear}${i.dealMonth.padStart(2,'0')}${(i.dealDay||'01').padStart(2,'0')}`;
+  const parsePrice = (s) => parseInt((s||'0').replace(/,/g,''));
   const today = new Date();
   const weekAgo = new Date(today); weekAgo.setDate(today.getDate()-7);
+  const monthAgo = new Date(today); monthAgo.setMonth(today.getMonth()-1);
   const wd = `${weekAgo.getFullYear()}${String(weekAgo.getMonth()+1).padStart(2,'0')}${String(weekAgo.getDate()).padStart(2,'0')}`;
+  const md = `${monthAgo.getFullYear()}${String(monthAgo.getMonth()+1).padStart(2,'0')}${String(monthAgo.getDate()).padStart(2,'0')}`;
 
+  // 매매 분석
+  const recentTrade = tradeItems.slice(0, 10);
   const weekTrade = tradeItems.filter(i => toDateStr(i) >= wd);
-  const recentTrade = tradeItems.slice(0, 5);
-  const priceInfo = recentTrade.map(i => ({
-    area: `${Math.round(parseFloat(i.excluUseAr))}㎡`,
-    price: i.dealAmount?.trim(),
-    date: `${i.dealYear}.${i.dealMonth}.${i.dealDay}`,
-    floor: i.floor,
-  }));
+  const monthTrade = tradeItems.filter(i => toDateStr(i) >= md);
 
-  let priceChange = null;
-  if (recentTrade.length >= 2) {
-    const latest = recentTrade[0];
-    const latestArea = Math.round(parseFloat(latest.excluUseAr));
-    const prev = recentTrade.find((t,idx) => idx > 0 && Math.round(parseFloat(t.excluUseAr)) === latestArea);
-    if (prev) {
-      const p1 = parseInt((latest.dealAmount||'0').replace(/,/g,''));
-      const p2 = parseInt((prev.dealAmount||'0').replace(/,/g,''));
-      if (p2 > 0) priceChange = { area:`${latestArea}㎡`, current:p1, previous:p2, pct:((p1-p2)/p2*100).toFixed(1) };
-    }
+  // 면적별 최근 가격
+  const byArea = {};
+  for (const i of recentTrade) {
+    const area = Math.round(parseFloat(i.excluUseAr));
+    if (!byArea[area]) byArea[area] = [];
+    byArea[area].push({ price: parsePrice(i.dealAmount), date: `${i.dealYear}.${i.dealMonth}.${i.dealDay}`, floor: i.floor });
   }
+  const areaStats = Object.entries(byArea).map(([area, items]) => {
+    const prices = items.map(x => x.price);
+    let change = null;
+    if (items.length >= 2) {
+      change = ((items[0].price - items[1].price) / items[1].price * 100).toFixed(1);
+    }
+    return { area: `${area}㎡`, latest: items[0], count: items.length, avg: Math.round(prices.reduce((a,b)=>a+b,0)/prices.length), change };
+  });
 
-  const summary = { week:{ trade:weekTrade.length }, recentPrices:priceInfo, priceChange, totalTrade:tradeItems.length };
+  // 전세·월세 분석
+  const jeonse = rentItems.filter(i => i.type === 'jeonse');
+  const monthly = rentItems.filter(i => i.type === 'monthly');
+  const weekJeonse = jeonse.filter(i => toDateStr(i) >= wd);
+  const weekMonthly = monthly.filter(i => toDateStr(i) >= wd);
+
+  // 이웃 단지 이번 주 거래
+  const weekNeighbor = neighborTrade.filter(i => toDateStr(i) >= wd);
+
+  const summary = {
+    trade: {
+      total6m: tradeItems.length,
+      thisWeek: weekTrade.length,
+      thisMonth: monthTrade.length,
+      byArea: areaStats,
+    },
+    rent: {
+      jeonse: { total6m: jeonse.length, thisWeek: weekJeonse.length, recentDeposit: jeonse.length ? fmtPrice(parsePrice(jeonse[0].deposit)) : '없음' },
+      monthly: { total6m: monthly.length, thisWeek: weekMonthly.length },
+    },
+    neighborThisWeek: weekNeighbor.length,
+  };
 
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method:'POST',
     headers:{ 'x-api-key':CLAUDE_KEY, 'anthropic-version':'2023-06-01', 'content-type':'application/json' },
     body: JSON.stringify({
-      model:'claude-haiku-4-5-20251001', max_tokens:100, system:DAILY_SYSTEM,
-      messages:[{ role:'user', content:`DMC파크뷰자이 최근 실거래 요약:\n${JSON.stringify(summary,null,2)}\n\n한 줄 코멘트만 출력. 따옴표 없이.` }],
+      model:'claude-haiku-4-5-20251001', max_tokens:300, system:DAILY_SYSTEM,
+      messages:[{ role:'user', content:`DMC파크뷰자이 실거래 종합 데이터:\n${JSON.stringify(summary,null,2)}` }],
     }),
   });
   if (!r.ok) throw new Error(`Claude API: ${await r.text()}`);
   const data = await r.json();
-  const comment = data.content?.[0]?.text || '오늘의 실거래 요약을 준비 중이에요';
+  const text = (data.content?.[0]?.text || '').replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
 
-  const result = { comment, summary, generatedAt: new Date().toISOString() };
+  let parsed;
+  try { parsed = JSON.parse(text); }
+  catch(_) { parsed = { headline: text.slice(0, 60), bullets: [] }; }
+
+  const result = { ...parsed, summary, generatedAt: new Date().toISOString() };
   await saveCache('realestate_daily_comment', result);
   return result;
 }
