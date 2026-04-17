@@ -330,19 +330,35 @@ async function runHogangnono() {
     const id = danji.hgnnId;
 
     // 순차 호출 (rate limit 방지, 단지당 3 API)
-    const [itemSummary, visitor, roomTypes] = await Promise.all([
-      hgnnFetch(`/${id}/item-summary`),
+    const [items, visitor, roomTypes] = await Promise.all([
+      hgnnFetch(`/${id}/items`),
       hgnnFetch(`/${id}/visitor`),
       hgnnFetch(`/${id}/room-types`),
     ]);
 
-    // 매물 수
-    const listings = itemSummary ? {
-      trade: itemSummary.tradeCount || 0,
-      deposit: itemSummary.depositCount || 0,
-      rent: itemSummary.rentCount || 0,
-      total: (itemSummary.tradeCount||0) + (itemSummary.depositCount||0) + (itemSummary.rentCount||0),
-    } : null;
+    // 매물 수 + 상세 (items API: tradeType 0=매매, 1=전세, 2=월세)
+    const aptItems = items?.aptItems || [];
+    const tradeItems = aptItems.filter(i => i.tradeType === 0);
+    const depositItems = aptItems.filter(i => i.tradeType === 1);
+    const rentItems = aptItems.filter(i => i.tradeType === 2);
+    const listings = {
+      trade: tradeItems.length,
+      deposit: depositItems.length,
+      rent: rentItems.length,
+      total: aptItems.length,
+      items: aptItems.slice(0, 10).map(i => ({
+        tradeType: i.tradeType, // 0=매매, 1=전세, 2=월세
+        deposit: i.deposit,     // 매매가 or 보증금 (만원)
+        rent: i.rent,           // 월세 (만원, 0이면 매매/전세)
+        floor: i.floor,
+        sizeM2: i.sizeM2,       // 전용면적
+        sizeContractM2: i.sizeContractM2, // 계약면적
+        roomType: i.danjiRoomType,
+        dong: i.areaBuildingName,
+        description: i.description,
+        updatedAt: i.effectivenessUpdatedAt,
+      })),
+    };
 
     // 매물 비율
     const listingRate = listings
