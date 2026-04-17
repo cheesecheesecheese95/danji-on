@@ -50,7 +50,7 @@ export default async function handler(req, res) {
         'realestate_daily_comment', 'realestate_weekly_insight',
         'news_feed_news', 'news_feed_blog', 'news_feed_cafe',
         'realestate_trade', 'realestate_rent',
-        'realestate_neighbor_trade',
+        'realestate_neighbor_trade', 'hogangnono_data',
       ];
       const results = await Promise.all(cats.map(async cat => {
         const r = await fetch(
@@ -70,6 +70,7 @@ export default async function handler(req, res) {
         homeTrade: results[5] || [],
         homeRent: results[6] || [],
         neighborTrade: results[7] || [],
+        hogangnono: results[8],
       });
     } catch (err) {
       return res.status(500).json({ error: err.message });

@@ -308,6 +308,86 @@ async function runWeeklyInsight() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// JOB 4: 호갱노노 데이터 수집
+// ═══════════════════════════════════════════════════════════════
+const HGNN_BASE = 'https://hogangnono.com/api/v2/apts';
+const HGNN_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36';
+
+async function hgnnFetch(path) {
+  const r = await fetch(`${HGNN_BASE}${path}`, {
+    headers: { 'User-Agent': HGNN_UA, 'Accept': 'application/json' },
+  });
+  if (!r.ok) return null;
+  return r.json();
+}
+
+async function runHogangnono() {
+  const results = [];
+
+  for (const danji of DANJI_MASTER) {
+    if (!danji.hgnnId) continue;
+    const id = danji.hgnnId;
+
+    // 순차 호출 (rate limit 방지, 단지당 3 API)
+    const [itemSummary, visitor, roomTypes] = await Promise.all([
+      hgnnFetch(`/${id}/item-summary`),
+      hgnnFetch(`/${id}/visitor`),
+      hgnnFetch(`/${id}/room-types`),
+    ]);
+
+    // 매물 수
+    const listings = itemSummary ? {
+      trade: itemSummary.tradeCount || 0,
+      deposit: itemSummary.depositCount || 0,
+      rent: itemSummary.rentCount || 0,
+      total: (itemSummary.tradeCount||0) + (itemSummary.depositCount||0) + (itemSummary.rentCount||0),
+    } : null;
+
+    // 매물 비율
+    const listingRate = listings
+      ? ((listings.total / danji.sedaeCount) * 100).toFixed(2)
+      : null;
+
+    // 관심도 (최근 7일 평균 조회수)
+    let avgVisitors = null;
+    if (visitor && Array.isArray(visitor)) {
+      const recent7 = visitor.slice(-7);
+      if (recent7.length) {
+        avgVisitors = Math.round(recent7.reduce((a, v) => a + (v.count || 0), 0) / recent7.length);
+      }
+    }
+
+    // 평형 타입
+    const areas = roomTypes
+      ? (Array.isArray(roomTypes) ? roomTypes : []).map(rt => ({
+          code: rt.roomTypeCode || rt.areaNo,
+          area: rt.area || rt.supplyArea,
+          exclusiveArea: rt.exclusiveArea || rt.privateArea,
+        })).filter(a => a.area || a.exclusiveArea)
+      : [];
+
+    results.push({
+      danjiId: danji.id,
+      danjiName: danji.name,
+      hgnnId: id,
+      sedaeCount: danji.sedaeCount,
+      isHome: danji.isHome,
+      listings,
+      listingRate,
+      avgVisitors,
+      areas,
+      hgnnUrl: `https://hogangnono.com/apt/${id}`,
+    });
+
+    // rate limit: 단지 간 300ms 대기
+    await new Promise(r => setTimeout(r, 300));
+  }
+
+  await saveCache('hogangnono_data', { items: results, updatedAt: new Date().toISOString() });
+  return { count: results.length, items: results };
+}
+
+// ═══════════════════════════════════════════════════════════════
 // 핸들러
 // ═══════════════════════════════════════════════════════════════
 export default async function handler(req, res) {
@@ -330,6 +410,10 @@ export default async function handler(req, res) {
     if (job === 'weekly-insight' || job === 'all') {
       if (!CLAUDE_KEY) return res.status(500).json({ error: 'ANTHROPIC_API_KEY 미설정' });
       results.weeklyInsight = await runWeeklyInsight();
+    }
+
+    if (job === 'hogangnono' || job === 'all') {
+      results.hogangnono = await runHogangnono();
     }
 
     return res.status(200).json({ ok: true, job, ...results, updatedAt: new Date().toISOString() });

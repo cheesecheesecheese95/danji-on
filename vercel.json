@@ -5,7 +5,8 @@
     { "path": "/api/realestate-sync",     "schedule": "0 22 * * *" },
     { "path": "/api/hub-sync?job=news",           "schedule": "0 21 * * *" },
     { "path": "/api/hub-sync?job=daily-comment",  "schedule": "0 21 * * *" },
-    { "path": "/api/hub-sync?job=weekly-insight",  "schedule": "30 21 * * 0" }
+    { "path": "/api/hub-sync?job=weekly-insight",  "schedule": "30 21 * * 0" },
+    { "path": "/api/hub-sync?job=hogangnono",      "schedule": "15 21 * * *" }
   ],
   "redirects": [
     { "source": "/realestate", "destination": "/#realestate", "permanent": false }
