@@ -7,6 +7,9 @@
     { "path": "/api/hub-sync?job=daily-comment",  "schedule": "0 21 * * *" },
     { "path": "/api/hub-sync?job=weekly-insight",  "schedule": "30 21 * * 0" }
   ],
+  "redirects": [
+    { "source": "/realestate", "destination": "/#realestate", "permanent": false }
+  ],
   "headers": [
     {
       "source": "/sw.js",
