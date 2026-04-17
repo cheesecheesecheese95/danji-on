@@ -89,7 +89,21 @@ export default async function handler(req, res) {
       });
       // _sortDate 필드 제거
       for (const item of deduped) delete item._sortDate;
-      return res.status(200).json({ items: deduped.slice(0, 80), total: deduped.length });
+      // 전체 탭: 타입별 최소 보장 (뉴스 20, 블로그 15, 카페 10 + 나머지)
+      let result = deduped;
+      if (feedType === 'all' && deduped.length > 60) {
+        const byType = { news: [], blog: [], cafe: [] };
+        for (const item of deduped) (byType[item.type] || []).push(item);
+        const guaranteed = [
+          ...byType.news.slice(0, 20),
+          ...byType.blog.slice(0, 15),
+          ...byType.cafe.slice(0, 10),
+        ];
+        const usedLinks = new Set(guaranteed.map(i => i.link));
+        const rest = deduped.filter(i => !usedLinks.has(i.link));
+        result = [...guaranteed, ...rest];
+      }
+      return res.status(200).json({ items: result.slice(0, 80), total: result.length });
     }
 
     // daily-comment, weekly-insight: 단일 카테고리
