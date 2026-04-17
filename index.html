@@ -3350,111 +3350,112 @@ let _reFeedFilter = 'all';
 let _reHubLoaded = false; // 전체 허브 로드 여부
 
 async function loadRealestate() {
-  // L2: 기존 스냅샷 로드
-  if (_reCache[_reType === 'trade' ? 'trade' : 'rent']) {
+  // 이미 번들 로드 완료 + 캐시 있으면 바로 렌더링
+  if (_reHubLoaded && _reCache[_reType === 'trade' ? 'trade' : 'rent']) {
     applyREData(_reCache[_reType === 'trade' ? 'trade' : 'rent']);
-  } else {
+    return;
+  }
+
+  // 최초 1회: 번들 API 1번 호출로 모든 데이터 로드
+  if (!_reHubLoaded) {
+    _reHubLoaded = true;
     document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr>';
     try {
-      const apiType = _reType === 'trade' ? 'trade' : 'rent';
-      const r = await fetch(`/api/realestate?type=${apiType}`);
+      const r = await fetch('/api/realestate-hub?section=all');
       const d = await r.json();
-      if (d.error) {
-        document.getElementById('re-tbody').innerHTML = `<tr><td colspan="4" class="re-empty">⚠️ ${d.error}</td></tr>`;
-      } else {
-        _reCache[apiType] = { items: d.items || [], updatedAt: d.updatedAt };
-        if (d.updatedAt) {
-          const tag = document.getElementById('re-updated-tag');
-          if (tag) { tag.textContent = `업데이트: ${d.updatedAt}`; tag.style.display=''; }
-        }
-        applyREData(_reCache[apiType]);
-      }
+
+      // 실거래 캐시 세팅
+      _reCache.trade = { items: d.homeTrade || [] };
+      _reCache.rent = { items: [...(d.homeRent || [])] };
+
+      // L2: 스냅샷 렌더
+      applyREData(_reCache[_reType === 'trade' ? 'trade' : 'rent']);
+
+      // L1: 브리핑
+      applyDailyComment(d.dailyComment);
+
+      // L3: AI 관점
+      applyWeeklyInsight(d.weeklyInsight);
+
+      // L4: 소식 피드
+      applyNewsFeed(d.news || [], d.blog || [], d.cafe || []);
+
+      // L5: 이웃 단지
+      renderNeighborGrid(d.neighborTrade || []);
     } catch(e) {
       document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">데이터를 불러올 수 없습니다.</td></tr>';
     }
+    return;
   }
 
-  // 나머지 레이어는 최초 1회만 로드
-  if (!_reHubLoaded) {
-    _reHubLoaded = true;
-    loadDailyComment();
-    loadWeeklyInsight();
-    loadNewsFeed();
-    loadNeighborData();
+  // 탭 전환 시 캐시 없으면 개별 호출
+  const apiType = _reType === 'trade' ? 'trade' : 'rent';
+  if (!_reCache[apiType]) {
+    document.getElementById('re-tbody').innerHTML = '<tr><td colspan="4" class="re-empty">🔄 불러오는 중…</td></tr>';
+    try {
+      const r = await fetch(`/api/realestate?type=${apiType}`);
+      const d = await r.json();
+      if (!d.error) { _reCache[apiType] = { items: d.items || [] }; applyREData(_reCache[apiType]); }
+    } catch(_) {}
   }
 }
 
-// ── L1: 오늘의 한 줄 ────────────────────────────────────────
-async function loadDailyComment() {
+// ── L1: 오늘의 브리핑 ───────────────────────────────────────
+function applyDailyComment(d) {
   const el = document.getElementById('re-hl-text');
   const dateEl = document.getElementById('re-hl-date');
   const bulletsEl = document.getElementById('re-hl-bullets');
-  try {
-    const r = await fetch('/api/realestate-hub?section=daily-comment');
-    const d = await r.json();
-    if (d.headline) {
-      if (el) el.textContent = d.headline;
-      if (dateEl && d.generatedAt) dateEl.textContent = d.generatedAt.slice(0, 10) + ' 기준';
-      if (bulletsEl && d.bullets && d.bullets.length) {
-        bulletsEl.innerHTML = d.bullets.map(b => `<div class="re-hl-bullet">${b}</div>`).join('');
-      }
-    } else if (d.comment) {
-      // 이전 형식 호환
-      if (el) el.textContent = d.comment;
-      if (dateEl && d.generatedAt) dateEl.textContent = d.generatedAt.slice(0, 10) + ' 기준';
-    } else {
-      if (el) el.textContent = '오늘의 실거래 요약을 준비 중이에요';
+  if (!d) { if (el) el.textContent = '오늘의 실거래 요약을 준비 중이에요'; return; }
+  if (d.headline) {
+    if (el) el.textContent = d.headline;
+    if (dateEl && d.generatedAt) dateEl.textContent = d.generatedAt.slice(0, 10) + ' 기준';
+    if (bulletsEl && d.bullets && d.bullets.length) {
+      bulletsEl.innerHTML = d.bullets.map(b => `<div class="re-hl-bullet">${b}</div>`).join('');
     }
-  } catch(_) {
-    if (el) el.textContent = '데이터를 불러올 수 없습니다';
+  } else if (d.comment) {
+    if (el) el.textContent = d.comment;
+    if (dateEl && d.generatedAt) dateEl.textContent = d.generatedAt.slice(0, 10) + ' 기준';
   }
 }
 
 // ── L3: AI 관점 ─────────────────────────────────────────────
-async function loadWeeklyInsight() {
-  try {
-    const r = await fetch('/api/realestate-hub?section=weekly-insight');
-    const d = await r.json();
-    if (!d.title) {
-      document.getElementById('re-insight-title').textContent = '이번 주 관점을 준비 중이에요';
-      return;
-    }
-    document.getElementById('re-insight-title').textContent = d.title;
-    document.getElementById('re-insight-summary').textContent = d.summary || '';
-
-    const perspEl = document.getElementById('re-insight-perspectives');
-    if (perspEl && d.perspectives) {
-      perspEl.innerHTML = d.perspectives.map(p => `
-        <div class="re-perspective re-persp-${p.direction}">
-          <div class="re-persp-icon">${p.direction === 'positive' ? '📈' : '📉'}</div>
-          <div class="re-persp-text">${p.text}</div>
-        </div>
-      `).join('');
-    }
-
-    const ctxEl = document.getElementById('re-insight-context');
-    if (ctxEl && d.context) {
-      ctxEl.textContent = d.context;
-      ctxEl.style.display = '';
-    }
-
-    const discEl = document.getElementById('re-insight-disclaimer');
-    if (discEl) discEl.textContent = d.disclaimer || '부동산 거래는 전문가 상담을 권장합니다';
-  } catch(_) {
-    document.getElementById('re-insight-title').textContent = '관점을 불러올 수 없습니다';
+function applyWeeklyInsight(d) {
+  if (!d || !d.title) {
+    document.getElementById('re-insight-title').textContent = '이번 주 관점을 준비 중이에요';
+    return;
   }
+  document.getElementById('re-insight-title').textContent = d.title;
+  document.getElementById('re-insight-summary').textContent = d.summary || '';
+
+  const perspEl = document.getElementById('re-insight-perspectives');
+  if (perspEl && d.perspectives) {
+    perspEl.innerHTML = d.perspectives.map(p => `
+      <div class="re-perspective re-persp-${p.direction}">
+        <div class="re-persp-icon">${p.direction === 'positive' ? '📈' : '📉'}</div>
+        <div class="re-persp-text">${p.text}</div>
+      </div>
+    `).join('');
+  }
+
+  const ctxEl = document.getElementById('re-insight-context');
+  if (ctxEl && d.context) { ctxEl.textContent = d.context; ctxEl.style.display = ''; }
+
+  const discEl = document.getElementById('re-insight-disclaimer');
+  if (discEl) discEl.textContent = d.disclaimer || '부동산 거래는 전문가 상담을 권장합니다';
 }
 
 // ── L4: 소식 피드 ───────────────────────────────────────────
-async function loadNewsFeed() {
-  try {
-    const r = await fetch('/api/realestate-hub?section=news-feed');
-    const d = await r.json();
-    _reFeedCache = d.items || [];
-    renderFeedList(_reFeedCache);
-  } catch(_) {
-    document.getElementById('re-feed-list').innerHTML = '<div class="re-feed-empty">소식을 불러올 수 없습니다</div>';
-  }
+function applyNewsFeed(news, blog, cafe) {
+  // 합치고 날짜 정규화 + 정렬 + 중복 제거
+  const all = [...news.map(i=>({...i,type:'news'})), ...blog.map(i=>({...i,type:'blog'})), ...cafe.map(i=>({...i,type:'cafe'}))];
+  all.forEach(item => {
+    if (/^\d{8}$/.test(item.pubDate)) item._sd = `${item.pubDate.slice(0,4)}-${item.pubDate.slice(4,6)}-${item.pubDate.slice(6,8)}`;
+    else { try { item._sd = new Date(item.pubDate).toISOString().slice(0,10); } catch(_) { item._sd=''; } }
+  });
+  all.sort((a,b) => (b._sd||'').localeCompare(a._sd||''));
+  const seen = new Set();
+  _reFeedCache = all.filter(i => { const k=i.title.replace(/\s+/g,'').slice(0,30); if(seen.has(k)) return false; seen.add(k); return true; });
+  renderFeedList(_reFeedCache);
 }
 
 function switchFeedTab(el, type) {

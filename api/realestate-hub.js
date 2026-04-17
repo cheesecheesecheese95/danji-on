@@ -43,8 +43,41 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=1800, stale-while-revalidate=3600');
   if (!SB_KEY) return res.status(500).json({ error: 'SUPABASE_SERVICE_KEY 미설정' });
 
+  // ── 번들 조회 (부동산 페이지 전체 데이터 1회 호출) ────────
+  if (section === 'all') {
+    try {
+      const cats = [
+        'realestate_daily_comment', 'realestate_weekly_insight',
+        'news_feed_news', 'news_feed_blog', 'news_feed_cafe',
+        'realestate_trade', 'realestate_rent',
+        'realestate_neighbor_trade',
+      ];
+      const results = await Promise.all(cats.map(async cat => {
+        const r = await fetch(
+          `${SB_URL}/rest/v1/wiki_documents?category=eq.${cat}&select=body,title&limit=1`,
+          { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }
+        );
+        if (!r.ok) return null;
+        const rows = await r.json();
+        return (rows.length && rows[0].body) ? JSON.parse(rows[0].body) : null;
+      }));
+      return res.status(200).json({
+        dailyComment: results[0],
+        weeklyInsight: results[1],
+        news: results[2] || [],
+        blog: results[3] || [],
+        cafe: results[4] || [],
+        homeTrade: results[5] || [],
+        homeRent: results[6] || [],
+        neighborTrade: results[7] || [],
+      });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
   if (!section || !SECTION_MAP[section]) {
-    return res.status(400).json({ error: 'section 파라미터 필요: daily-comment | weekly-insight | news-feed | naver-search' });
+    return res.status(400).json({ error: 'section 파라미터 필요: all | daily-comment | weekly-insight | news-feed | naver-search' });
   }
 
   try {
