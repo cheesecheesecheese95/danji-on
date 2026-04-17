@@ -1,12 +1,13 @@
 // 국토부 실거래가 (매매 + 전월세) 수집 → Supabase 캐시 저장
+// 대상: DMC파크뷰자이(홈) + 이웃 단지 7개
 // Cron: 매일 07:00 KST = 22:00 UTC
-export const config = { maxDuration: 30 };
+export const config = { maxDuration: 55 };
+
+import { DANJI_MASTER, LAWD_CODES, findDanji } from '../data/danji-master.js';
 
 const KEY     = process.env.REALESTATE_KEY;
 const SB_URL  = 'https://svifbukyvyrtqzhbatvm.supabase.co';
 const SB_KEY  = process.env.SUPABASE_SERVICE_KEY;
-const LAWD_CD = '11410';
-const APT_NM  = 'DMC파크뷰자이';
 
 export default async function handler(req, res) {
   if (!KEY)    return res.status(500).json({ error: 'REALESTATE_KEY 없음' });
@@ -16,13 +17,16 @@ export default async function handler(req, res) {
     const months6  = getLastMonths(6);
     const months12 = getLastMonths(12);
 
-    // ── 1. 매매 ──────────────────────────────────────────────
+    // ── 1. 매매 — 시군구별 × 월별 수집 ──────────────────────
     const tradeRaw = [];
-    for (const ym of months12) {
-      const xml = await govFetch('RTMSDataSvcAptTrade', 'getRTMSDataSvcAptTrade', ym);
-      tradeRaw.push(...parseXml(xml, 'trade').filter(i => i.aptNm?.includes(APT_NM)));
+    for (const lawdCd of LAWD_CODES) {
+      for (const ym of months12) {
+        const xml = await govFetch('RTMSDataSvcAptTrade', 'getRTMSDataSvcAptTrade', lawdCd, ym);
+        tradeRaw.push(...tagDanji(parseXml(xml, 'trade')));
+      }
     }
-    // 동 추정
+
+    // 동 추정 (12개월 데이터로 학습 → 6개월 데이터에 적용)
     const dongMap = {};
     for (const i of tradeRaw) {
       if (!i.aptDong) continue;
@@ -42,22 +46,33 @@ export default async function handler(req, res) {
       })
       .sort(dateSortDesc);
 
-    // ── 2. 전월세 ────────────────────────────────────────────
+    // ── 2. 전월세 — 시군구별 × 월별 수집 ────────────────────
     const rentItems = [];
-    for (const ym of months6) {
-      const xml = await govFetch('RTMSDataSvcAptRent', 'getRTMSDataSvcAptRent', ym);
-      rentItems.push(...parseXml(xml, 'rent').filter(i => i.aptNm?.includes(APT_NM)));
+    for (const lawdCd of LAWD_CODES) {
+      for (const ym of months6) {
+        const xml = await govFetch('RTMSDataSvcAptRent', 'getRTMSDataSvcAptRent', lawdCd, ym);
+        rentItems.push(...tagDanji(parseXml(xml, 'rent')));
+      }
     }
     rentItems.sort(dateSortDesc);
 
-    // ── 3. Supabase 저장 ────────────────────────────────────
-    await saveCache('realestate_trade', tradeItems);
-    await saveCache('realestate_rent',  rentItems);
+    // ── 3. 홈/이웃 분리 후 Supabase 저장 ────────────────────
+    const homeTrade    = tradeItems.filter(i => i.isHome);
+    const homeRent     = rentItems.filter(i => i.isHome);
+    const neighborTrade = tradeItems.filter(i => !i.isHome);
+    const neighborRent  = rentItems.filter(i => !i.isHome);
+
+    await Promise.all([
+      saveCache('realestate_trade', homeTrade),
+      saveCache('realestate_rent',  homeRent),
+      saveCache('realestate_neighbor_trade', neighborTrade),
+      saveCache('realestate_neighbor_rent',  neighborRent),
+    ]);
 
     return res.status(200).json({
       ok: true,
-      trade: tradeItems.length,
-      rent:  rentItems.length,
+      home:     { trade: homeTrade.length, rent: homeRent.length },
+      neighbor: { trade: neighborTrade.length, rent: neighborRent.length },
       updatedAt: new Date().toISOString(),
     });
   } catch (err) {
@@ -67,11 +82,23 @@ export default async function handler(req, res) {
 }
 
 // ── 국토부 API 호출 ──────────────────────────────────────────
-async function govFetch(svc, method, ym) {
+async function govFetch(svc, method, lawdCd, ym) {
   const url = `https://apis.data.go.kr/1613000/${svc}/${method}` +
-    `?serviceKey=${KEY}&LAWD_CD=${LAWD_CD}&DEAL_YMD=${ym}&numOfRows=100&pageNo=1`;
+    `?serviceKey=${KEY}&LAWD_CD=${lawdCd}&DEAL_YMD=${ym}&numOfRows=500&pageNo=1`;
   const r = await fetch(url);
   return r.text();
+}
+
+// ── 마스터 매칭 + 태깅 ──────────────────────────────────────
+function tagDanji(items) {
+  return items.filter(i => {
+    const d = findDanji(i.aptNm);
+    if (!d) return false;
+    i.danjiId = d.id;
+    i.danjiName = d.name;
+    i.isHome = d.isHome;
+    return true;
+  });
 }
 
 // ── XML 파싱 ─────────────────────────────────────────────────

@@ -1,8 +1,11 @@
 {
   "crons": [
-    { "path": "/api/notices-sync",     "schedule": "0 22 * * 0" },
-    { "path": "/api/meeting-sync",     "schedule": "0 22 * * 0" },
-    { "path": "/api/realestate-sync",  "schedule": "0 22 * * *" }
+    { "path": "/api/notices-sync",        "schedule": "0 22 * * 0" },
+    { "path": "/api/meeting-sync",        "schedule": "0 22 * * 0" },
+    { "path": "/api/realestate-sync",     "schedule": "0 22 * * *" },
+    { "path": "/api/news-sync",           "schedule": "0 21 * * *" },
+    { "path": "/api/daily-comment-sync",  "schedule": "0 21 * * *" },
+    { "path": "/api/weekly-insight-sync", "schedule": "30 21 * * 0" }
   ],
   "headers": [
     {
