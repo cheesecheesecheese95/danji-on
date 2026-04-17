@@ -550,11 +550,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <!-- ═══ 홈 ═══ -->
     <div class="page active" id="page-home">
       <div class="sec" style="padding-top:20px;">
-        <!-- ── 날씨·환경 대시보드 ── -->
-        <div class="dash-wrap" id="dashboard">
-          <div class="dash-loading">🌤️ 날씨 불러오는 중…</div>
-        </div>
-
         <!-- 🚗 지하 주차장 대청소 공지 (4/21~5/27) - 개선버전 -->
         <div id="parking-clean-notice" style="background:#FFF8E1;border:1px solid #FFE082;border-radius:14px;padding:14px 16px;margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
@@ -4110,7 +4105,6 @@ history.replaceState({ page: _initPage, histPos: 0 }, '', _initHash ? '#' + _ini
 pushHistory(_initPage);
 loadBiz();
 loadLocal();
-loadDashboard();
 renderMonthlyCards();
 loadNotices();
 loadMeetings();
