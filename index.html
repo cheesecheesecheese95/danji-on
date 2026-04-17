@@ -3613,6 +3613,20 @@ function applyHogangnono(data) {
       </div>
       <div class="re-listing-bar"><div class="re-listing-bar-fill" style="width:${barWidth}%"></div></div>
       ${home.avgVisitors ? `<div class="re-listing-visitors">👀 일평균 ${home.avgVisitors}명 조회 (최근 7일)</div>` : ''}
+      ${l.items && l.items.length ? `<div style="margin-top:12px;border-top:1px solid var(--gray-100);padding-top:10px;">
+        <div style="font-size:11px;font-weight:700;color:var(--gray-500);margin-bottom:8px;">현재 매물</div>
+        ${l.items.map(it => {
+          const typeLabel = it.tradeType === 0 ? '매매' : it.tradeType === 1 ? '전세' : '월세';
+          const typeCls = it.tradeType === 0 ? 're-rent-j' : it.tradeType === 2 ? 're-rent-m' : 're-rent-j';
+          const price = it.tradeType === 2
+            ? fmtPrice(it.deposit) + '/' + it.rent + '만'
+            : fmtPrice(it.deposit);
+          return `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--gray-50);font-size:12px;">
+            <div><span class="re-rent-badge ${typeCls}">${typeLabel}</span> ${it.roomType || ''} · ${it.dong || ''} ${it.floor}층</div>
+            <div style="font-weight:800;color:var(--navy);">${price}</div>
+          </div>`;
+        }).join('')}
+      </div>` : ''}
       <a href="${home.hgnnUrl}" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:10px;font-size:11px;color:var(--navy);font-weight:700;text-decoration:none;">호갱노노에서 더 보기 →</a>
     </div>`;
   }
