@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     try {
       const cats = [
         'realestate_daily_comment', 'realestate_weekly_insight',
-        'news_feed_news', 'news_feed_blog', 'news_feed_cafe',
+        'news_feed_news', 'news_summary',
         'realestate_trade', 'realestate_rent',
         'realestate_neighbor_trade', 'hogangnono_data',
       ];
@@ -65,12 +65,11 @@ export default async function handler(req, res) {
         dailyComment: results[0],
         weeklyInsight: results[1],
         news: results[2] || [],
-        blog: results[3] || [],
-        cafe: results[4] || [],
-        homeTrade: results[5] || [],
-        homeRent: results[6] || [],
-        neighborTrade: results[7] || [],
-        hogangnono: results[8],
+        newsSummary: results[3],
+        homeTrade: results[4] || [],
+        homeRent: results[5] || [],
+        neighborTrade: results[6] || [],
+        hogangnono: results[7],
       });
     } catch (err) {
       return res.status(500).json({ error: err.message });

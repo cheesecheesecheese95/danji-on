@@ -90,42 +90,67 @@ async function naverSearch(type, query, display = 20) {
 
 async function runNewsSync() {
   const seen = new Set();
-  const results = { news: [], blog: [], cafe: [] };
+  const news = [];
 
   for (const kw of KEYWORDS) {
-    const [newsItems, blogItems, cafeItems] = await Promise.all([
-      naverSearch('news', kw, 20),
-      naverSearch('blog', kw, 20),
-      naverSearch('cafearticle', kw, 20),
-    ]);
-    for (const item of newsItems) {
+    const items = await naverSearch('news', kw, 10);
+    for (const item of items) {
       if (seen.has(item.link)) continue; seen.add(item.link);
-      results.news.push({ type:'news', title:strip(item.title), description:strip(item.description), link:item.link, pubDate:item.pubDate, source:item.originallink||item.link });
-    }
-    const BLOG_EXCLUDE = /학원|학습|필라테스|바레|미용|네일|맛집|카페|후기|리뷰|입문|추천 정리|수학|영어|과외|헬스|요가|병원|치과|소아과|피부과|인테리어|리모델링|시공|도배|장판|이사|입주청소|콜택시|택시|공항/;
-    for (const item of blogItems) {
-      if (seen.has(item.link)) continue;
-      const blogTitle = strip(item.title);
-      if (!/가재울|파크뷰자이|디엠씨파크뷰/.test(blogTitle)) continue;
-      if (BLOG_EXCLUDE.test(blogTitle)) continue;
-      seen.add(item.link);
-      results.blog.push({ type:'blog', title:blogTitle, description:strip(item.description), link:item.link, pubDate:item.postdate, bloggerName:item.bloggername||'' });
-    }
-    for (const item of cafeItems) {
-      if (isAdContent(item)) continue;
-      if (seen.has(item.link)) continue; seen.add(item.link);
-      results.cafe.push({ type:'cafe', title:strip(item.title), description:strip(item.description), link:item.link, pubDate:item.pubDate||'', cafeName:item.cafename||'' });
+      news.push({ type:'news', title:strip(item.title), description:strip(item.description), link:item.link, pubDate:item.pubDate, source:item.originallink||item.link });
     }
   }
-  const byDate = (a,b) => (b.pubDate||'').localeCompare(a.pubDate||'');
-  results.news.sort(byDate); results.blog.sort(byDate); results.cafe.sort(byDate);
+  news.sort((a,b) => (b.pubDate||'').localeCompare(a.pubDate||''));
+  // 중복 제목 제거 후 최대 30건
+  const titleSeen = new Set();
+  const deduped = news.filter(n => { const k=n.title.replace(/\s+/g,'').slice(0,30); if(titleSeen.has(k)) return false; titleSeen.add(k); return true; }).slice(0, 30);
 
-  await Promise.all([
-    saveCache('news_feed_news', results.news),
-    saveCache('news_feed_blog', results.blog),
-    saveCache('news_feed_cafe', results.cafe),
-  ]);
-  return { news: results.news.length, blog: results.blog.length, cafe: results.cafe.length };
+  await saveCache('news_feed_news', deduped);
+
+  // 뉴스 요약 생성 (Claude)
+  let summary = null;
+  if (CLAUDE_KEY && deduped.length) {
+    try { summary = await generateNewsSummary(deduped); } catch(_) {}
+  }
+
+  return { news: deduped.length, summary };
+}
+
+// ── 뉴스 요약 생성 ──────────────────────────────────────────
+const NEWS_SUMMARY_SYSTEM = `당신은 DMC파크뷰자이 입주민 앱의 뉴스 요약 봇입니다.
+
+오늘의 부동산 뉴스 헤드라인을 보고 입주민에게 유용한 3~4줄 요약을 작성합니다.
+
+규칙:
+- 서대문구/은평구/DMC/가재울 관련 뉴스를 우선 언급
+- 서울 전체 부동산 동향도 포함
+- 매수/매도 추천 금지
+- "~이에요", "~했어요" 부드러운 톤
+- 각 줄은 한 문장, 50자 이내
+
+출력 형식 (JSON만):
+{
+  "title": "오늘의 뉴스 요약 제목 (15자 내외)",
+  "lines": ["요약 1줄", "요약 2줄", "요약 3줄"]
+}`;
+
+async function generateNewsSummary(newsItems) {
+  const headlines = newsItems.slice(0, 15).map(n => n.title).join('\n');
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{ 'x-api-key':CLAUDE_KEY, 'anthropic-version':'2023-06-01', 'content-type':'application/json' },
+    body: JSON.stringify({
+      model:'claude-haiku-4-5-20251001', max_tokens:300, system:NEWS_SUMMARY_SYSTEM,
+      messages:[{ role:'user', content:`오늘의 부동산 뉴스 헤드라인:\n${headlines}` }],
+    }),
+  });
+  if (!r.ok) return null;
+  const data = await r.json();
+  const text = (data.content?.[0]?.text || '').replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+  let parsed;
+  try { parsed = JSON.parse(text); } catch(_) { return null; }
+  const result = { ...parsed, generatedAt: new Date().toISOString() };
+  await saveCache('news_summary', result);
+  return result;
 }
 
 // ═══════════════════════════════════════════════════════════════
