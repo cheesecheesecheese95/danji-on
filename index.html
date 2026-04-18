@@ -3548,7 +3548,7 @@ function renderUnifiedGrid(neighborTrade, homeTrade, hogangnono) {
         const tc = it.tradeType === 0 ? 're-rent-j' : 're-rent-m';
         const pr = it.tradeType === 2 ? fmtPrice(it.deposit)+'/'+it.rent+'만' : fmtPrice(it.deposit);
         return `<div class="re-uni-item">
-          <div><span class="re-rent-badge ${tc}">${tl}</span> ${it.roomType||''} · ${it.dong||''} ${it.floor}층</div>
+          <div><span class="re-rent-badge ${tc}">${tl}</span> ${it.sizeM2 ? Math.round(it.sizeM2)+'㎡' : it.roomType||''} · ${it.dong||''} ${it.floor}층</div>
           <div style="font-weight:800;color:var(--navy);">${pr}</div>
         </div>`;
       }).join('')}
