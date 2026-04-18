@@ -102,10 +102,12 @@ async function runNewsSync() {
       if (seen.has(item.link)) continue; seen.add(item.link);
       results.news.push({ type:'news', title:strip(item.title), description:strip(item.description), link:item.link, pubDate:item.pubDate, source:item.originallink||item.link });
     }
+    const BLOG_EXCLUDE = /학원|학습|필라테스|바레|미용|네일|맛집|카페|후기|리뷰|입문|추천 정리|수학|영어|과외|헬스|요가|병원|치과|소아과|피부과/;
     for (const item of blogItems) {
       if (seen.has(item.link)) continue;
       const blogTitle = strip(item.title);
       if (!/가재울|파크뷰자이|디엠씨파크뷰/.test(blogTitle)) continue;
+      if (BLOG_EXCLUDE.test(blogTitle)) continue;
       seen.add(item.link);
       results.blog.push({ type:'blog', title:blogTitle, description:strip(item.description), link:item.link, pubDate:item.postdate, bloggerName:item.bloggername||'' });
     }
