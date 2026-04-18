@@ -99,7 +99,7 @@ async function runNewsSync() {
       news.push({ type:'news', title:strip(item.title), description:strip(item.description), link:item.link, pubDate:item.pubDate, source:item.originallink||item.link });
     }
   }
-  news.sort((a,b) => (b.pubDate||'').localeCompare(a.pubDate||''));
+  news.sort((a,b) => new Date(b.pubDate||0).getTime() - new Date(a.pubDate||0).getTime());
   // 중복 제목 제거 후 최대 30건
   const titleSeen = new Set();
   const deduped = news.filter(n => { const k=n.title.replace(/\s+/g,'').slice(0,30); if(titleSeen.has(k)) return false; titleSeen.add(k); return true; }).slice(0, 30);

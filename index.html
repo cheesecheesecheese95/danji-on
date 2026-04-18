@@ -3437,7 +3437,13 @@ function applyWeeklyInsight(d) {
 
 // ── L4: 소식 피드 ───────────────────────────────────────────
 function applyNewsFeed(news) {
-  _reFeedCache = (news || []).slice(0, 15);
+  // 최신순 정렬 (pubDate: RFC 2822 → timestamp)
+  const sorted = (news || []).slice().sort((a,b) => {
+    const da = a.pubDate ? new Date(a.pubDate).getTime() : 0;
+    const db = b.pubDate ? new Date(b.pubDate).getTime() : 0;
+    return db - da;
+  });
+  _reFeedCache = sorted.slice(0, 15);
   renderFeedList(_reFeedCache);
 }
 
