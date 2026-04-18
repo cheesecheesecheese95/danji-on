@@ -3502,15 +3502,15 @@ function renderUnifiedGrid(neighborTrade, homeTrade, hogangnono) {
   const homeHg = hgItems.find(i => i.isHome);
   const homeListing = homeHg?.listings || { total:0, trade:0, deposit:0, rent:0, items:[] };
 
-  // 호가 평수 범위 계산
+  // 평수별 최저 호가 계산
   const homeTradeListings = (homeListing.items || []).filter(it => it.tradeType === 0);
-  const homeAvgAsk = homeTradeListings.length
-    ? Math.round(homeTradeListings.reduce((a,it) => a + it.deposit, 0) / homeTradeListings.length)
-    : 0;
-  const homeAskAreas = homeTradeListings.map(it => Math.round(it.sizeM2 || 0)).filter(a => a > 0);
-  const homeAskAreaStr = homeAskAreas.length
-    ? [...new Set(homeAskAreas)].sort((a,b)=>a-b).map(a => a+'㎡').join(', ')
-    : '';
+  const homeAskByArea = {};
+  homeTradeListings.forEach(it => {
+    const a = Math.round(it.sizeM2 || 0);
+    if (a > 0 && (!homeAskByArea[a] || it.deposit < homeAskByArea[a])) homeAskByArea[a] = it.deposit;
+  });
+  const homeAskLines = Object.entries(homeAskByArea).sort((a,b)=>a[0]-b[0])
+    .map(([a,p]) => `${a}㎡ ${fmtPrice(p)}`);
 
   // 우리 단지 카드
   homeEl.innerHTML = `<div class="re-uni-card home">
@@ -3525,9 +3525,10 @@ function renderUnifiedGrid(neighborTrade, homeTrade, hogangnono) {
         <div class="re-uni-cell-sub">${homeLatestDate} · ${homeLatestArea}㎡</div>
       </div>
       <div class="re-uni-cell">
-        <div class="re-uni-cell-label">현재 호가 평균</div>
-        <div class="re-uni-cell-val">${homeAvgAsk ? fmtPrice(homeAvgAsk) : '—'}</div>
-        <div class="re-uni-cell-sub">${homeAskAreaStr ? homeAskAreaStr : '매매 매물 '+homeListing.trade+'건'}</div>
+        <div class="re-uni-cell-label">현재 호가</div>
+        ${homeAskLines.length
+          ? `<div style="font-size:12px;font-weight:700;color:var(--navy);line-height:1.6;">${homeAskLines.join('<br>')}</div>`
+          : `<div class="re-uni-cell-val">—</div><div class="re-uni-cell-sub">매물 없음</div>`}
       </div>
     </div>
     <div class="re-uni-meta">
@@ -3577,11 +3578,14 @@ function renderUnifiedGrid(neighborTrade, homeTrade, hogangnono) {
     const listing = hg.listings || { total:0, trade:0, deposit:0, rent:0, items:[] };
 
     const askItems = (listing.items || []).filter(it => it.tradeType === 0);
-    const avgAsk = askItems.length ? Math.round(askItems.reduce((a,it) => a+it.deposit, 0) / askItems.length) : 0;
-    const askAreas = askItems.map(it => Math.round(it.sizeM2 || 0)).filter(a => a > 0);
-    const askAreaStr = askAreas.length ? [...new Set(askAreas)].sort((a,b)=>a-b).map(a=>a+'㎡').join(', ') : '';
+    const askByArea = {};
+    askItems.forEach(it => {
+      const a = Math.round(it.sizeM2 || 0);
+      if (a > 0 && (!askByArea[a] || it.deposit < askByArea[a])) askByArea[a] = it.deposit;
+    });
+    const askLines = Object.entries(askByArea).sort((a,b)=>a[0]-b[0]).map(([a,p])=>`${a}㎡ ${fmtPrice(p)}`);
 
-    return { name, trade, hg, listing, avgAsk, askAreaStr, score: trade.recentCount + listing.total };
+    return { name, trade, hg, listing, askLines, score: trade.recentCount + listing.total };
   }).sort((a,b) => b.score - a.score);
 
   if (!nbCards.length) {
@@ -3589,7 +3593,7 @@ function renderUnifiedGrid(neighborTrade, homeTrade, hogangnono) {
     return;
   }
 
-  gridEl.innerHTML = nbCards.map(({ name, trade, hg, listing, avgAsk, askAreaStr }) => {
+  gridEl.innerHTML = nbCards.map(({ name, trade, hg, listing, askLines }) => {
     return `<a class="re-uni-card" href="${hg.hgnnUrl || '#'}" target="_blank" rel="noopener" style="text-decoration:none;display:block;">
       <div class="re-uni-header" style="margin-bottom:6px;">
         <div class="re-uni-name" style="font-size:13px;">${name}</div>
@@ -3602,8 +3606,9 @@ function renderUnifiedGrid(neighborTrade, homeTrade, hogangnono) {
         </div>
         <div class="re-uni-cell" style="padding:6px;">
           <div class="re-uni-cell-label">호가</div>
-          <div class="re-uni-cell-val" style="font-size:13px;">${avgAsk ? fmtPrice(avgAsk) : '—'}</div>
-          <div class="re-uni-cell-sub">${askAreaStr || '매물 '+listing.total+'건'}</div>
+          ${askLines.length
+            ? `<div style="font-size:11px;font-weight:700;color:var(--navy);line-height:1.6;">${askLines.join('<br>')}</div>`
+            : `<div class="re-uni-cell-val" style="font-size:13px;">—</div><div class="re-uni-cell-sub">매물 없음</div>`}
         </div>
       </div>
       <div class="re-uni-meta" style="font-size:10px;">
