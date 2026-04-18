@@ -166,7 +166,7 @@ const DAILY_SYSTEM = `당신은 DMC파크뷰자이(4,300세대) 아파트 입주
 - "~했어요", "~이에요" 부드러운 톤
 - 가격 하락 시 "하락세" 대신 "일시 하락" 표현 사용
 - 전세·월세 bullet은 "현재 전세·월세 매물이 없어요" 한 문장만. "N개월", "0건", "거래 없어", "수급", "타이트" 등 부연 금지
-- 만원 단위를 억 단위로 환산해서 표기 (예: 150,000만원 → 15억)
+- 가격은 데이터에 이미 억 단위로 변환되어 있으니 그대로 사용하세요
 
 출력 형식 (JSON만, 마크다운 없이):
 {
@@ -198,20 +198,32 @@ async function runDailyComment() {
   const weekTrade = tradeItems.filter(i => toDateStr(i) >= wd);
   const monthTrade = tradeItems.filter(i => toDateStr(i) >= md);
 
-  // 면적별 최근 가격
+  // 만원→억 변환 헬퍼
+  const toEok = (wan) => {
+    if (wan >= 10000) {
+      const eok = Math.floor(wan / 10000);
+      const remain = wan % 10000;
+      return remain ? `${eok}억 ${remain}만원` : `${eok}억`;
+    }
+    return `${wan}만원`;
+  };
+
+  // 면적별 최근 가격 (억 단위로 변환해서 전달)
   const byArea = {};
   for (const i of recentTrade) {
     const area = Math.round(parseFloat(i.excluUseAr));
     if (!byArea[area]) byArea[area] = [];
-    byArea[area].push({ price: parsePrice(i.dealAmount), date: `${i.dealYear}.${i.dealMonth}.${i.dealDay}`, floor: i.floor });
+    const priceWan = parsePrice(i.dealAmount);
+    byArea[area].push({ price: toEok(priceWan), priceRaw: priceWan, date: `${i.dealYear}.${i.dealMonth}.${i.dealDay}`, floor: i.floor });
   }
   const areaStats = Object.entries(byArea).map(([area, items]) => {
-    const prices = items.map(x => x.price);
+    const raws = items.map(x => x.priceRaw);
     let change = null;
     if (items.length >= 2) {
-      change = ((items[0].price - items[1].price) / items[1].price * 100).toFixed(1);
+      change = ((items[0].priceRaw - items[1].priceRaw) / items[1].priceRaw * 100).toFixed(1);
     }
-    return { area: `${area}㎡`, latest: items[0], count: items.length, avg: Math.round(prices.reduce((a,b)=>a+b,0)/prices.length), change };
+    const avgRaw = Math.round(raws.reduce((a,b)=>a+b,0)/raws.length);
+    return { area: `${area}㎡`, latest: { price: items[0].price, date: items[0].date, floor: items[0].floor }, count: items.length, avg: toEok(avgRaw), change };
   });
 
   // 전세·월세 분석
