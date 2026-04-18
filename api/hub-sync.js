@@ -134,7 +134,8 @@ const DAILY_SYSTEM = `당신은 DMC파크뷰자이(4,300세대) 아파트 입주
 - 팩트 기반 — 데이터에 있는 수치만 인용
 - 매수/매도 추천 금지, 가격 예측 금지
 - "~했어요", "~이에요" 부드러운 톤
-- 전세·월세 거래가 0건이면 반드시 "전세·월세 실거래가 없는 상태"임을 명확히 언급
+- 가격 하락 시 "하락세" 대신 "일시 하락" 표현 사용
+- 전세·월세 거래가 0건이면 "전세·월세 매물 없는 상태"로 표현
 - 만원 단위를 억 단위로 환산해서 표기 (예: 150,000만원 → 15억)
 
 출력 형식 (JSON만, 마크다운 없이):
@@ -219,8 +220,15 @@ async function runDailyComment() {
   const text = (data.content?.[0]?.text || '').replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
 
   let parsed;
-  try { parsed = JSON.parse(text); }
-  catch(_) { parsed = { headline: text.slice(0, 60), bullets: [] }; }
+  try {
+    parsed = JSON.parse(text);
+    // 이중 래핑 방지: headline이 JSON 문자열이면 다시 파싱
+    if (typeof parsed.headline === 'string' && parsed.headline.startsWith('{')) {
+      try { parsed = JSON.parse(parsed.headline); } catch(_) {}
+    }
+  } catch(_) {
+    parsed = { headline: text.slice(0, 60), bullets: [] };
+  }
 
   const result = { ...parsed, summary, generatedAt: new Date().toISOString() };
   await saveCache('realestate_daily_comment', result);
