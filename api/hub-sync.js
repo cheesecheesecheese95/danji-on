@@ -102,7 +102,7 @@ async function runNewsSync() {
       if (seen.has(item.link)) continue; seen.add(item.link);
       results.news.push({ type:'news', title:strip(item.title), description:strip(item.description), link:item.link, pubDate:item.pubDate, source:item.originallink||item.link });
     }
-    const BLOG_EXCLUDE = /학원|학습|필라테스|바레|미용|네일|맛집|카페|후기|리뷰|입문|추천 정리|수학|영어|과외|헬스|요가|병원|치과|소아과|피부과/;
+    const BLOG_EXCLUDE = /학원|학습|필라테스|바레|미용|네일|맛집|카페|후기|리뷰|입문|추천 정리|수학|영어|과외|헬스|요가|병원|치과|소아과|피부과|인테리어|리모델링|시공|도배|장판|이사|입주청소|콜택시|택시|공항/;
     for (const item of blogItems) {
       if (seen.has(item.link)) continue;
       const blogTitle = strip(item.title);
