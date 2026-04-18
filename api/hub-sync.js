@@ -103,8 +103,11 @@ async function runNewsSync() {
       results.news.push({ type:'news', title:strip(item.title), description:strip(item.description), link:item.link, pubDate:item.pubDate, source:item.originallink||item.link });
     }
     for (const item of blogItems) {
-      if (seen.has(item.link)) continue; seen.add(item.link);
-      results.blog.push({ type:'blog', title:strip(item.title), description:strip(item.description), link:item.link, pubDate:item.postdate, bloggerName:item.bloggername||'' });
+      if (seen.has(item.link)) continue;
+      const blogTitle = strip(item.title);
+      if (!/가재울|파크뷰자이|디엠씨파크뷰/.test(blogTitle)) continue;
+      seen.add(item.link);
+      results.blog.push({ type:'blog', title:blogTitle, description:strip(item.description), link:item.link, pubDate:item.postdate, bloggerName:item.bloggername||'' });
     }
     for (const item of cafeItems) {
       if (isAdContent(item)) continue;
