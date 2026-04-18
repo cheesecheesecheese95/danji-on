@@ -2631,15 +2631,15 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </div>
         </div>
 
-        <!-- ── L4: 오늘의 소식 피드 ── -->
+        <!-- ── L4: 오늘의 소식 ── -->
         <div class="re-layer" id="re-layer4">
           <div class="re-layer-title"><span class="re-lt-icon">📰</span> 오늘의 소식</div>
-          <div class="re-feed-tabs">
-            <button class="re-feed-tab active" onclick="switchFeedTab(this,'all')">전체</button>
-            <button class="re-feed-tab" onclick="switchFeedTab(this,'news')">뉴스</button>
-            <button class="re-feed-tab" onclick="switchFeedTab(this,'blog')">블로그</button>
-            <button class="re-feed-tab" onclick="switchFeedTab(this,'cafe')">카페</button>
+          <!-- 뉴스 요약 -->
+          <div id="re-news-summary" style="display:none;background:#fff;border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);margin-bottom:10px;">
+            <div id="re-news-summary-title" style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:8px;"></div>
+            <div id="re-news-summary-lines" style="font-size:12px;color:var(--gray-700);line-height:1.7;"></div>
           </div>
+          <!-- 뉴스 목록 -->
           <div class="re-feed-list" id="re-feed-list">
             <div class="re-feed-empty">소식을 불러오는 중…</div>
           </div>
@@ -3406,7 +3406,8 @@ async function loadRealestate() {
       applyWeeklyInsight(d.weeklyInsight);
 
       // L4: 소식 피드
-      applyNewsFeed(d.news || [], d.blog || [], d.cafe || []);
+      applyNewsFeed(d.news || []);
+      if (d.newsSummary) applyNewsSummary(d.newsSummary);
 
       // L5: 이웃 단지
       // 통합 단지 비교 (실거래 + 호갱노노)
@@ -3474,26 +3475,19 @@ function applyWeeklyInsight(d) {
 }
 
 // ── L4: 소식 피드 ───────────────────────────────────────────
-function applyNewsFeed(news, blog, cafe) {
-  // 합치고 날짜 정규화 + 정렬 + 중복 제거
-  const all = [...news.map(i=>({...i,type:'news'})), ...blog.map(i=>({...i,type:'blog'})), ...cafe.map(i=>({...i,type:'cafe'}))];
-  all.forEach(item => {
-    if (/^\d{8}$/.test(item.pubDate)) item._sd = `${item.pubDate.slice(0,4)}-${item.pubDate.slice(4,6)}-${item.pubDate.slice(6,8)}`;
-    else { try { item._sd = new Date(item.pubDate).toISOString().slice(0,10); } catch(_) { item._sd=''; } }
-  });
-  all.sort((a,b) => (b._sd||'').localeCompare(a._sd||''));
-  const seen = new Set();
-  _reFeedCache = all.filter(i => { const k=i.title.replace(/\s+/g,'').slice(0,30); if(seen.has(k)) return false; seen.add(k); return true; });
+function applyNewsFeed(news) {
+  _reFeedCache = (news || []).slice(0, 15);
   renderFeedList(_reFeedCache);
 }
 
-function switchFeedTab(el, type) {
-  document.querySelectorAll('.re-feed-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  _reFeedFilter = type;
-  if (!_reFeedCache) return;
-  const filtered = type === 'all' ? _reFeedCache : _reFeedCache.filter(i => i.type === type);
-  renderFeedList(filtered);
+function applyNewsSummary(data) {
+  const el = document.getElementById('re-news-summary');
+  const titleEl = document.getElementById('re-news-summary-title');
+  const linesEl = document.getElementById('re-news-summary-lines');
+  if (!el || !data || !data.lines) return;
+  if (titleEl) titleEl.textContent = data.title || '오늘의 뉴스 요약';
+  if (linesEl) linesEl.innerHTML = data.lines.map(l => `<div style="padding:3px 0;">· ${l}</div>`).join('');
+  el.style.display = '';
 }
 
 function renderFeedList(items) {
@@ -3503,15 +3497,13 @@ function renderFeedList(items) {
     el.innerHTML = '<div class="re-feed-empty">관련 소식이 없습니다</div>';
     return;
   }
-  el.innerHTML = items.slice(0, 20).map(item => {
-    const typeLabel = { news: '뉴스', blog: '블로그', cafe: '카페' }[item.type] || item.type;
+  el.innerHTML = items.slice(0, 15).map(item => {
     const date = formatFeedDate(item.pubDate);
     return `<a class="re-feed-item" href="${item.link}" target="_blank" rel="noopener">
-      <span class="re-feed-type ${item.type}">${typeLabel}</span>
       <div class="re-feed-body">
         <div class="re-feed-title">${item.title}</div>
         <div class="re-feed-desc">${item.description || ''}</div>
-        <div class="re-feed-date">${date}${item.bloggerName ? ' · '+item.bloggerName : ''}${item.cafeName ? ' · '+item.cafeName : ''}</div>
+        <div class="re-feed-date">${date}</div>
       </div>
     </a>`;
   }).join('');
