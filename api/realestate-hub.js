@@ -19,6 +19,44 @@ export default async function handler(req, res) {
 
   const section = req.query?.section;
 
+  // ── Shoeson 트래킹 ──────────────────────────────────────
+  if (section === 'shoeson-track') {
+    if (!SB_KEY) return res.status(500).json({ error: 'SB key missing' });
+    const sbH = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
+    if (req.method === 'POST') {
+      const { event } = req.body || {};
+      if (!event) return res.status(400).json({ error: 'event required' });
+      const today = new Date().toISOString().slice(0, 10);
+      // 카테고리: shoeson_track_YYYY-MM-DD, body에 이벤트 집계
+      const catKey = `shoeson_track_${today}`;
+      // 기존 데이터 읽기
+      const r = await fetch(`${SB_URL}/rest/v1/wiki_documents?category=eq.${catKey}&select=id,body&limit=1`, { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } });
+      let counts = {};
+      let existingId = null;
+      if (r.ok) {
+        const rows = await r.json();
+        if (rows.length) { existingId = rows[0].id; try { counts = JSON.parse(rows[0].body); } catch(_) {} }
+      }
+      counts[event] = (counts[event] || 0) + 1;
+      if (existingId) {
+        await fetch(`${SB_URL}/rest/v1/wiki_documents?id=eq.${existingId}`, { method: 'PATCH', headers: sbH, body: JSON.stringify({ body: JSON.stringify(counts) }) });
+      } else {
+        await fetch(`${SB_URL}/rest/v1/wiki_documents`, { method: 'POST', headers: sbH, body: JSON.stringify([{ category: catKey, title: today, summary: 'track', body: JSON.stringify(counts), is_featured: false, view_count: 0, status: 'published' }]) });
+      }
+      return res.status(200).json({ ok: true });
+    }
+    // GET: 최근 30일 데이터
+    const days = [];
+    for (let i = 0; i < 30; i++) { const d = new Date(); d.setDate(d.getDate() - i); days.push(d.toISOString().slice(0, 10)); }
+    const cats = days.map(d => `shoeson_track_${d}`);
+    const results = {};
+    for (const cat of cats) {
+      const r = await fetch(`${SB_URL}/rest/v1/wiki_documents?category=eq.${cat}&select=body,title&limit=1`, { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } });
+      if (r.ok) { const rows = await r.json(); if (rows.length) { try { results[rows[0].title] = JSON.parse(rows[0].body); } catch(_) {} } }
+    }
+    return res.status(200).json(results);
+  }
+
   // ── Shoeson 투표 프록시 ──────────────────────────────────
   if (section === 'shoeson-vote') {
     if (!SB_KEY) return res.status(500).json({ error: 'SB key missing' });
