@@ -32,8 +32,18 @@ export default async function handler(req, res) {
       });
       return res.status(200).json({ ok: true });
     }
+    // DELETE: 특정 투표 삭제 (?id=123) 또는 전체 삭제 (?id=all)
+    if (req.method === 'DELETE') {
+      const delId = req.query?.id;
+      if (!delId) return res.status(400).json({ error: 'id required (?id=123 or ?id=all)' });
+      const delUrl = delId === 'all'
+        ? `${SB_URL}/rest/v1/wiki_documents?category=eq.shoeson_vote`
+        : `${SB_URL}/rest/v1/wiki_documents?id=eq.${delId}&category=eq.shoeson_vote`;
+      await fetch(delUrl, { method: 'DELETE', headers: sbH });
+      return res.status(200).json({ ok: true, deleted: delId });
+    }
     // GET: 결과 조회
-    const r = await fetch(`${SB_URL}/rest/v1/wiki_documents?category=eq.shoeson_vote&select=body,summary&order=id.desc&limit=200`, { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } });
+    const r = await fetch(`${SB_URL}/rest/v1/wiki_documents?category=eq.shoeson_vote&select=id,body,summary&order=id.desc&limit=200`, { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } });
     if (r.ok) return res.status(200).json(await r.json());
     return res.status(200).json([]);
   }
