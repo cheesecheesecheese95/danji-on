@@ -13,10 +13,30 @@ const SECTION_MAP = {
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const section = req.query?.section;
+
+  // ── Shoeson 투표 프록시 ──────────────────────────────────
+  if (section === 'shoeson-vote') {
+    if (!SB_KEY) return res.status(500).json({ error: 'SB key missing' });
+    const sbH = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
+    if (req.method === 'POST') {
+      const { role, vote, review, hesitations, etcText } = req.body || {};
+      if (!role) return res.status(400).json({ error: 'role required' });
+      await fetch(`${SB_URL}/rest/v1/wiki_documents`, {
+        method: 'POST', headers: sbH,
+        body: JSON.stringify([{ category: 'shoeson_vote', title: new Date().toISOString().slice(0, 10), summary: role, body: JSON.stringify({ role, vote, review, hesitations, etcText, ts: Date.now() }), is_featured: false, view_count: 0, status: 'published' }]),
+      });
+      return res.status(200).json({ ok: true });
+    }
+    // GET: 결과 조회
+    const r = await fetch(`${SB_URL}/rest/v1/wiki_documents?category=eq.shoeson_vote&select=body,summary&order=id.desc&limit=200`, { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } });
+    if (r.ok) return res.status(200).json(await r.json());
+    return res.status(200).json([]);
+  }
 
   // ── 네이버 검색 프록시 ────────────────────────────────────
   if (section === 'naver-search') {
