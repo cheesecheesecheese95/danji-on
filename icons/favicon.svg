@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#1B3A6B"/>
+  <text x="256" y="300" text-anchor="middle" font-family="Arial,sans-serif" font-size="220" font-weight="900" fill="#FFFFFF" letter-spacing="-8">ON</text>
+  <rect x="140" y="340" width="232" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+  <text x="256" y="400" text-anchor="middle" font-family="Arial,sans-serif" font-size="72" font-weight="700" fill="rgba(255,255,255,0.6)">DMC</text>
+</svg>
