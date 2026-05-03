@@ -758,15 +758,15 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
     <div class="page" id="page-fee">
       <!-- 관리비 서브탭 -->
       <div style="display:flex;background:var(--white);border-bottom:1px solid var(--gray-200);overflow-x:auto;scrollbar-width:none;position:sticky;top:108px;z-index:90;">
-        <button class="fee-tab active" onclick="goFeeTab(0,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--red);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">📸 내 고지서</button>
-        <button class="fee-tab" onclick="goFeeTab(1,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">이번 달</button>
+        <button class="fee-tab active" onclick="goFeeTab(1,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--navy);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid var(--navy);white-space:nowrap;">이번 달</button>
         <button class="fee-tab" onclick="goFeeTab(2,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">월별 추이</button>
         <button class="fee-tab" onclick="goFeeTab(3,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">전년 비교</button>
+        <button class="fee-tab" onclick="goFeeTab(0,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">📸 내 고지서</button>
         <button class="fee-tab" onclick="goFeeTab(4,this)" style="flex-shrink:0;padding:11px 16px;font-size:12px;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;white-space:nowrap;">FAQ</button>
       </div>
 
       <!-- 서브탭 1: 이번 달 -->
-      <div class="fee-page" id="fee1">
+      <div class="fee-page active" id="fee1">
         <div class="sec" style="padding-top:16px;">
           <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px;"><span class="src-tag o">출처: 관리비 고지서 · 2026.03</span></div>
           <div class="stat-grid2">
@@ -915,7 +915,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
       </div>
       <!-- 서브탭 0: 내 고지서 -->
-      <div class="fee-page active" id="fee0">
+      <div class="fee-page" id="fee0">
         <div class="sec" style="padding-top:16px;">
 
           <!-- 안내 배너 -->
@@ -2815,7 +2815,7 @@ function goHistoryForward(){
 function goTab(id){
   showPage(id);
   pushHistory(id);
-  if(id==='fee'&&!window._fC0){window._fC0=true;setTimeout(initFeeDonut,80);}
+  if(id==='fee'&&!window._fC1){window._fC1=true;setTimeout(initFeeDonut,80);}
 }
 function goPage(id){
   showPage(id);
@@ -3339,17 +3339,7 @@ _si.addEventListener('keydown', function(e){
 loadBiz();
 loadLocal();
 
-// ── 관리비 서브탭 ─────────────────────────────────────────────
-function goFeeTab(idx,btn){
-  document.querySelectorAll('.fee-tab').forEach(b=>{b.style.color='var(--gray-400)';b.style.borderBottomColor='transparent';});
-  document.querySelectorAll('.fee-page').forEach(p=>p.classList.remove('active'));
-  btn.style.color='var(--navy)';btn.style.borderBottomColor='var(--navy)';
-  document.getElementById('fee'+idx).classList.add('active');
-  if(idx===0&&!window._fC0) {window._fC0=true;setTimeout(initFeeDonut,50);}
-  if(idx===1&&!window._fC1) {window._fC1=true;setTimeout(initFeeTrend,50);}
-  if(idx===2&&!window._fC2) {window._fC2=true;setTimeout(initFeeItems,50);}
-  if(idx===3&&!window._fC3) {window._fC3=true;setTimeout(initFeeYoy,50);}
-}
+// ── 관리비 차트 데이터 ─────────────────────────────────────────
 const FM=['25.01','25.02','25.03','25.04','25.05','25.06','25.07','25.08','25.09','25.10','25.11','25.12','26.01','26.02','26.03'];
 const FT=[180.7,174.6,144.9,133.7,125.0,125.6,133.5,148.4,131.4,123.3,139.6,167.3,189.1,166.2,159.6];
 const FP=[42.0,40.6,33.7,31.1,29.1,29.2,31.0,34.5,30.6,28.7,32.5,38.9,44.0,38.7,37.1];
