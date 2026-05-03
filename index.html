@@ -4440,7 +4440,10 @@ window.addEventListener('beforeinstallprompt', (e) => {
   if (banner) banner.style.display = 'flex';
 });
 function installApp() {
-  if (deferredPrompt) {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  if (isIOS) {
+    showIOSGuide();
+  } else if (deferredPrompt) {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(choice => {
       const banner = document.getElementById('install-banner');
@@ -4448,8 +4451,7 @@ function installApp() {
       deferredPrompt = null;
     });
   } else {
-    // iOS or already installed — show guide modal
-    showIOSGuide();
+    showIOSGuide(); // fallback
   }
 }
 function dismissInstall() {
