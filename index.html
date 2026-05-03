@@ -3383,9 +3383,8 @@ function goFeeTab(idx,btn){
   document.querySelectorAll('.fee-page').forEach(p=>p.classList.remove('active'));
   btn.style.color='var(--navy)';btn.style.borderBottomColor='var(--navy)';
   document.getElementById('fee'+idx).classList.add('active');
-  if(idx===0&&!window._fC0){window._fC0=true;setTimeout(initFeeDonut,50);}
-  if(idx===1&&!window._fC1){window._fC1=true;setTimeout(initFeeTrend,50);}
-  if(idx===2&&!window._fC2){window._fC2=true;setTimeout(initFeeItems,50);}
+  if(idx===1&&!window._fC1){window._fC1=true;setTimeout(initFeeDonut,50);}
+  if(idx===2&&!window._fC2){window._fC2=true;setTimeout(initFeeTrend,50);}
   if(idx===3&&!window._fC3){window._fC3=true;setTimeout(initFeeYoy,50);}
 }
 
