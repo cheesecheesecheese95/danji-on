@@ -552,9 +552,11 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <span class="brand-dmc">DMC</span>
         <span class="brand-name">파크뷰자이<span class="brand-on">ON</span></span>
       </button></h1>
-      <button id="btn-install-ios" onclick="showIOSGuide()" style="display:none;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.9);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">📲 홈추가</button>
-      <span class="hbadge" id="btn-installed" style="display:none;">✓ 설치됨</span>
-      <button onclick="goPage('register')" class="hbadge" id="badge-default" style="cursor:pointer;border:none;font-family:inherit;">입주민 전용 →</button>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button id="btn-install" onclick="installApp()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.95);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">📲 홈추가</button>
+        <span class="hbadge" id="btn-installed" style="display:none;">✓ 설치됨</span>
+        <button onclick="goPage('register')" class="hbadge" id="badge-default" style="cursor:pointer;border:none;font-family:inherit;">입주민 전용 →</button>
+      </div>
     </div>
     <div class="search-wrap">
       <svg class="s-ico" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
@@ -4438,13 +4440,17 @@ window.addEventListener('beforeinstallprompt', (e) => {
   if (banner) banner.style.display = 'flex';
 });
 function installApp() {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(choice => {
-    const banner = document.getElementById('install-banner');
-    if (banner) banner.style.display = 'none';
-    deferredPrompt = null;
-  });
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choice => {
+      const banner = document.getElementById('install-banner');
+      if (banner) banner.style.display = 'none';
+      deferredPrompt = null;
+    });
+  } else {
+    // iOS or already installed — show guide modal
+    showIOSGuide();
+  }
 }
 function dismissInstall() {
   const banner = document.getElementById('install-banner');
@@ -4452,12 +4458,25 @@ function dismissInstall() {
   // 7일간 다시 안 보이기
   localStorage.setItem('install-dismissed', Date.now());
 }
-// 7일 이내 dismiss 했으면 배너 숨김
+// 첫 방문 or 미설치 시 배너 자동 표시
 window.addEventListener('DOMContentLoaded', () => {
   const dismissed = localStorage.getItem('install-dismissed');
-  if (dismissed && Date.now() - Number(dismissed) < 7*24*60*60*1000) {
-    const banner = document.getElementById('install-banner');
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  const banner = document.getElementById('install-banner');
+
+  if (isStandalone) {
+    // 이미 설치됨
     if (banner) banner.style.display = 'none';
+    const btn = document.getElementById('btn-install');
+    if (btn) btn.style.display = 'none';
+    const installed = document.getElementById('btn-installed');
+    if (installed) installed.style.display = '';
+  } else if (dismissed && Date.now() - Number(dismissed) < 7*24*60*60*1000) {
+    // 7일 이내 닫았으면 숨김
+    if (banner) banner.style.display = 'none';
+  } else {
+    // 첫 방문 or 7일 경과 — 배너 표시
+    if (banner) setTimeout(function(){ banner.style.display = 'flex'; }, 3000);
   }
 });
 
