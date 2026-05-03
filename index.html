@@ -49,7 +49,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 .app{max-width:430px;margin:0 auto;background:var(--gray-50);min-height:100vh;position:relative;}
 
 /* HEADER */
-.header{background:linear-gradient(135deg,#162d56 0%,#1B3A6B 60%,#1e4480 100%);padding:16px 20px 14px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08);}
+.header{background:linear-gradient(135deg,#162d56 0%,#1B3A6B 60%,#1e4480 100%);padding:16px 20px 14px;padding-top:calc(16px + env(safe-area-inset-top));position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08);}
 .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 /* 브랜드 로고 */
 .brand-wrap{display:flex;align-items:center;gap:0;cursor:pointer;background:none;border:none;padding:0;font-family:inherit;}
