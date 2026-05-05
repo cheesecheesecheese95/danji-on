@@ -164,6 +164,7 @@ const MENUS = [
   ['page:register', '🔑', '입주민인증', '/#register'],
   ['culture',       '🎪', '문화·행사',  '/culture.html'],
   ['page:law',      '⚖️', 'AI 법률상담','/law.html'],
+  ['install_click', '📲', '홈설치 클릭', null],
 ];
 
 function checkPw(){
@@ -275,8 +276,10 @@ async function loadTrack(){
       const todayBadge = m.today > 0
         ? `<span style="font-size:10px;font-weight:700;color:var(--green);background:#E8F5EE;padding:1px 6px;border-radius:8px;margin-left:6px;">+${m.today}오늘</span>`
         : '';
+      const tag = m.url ? `<a href="${m.url}" target="_blank"` : `<div`;
+      const endTag = m.url ? '</a>' : '</div>';
       return `
-        <a href="${m.url}" target="_blank" style="display:block;text-decoration:none;margin-bottom:12px;">
+        ${tag} style="display:block;text-decoration:none;margin-bottom:12px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
             <span style="font-size:13px;font-weight:600;color:var(--gray-800);">${m.icon} ${m.label}${todayBadge}</span>
             <span style="font-size:12px;color:var(--gray-400);">${m.total.toLocaleString()}회</span>
@@ -284,7 +287,7 @@ async function loadTrack(){
           <div style="background:var(--gray-200);border-radius:99px;height:6px;overflow:hidden;">
             <div style="width:${pct}%;height:100%;background:var(--navy);border-radius:99px;transition:width 0.6s ease;"></div>
           </div>
-        </a>`;
+        ${endTag}`;
     }).join('');
 
     document.getElementById('menu-stat-list').innerHTML = html || '<span style="color:var(--gray-400)">데이터 없음</span>';

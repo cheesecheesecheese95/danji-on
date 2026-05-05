@@ -4253,6 +4253,7 @@ const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').match
   || window.navigator.standalone === true;
 
 function showInstallGuide() {
+  track('install_click');
   if (isIOS) {
     // iOS: 모달 안내
     const modal = document.getElementById('ios-modal');
@@ -4443,6 +4444,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   if (banner) banner.style.display = 'flex';
 });
 function installApp() {
+  track('install_click');
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   if (isIOS) {
     showIOSGuide();
