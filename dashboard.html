@@ -94,36 +94,6 @@
 
   <div class="container">
 
-    <!-- 설문 결과 -->
-    <div class="section">
-      <div class="section-title">📊 주민 설문 <span class="badge badge-live">LIVE</span></div>
-      <div class="stat-grid">
-        <div class="stat"><div class="stat-num" id="s-total">—</div><div class="stat-label">총 응답</div></div>
-        <div class="stat"><div class="stat-num" id="s-pos">—</div><div class="stat-label">긍정 응답</div></div>
-        <div class="stat"><div class="stat-num" id="s-pos-pct">—</div><div class="stat-label">긍정 비율</div></div>
-      </div>
-
-      <div class="bar-row">
-        <div class="bar-top"><span class="bar-label">매우 필요하다</span><span class="bar-info" id="b-very">0표</span></div>
-        <div class="bar-track"><div class="bar-fill c-very" id="bf-very" style="width:0%"></div></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-top"><span class="bar-label">필요하다</span><span class="bar-info" id="b-needed">0표</span></div>
-        <div class="bar-track"><div class="bar-fill c-needed" id="bf-needed" style="width:0%"></div></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-top"><span class="bar-label">아직 모르겠다</span><span class="bar-info" id="b-unsure">0표</span></div>
-        <div class="bar-track"><div class="bar-fill c-unsure" id="bf-unsure" style="width:0%"></div></div>
-      </div>
-      <div class="bar-row" style="margin-bottom:0">
-        <div class="bar-top"><span class="bar-label">필요하지 않다</span><span class="bar-info" id="b-not">0표</span></div>
-        <div class="bar-track"><div class="bar-fill c-not" id="bf-not" style="width:0%"></div></div>
-      </div>
-
-      <button class="refresh-btn" onclick="loadAll()">↻ 새로고침</button>
-      <div class="updated" id="survey-updated"></div>
-    </div>
-
     <!-- 방문·메뉴 통계 -->
     <div class="section">
       <div class="section-title">👆 방문 · 메뉴별 클릭 <span class="badge badge-live">LIVE</span></div>
@@ -171,6 +141,36 @@
       </div>
       <div id="resident-list" style="font-size:13px;color:var(--gray-600);">불러오는 중…</div>
       <button class="refresh-btn" onclick="loadResidents()">↻ 새로고침</button>
+    </div>
+
+    <!-- 설문 결과 -->
+    <div class="section">
+      <div class="section-title">📊 주민 설문 <span class="badge badge-live">LIVE</span></div>
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-num" id="s-total">—</div><div class="stat-label">총 응답</div></div>
+        <div class="stat"><div class="stat-num" id="s-pos">—</div><div class="stat-label">긍정 응답</div></div>
+        <div class="stat"><div class="stat-num" id="s-pos-pct">—</div><div class="stat-label">긍정 비율</div></div>
+      </div>
+
+      <div class="bar-row">
+        <div class="bar-top"><span class="bar-label">매우 필요하다</span><span class="bar-info" id="b-very">0표</span></div>
+        <div class="bar-track"><div class="bar-fill c-very" id="bf-very" style="width:0%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-top"><span class="bar-label">필요하다</span><span class="bar-info" id="b-needed">0표</span></div>
+        <div class="bar-track"><div class="bar-fill c-needed" id="bf-needed" style="width:0%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-top"><span class="bar-label">아직 모르겠다</span><span class="bar-info" id="b-unsure">0표</span></div>
+        <div class="bar-track"><div class="bar-fill c-unsure" id="bf-unsure" style="width:0%"></div></div>
+      </div>
+      <div class="bar-row" style="margin-bottom:0">
+        <div class="bar-top"><span class="bar-label">필요하지 않다</span><span class="bar-info" id="b-not">0표</span></div>
+        <div class="bar-track"><div class="bar-fill c-not" id="bf-not" style="width:0%"></div></div>
+      </div>
+
+      <button class="refresh-btn" onclick="loadAll()">↻ 새로고침</button>
+      <div class="updated" id="survey-updated"></div>
     </div>
 
     <a class="home-link" href="/">← 홈으로</a>
