@@ -5035,6 +5035,14 @@ function track(event) {
 }
 // 방문 카운트
 track('visit');
+// 순방문자 (하루 1회)
+(function(){
+  var today = new Date().toISOString().slice(0,10);
+  if(localStorage.getItem('_uv_date') !== today){
+    localStorage.setItem('_uv_date', today);
+    track('unique_visit');
+  }
+})();
 
 // goPage / goTab 자동 트래킹 래핑 (함수 정의 완료 후 실행)
 document.addEventListener('DOMContentLoaded', function(){

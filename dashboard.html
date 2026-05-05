@@ -127,9 +127,13 @@
     <!-- 방문·메뉴 통계 -->
     <div class="section">
       <div class="section-title">👆 방문 · 메뉴별 클릭 <span class="badge badge-live">LIVE</span></div>
-      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px;">
+      <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:10px;">
         <div class="stat"><div class="stat-num" id="t-visit">—</div><div class="stat-label">총 방문</div></div>
+        <div class="stat"><div class="stat-num" id="t-uv">—</div><div class="stat-label">총 순방문자</div></div>
+      </div>
+      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px;">
         <div class="stat"><div class="stat-num" id="t-today">—</div><div class="stat-label">오늘 방문</div></div>
+        <div class="stat"><div class="stat-num" id="t-today-uv">—</div><div class="stat-label">오늘 순방문</div></div>
         <div class="stat"><div class="stat-num" id="t-menus">—</div><div class="stat-label">총 메뉴클릭</div></div>
       </div>
       <div id="menu-stat-list">불러오는 중…</div>
@@ -282,8 +286,12 @@ async function loadTrack(){
 
     const totalVisit = d.total['visit'] || 0;
     const todayVisit = d.today['visit'] || 0;
+    const totalUV = d.total['unique_visit'] || 0;
+    const todayUV = d.today['unique_visit'] || 0;
     document.getElementById('t-visit').textContent = totalVisit.toLocaleString();
     document.getElementById('t-today').textContent = todayVisit.toLocaleString();
+    document.getElementById('t-uv').textContent = totalUV.toLocaleString();
+    document.getElementById('t-today-uv').textContent = todayUV.toLocaleString();
 
     // 메뉴 클릭 합계
     const totalMenuClicks = MENUS.reduce((s,[k]) => s + (d.total[k]||0), 0);
@@ -349,10 +357,14 @@ function getDayVisits(dateStr) {
   return (DAILY_DATA[dateStr] && DAILY_DATA[dateStr]['visit']) || 0;
 }
 
+function getDayUV(dateStr) {
+  return (DAILY_DATA[dateStr] && DAILY_DATA[dateStr]['unique_visit']) || 0;
+}
+
 function getDayMenuClicks(dateStr) {
   if (!DAILY_DATA[dateStr]) return 0;
   const d = DAILY_DATA[dateStr];
-  return Object.keys(d).reduce((s, k) => s + (k === 'visit' ? 0 : (d[k] || 0)), 0);
+  return Object.keys(d).reduce((s, k) => s + (k === 'visit' || k === 'unique_visit' ? 0 : (d[k] || 0)), 0);
 }
 
 function fmtDate(dateStr) {
@@ -408,16 +420,25 @@ function renderDailyCompare() {
     return `<div class="cmp-diff ${cls}">${sign}${diff} (${sign}${pct}%)</div>`;
   }
 
+  const todayUV = getDayUV(today);
+  const yesterdayUV = getDayUV(yesterday);
   const todayMenus = getDayMenuClicks(today);
   const yesterdayMenus = getDayMenuClicks(yesterday);
 
   const html = `
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;">
       <div class="cmp-card">
         <div class="cmp-val">${todayV}</div>
         <div class="cmp-label">오늘 방문</div>
         ${diffBadge(todayV, yesterdayV, '전일비')}
       </div>
+      <div class="cmp-card">
+        <div class="cmp-val">${todayUV}</div>
+        <div class="cmp-label">오늘 순방문</div>
+        ${diffBadge(todayUV, yesterdayUV, '전일비')}
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
       <div class="cmp-card">
         <div class="cmp-val">${yesterdayV}</div>
         <div class="cmp-label">어제 방문</div>
@@ -439,11 +460,12 @@ function renderDailyTable() {
   if (!dates.length) { document.getElementById('daily-table').innerHTML = ''; return; }
 
   let html = `<table class="dtable">
-    <tr><th>날짜</th><th>요일</th><th>방문</th><th>메뉴클릭</th><th>홈설치</th></tr>`;
+    <tr><th>날짜</th><th>요일</th><th>방문</th><th>순방문</th><th>클릭</th><th>홈설치</th></tr>`;
 
   dates.forEach(date => {
     const d = DAILY_DATA[date];
     const visits = d['visit'] || 0;
+    const uv = d['unique_visit'] || 0;
     const menus = getDayMenuClicks(date);
     const installs = d['install_click'] || 0;
     const isToday = date === new Date().toISOString().slice(0,10);
@@ -452,6 +474,7 @@ function renderDailyTable() {
       <td>${fmtDate(date)}</td>
       <td>${fmtDay(date)}</td>
       <td>${visits}</td>
+      <td>${uv}</td>
       <td>${menus}</td>
       <td>${installs}</td>
     </tr>`;
