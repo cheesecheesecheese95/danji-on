@@ -26,6 +26,21 @@ export default async function handler(req, res) {
       for (let i = 0; i < raw.length; i += 2) obj[raw[i]] = parseInt(raw[i+1]) || 0;
       return obj;
     }
+    // mode=daily: 최근 N일간 일별 데이터 반환
+    if (req.query.mode === 'daily') {
+      const days = Math.min(parseInt(req.query.days) || 14, 30);
+      const dates = [];
+      for (let i = 0; i < days; i++) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        dates.push(d.toISOString().slice(0, 10));
+      }
+      const results = await Promise.all(dates.map(date => hgetall(`track:daily:${date}`)));
+      const daily = {};
+      dates.forEach((date, i) => { daily[date] = results[i]; });
+      return res.json({ daily });
+    }
+
     const [total, todayData] = await Promise.all([
       hgetall('track:total'),
       hgetall(`track:daily:${today}`),

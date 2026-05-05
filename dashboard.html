@@ -49,6 +49,22 @@
   #gate button{background:var(--navy);color:#fff;border:none;border-radius:12px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
   #gate .err{font-size:12px;color:var(--red);min-height:16px}
 
+  .dbtn{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:inherit}
+  .dbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .daily-bar{display:flex;align-items:end;gap:4px;height:120px;padding:0 4px}
+  .daily-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .daily-col .bar{width:100%;border-radius:4px 4px 0 0;background:var(--navy);min-height:2px;transition:height 0.4s ease}
+  .daily-col .lbl{font-size:9px;color:var(--gray-400);white-space:nowrap}
+  .daily-col .val{font-size:9px;font-weight:700;color:var(--gray-800)}
+  .cmp-card{background:var(--gray-100);border-radius:12px;padding:12px;text-align:center}
+  .cmp-val{font-size:20px;font-weight:800;line-height:1}
+  .cmp-label{font-size:10px;color:var(--gray-400);margin-top:4px}
+  .cmp-diff{font-size:11px;font-weight:700;margin-top:4px}
+  .cmp-up{color:var(--green)}.cmp-down{color:var(--red)}.cmp-flat{color:var(--gray-400)}
+  .dtable{width:100%;border-collapse:collapse;font-size:11px}
+  .dtable th{text-align:left;padding:6px 4px;border-bottom:2px solid var(--gray-200);color:var(--gray-400);font-weight:600}
+  .dtable td{padding:6px 4px;border-bottom:1px solid var(--gray-200);color:var(--gray-800)}
+  .dtable tr:hover td{background:var(--gray-100)}
   .home-link{font-size:12px;color:var(--gray-400);text-decoration:none;display:block;text-align:center;margin-top:8px}
   .home-link:hover{color:var(--navy)}
   .menu-link{display:block;background:var(--gray-100);border-radius:12px;padding:11px 12px;font-size:13px;font-weight:600;color:var(--gray-800);text-decoration:none;transition:background 0.1s;}
@@ -120,6 +136,19 @@
       <button class="refresh-btn" onclick="loadTrack()">↻ 새로고침</button>
     </div>
 
+    <!-- 일별 현황 -->
+    <div class="section">
+      <div class="section-title">📅 일별 현황 <span class="badge badge-live">LIVE</span></div>
+      <div style="display:flex;gap:6px;margin-bottom:16px;">
+        <button class="dbtn on" data-days="7" onclick="switchDays(7)">7일</button>
+        <button class="dbtn" data-days="14" onclick="switchDays(14)">14일</button>
+      </div>
+      <div id="daily-chart" style="margin-bottom:16px;">불러오는 중…</div>
+      <div id="daily-compare" style="margin-bottom:12px;"></div>
+      <div id="daily-table"></div>
+      <button class="refresh-btn" onclick="loadDaily()">↻ 새로고침</button>
+    </div>
+
     <!-- Vercel Analytics 바로가기 -->
     <div class="section" style="text-align:center;padding:16px;">
       <div style="font-size:12px;color:var(--gray-400);margin-bottom:8px;">상세 방문자 분석 (디바이스·지역·경로)</div>
@@ -184,8 +213,6 @@ if(sessionStorage.getItem(PW_KEY)==='1'){
   document.getElementById('gate').style.display='none';
   document.getElementById('dashboard').style.display='block';
 }
-
-function loadAll(){ loadSurvey(); loadTrack(); loadResidents(); }
 
 async function loadResidents(){
   try {
@@ -293,6 +320,148 @@ async function loadTrack(){
     document.getElementById('menu-stat-list').innerHTML = html || '<span style="color:var(--gray-400)">데이터 없음</span>';
   } catch(e) { console.error(e); }
 }
+
+// ── 일별 현황 ──────────────────────────────────────────────
+var DAILY_DATA = {}, DAILY_DAYS = 7;
+
+function switchDays(n) {
+  DAILY_DAYS = n;
+  document.querySelectorAll('.dbtn').forEach(b => {
+    b.className = 'dbtn' + (parseInt(b.dataset.days) === n ? ' on' : '');
+  });
+  loadDaily();
+}
+
+async function loadDaily() {
+  try {
+    const r = await fetch('/api/track?mode=daily&days=' + DAILY_DAYS);
+    const d = await r.json();
+    DAILY_DATA = d.daily || {};
+    renderDailyChart();
+    renderDailyCompare();
+    renderDailyTable();
+  } catch(e) {
+    document.getElementById('daily-chart').innerHTML = '<span style="color:var(--red)">불러오기 실패</span>';
+  }
+}
+
+function getDayVisits(dateStr) {
+  return (DAILY_DATA[dateStr] && DAILY_DATA[dateStr]['visit']) || 0;
+}
+
+function getDayMenuClicks(dateStr) {
+  if (!DAILY_DATA[dateStr]) return 0;
+  const d = DAILY_DATA[dateStr];
+  return Object.keys(d).reduce((s, k) => s + (k === 'visit' ? 0 : (d[k] || 0)), 0);
+}
+
+function fmtDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return (d.getMonth()+1) + '/' + d.getDate();
+}
+
+function fmtDay(dateStr) {
+  const days = ['일','월','화','수','목','금','토'];
+  const d = new Date(dateStr + 'T00:00:00');
+  return days[d.getDay()];
+}
+
+function renderDailyChart() {
+  const dates = Object.keys(DAILY_DATA).sort();
+  if (!dates.length) { document.getElementById('daily-chart').innerHTML = '데이터 없음'; return; }
+
+  const visits = dates.map(getDayVisits);
+  const max = Math.max(...visits, 1);
+
+  const html = '<div class="daily-bar">' + dates.map((date, i) => {
+    const v = visits[i];
+    const h = Math.round(v / max * 100);
+    const isToday = date === new Date().toISOString().slice(0,10);
+    const bg = isToday ? 'var(--green)' : 'var(--navy)';
+    return `<div class="daily-col">
+      <div class="val">${v}</div>
+      <div class="bar" style="height:${h}px;background:${bg}"></div>
+      <div class="lbl">${fmtDate(date)}</div>
+      <div class="lbl">${fmtDay(date)}</div>
+    </div>`;
+  }).join('') + '</div>';
+
+  document.getElementById('daily-chart').innerHTML = html;
+}
+
+function renderDailyCompare() {
+  const today = new Date().toISOString().slice(0,10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0,10);
+  const lastWeek = new Date(Date.now() - 7*86400000).toISOString().slice(0,10);
+
+  const todayV = getDayVisits(today);
+  const yesterdayV = getDayVisits(yesterday);
+  const lastWeekV = getDayVisits(lastWeek);
+
+  function diffBadge(cur, prev, label) {
+    if (prev === 0 && cur === 0) return `<div class="cmp-diff cmp-flat">—</div>`;
+    if (prev === 0) return `<div class="cmp-diff cmp-up">NEW</div>`;
+    const diff = cur - prev;
+    const pct = Math.round(diff / prev * 100);
+    const cls = diff > 0 ? 'cmp-up' : diff < 0 ? 'cmp-down' : 'cmp-flat';
+    const sign = diff > 0 ? '+' : '';
+    return `<div class="cmp-diff ${cls}">${sign}${diff} (${sign}${pct}%)</div>`;
+  }
+
+  const todayMenus = getDayMenuClicks(today);
+  const yesterdayMenus = getDayMenuClicks(yesterday);
+
+  const html = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+      <div class="cmp-card">
+        <div class="cmp-val">${todayV}</div>
+        <div class="cmp-label">오늘 방문</div>
+        ${diffBadge(todayV, yesterdayV, '전일비')}
+      </div>
+      <div class="cmp-card">
+        <div class="cmp-val">${yesterdayV}</div>
+        <div class="cmp-label">어제 방문</div>
+        ${diffBadge(yesterdayV, lastWeekV, '전주비')}
+      </div>
+      <div class="cmp-card">
+        <div class="cmp-val">${todayMenus}</div>
+        <div class="cmp-label">오늘 클릭</div>
+        ${diffBadge(todayMenus, yesterdayMenus, '전일비')}
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--gray-400);margin-top:6px;text-align:right;">vs 전일 / vs 지난주 동일 요일</div>
+  `;
+  document.getElementById('daily-compare').innerHTML = html;
+}
+
+function renderDailyTable() {
+  const dates = Object.keys(DAILY_DATA).sort().reverse();
+  if (!dates.length) { document.getElementById('daily-table').innerHTML = ''; return; }
+
+  let html = `<table class="dtable">
+    <tr><th>날짜</th><th>요일</th><th>방문</th><th>메뉴클릭</th><th>홈설치</th></tr>`;
+
+  dates.forEach(date => {
+    const d = DAILY_DATA[date];
+    const visits = d['visit'] || 0;
+    const menus = getDayMenuClicks(date);
+    const installs = d['install_click'] || 0;
+    const isToday = date === new Date().toISOString().slice(0,10);
+    const bold = isToday ? 'font-weight:700;' : '';
+    html += `<tr style="${bold}">
+      <td>${fmtDate(date)}</td>
+      <td>${fmtDay(date)}</td>
+      <td>${visits}</td>
+      <td>${menus}</td>
+      <td>${installs}</td>
+    </tr>`;
+  });
+
+  html += '</table>';
+  document.getElementById('daily-table').innerHTML = html;
+}
+
+function loadAll(){ loadSurvey(); loadTrack(); loadResidents(); loadDaily(); }
 
 if(sessionStorage.getItem(PW_KEY)==='1') loadAll();
 </script>
