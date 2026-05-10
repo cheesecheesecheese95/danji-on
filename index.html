@@ -4275,9 +4275,9 @@ window.addEventListener('DOMContentLoaded', () => {
     btn.style.display = 'block';
   }
 
-  // 7일 이내 dismiss 했으면 배너 숨김
+  // 3일 이내 dismiss 했으면 배너 숨김
   const dismissed = localStorage.getItem('install-dismissed');
-  if (dismissed && Date.now() - Number(dismissed) < 7*24*60*60*1000) {
+  if (dismissed && Date.now() - Number(dismissed) < 3*24*60*60*1000) {
     const banner = document.getElementById('install-banner');
     if (banner) banner.style.display = 'none';
   }
@@ -4462,7 +4462,7 @@ function installApp() {
 function dismissInstall() {
   const banner = document.getElementById('install-banner');
   if (banner) banner.style.display = 'none';
-  // 7일간 다시 안 보이기
+  // 3일간 다시 안 보이기
   localStorage.setItem('install-dismissed', Date.now());
 }
 // 첫 방문 or 미설치 시 배너 자동 표시
@@ -4478,12 +4478,23 @@ window.addEventListener('DOMContentLoaded', () => {
     if (btn) btn.style.display = 'none';
     const installed = document.getElementById('btn-installed');
     if (installed) installed.style.display = '';
-  } else if (dismissed && Date.now() - Number(dismissed) < 7*24*60*60*1000) {
-    // 7일 이내 닫았으면 숨김
+  } else if (dismissed && Date.now() - Number(dismissed) < 3*24*60*60*1000) {
+    // 3일 이내 닫았으면 숨김
     if (banner) banner.style.display = 'none';
   } else {
-    // 첫 방문 or 7일 경과 — 배너 표시
-    if (banner) setTimeout(function(){ banner.style.display = 'flex'; }, 3000);
+    // 첫 방문 or 3일 경과 — 배너 표시
+    var visitCount = parseInt(localStorage.getItem('_visit_count') || '0') + 1;
+    localStorage.setItem('_visit_count', visitCount);
+    if (banner) {
+      // 3회 이상 방문 시 문구 변경
+      if (visitCount >= 3) {
+        var title = banner.querySelector('.install-title');
+        var sub = banner.querySelector('.install-sub');
+        if (title) title.textContent = '자주 방문하시네요!';
+        if (sub) sub.textContent = '홈화면에 추가하면 더 편하게 열 수 있어요';
+      }
+      setTimeout(function(){ banner.style.display = 'flex'; }, 3000);
+    }
   }
 });
 
@@ -5197,8 +5208,8 @@ document.addEventListener('DOMContentLoaded', function(){
   <div class="install-banner" id="install-banner">
     <span class="install-icon">📲</span>
     <div class="install-body">
-      <div class="install-title">홈화면에 추가하기</div>
-      <div class="install-sub">앱처럼 바로 열 수 있어요</div>
+      <div class="install-title">홈화면에 앱으로 추가하기</div>
+      <div class="install-sub">매번 주소 입력 없이 한 번에 열어요</div>
     </div>
     <div class="install-btns">
       <button class="install-ok" onclick="installApp()">설치</button>
