@@ -6,6 +6,15 @@
 <meta name="naver-site-verification" content="8d64ccb978ccda130bbab562a5b43c81293437c5" />
 <meta name="description" content="DMC파크뷰자이 입주민을 위한 생활 정보 플랫폼">
 <title>DMC파크뷰자이 ON</title>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-70WSQPNTTK"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());
+var _isStandalone=window.matchMedia('(display-mode:standalone)').matches||window.navigator.standalone===true;
+gtag('config','G-70WSQPNTTK');
+gtag('set','user_properties',{pwa_mode:_isStandalone?'standalone':'browser'});
+if(_isStandalone) gtag('event','launched_as_app');
+</script>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
 
@@ -5043,6 +5052,8 @@ function track(event) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ event }),
   }).catch(() => {});
+  // GA4에도 전송
+  if(typeof gtag==='function') gtag('event',event);
 }
 // 방문 카운트
 track('visit');
