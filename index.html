@@ -605,8 +605,8 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <img src="/data/station-banner.jpg" alt="가좌역을 경의선숲길역으로 역명변경 응원 - 클릭하여 함께 응원하기" style="width:100%;display:block;">
       </a>
 
-      <!-- 공지: 목욕탕 자리맡기 금지 -->
-      <div onclick="goPageAnchor('news','news-bath-rule')" style="background:#FFF8E1;border:1px solid #FFE082;border-radius:14px;padding:14px 16px;margin:10px 16px 0;cursor:pointer;">
+      <!-- 공지: 목욕탕 자리맡기 금지 (3회 방문까지만 노출) -->
+      <div id="home-notice-bath" onclick="goPageAnchor('news','news-bath-rule')" style="display:none;background:#FFF8E1;border:1px solid #FFE082;border-radius:14px;padding:14px 16px;margin:10px 16px 0;cursor:pointer;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
           <div style="font-size:13px;font-weight:800;color:#E65100;">🛁 목욕탕 자리 맡기 금지 안내</div>
         </div>
@@ -4409,6 +4409,12 @@ function showInstallGuide() {
     installApp();
   }
 }
+
+// ── 홈 공지 배너: 3회 방문까지만 노출 ──
+(function(){
+  var k='notice_bath_views', n=parseInt(localStorage.getItem(k)||'0',10);
+  if(n<3){localStorage.setItem(k,n+1);var el=document.getElementById('home-notice-bath');if(el)el.style.display='block';}
+})();
 
 window.addEventListener('DOMContentLoaded', () => {
   // 이미 설치됐으면 버튼 숨김
