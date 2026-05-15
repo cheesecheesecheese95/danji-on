@@ -615,6 +615,27 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         </div>
       </div>
 
+      <!-- 홈 설문: 단지 이름 투표 -->
+      <div id="home-survey2" style="margin:12px 16px 0;">
+        <div style="background:#fff;border-radius:16px;border:1px solid var(--gray-200);padding:16px;box-shadow:var(--shadow-sm);">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:700;color:var(--gray-800);">💬 단지 이름을 바꾼다면?</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:10px;">현재 'DMC파크뷰자이' → 어떤 이름이 좋을까요?</div>
+          <div id="home-sv2-btns" style="display:flex;flex-direction:column;gap:6px;">
+            <button onclick="homeSurvey2('current')" style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;">DMC파크뷰자이 <span style="font-weight:400;opacity:0.7;">(현행유지)</span></button>
+            <button onclick="homeSurvey2('seodaemun')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;">서대문파크뷰자이</button>
+            <button onclick="homeSurvey2('yeonhui')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;">연희파크뷰자이</button>
+            <button onclick="homeSurvey2('parkview')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;">파크뷰자이</button>
+            <div style="display:flex;gap:6px;">
+              <input id="home-sv2-other" type="text" placeholder="다른 이름 제안..." maxlength="30" style="flex:1;border:1.5px solid var(--gray-200);border-radius:10px;padding:8px 12px;font-size:12px;font-family:inherit;outline:none;">
+              <button onclick="homeSurvey2('other')" style="background:var(--gray-100);color:var(--gray-600);border:1.5px solid var(--gray-200);border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">제출</button>
+            </div>
+          </div>
+          <div id="home-sv2-result" style="display:none;"></div>
+        </div>
+      </div>
+
       <div class="sec" style="padding-top:12px;">
 
         <!-- 핵심 퀵메뉴 — 2열 -->
@@ -4451,6 +4472,49 @@ function showInstallGuide() {
     installApp();
   }
 }
+
+// ── 홈 단지명 설문 ──
+(function(){
+  var box=document.getElementById('home-survey2');
+  var btns=document.getElementById('home-sv2-btns');
+  var result=document.getElementById('home-sv2-result');
+  if(!box)return;
+
+  var LABELS={current:'DMC파크뷰자이 (현행유지)',seodaemun:'서대문파크뷰자이',yeonhui:'연희파크뷰자이',parkview:'파크뷰자이',other:'기타'};
+  var ORDER=['current','seodaemun','yeonhui','parkview','other'];
+  var COLORS=['#1A3C6E','#2E7D52','#B8860B','#C84B1A','#7B1FA2'];
+
+  function render(d,myVote){
+    btns.style.display='none';
+    var total=d.total||0;
+    var bars=ORDER.map(function(opt,i){
+      var cnt=(d.counts&&d.counts[opt])||0;
+      var pct=total>0?Math.round(cnt/total*100):0;
+      var mine=opt===myVote?' ✓':'';
+      return '<div style="margin-bottom:6px;"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px;"><span style="font-weight:'+(opt===myVote?'700':'500')+';color:var(--gray-800)">'+LABELS[opt]+mine+'</span><span style="color:var(--gray-400)">'+cnt+'표 ('+pct+'%)</span></div><div style="background:var(--gray-200);border-radius:99px;height:7px;overflow:hidden;"><div style="width:'+pct+'%;height:100%;background:'+COLORS[i]+';border-radius:99px;transition:width 0.5s;"></div></div></div>';
+    }).join('');
+    result.style.display='block';
+    result.innerHTML='<div style="font-size:11px;color:var(--gray-400);margin-bottom:8px;">총 '+total+'명 참여</div>'+bars+'<div onclick="goPage(\'opinion\')" style="margin-top:8px;font-size:11px;color:var(--navy);font-weight:600;cursor:pointer;">전체 결과 보기 →</div>';
+  }
+
+  var prev=localStorage.getItem('survey2-voted');
+  if(prev){
+    fetch('/api/survey?type=name').then(function(r){return r.json()}).then(function(d){render(d,prev)}).catch(function(){});
+    return;
+  }
+
+  window.homeSurvey2=function(opt){
+    var otherText=opt==='other'?(document.getElementById('home-sv2-other')||{}).value||'':'';
+    if(opt==='other'&&!otherText.trim()){alert('다른 이름을 입력해주세요.');return;}
+    var allBtns=btns.querySelectorAll('button');
+    allBtns.forEach(function(b){b.disabled=true;b.style.opacity='0.5';});
+    var inp=document.getElementById('home-sv2-other');if(inp)inp.disabled=true;
+    fetch('/api/survey?type=name',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({option:opt,otherText:otherText})}).then(function(r){return r.json().then(function(d){
+      if(r.status===409){localStorage.setItem('survey2-voted',d.prevVote||opt);render(d,d.prevVote||opt);return;}
+      localStorage.setItem('survey2-voted',opt);render(d,opt);
+    })}).catch(function(){allBtns.forEach(function(b){b.disabled=false;b.style.opacity='1';});if(inp)inp.disabled=false;alert('잠시 후 다시 시도해주세요.');});
+  };
+})();
 
 // ── 홈 공지 배너: 3회 방문까지만 노출 ──
 (function(){
