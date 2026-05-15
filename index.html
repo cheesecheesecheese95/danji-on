@@ -668,19 +668,19 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <span class="q-icon">⚖️</span>
             <span class="q-texts"><span class="q-label">AI 법률상담</span><span class="q-sub">무료 24시간 상담</span></span>
           </a>
+          <button class="qbtn" onclick="goPage('opinion')">
+            <span class="q-icon">💬</span>
+            <span class="q-texts"><span class="q-label">주민 의견 한마디</span><span class="q-sub">설문·투표 참여</span></span>
+          </button>
         </div>
 
-        <!-- ── 설문 레이어 ── -->
-        <div id="survey-box" style="background:#fff;border-radius:16px;border:1px solid var(--gray-200);padding:16px;margin-bottom:16px;margin-top:8px;box-shadow:var(--shadow-sm);">
-          <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">💬 주민 의견 한 마디</div>
-          <div style="font-size:12px;color:var(--gray-600);margin-bottom:12px;line-height:1.5;">이 서비스가 단지 주민분들께 유용한가요?</div>
-          <div id="survey-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <button class="sv-btn" onclick="submitSurvey('very_needed')" style="background:var(--navy);color:#fff;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">매우<br>필요하다</button>
-            <button class="sv-btn" onclick="submitSurvey('needed')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">필요하다</button>
-            <button class="sv-btn" onclick="submitSurvey('unsure')" style="background:#FEF6E6;color:#92670C;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">아직<br>모르겠다</button>
-            <button class="sv-btn" onclick="submitSurvey('not_needed')" style="background:#FEF0EB;color:#9B2A1A;border:none;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.3;">필요하지<br>않다</button>
+        <!-- ── 설문 바로가기 ── -->
+        <div onclick="goPage('opinion')" style="background:#fff;border-radius:16px;border:1px solid var(--gray-200);padding:14px 16px;margin-bottom:16px;margin-top:8px;box-shadow:var(--shadow-sm);cursor:pointer;display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--gray-800);">💬 주민 의견 한마디</div>
+            <div style="font-size:12px;color:var(--gray-600);margin-top:2px;">단지 이름 투표 진행 중!</div>
           </div>
-          <div id="survey-result" style="display:none;"></div>
+          <span style="font-size:12px;color:var(--navy);font-weight:600;">참여하기 →</span>
         </div>
 
         <!-- 이번 달 챙길 것 -->
@@ -2883,6 +2883,47 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
     </div>
 
+    <!-- ═══ 주민 의견 한마디 ═══ -->
+    <div class="page" id="page-opinion">
+      <div class="sec" style="padding-top:20px;padding-bottom:32px;">
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
+        <div class="sec-title">💬 주민 의견 한마디</div>
+        <div class="sec-sub">주민 설문 · 투표 참여</div>
+
+        <!-- ── 새 설문: 단지 이름 ── -->
+        <div style="background:#fff;border-radius:16px;border:1px solid var(--gray-200);padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm);">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <span style="background:var(--red-bg);color:var(--red);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;">진행중</span>
+            <span style="font-size:13px;font-weight:700;color:var(--gray-800);">아파트 단지 이름을 바꾼다면?</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:14px;line-height:1.5;">현재 'DMC파크뷰자이'인 단지 이름, 바꾼다면 어떤 이름이 좋을까요?</div>
+
+          <div id="survey2-btns" style="display:flex;flex-direction:column;gap:8px;">
+            <button onclick="submitSurvey2('current')" style="background:var(--navy);color:#fff;border:none;border-radius:12px;padding:12px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;">DMC파크뷰자이 <span style="font-weight:400;opacity:0.7;">(현행유지)</span></button>
+            <button onclick="submitSurvey2('seodaemun')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:12px;padding:12px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;">서대문파크뷰자이</button>
+            <button onclick="submitSurvey2('yeonhui')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:12px;padding:12px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;">연희파크뷰자이</button>
+            <button onclick="submitSurvey2('parkview')" style="background:#E8F0FB;color:var(--navy);border:none;border-radius:12px;padding:12px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;">파크뷰자이</button>
+            <div style="display:flex;gap:6px;">
+              <input id="survey2-other-input" type="text" placeholder="다른 이름 제안..." maxlength="30" style="flex:1;border:1.5px solid var(--gray-200);border-radius:12px;padding:10px 14px;font-size:13px;font-family:inherit;outline:none;">
+              <button onclick="submitSurvey2('other')" style="background:var(--gray-100);color:var(--gray-600);border:1.5px solid var(--gray-200);border-radius:12px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">제출</button>
+            </div>
+          </div>
+          <div id="survey2-result" style="display:none;"></div>
+        </div>
+
+        <!-- ── 지난 설문: 서비스 유용도 ── -->
+        <div style="background:#fff;border-radius:16px;border:1px solid var(--gray-200);padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm);">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <span style="background:var(--gray-100);color:var(--gray-400);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;">완료</span>
+            <span style="font-size:13px;font-weight:700;color:var(--gray-800);">이 서비스가 유용한가요?</span>
+          </div>
+          <div style="font-size:12px;color:var(--gray-600);margin-bottom:14px;line-height:1.5;">DMC파크뷰자이 ON 서비스의 필요성에 대한 주민 의견 결과입니다.</div>
+          <div id="survey1-result">불러오는 중…</div>
+        </div>
+
+      </div>
+    </div>
+
   </div><!-- /scroll-content -->
 
   <!-- 하단 내비게이션 -->
@@ -3057,6 +3098,7 @@ const appPages = [
   { kw:['응급','병원','응급실','야간약국','약국'], page:'emergency', icon:'🏥', label:'응급의료', sub:'응급실·야간약국' },
   { kw:['입주민','인증','세대','호수'], page:'register', icon:'🔑', label:'입주민 인증', sub:'동·호수·연락처 등록' },
   { kw:['실거래','매매','거래가','시세','부동산','전세','월세'], page:'realestate', icon:'🏠', label:'부동산', sub:'실거래·소식·AI관점' },
+  { kw:['설문','투표','의견','단지이름','주민의견'], page:'opinion', icon:'💬', label:'주민 의견 한마디', sub:'설문·투표 참여' },
   { kw:['faq','자주묻는','민원','신고'], page:'faq', icon:'❓', label:'자주 찾는 질문', sub:'734건 기반 20개 항목' },
 ];
 
@@ -5294,6 +5336,113 @@ document.addEventListener('DOMContentLoaded', function(){
       renderResult(d, opt);
     } catch(e) {
       allBtns.forEach(b => { b.disabled = false; b.style.opacity='1'; });
+      alert('잠시 후 다시 시도해주세요.');
+    }
+  };
+})();
+
+// ── 주민 의견 페이지: 기존 설문 결과 로드 ──
+(function(){
+  const el = document.getElementById('survey1-result');
+  if (!el) return;
+  const LABELS = { very_needed:'매우 필요하다', needed:'필요하다', unsure:'아직 모르겠다', not_needed:'필요하지 않다' };
+  const ORDER = ['very_needed','needed','unsure','not_needed'];
+  const COLORS = { very_needed:'#1A3C6E', needed:'#2E7D52', unsure:'#B8860B', not_needed:'#C0392B' };
+  fetch('/api/survey').then(r=>r.json()).then(d => {
+    const total = d.total || 0;
+    const myVote = localStorage.getItem('survey-voted');
+    el.innerHTML = `<div style="font-size:11px;color:var(--gray-400);margin-bottom:10px;">총 ${total}명 참여</div>` +
+      ORDER.map(opt => {
+        const cnt = (d.counts && d.counts[opt]) || 0;
+        const pct = total > 0 ? Math.round(cnt/total*100) : 0;
+        const mine = opt === myVote ? ' ✓' : '';
+        return `<div style="margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;">
+            <span style="font-weight:${opt===myVote?'700':'500'};color:var(--gray-800)">${LABELS[opt]}${mine}</span>
+            <span style="color:var(--gray-400)">${cnt}표 (${pct}%)</span>
+          </div>
+          <div style="background:var(--gray-200);border-radius:99px;height:8px;overflow:hidden;">
+            <div style="width:${pct}%;height:100%;background:${COLORS[opt]};border-radius:99px;transition:width 0.5s;"></div>
+          </div>
+        </div>`;
+      }).join('');
+  }).catch(() => { el.textContent = '결과를 불러올 수 없습니다.'; });
+})();
+
+// ── 주민 의견 페이지: 단지 이름 설문 ──
+(function(){
+  const btns = document.getElementById('survey2-btns');
+  const result = document.getElementById('survey2-result');
+  if (!btns) return;
+
+  const LABELS = {
+    current:'DMC파크뷰자이 (현행유지)', seodaemun:'서대문파크뷰자이',
+    yeonhui:'연희파크뷰자이', parkview:'파크뷰자이', other:'기타'
+  };
+  const ORDER = ['current','seodaemun','yeonhui','parkview','other'];
+  const COLORS = ['#1A3C6E','#2E7D52','#B8860B','#C84B1A','#7B1FA2'];
+
+  function renderResult(d, myVote){
+    btns.style.display = 'none';
+    const total = d.total || 0;
+    const bars = ORDER.map((opt,i) => {
+      const cnt = (d.counts && d.counts[opt]) || 0;
+      const pct = total > 0 ? Math.round(cnt/total*100) : 0;
+      const mine = opt === myVote ? ' ✓' : '';
+      return `<div style="margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;">
+          <span style="font-weight:${opt===myVote?'700':'500'};color:var(--gray-800)">${LABELS[opt]}${mine}</span>
+          <span style="color:var(--gray-400)">${cnt}표 (${pct}%)</span>
+        </div>
+        <div style="background:var(--gray-200);border-radius:99px;height:8px;overflow:hidden;">
+          <div style="width:${pct}%;height:100%;background:${COLORS[i]};border-radius:99px;transition:width 0.5s;"></div>
+        </div>
+      </div>`;
+    }).join('');
+    let otherHtml = '';
+    if (d.otherTexts && d.otherTexts.length > 0) {
+      otherHtml = `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--gray-200);">
+        <div style="font-size:11px;font-weight:700;color:var(--gray-600);margin-bottom:6px;">기타 의견</div>
+        ${d.otherTexts.map(t => `<div style="font-size:12px;color:var(--gray-600);padding:4px 0;">· ${t}</div>`).join('')}
+      </div>`;
+    }
+    result.style.display = 'block';
+    result.innerHTML = `<div style="font-size:11px;color:var(--gray-400);margin-bottom:10px;">총 ${total}명 참여</div>${bars}${otherHtml}`;
+  }
+
+  const prev = localStorage.getItem('survey2-voted');
+  if (prev) {
+    fetch('/api/survey2').then(r=>r.json()).then(d => renderResult(d, prev)).catch(()=>{});
+    return;
+  }
+
+  window.submitSurvey2 = async function(opt){
+    const otherText = opt === 'other' ? (document.getElementById('survey2-other-input')?.value || '') : '';
+    if (opt === 'other' && !otherText.trim()) {
+      alert('다른 이름을 입력해주세요.');
+      return;
+    }
+    const allBtns = btns.querySelectorAll('button');
+    allBtns.forEach(b => { b.disabled = true; b.style.opacity='0.5'; });
+    const input = document.getElementById('survey2-other-input');
+    if (input) input.disabled = true;
+    try {
+      const r = await fetch('/api/survey2', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ option: opt, otherText })
+      });
+      const d = await r.json();
+      if (r.status === 409) {
+        localStorage.setItem('survey2-voted', d.prevVote || opt);
+        renderResult(d, d.prevVote || opt);
+        return;
+      }
+      localStorage.setItem('survey2-voted', opt);
+      renderResult(d, opt);
+    } catch(e) {
+      allBtns.forEach(b => { b.disabled = false; b.style.opacity='1'; });
+      if (input) input.disabled = false;
       alert('잠시 후 다시 시도해주세요.');
     }
   };
