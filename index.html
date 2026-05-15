@@ -5412,7 +5412,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   const prev = localStorage.getItem('survey2-voted');
   if (prev) {
-    fetch('/api/survey2').then(r=>r.json()).then(d => renderResult(d, prev)).catch(()=>{});
+    fetch('/api/survey?type=name').then(r=>r.json()).then(d => renderResult(d, prev)).catch(()=>{});
     return;
   }
 
@@ -5427,7 +5427,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const input = document.getElementById('survey2-other-input');
     if (input) input.disabled = true;
     try {
-      const r = await fetch('/api/survey2', {
+      const r = await fetch('/api/survey?type=name', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ option: opt, otherText })
