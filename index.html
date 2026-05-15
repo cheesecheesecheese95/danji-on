@@ -605,16 +605,6 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
         <img src="/data/station-banner.jpg" alt="가좌역을 경의선숲길역으로 역명변경 응원 - 클릭하여 함께 응원하기" style="width:100%;display:block;">
       </a>
 
-      <!-- 공지: 목욕탕 자리맡기 금지 (3회 방문까지만 노출) -->
-      <div id="home-notice-bath" onclick="goPageAnchor('news','news-bath-rule')" style="display:none;background:#FFF8E1;border:1px solid #FFE082;border-radius:14px;padding:14px 16px;margin:10px 16px 0;cursor:pointer;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <div style="font-size:13px;font-weight:800;color:#E65100;">🛁 목욕탕 자리 맡기 금지 안내</div>
-        </div>
-        <div style="font-size:12px;color:#5D4037;line-height:1.7;">
-          자리 맡기 2회 적발 시 <strong>7일간 커뮤니티 이용 정지</strong>. 자리 맡기 물품은 즉시 제거됩니다. <span style="margin-left:60px;font-size:11px;color:#E65100;font-weight:600;">자세히 보기 →</span>
-        </div>
-      </div>
-
       <!-- 홈 설문: 단지 이름 투표 -->
       <div id="home-survey2" style="margin:12px 16px 0;">
         <div style="background:#fff;border-radius:16px;border:1px solid var(--gray-200);padding:16px;box-shadow:var(--shadow-sm);">
@@ -4516,11 +4506,6 @@ function showInstallGuide() {
   };
 })();
 
-// ── 홈 공지 배너: 3회 방문까지만 노출 ──
-(function(){
-  var k='notice_bath_views', n=parseInt(localStorage.getItem(k)||'0',10);
-  if(n<3){localStorage.setItem(k,n+1);var el=document.getElementById('home-notice-bath');if(el)el.style.display='block';}
-})();
 
 window.addEventListener('DOMContentLoaded', () => {
   // 이미 설치됐으면 버튼 숨김
