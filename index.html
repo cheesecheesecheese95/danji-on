@@ -5483,7 +5483,7 @@ document.addEventListener('DOMContentLoaded', function(){
         var poster=m.poster_path?'https://image.tmdb.org/t/p/w92'+m.poster_path:'';
         var rating=m.vote_average?m.vote_average.toFixed(1):'—';
         var date=m.release_date||'';
-        var link='https://www.themoviedb.org/movie/'+m.id+'?language=ko';
+        var link='https://search.naver.com/search.naver?query='+encodeURIComponent(m.title+' 영화');
         return '<a href="'+link+'" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-200);text-decoration:none;">'+
           '<div style="font-size:16px;font-weight:800;color:var(--navy);width:24px;text-align:center;flex-shrink:0;">'+(i+1)+'</div>'+
           (poster?'<img src="'+poster+'" style="width:40px;height:57px;object-fit:cover;border-radius:6px;flex-shrink:0;" loading="lazy">':'')+
