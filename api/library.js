@@ -100,12 +100,17 @@ export default async function handler(req, res) {
               const lat = parseFloat(lib.latitude);
               const lng = parseFloat(lib.longitude);
               const dist = (lat && lng) ? distKm(HOME.lat, HOME.lng, lat, lng) : 999;
+              // 잘못된 homepage 보정 (작은도서관 등)
+              const HOMEPAGE_FIX = {
+                '논골작은도서관': 'https://lib.sdm.or.kr/',
+              };
+              const hp = HOMEPAGE_FIX[lib.libName] || lib.homepage || '';
               return {
                 libCode:   lib.libCode,
                 libName:   lib.libName,
                 region:    gu,
                 address:   lib.address || '',
-                homepage:  lib.homepage || '',
+                homepage:  hp,
                 hasBook:   result.hasBook === 'Y',
                 available: result.loanAvailable === 'Y',
                 distKm:    Math.round(dist * 10) / 10,
