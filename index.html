@@ -2962,7 +2962,7 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
 
         <!-- 현재 상영작 TOP 10 -->
         <div style="margin-top:20px;">
-          <div style="font-size:14px;font-weight:800;color:var(--gray-800);margin-bottom:12px;">🍿 지금 극장에서 상영 중</div>
+          <div style="font-size:14px;font-weight:800;color:var(--gray-800);margin-bottom:12px;">🍿 예매 순위 TOP 10</div>
           <div id="now-playing" style="font-size:12px;color:var(--gray-400);">불러오는 중…</div>
         </div>
 
@@ -5477,7 +5477,7 @@ document.addEventListener('DOMContentLoaded', function(){
   fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=bd2b2b6abea0e1147089a78d8d05d348&language=ko-KR&region=KR&page=1')
     .then(function(r){return r.json()})
     .then(function(d){
-      var movies=(d.results||[]).slice(0,10);
+      var movies=(d.results||[]).sort(function(a,b){return(b.popularity||0)-(a.popularity||0)}).slice(0,10);
       if(!movies.length){el.textContent='상영작 정보를 불러올 수 없습니다.';return;}
       el.innerHTML=movies.map(function(m,i){
         var poster=m.poster_path?'https://image.tmdb.org/t/p/w92'+m.poster_path:'';
