@@ -662,6 +662,10 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
             <span class="q-icon">💬</span>
             <span class="q-texts"><span class="q-label">주민 의견 한마디</span><span class="q-sub">설문·투표 참여</span></span>
           </button>
+          <button class="qbtn" onclick="goPage('movie')">
+            <span class="q-icon">🎬</span>
+            <span class="q-texts"><span class="q-label">영화뭐볼까</span><span class="q-sub">주변 극장 상영시간</span></span>
+          </button>
         </div>
 
         <!-- ── 설문 바로가기 ── -->
@@ -2873,6 +2877,109 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
       </div>
     </div>
 
+    <!-- ═══ 영화뭐볼까 ═══ -->
+    <div class="page" id="page-movie">
+      <div class="sec" style="padding-top:20px;padding-bottom:32px;">
+        <button class="back-btn" onclick="goBack()">‹ 뒤로</button>
+        <div class="sec-title">🎬 영화뭐볼까</div>
+        <div class="sec-sub">주변 극장 상영시간표 바로가기</div>
+
+        <!-- CGV -->
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <span style="background:#E50914;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;">CGV</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <a href="https://m.cgv.co.kr/WebApp/TheaterV4/TheaterDetail.aspx?TheaterCd=0014" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px 16px;text-decoration:none;box-shadow:var(--shadow-sm);">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gray-800);">CGV 상암</div>
+                <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">마포구 월드컵북로 56길 · 도보 15분</div>
+              </div>
+              <span style="font-size:12px;color:var(--navy);font-weight:600;">상영시간 →</span>
+            </a>
+            <a href="https://m.cgv.co.kr/WebApp/TheaterV4/TheaterDetail.aspx?TheaterCd=0191" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px 16px;text-decoration:none;box-shadow:var(--shadow-sm);">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gray-800);">CGV 홍대</div>
+                <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">마포구 양화로 153 · 차량 10분</div>
+              </div>
+              <span style="font-size:12px;color:var(--navy);font-weight:600;">상영시간 →</span>
+            </a>
+            <a href="https://m.cgv.co.kr/WebApp/TheaterV4/TheaterDetail.aspx?TheaterCd=0292" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px 16px;text-decoration:none;box-shadow:var(--shadow-sm);">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gray-800);">CGV 연남</div>
+                <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">마포구 동교로 137 · 차량 10분</div>
+              </div>
+              <span style="font-size:12px;color:var(--navy);font-weight:600;">상영시간 →</span>
+            </a>
+            <a href="https://m.cgv.co.kr/WebApp/TheaterV4/TheaterDetail.aspx?TheaterCd=0030" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px 16px;text-decoration:none;box-shadow:var(--shadow-sm);">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gray-800);">CGV 불광</div>
+                <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">은평구 불광로 20 · 차량 10분</div>
+              </div>
+              <span style="font-size:12px;color:var(--navy);font-weight:600;">상영시간 →</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 메가박스 -->
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <span style="background:#352263;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;">메가박스</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <a href="https://m.megabox.co.kr/theater?brchNo=1372" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px 16px;text-decoration:none;box-shadow:var(--shadow-sm);">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gray-800);">메가박스 상암월드컵경기장</div>
+                <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">마포구 월드컵로 240 · 차량 5분</div>
+              </div>
+              <span style="font-size:12px;color:var(--navy);font-weight:600;">상영시간 →</span>
+            </a>
+            <a href="https://m.megabox.co.kr/theater?brchNo=1581" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px 16px;text-decoration:none;box-shadow:var(--shadow-sm);">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gray-800);">메가박스 홍대</div>
+                <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">마포구 양화로 128 · 차량 10분</div>
+              </div>
+              <span style="font-size:12px;color:var(--navy);font-weight:600;">상영시간 →</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 롯데시네마 -->
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <span style="background:#C01920;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;">롯데시네마</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <a href="https://www.lottecinema.co.kr/NLCMW/Cinema/Detail?divisionCode=1&detailDivisionCode=1&cinemaID=1015" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px 16px;text-decoration:none;box-shadow:var(--shadow-sm);">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gray-800);">롯데시네마 합정</div>
+                <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">마포구 양화로 45 · 차량 10분</div>
+              </div>
+              <span style="font-size:12px;color:var(--navy);font-weight:600;">상영시간 →</span>
+            </a>
+            <a href="https://www.lottecinema.co.kr/NLCMW/Cinema/Detail?divisionCode=1&detailDivisionCode=1&cinemaID=1003" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:14px 16px;text-decoration:none;box-shadow:var(--shadow-sm);">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gray-800);">롯데시네마 가산디지털</div>
+                <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">금천구 가산디지털1로 · 차량 20분</div>
+              </div>
+              <span style="font-size:12px;color:var(--navy);font-weight:600;">상영시간 →</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 다봐줄순없잖아 연결 -->
+        <a href="https://dontwatchall.com" target="_blank" rel="noopener"
+           style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;padding:14px;background:#1A1A2E;border-radius:14px;text-decoration:none;font-size:13px;font-weight:700;color:#fff;box-shadow:var(--shadow-sm);">
+          🎞 영화 결말요약 리뷰 보러가기 →
+        </a>
+
+        <div style="margin-top:14px;font-size:11px;color:var(--gray-400);text-align:center;line-height:1.6;">
+          각 극장을 터치하면 해당 극장의 상영시간표로 이동합니다.<br>
+          상영시간은 극장 사정에 따라 변경될 수 있습니다.
+        </div>
+      </div>
+    </div>
+
     <!-- ═══ 주민 의견 한마디 ═══ -->
     <div class="page" id="page-opinion">
       <div class="sec" style="padding-top:20px;padding-bottom:32px;">
@@ -3089,6 +3196,7 @@ const appPages = [
   { kw:['입주민','인증','세대','호수'], page:'register', icon:'🔑', label:'입주민 인증', sub:'동·호수·연락처 등록' },
   { kw:['실거래','매매','거래가','시세','부동산','전세','월세'], page:'realestate', icon:'🏠', label:'부동산', sub:'실거래·소식·AI관점' },
   { kw:['설문','투표','의견','단지이름','주민의견'], page:'opinion', icon:'💬', label:'주민 의견 한마디', sub:'설문·투표 참여' },
+  { kw:['영화','극장','CGV','메가박스','롯데시네마','상영','시간표'], page:'movie', icon:'🎬', label:'영화뭐볼까', sub:'주변 극장 상영시간' },
   { kw:['faq','자주묻는','민원','신고'], page:'faq', icon:'❓', label:'자주 찾는 질문', sub:'734건 기반 20개 항목' },
 ];
 
