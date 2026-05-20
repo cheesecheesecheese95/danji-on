@@ -2960,9 +2960,15 @@ html,body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',-appl
           </div>
         </div>
 
+        <!-- 현재 상영작 TOP 10 -->
+        <div style="margin-top:20px;">
+          <div style="font-size:14px;font-weight:800;color:var(--gray-800);margin-bottom:12px;">🍿 지금 극장에서 상영 중</div>
+          <div id="now-playing" style="font-size:12px;color:var(--gray-400);">불러오는 중…</div>
+        </div>
+
         <div style="margin-top:14px;font-size:11px;color:var(--gray-400);text-align:center;line-height:1.6;">
           각 극장을 터치하면 해당 극장의 상영시간표로 이동합니다.<br>
-          상영시간은 극장 사정에 따라 변경될 수 있습니다.
+          영화 정보: TMDB · 상영시간은 극장 사정에 따라 변경될 수 있습니다.
         </div>
       </div>
     </div>
@@ -5462,6 +5468,34 @@ document.addEventListener('DOMContentLoaded', function(){
       alert('잠시 후 다시 시도해주세요.');
     }
   };
+})();
+
+// ── 극장상영정보: 현재 상영작 TOP 10 (TMDB) ──
+(function(){
+  var el=document.getElementById('now-playing');
+  if(!el)return;
+  fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=bd2b2b6abea0e1147089a78d8d05d348&language=ko-KR&region=KR&page=1')
+    .then(function(r){return r.json()})
+    .then(function(d){
+      var movies=(d.results||[]).slice(0,10);
+      if(!movies.length){el.textContent='상영작 정보를 불러올 수 없습니다.';return;}
+      el.innerHTML=movies.map(function(m,i){
+        var poster=m.poster_path?'https://image.tmdb.org/t/p/w92'+m.poster_path:'';
+        var rating=m.vote_average?m.vote_average.toFixed(1):'—';
+        var date=m.release_date||'';
+        var link='https://www.themoviedb.org/movie/'+m.id+'?language=ko';
+        return '<a href="'+link+'" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-200);text-decoration:none;">'+
+          '<div style="font-size:16px;font-weight:800;color:var(--navy);width:24px;text-align:center;flex-shrink:0;">'+(i+1)+'</div>'+
+          (poster?'<img src="'+poster+'" style="width:40px;height:57px;object-fit:cover;border-radius:6px;flex-shrink:0;" loading="lazy">':'')+
+          '<div style="flex:1;min-width:0;">'+
+            '<div style="font-size:13px;font-weight:700;color:var(--gray-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+m.title+'</div>'+
+            '<div style="font-size:11px;color:var(--gray-400);margin-top:2px;">⭐ '+rating+' · '+date+'</div>'+
+          '</div>'+
+          '<span style="font-size:11px;color:var(--navy);font-weight:600;flex-shrink:0;">정보 →</span>'+
+        '</a>';
+      }).join('');
+    })
+    .catch(function(){el.textContent='상영작 정보를 불러올 수 없습니다.';});
 })();
 
 // ── 주민 의견 페이지: 기존 설문 결과 로드 ──
