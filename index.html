@@ -5470,32 +5470,28 @@ document.addEventListener('DOMContentLoaded', function(){
   };
 })();
 
-// ── 극장상영정보: 현재 상영작 TOP 10 (TMDB) ──
+// ── 극장상영정보: 예매 순위 TOP 10 (무비차트) ──
 (function(){
   var el=document.getElementById('now-playing');
   if(!el)return;
-  fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=bd2b2b6abea0e1147089a78d8d05d348&language=ko-KR&region=KR&page=1')
+  fetch('/data/boxoffice.json')
     .then(function(r){return r.json()})
     .then(function(d){
-      var movies=(d.results||[]).sort(function(a,b){return(b.popularity||0)-(a.popularity||0)}).slice(0,10);
-      if(!movies.length){el.textContent='상영작 정보를 불러올 수 없습니다.';return;}
-      el.innerHTML=movies.map(function(m,i){
-        var poster=m.poster_path?'https://image.tmdb.org/t/p/w92'+m.poster_path:'';
-        var rating=m.vote_average?m.vote_average.toFixed(1):'—';
-        var date=m.release_date||'';
+      var movies=d.movies||[];
+      if(!movies.length){el.textContent='순위 정보를 불러올 수 없습니다.';return;}
+      el.innerHTML=movies.map(function(m){
         var link='https://search.naver.com/search.naver?query='+encodeURIComponent(m.title+' 영화');
         return '<a href="'+link+'" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-200);text-decoration:none;">'+
-          '<div style="font-size:16px;font-weight:800;color:var(--navy);width:24px;text-align:center;flex-shrink:0;">'+(i+1)+'</div>'+
-          (poster?'<img src="'+poster+'" style="width:40px;height:57px;object-fit:cover;border-radius:6px;flex-shrink:0;" loading="lazy">':'')+
+          '<div style="font-size:16px;font-weight:800;color:var(--navy);width:24px;text-align:center;flex-shrink:0;">'+m.rank+'</div>'+
           '<div style="flex:1;min-width:0;">'+
             '<div style="font-size:13px;font-weight:700;color:var(--gray-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+m.title+'</div>'+
-            '<div style="font-size:11px;color:var(--gray-400);margin-top:2px;">⭐ '+rating+' · '+date+'</div>'+
+            '<div style="font-size:11px;color:var(--gray-400);margin-top:2px;">'+(m.rate?'🎫 '+m.rate:'')+(m.date?' · 개봉 '+m.date:'')+'</div>'+
           '</div>'+
           '<span style="font-size:11px;color:var(--navy);font-weight:600;flex-shrink:0;">정보 →</span>'+
         '</a>';
-      }).join('');
+      }).join('')+'<div style="font-size:10px;color:var(--gray-400);text-align:right;margin-top:6px;">'+d.updated+' 기준 · '+d.source+'</div>';
     })
-    .catch(function(){el.textContent='상영작 정보를 불러올 수 없습니다.';});
+    .catch(function(){el.textContent='순위 정보를 불러올 수 없습니다.';});
 })();
 
 // ── 주민 의견 페이지: 기존 설문 결과 로드 ──
