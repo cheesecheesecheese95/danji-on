@@ -94,6 +94,20 @@
 
   <div class="container">
 
+    <!-- 일별 현황 -->
+    <div class="section">
+      <div class="section-title">📅 일별 현황 <span class="badge badge-live">LIVE</span></div>
+      <div style="display:flex;gap:6px;margin-bottom:16px;">
+        <button class="dbtn on" data-days="7" onclick="switchDays(7)">7일</button>
+        <button class="dbtn" data-days="14" onclick="switchDays(14)">14일</button>
+        <button class="dbtn" data-days="30" onclick="switchDays(30)">30일</button>
+      </div>
+      <div id="daily-chart" style="margin-bottom:16px;">불러오는 중…</div>
+      <div id="daily-compare" style="margin-bottom:12px;"></div>
+      <div id="daily-table"></div>
+      <button class="refresh-btn" onclick="loadDaily()">↻ 새로고침</button>
+    </div>
+
     <!-- 방문·메뉴 통계 -->
     <div class="section">
       <div class="section-title">👆 방문 · 메뉴별 클릭 <span class="badge badge-live">LIVE</span></div>
@@ -108,19 +122,6 @@
       </div>
       <div id="menu-stat-list">불러오는 중…</div>
       <button class="refresh-btn" onclick="loadTrack()">↻ 새로고침</button>
-    </div>
-
-    <!-- 일별 현황 -->
-    <div class="section">
-      <div class="section-title">📅 일별 현황 <span class="badge badge-live">LIVE</span></div>
-      <div style="display:flex;gap:6px;margin-bottom:16px;">
-        <button class="dbtn on" data-days="7" onclick="switchDays(7)">7일</button>
-        <button class="dbtn" data-days="14" onclick="switchDays(14)">14일</button>
-      </div>
-      <div id="daily-chart" style="margin-bottom:16px;">불러오는 중…</div>
-      <div id="daily-compare" style="margin-bottom:12px;"></div>
-      <div id="daily-table"></div>
-      <button class="refresh-btn" onclick="loadDaily()">↻ 새로고침</button>
     </div>
 
     <!-- Vercel Analytics 바로가기 -->
@@ -462,15 +463,17 @@ function renderDailyTable() {
   let html = `<table class="dtable">
     <tr><th>날짜</th><th>요일</th><th>방문</th><th>순방문</th><th>클릭</th><th>홈설치</th></tr>`;
 
+  const today = new Date().toISOString().slice(0,10);
+
   dates.forEach(date => {
     const d = DAILY_DATA[date];
     const visits = d['visit'] || 0;
     const uv = d['unique_visit'] || 0;
     const menus = getDayMenuClicks(date);
     const installs = d['install_click'] || 0;
-    const isToday = date === new Date().toISOString().slice(0,10);
+    const isToday = date === today;
     const bold = isToday ? 'font-weight:700;' : '';
-    html += `<tr style="${bold}">
+    html += `<tr style="${bold}cursor:pointer;" onclick="toggleDayDetail(this,'${date}')">
       <td>${fmtDate(date)}</td>
       <td>${fmtDay(date)}</td>
       <td>${visits}</td>
@@ -482,6 +485,41 @@ function renderDailyTable() {
 
   html += '</table>';
   document.getElementById('daily-table').innerHTML = html;
+}
+
+function toggleDayDetail(row, date) {
+  const existing = row.nextElementSibling;
+  if (existing && existing.classList.contains('day-detail')) {
+    existing.remove();
+    return;
+  }
+  // 기존 열린 상세 닫기
+  document.querySelectorAll('.day-detail').forEach(el => el.remove());
+
+  const d = DAILY_DATA[date];
+  if (!d) return;
+
+  // 메뉴별 클릭 집계 (visit, unique_visit 제외)
+  const menuClicks = [];
+  for (const [key, val] of Object.entries(d)) {
+    if (key === 'visit' || key === 'unique_visit' || key === 'install_click') continue;
+    if (val > 0) {
+      const menu = MENUS.find(m => m[0] === key);
+      const label = menu ? menu[1] + ' ' + menu[2] : key;
+      menuClicks.push({ label, val });
+    }
+  }
+  menuClicks.sort((a, b) => b.val - a.val);
+
+  if (!menuClicks.length) return;
+
+  const detailRow = document.createElement('tr');
+  detailRow.className = 'day-detail';
+  detailRow.innerHTML = `<td colspan="6" style="padding:8px 4px;background:var(--gray-100);font-size:11px;">
+    <div style="font-weight:700;color:var(--gray-600);margin-bottom:6px;">${fmtDate(date)}(${fmtDay(date)}) 메뉴별 클릭</div>
+    ${menuClicks.map(m => `<div style="display:flex;justify-content:space-between;padding:2px 0;"><span>${m.label}</span><span style="color:var(--navy);font-weight:600;">${m.val}회</span></div>`).join('')}
+  </td>`;
+  row.after(detailRow);
 }
 
 function loadAll(){ loadSurvey(); loadTrack(); loadResidents(); loadDaily(); }
