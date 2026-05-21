@@ -1,76 +1,76 @@
 {
-  "updated": "2026-05-20 13:27",
+  "updated": "2026-05-21 13:20",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "군체",
-      "rate": "52.30%",
+      "rate": "52.40%",
       "date": "2026.05.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252402&source=https://admin.moviechart.co.kr/assets/upload/movie/260518024744_7372.jpg"
     },
     {
       "rank": 2,
       "title": "마이클",
-      "rate": "12.20%",
+      "rate": "10.90%",
       "date": "2026.05.13",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259626&source=https://admin.moviechart.co.kr/assets/upload/movie/260417005447_7410.jpg"
     },
     {
       "rank": 3,
-      "title": "와일드 씽",
-      "rate": "5.90%",
-      "date": "2026.06.03",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248252&source=https://admin.moviechart.co.kr/assets/upload/movie/260429083907_2988.jpg"
-    },
-    {
-      "rank": 4,
       "title": "신극장판 은혼: 요시와라 대염상",
-      "rate": "4.50%",
+      "rate": "2.30%",
       "date": "2026.05.20",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262975&source=https://admin.moviechart.co.kr/assets/upload/movie/260504064913_7980.jpg"
     },
     {
+      "rank": 4,
+      "title": "너바나 더 밴드",
+      "rate": "1.70%",
+      "date": "2026.05.20",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263344&source=https://admin.moviechart.co.kr/assets/upload/movie/260506013146_4742.jpg"
+    },
+    {
       "rank": 5,
       "title": "악마는 프라다를 입는다 2",
-      "rate": "2.30%",
+      "rate": "1.70%",
       "date": "2026.04.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259791&source=https://admin.moviechart.co.kr/assets/upload/movie/260423052300_5235.jpg"
     },
     {
       "rank": 6,
-      "title": "너바나 더 밴드",
-      "rate": "2.20%",
-      "date": "2026.05.20",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263344&source=https://admin.moviechart.co.kr/assets/upload/movie/260506013146_4742.jpg"
-    },
-    {
-      "rank": 7,
       "title": "극장판 내 마음의 위험한 녀석",
-      "rate": "1.60%",
+      "rate": "1.50%",
       "date": "2026.05.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263253&source=https://admin.moviechart.co.kr/assets/upload/movie/260518012303_7255.jpg"
     },
     {
+      "rank": 7,
+      "title": "백룸",
+      "rate": "1.30%",
+      "date": "2026.05.27",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260518013503_8506.jpg"
+    },
+    {
       "rank": 8,
       "title": "극장판 호빵맨: 세균맨과 그림책의 루룬",
-      "rate": "1.60%",
+      "rate": "1.30%",
       "date": "2026.05.23",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263222&source=https://admin.moviechart.co.kr/assets/upload/movie/260513003908_7461.jpg"
     },
     {
       "rank": 9,
-      "title": "백룸",
-      "rate": "1.40%",
-      "date": "2026.05.27",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260518013503_8506.jpg"
+      "title": "슈퍼 마리오 갤럭시",
+      "rate": "1.20%",
+      "date": "2026.04.29",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259773&source=https://admin.moviechart.co.kr/assets/upload/movie/260401003359_5361.jpg"
     },
     {
       "rank": 10,
-      "title": "교생실습",
-      "rate": "1.20%",
-      "date": "2026.05.13",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252801&source=https://admin.moviechart.co.kr/assets/upload/movie/260429002050_1372.jpg"
+      "title": "이상한 과자 가게 전천당",
+      "rate": "0.70%",
+      "date": "2026.05.29",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263512&source=https://admin.moviechart.co.kr/assets/upload/movie/260511020313_9489.jpg"
     }
   ]
 }
