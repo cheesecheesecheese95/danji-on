@@ -1,69 +1,69 @@
 {
-  "updated": "2026-05-21 13:20",
+  "updated": "2026-05-22 13:15",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "군체",
-      "rate": "52.40%",
+      "rate": "49.60%",
       "date": "2026.05.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252402&source=https://admin.moviechart.co.kr/assets/upload/movie/260518024744_7372.jpg"
     },
     {
       "rank": 2,
       "title": "마이클",
-      "rate": "10.90%",
+      "rate": "12.90%",
       "date": "2026.05.13",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259626&source=https://admin.moviechart.co.kr/assets/upload/movie/260417005447_7410.jpg"
     },
     {
       "rank": 3,
       "title": "신극장판 은혼: 요시와라 대염상",
-      "rate": "2.30%",
+      "rate": "2.50%",
       "date": "2026.05.20",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262975&source=https://admin.moviechart.co.kr/assets/upload/movie/260504064913_7980.jpg"
     },
     {
       "rank": 4,
+      "title": "백룸",
+      "rate": "2.20%",
+      "date": "2026.05.27",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260518013503_8506.jpg"
+    },
+    {
+      "rank": 5,
+      "title": "악마는 프라다를 입는다 2",
+      "rate": "1.90%",
+      "date": "2026.04.29",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259791&source=https://admin.moviechart.co.kr/assets/upload/movie/260423052300_5235.jpg"
+    },
+    {
+      "rank": 6,
+      "title": "슈퍼 마리오 갤럭시",
+      "rate": "1.80%",
+      "date": "2026.04.29",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259773&source=https://admin.moviechart.co.kr/assets/upload/movie/260401003359_5361.jpg"
+    },
+    {
+      "rank": 7,
       "title": "너바나 더 밴드",
       "rate": "1.70%",
       "date": "2026.05.20",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263344&source=https://admin.moviechart.co.kr/assets/upload/movie/260506013146_4742.jpg"
     },
     {
-      "rank": 5,
-      "title": "악마는 프라다를 입는다 2",
-      "rate": "1.70%",
-      "date": "2026.04.29",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259791&source=https://admin.moviechart.co.kr/assets/upload/movie/260423052300_5235.jpg"
-    },
-    {
-      "rank": 6,
-      "title": "극장판 내 마음의 위험한 녀석",
-      "rate": "1.50%",
-      "date": "2026.05.21",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263253&source=https://admin.moviechart.co.kr/assets/upload/movie/260518012303_7255.jpg"
-    },
-    {
-      "rank": 7,
-      "title": "백룸",
-      "rate": "1.30%",
-      "date": "2026.05.27",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260518013503_8506.jpg"
-    },
-    {
       "rank": 8,
       "title": "극장판 호빵맨: 세균맨과 그림책의 루룬",
-      "rate": "1.30%",
+      "rate": "1.40%",
       "date": "2026.05.23",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263222&source=https://admin.moviechart.co.kr/assets/upload/movie/260513003908_7461.jpg"
     },
     {
       "rank": 9,
-      "title": "슈퍼 마리오 갤럭시",
+      "title": "극장판 내 마음의 위험한 녀석",
       "rate": "1.20%",
-      "date": "2026.04.29",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259773&source=https://admin.moviechart.co.kr/assets/upload/movie/260401003359_5361.jpg"
+      "date": "2026.05.21",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263253&source=https://admin.moviechart.co.kr/assets/upload/movie/260518012303_7255.jpg"
     },
     {
       "rank": 10,
