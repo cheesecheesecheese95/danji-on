@@ -1,76 +1,76 @@
 {
-  "updated": "2026-05-29 13:16",
+  "updated": "2026-05-30 13:00",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "군체",
-      "rate": "39.80%",
+      "rate": "41.40%",
       "date": "2026.05.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252402&source=https://admin.moviechart.co.kr/assets/upload/movie/260518024744_7372.jpg"
     },
     {
       "rank": 2,
-      "title": "와일드 씽",
-      "rate": "11.90%",
-      "date": "2026.06.03",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248252&source=https://admin.moviechart.co.kr/assets/upload/movie/260429083907_2988.jpg"
-    },
-    {
-      "rank": 3,
       "title": "백룸",
-      "rate": "10.80%",
+      "rate": "12.60%",
       "date": "2026.05.27",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260527003703_7835.jpg"
     },
     {
-      "rank": 4,
-      "title": "만달로리안과 그로구",
-      "rate": "6.70%",
-      "date": "2026.05.27",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258236&source=https://admin.moviechart.co.kr/assets/upload/movie/260518012657_1338.jpg"
+      "rank": 3,
+      "title": "와일드 씽",
+      "rate": "10.20%",
+      "date": "2026.06.03",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248252&source=https://admin.moviechart.co.kr/assets/upload/movie/260429083907_2988.jpg"
     },
     {
-      "rank": 5,
+      "rank": 4,
       "title": "마이클",
-      "rate": "5.90%",
+      "rate": "6.60%",
       "date": "2026.05.13",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259626&source=https://admin.moviechart.co.kr/assets/upload/movie/260417005447_7410.jpg"
     },
     {
+      "rank": 5,
+      "title": "만달로리안과 그로구",
+      "rate": "6.30%",
+      "date": "2026.05.27",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258236&source=https://admin.moviechart.co.kr/assets/upload/movie/260518012657_1338.jpg"
+    },
+    {
       "rank": 6,
       "title": "이상한 과자 가게 전천당",
-      "rate": "4.40%",
+      "rate": "4.50%",
       "date": "2026.05.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263512&source=https://admin.moviechart.co.kr/assets/upload/movie/260511020313_9489.jpg"
     },
     {
       "rank": 7,
+      "title": "슈퍼 마리오 갤럭시",
+      "rate": "1.20%",
+      "date": "2026.04.29",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259773&source=https://admin.moviechart.co.kr/assets/upload/movie/260401003359_5361.jpg"
+    },
+    {
+      "rank": 8,
       "title": "너바나 더 밴드",
-      "rate": "1.40%",
+      "rate": "1.20%",
       "date": "2026.05.20",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263344&source=https://admin.moviechart.co.kr/assets/upload/movie/260506013146_4742.jpg"
     },
     {
-      "rank": 8,
+      "rank": 9,
       "title": "극장판 호빵맨: 세균맨과 그림책의 루룬",
-      "rate": "1.30%",
+      "rate": "1.10%",
       "date": "2026.05.23",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263222&source=https://admin.moviechart.co.kr/assets/upload/movie/260513003908_7461.jpg"
     },
     {
-      "rank": 9,
+      "rank": 10,
       "title": "신극장판 은혼: 요시와라 대염상",
-      "rate": "0.80%",
+      "rate": "0.90%",
       "date": "2026.05.20",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262975&source=https://admin.moviechart.co.kr/assets/upload/movie/260504064913_7980.jpg"
-    },
-    {
-      "rank": 10,
-      "title": "카드캡터 체리 극장판",
-      "rate": "0.70%",
-      "date": "2026.05.28",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263521&source=https://admin.moviechart.co.kr/assets/upload/movie/260519002657_9165.jpg"
     }
   ]
 }
