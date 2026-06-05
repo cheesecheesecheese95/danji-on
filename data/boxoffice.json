@@ -1,76 +1,76 @@
 {
-  "updated": "2026-06-04 13:47",
+  "updated": "2026-06-05 13:22",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
-      "title": "군체",
-      "rate": "33.20%",
-      "date": "2026.05.21",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252402&source=https://admin.moviechart.co.kr/assets/upload/movie/260518024744_7372.jpg"
-    },
-    {
-      "rank": 2,
-      "title": "와일드 씽",
-      "rate": "21.30%",
-      "date": "2026.06.03",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248252&source=https://admin.moviechart.co.kr/assets/upload/movie/260429083907_2988.jpg"
-    },
-    {
-      "rank": 3,
       "title": "백룸",
-      "rate": "7.40%",
+      "rate": "8.60%",
       "date": "2026.05.27",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260527003703_7835.jpg"
     },
     {
-      "rank": 4,
-      "title": "만달로리안과 그로구",
-      "rate": "4.60%",
-      "date": "2026.05.27",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258236&source=https://admin.moviechart.co.kr/assets/upload/movie/260518012657_1338.jpg"
+      "rank": 2,
+      "title": "디스클로저 데이",
+      "rate": "6.10%",
+      "date": "2026.06.10",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250655&source=https://admin.moviechart.co.kr/assets/upload/movie/260601021446_9829.jpg"
     },
     {
-      "rank": 5,
-      "title": "마스터즈 오브 유니버스",
-      "rate": "3.60%",
-      "date": "2026.06.05",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263941&source=https://admin.moviechart.co.kr/assets/upload/movie/260601020938_8888.jpg"
-    },
-    {
-      "rank": 6,
+      "rank": 3,
       "title": "마이클",
       "rate": "3.30%",
       "date": "2026.05.13",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259626&source=https://admin.moviechart.co.kr/assets/upload/movie/260417005447_7410.jpg"
     },
     {
-      "rank": 7,
-      "title": "상자 속의 양",
-      "rate": "1.70%",
-      "date": "2026.06.10",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261766&source=https://admin.moviechart.co.kr/assets/upload/movie/260521002323_1679.jpg"
+      "rank": 4,
+      "title": "마스터즈 오브 유니버스",
+      "rate": "3.00%",
+      "date": "2026.06.05",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263941&source=https://admin.moviechart.co.kr/assets/upload/movie/260601020938_8888.jpg"
     },
     {
-      "rank": 8,
+      "rank": 5,
       "title": "너바나 더 밴드",
-      "rate": "1.30%",
+      "rate": "1.10%",
       "date": "2026.05.20",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263344&source=https://admin.moviechart.co.kr/assets/upload/movie/260506013146_4742.jpg"
     },
     {
+      "rank": 6,
+      "title": "순례자들은 왜 돌아오지 않는가",
+      "rate": "0.70%",
+      "date": "2026.06.03",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258725&source=https://admin.moviechart.co.kr/assets/upload/movie/260521002001_7687.jpg"
+    },
+    {
+      "rank": 7,
+      "title": "돌핀보이: 푸른 바다의 수호자",
+      "rate": "0.60%",
+      "date": "2026.06.03",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263272&source=https://admin.moviechart.co.kr/assets/upload/movie/260520000800_6004.jpg"
+    },
+    {
+      "rank": 8,
+      "title": "다윗",
+      "rate": "0.40%",
+      "date": "2026.07.15",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262902&source=https://admin.moviechart.co.kr/assets/upload/movie/260518013907_5057.jpg"
+    },
+    {
       "rank": 9,
-      "title": "이상한 과자 가게 전천당",
-      "rate": "1.10%",
-      "date": "2026.05.29",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263512&source=https://admin.moviechart.co.kr/assets/upload/movie/260511020313_9489.jpg"
+      "title": "파이널 피스",
+      "rate": "0.40%",
+      "date": "2026.05.27",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250412&source=https://admin.moviechart.co.kr/assets/upload/movie/260518013110_6343.jpg"
     },
     {
       "rank": 10,
-      "title": "순례자들은 왜 돌아오지 않는가",
-      "rate": "1.10%",
-      "date": "2026.06.03",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258725&source=https://admin.moviechart.co.kr/assets/upload/movie/260521002001_7687.jpg"
+      "title": "슈퍼 마리오 갤럭시",
+      "rate": "0.30%",
+      "date": "2026.04.29",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259773&source=https://admin.moviechart.co.kr/assets/upload/movie/260401003359_5361.jpg"
     }
   ]
 }
