@@ -1,76 +1,76 @@
 {
-  "updated": "2026-06-10 13:19",
+  "updated": "2026-06-11 13:42",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "디스클로저 데이",
-      "rate": "29.30%",
+      "rate": "21.60%",
       "date": "2026.06.10",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250655&source=https://admin.moviechart.co.kr/assets/upload/movie/260601021446_9829.jpg"
     },
     {
       "rank": 2,
       "title": "군체",
-      "rate": "13.90%",
+      "rate": "20.30%",
       "date": "2026.05.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252402&source=https://admin.moviechart.co.kr/assets/upload/movie/260518024744_7372.jpg"
     },
     {
       "rank": 3,
       "title": "와일드 씽",
-      "rate": "11.50%",
+      "rate": "13.10%",
       "date": "2026.06.03",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248252&source=https://admin.moviechart.co.kr/assets/upload/movie/260429083907_2988.jpg"
     },
     {
       "rank": 4,
       "title": "상자 속의 양",
-      "rate": "8.70%",
+      "rate": "6.60%",
       "date": "2026.06.10",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261766&source=https://admin.moviechart.co.kr/assets/upload/movie/260521002323_1679.jpg"
     },
     {
       "rank": 5,
       "title": "백룸",
-      "rate": "5.00%",
+      "rate": "5.70%",
       "date": "2026.05.27",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260527003703_7835.jpg"
     },
     {
       "rank": 6,
-      "title": "마이클",
-      "rate": "1.40%",
-      "date": "2026.05.13",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259626&source=https://admin.moviechart.co.kr/assets/upload/movie/260417005447_7410.jpg"
-    },
-    {
-      "rank": 7,
       "title": "만달로리안과 그로구",
-      "rate": "1.40%",
+      "rate": "1.90%",
       "date": "2026.05.27",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258236&source=https://admin.moviechart.co.kr/assets/upload/movie/260518012657_1338.jpg"
     },
     {
+      "rank": 7,
+      "title": "마이클",
+      "rate": "1.80%",
+      "date": "2026.05.13",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259626&source=https://admin.moviechart.co.kr/assets/upload/movie/260417005447_7410.jpg"
+    },
+    {
       "rank": 8,
       "title": "순례자들은 왜 돌아오지 않는가",
-      "rate": "1.20%",
+      "rate": "1.30%",
       "date": "2026.06.03",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258725&source=https://admin.moviechart.co.kr/assets/upload/movie/260521002001_7687.jpg"
     },
     {
       "rank": 9,
       "title": "너바나 더 밴드",
-      "rate": "1.00%",
+      "rate": "1.10%",
       "date": "2026.05.20",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263344&source=https://admin.moviechart.co.kr/assets/upload/movie/260506013146_4742.jpg"
     },
     {
       "rank": 10,
-      "title": "너만 보이는 날",
-      "rate": "0.80%",
-      "date": "2026.06.24",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258945&source=https://admin.moviechart.co.kr/assets/upload/movie/260601022325_3741.jpg"
+      "title": "이상한 과자 가게 전천당",
+      "rate": "0.60%",
+      "date": "2026.05.29",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263512&source=https://admin.moviechart.co.kr/assets/upload/movie/260511020313_9489.jpg"
     }
   ]
 }
