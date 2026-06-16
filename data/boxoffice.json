@@ -1,76 +1,76 @@
 {
-  "updated": "2026-06-15 14:07",
+  "updated": "2026-06-16 14:09",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "토이 스토리 5",
-      "rate": "39.30%",
+      "rate": "43.90%",
       "date": "2026.06.17",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259781&source=https://admin.moviechart.co.kr/assets/upload/movie/260615013706_5678.jpg"
     },
     {
       "rank": 2,
       "title": "군체",
-      "rate": "10.80%",
+      "rate": "9.60%",
       "date": "2026.05.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252402&source=https://admin.moviechart.co.kr/assets/upload/movie/260518024744_7372.jpg"
     },
     {
       "rank": 3,
-      "title": "와일드 씽",
-      "rate": "6.70%",
-      "date": "2026.06.03",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248252&source=https://admin.moviechart.co.kr/assets/upload/movie/260429083907_2988.jpg"
-    },
-    {
-      "rank": 4,
       "title": "신사: 악귀의 속삭임",
-      "rate": "5.70%",
+      "rate": "6.50%",
       "date": "2026.06.17",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248484&source=https://admin.moviechart.co.kr/assets/upload/movie/260601022038_7259.jpg"
     },
     {
-      "rank": 5,
-      "title": "디스클로저 데이",
-      "rate": "4.30%",
-      "date": "2026.06.10",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250655&source=https://admin.moviechart.co.kr/assets/upload/movie/260601021446_9829.jpg"
+      "rank": 4,
+      "title": "와일드 씽",
+      "rate": "5.60%",
+      "date": "2026.06.03",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248252&source=https://admin.moviechart.co.kr/assets/upload/movie/260429083907_2988.jpg"
     },
     {
-      "rank": 6,
+      "rank": 5,
       "title": "백룸",
-      "rate": "3.10%",
+      "rate": "2.50%",
       "date": "2026.05.27",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260527003703_7835.jpg"
     },
     {
+      "rank": 6,
+      "title": "디스클로저 데이",
+      "rate": "2.40%",
+      "date": "2026.06.10",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250655&source=https://admin.moviechart.co.kr/assets/upload/movie/260601021446_9829.jpg"
+    },
+    {
       "rank": 7,
+      "title": "너바나 더 밴드",
+      "rate": "1.60%",
+      "date": "2026.05.20",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263344&source=https://admin.moviechart.co.kr/assets/upload/movie/260506013146_4742.jpg"
+    },
+    {
+      "rank": 8,
+      "title": "충충충",
+      "rate": "1.40%",
+      "date": "2026.06.17",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20247161&source=https://admin.moviechart.co.kr/assets/upload/movie/260609235921_3333.jpg"
+    },
+    {
+      "rank": 9,
       "title": "상자 속의 양",
-      "rate": "2.20%",
+      "rate": "1.30%",
       "date": "2026.06.10",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261766&source=https://admin.moviechart.co.kr/assets/upload/movie/260521002323_1679.jpg"
     },
     {
-      "rank": 8,
-      "title": "만달로리안과 그로구",
-      "rate": "1.20%",
-      "date": "2026.05.27",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258236&source=https://admin.moviechart.co.kr/assets/upload/movie/260518012657_1338.jpg"
-    },
-    {
-      "rank": 9,
+      "rank": 10,
       "title": "마이클",
-      "rate": "1.10%",
+      "rate": "0.80%",
       "date": "2026.05.13",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259626&source=https://admin.moviechart.co.kr/assets/upload/movie/260417005447_7410.jpg"
-    },
-    {
-      "rank": 10,
-      "title": "너바나 더 밴드",
-      "rate": "1.00%",
-      "date": "2026.05.20",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263344&source=https://admin.moviechart.co.kr/assets/upload/movie/260506013146_4742.jpg"
     }
   ]
 }
