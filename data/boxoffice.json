@@ -1,76 +1,76 @@
 {
-  "updated": "2026-06-22 14:07",
+  "updated": "2026-06-23 13:06",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "토이 스토리 5",
-      "rate": "21.90%",
+      "rate": "23.60%",
       "date": "2026.06.17",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259781&source=https://admin.moviechart.co.kr/assets/upload/movie/260615013706_5678.jpg"
     },
     {
       "rank": 2,
       "title": "눈동자",
-      "rate": "16.00%",
+      "rate": "14.40%",
       "date": "2026.06.24",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20242402&source=https://admin.moviechart.co.kr/assets/upload/movie/260615044950_4454.jpg"
     },
     {
       "rank": 3,
       "title": "슈퍼걸",
-      "rate": "12.70%",
+      "rate": "14.40%",
       "date": "2026.06.24",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250489&source=https://admin.moviechart.co.kr/assets/upload/movie/260612054238_7691.jpg"
     },
     {
       "rank": 4,
       "title": "군체",
-      "rate": "7.40%",
+      "rate": "6.40%",
       "date": "2026.05.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252402&source=https://admin.moviechart.co.kr/assets/upload/movie/260518024744_7372.jpg"
     },
     {
       "rank": 5,
       "title": "와일드 씽",
-      "rate": "3.90%",
+      "rate": "3.70%",
       "date": "2026.06.03",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248252&source=https://admin.moviechart.co.kr/assets/upload/movie/260429083907_2988.jpg"
     },
     {
       "rank": 6,
       "title": "짝사랑 세계",
-      "rate": "3.20%",
+      "rate": "3.50%",
       "date": "2026.06.24",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261524&source=https://admin.moviechart.co.kr/assets/upload/movie/260615014241_9313.jpg"
     },
     {
       "rank": 7,
-      "title": "백룸",
-      "rate": "2.80%",
-      "date": "2026.05.27",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260527003703_7835.jpg"
+      "title": "극장판 도라에몽: 신 진구의 해저비밀성",
+      "rate": "3.00%",
+      "date": "2026.07.01",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264027&source=https://admin.moviechart.co.kr/assets/upload/movie/260619000936_8770.jpg"
     },
     {
       "rank": 8,
       "title": "너만 보이는 날",
-      "rate": "1.80%",
+      "rate": "2.60%",
       "date": "2026.06.24",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20258945&source=https://admin.moviechart.co.kr/assets/upload/movie/260601022325_3741.jpg"
     },
     {
       "rank": 9,
-      "title": "신사: 악귀의 속삭임",
-      "rate": "1.80%",
-      "date": "2026.06.17",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248484&source=https://admin.moviechart.co.kr/assets/upload/movie/260601022038_7259.jpg"
+      "title": "백룸",
+      "rate": "2.30%",
+      "date": "2026.05.27",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263030&source=https://admin.moviechart.co.kr/assets/upload/movie/260527003703_7835.jpg"
     },
     {
       "rank": 10,
-      "title": "상자 속의 양",
-      "rate": "1.50%",
-      "date": "2026.06.10",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261766&source=https://admin.moviechart.co.kr/assets/upload/movie/260521002323_1679.jpg"
+      "title": "마티 슈프림",
+      "rate": "2.20%",
+      "date": "2026.07.01",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263530&source=https://admin.moviechart.co.kr/assets/upload/movie/260618002704_4912.jpg"
     }
   ]
 }
