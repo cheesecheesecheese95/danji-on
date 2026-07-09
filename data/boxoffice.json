@@ -1,62 +1,62 @@
 {
-  "updated": "2026-07-08 12:27",
+  "updated": "2026-07-09 12:54",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "호프",
-      "rate": "45.10%",
+      "rate": "47.40%",
       "date": "2026.07.15",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20233219&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001422_4061.jpg"
     },
     {
       "rank": 2,
       "title": "모아나",
-      "rate": "20.50%",
+      "rate": "18.90%",
       "date": "2026.07.08",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259946&source=https://admin.moviechart.co.kr/assets/upload/movie/260701002341_3651.jpg"
     },
     {
       "rank": 3,
       "title": "눈동자",
-      "rate": "7.70%",
+      "rate": "7.80%",
       "date": "2026.06.24",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20242402&source=https://admin.moviechart.co.kr/assets/upload/movie/260615044950_4454.jpg"
     },
     {
       "rank": 4,
       "title": "토이 스토리 5",
-      "rate": "5.50%",
+      "rate": "6.30%",
       "date": "2026.06.17",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259781&source=https://admin.moviechart.co.kr/assets/upload/movie/260615013706_5678.jpg"
     },
     {
       "rank": 5,
-      "title": "하나 코리아",
-      "rate": "2.10%",
-      "date": "2026.07.08",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262651&source=https://admin.moviechart.co.kr/assets/upload/movie/260708004119_3162.jpg"
+      "title": "다윗",
+      "rate": "1.80%",
+      "date": "2026.07.15",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262902&source=https://admin.moviechart.co.kr/assets/upload/movie/260518013907_5057.jpg"
     },
     {
       "rank": 6,
       "title": "마티 슈프림",
-      "rate": "1.50%",
+      "rate": "1.30%",
       "date": "2026.07.01",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263530&source=https://admin.moviechart.co.kr/assets/upload/movie/260618002704_4912.jpg"
     },
     {
       "rank": 7,
-      "title": "키퍼",
-      "rate": "1.20%",
+      "title": "하나 코리아",
+      "rate": "1.10%",
       "date": "2026.07.08",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261410&source=https://admin.moviechart.co.kr/assets/upload/movie/260706025609_1743.jpg"
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262651&source=https://admin.moviechart.co.kr/assets/upload/movie/260708004119_3162.jpg"
     },
     {
       "rank": 8,
-      "title": "다윗",
+      "title": "그린랜드 2: 마이그레이션",
       "rate": "1.10%",
-      "date": "2026.07.15",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262902&source=https://admin.moviechart.co.kr/assets/upload/movie/260518013907_5057.jpg"
+      "date": "2026.07.01",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264056&source=https://admin.moviechart.co.kr/assets/upload/movie/260619001352_4969.jpg"
     },
     {
       "rank": 9,
@@ -68,7 +68,7 @@
     {
       "rank": 10,
       "title": "시크릿 에이전트",
-      "rate": "0.80%",
+      "rate": "0.60%",
       "date": "2026.07.01",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261467&source=https://admin.moviechart.co.kr/assets/upload/movie/260608014315_1656.jpg"
     }
