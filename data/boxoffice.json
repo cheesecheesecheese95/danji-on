@@ -1,46 +1,46 @@
 {
-  "updated": "2026-07-11 12:21",
+  "updated": "2026-07-12 12:33",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "호프",
-      "rate": "38.10%",
+      "rate": "46.60%",
       "date": "2026.07.15",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20233219&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001422_4061.jpg"
     },
     {
       "rank": 2,
       "title": "모아나",
-      "rate": "17.00%",
+      "rate": "11.40%",
       "date": "2026.07.08",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259946&source=https://admin.moviechart.co.kr/assets/upload/movie/260701002341_3651.jpg"
     },
     {
       "rank": 3,
       "title": "토이 스토리 5",
-      "rate": "7.90%",
+      "rate": "6.00%",
       "date": "2026.06.17",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259781&source=https://admin.moviechart.co.kr/assets/upload/movie/260615013706_5678.jpg"
     },
     {
       "rank": 4,
       "title": "눈동자",
-      "rate": "6.10%",
+      "rate": "4.40%",
       "date": "2026.06.24",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20242402&source=https://admin.moviechart.co.kr/assets/upload/movie/260615044950_4454.jpg"
     },
     {
       "rank": 5,
       "title": "다윗",
-      "rate": "2.10%",
+      "rate": "1.70%",
       "date": "2026.07.10",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262902&source=https://admin.moviechart.co.kr/assets/upload/movie/260710041158_4586.jpg"
     },
     {
       "rank": 6,
       "title": "마티 슈프림",
-      "rate": "1.40%",
+      "rate": "1.20%",
       "date": "2026.07.01",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263530&source=https://admin.moviechart.co.kr/assets/upload/movie/260618002704_4912.jpg"
     },
@@ -54,21 +54,21 @@
     {
       "rank": 8,
       "title": "극장판 도라에몽: 신 진구의 해저비밀성",
-      "rate": "0.60%",
+      "rate": "0.40%",
       "date": "2026.07.01",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264027&source=https://admin.moviechart.co.kr/assets/upload/movie/260619000936_8770.jpg"
     },
     {
       "rank": 9,
       "title": "시크릿 에이전트",
-      "rate": "0.40%",
+      "rate": "0.30%",
       "date": "2026.07.01",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261467&source=https://admin.moviechart.co.kr/assets/upload/movie/260608014315_1656.jpg"
     },
     {
       "rank": 10,
       "title": "와일드 씽",
-      "rate": "0.30%",
+      "rate": "0.20%",
       "date": "2026.06.03",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20248252&source=https://admin.moviechart.co.kr/assets/upload/movie/260429083907_2988.jpg"
     }
