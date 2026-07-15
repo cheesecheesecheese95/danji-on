@@ -1,41 +1,41 @@
 {
-  "updated": "2026-07-14 12:11",
+  "updated": "2026-07-15 11:55",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "호프",
-      "rate": "64.40%",
+      "rate": "67.70%",
       "date": "2026.07.15",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20233219&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001422_4061.jpg"
     },
     {
       "rank": 2,
       "title": "모아나",
-      "rate": "2.30%",
+      "rate": "1.90%",
       "date": "2026.07.08",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259946&source=https://admin.moviechart.co.kr/assets/upload/movie/260701002341_3651.jpg"
     },
     {
       "rank": 3,
       "title": "눈동자",
-      "rate": "1.20%",
+      "rate": "1.40%",
       "date": "2026.06.24",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20242402&source=https://admin.moviechart.co.kr/assets/upload/movie/260615044950_4454.jpg"
     },
     {
       "rank": 4,
-      "title": "토이 스토리 5",
-      "rate": "1.20%",
-      "date": "2026.06.17",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259781&source=https://admin.moviechart.co.kr/assets/upload/movie/260615013706_5678.jpg"
+      "title": "다윗",
+      "rate": "1.10%",
+      "date": "2026.07.10",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262902&source=https://admin.moviechart.co.kr/assets/upload/movie/260710041158_4586.jpg"
     },
     {
       "rank": 5,
-      "title": "마티 슈프림",
-      "rate": "0.70%",
-      "date": "2026.07.01",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263530&source=https://admin.moviechart.co.kr/assets/upload/movie/260618002704_4912.jpg"
+      "title": "토이 스토리 5",
+      "rate": "1.00%",
+      "date": "2026.06.17",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259781&source=https://admin.moviechart.co.kr/assets/upload/movie/260615013706_5678.jpg"
     },
     {
       "rank": 6,
@@ -46,31 +46,31 @@
     },
     {
       "rank": 7,
+      "title": "마티 슈프림",
+      "rate": "0.40%",
+      "date": "2026.07.01",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263530&source=https://admin.moviechart.co.kr/assets/upload/movie/260618002704_4912.jpg"
+    },
+    {
+      "rank": 8,
       "title": "시크릿 에이전트",
       "rate": "0.20%",
       "date": "2026.07.01",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261467&source=https://admin.moviechart.co.kr/assets/upload/movie/260608014315_1656.jpg"
     },
     {
-      "rank": 8,
-      "title": "극장판 암살교실 모두의 시간",
-      "rate": "0.10%",
-      "date": "2026.07.01",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264427&source=https://admin.moviechart.co.kr/assets/upload/movie/260629013204_7945.jpg"
-    },
-    {
       "rank": 9,
-      "title": "극장판 도라에몽: 신 진구의 해저비밀성",
-      "rate": "0.10%",
-      "date": "2026.07.01",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264027&source=https://admin.moviechart.co.kr/assets/upload/movie/260619000936_8770.jpg"
-    },
-    {
-      "rank": 10,
       "title": "파리의 사생활",
       "rate": "0.10%",
       "date": "2026.07.15",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259551&source=https://admin.moviechart.co.kr/assets/upload/movie/260702004240_7792.jpg"
+    },
+    {
+      "rank": 10,
+      "title": "극장판 도라에몽: 신 진구의 해저비밀성",
+      "rate": "0.10%",
+      "date": "2026.07.01",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264027&source=https://admin.moviechart.co.kr/assets/upload/movie/260619000936_8770.jpg"
     }
   ]
 }
