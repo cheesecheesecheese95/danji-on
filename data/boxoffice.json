@@ -1,48 +1,48 @@
 {
-  "updated": "2026-07-17 12:20",
+  "updated": "2026-07-18 11:57",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "호프",
-      "rate": "56.00%",
+      "rate": "49.50%",
       "date": "2026.07.15",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20233219&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001422_4061.jpg"
     },
     {
       "rank": 2,
       "title": "모아나",
-      "rate": "4.70%",
+      "rate": "4.50%",
       "date": "2026.07.08",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259946&source=https://admin.moviechart.co.kr/assets/upload/movie/260701002341_3651.jpg"
     },
     {
       "rank": 3,
       "title": "토이 스토리 5",
-      "rate": "2.80%",
+      "rate": "2.70%",
       "date": "2026.06.17",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259781&source=https://admin.moviechart.co.kr/assets/upload/movie/260615013706_5678.jpg"
     },
     {
       "rank": 4,
       "title": "다윗",
-      "rate": "2.10%",
+      "rate": "1.90%",
       "date": "2026.07.10",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262902&source=https://admin.moviechart.co.kr/assets/upload/movie/260710041158_4586.jpg"
     },
     {
       "rank": 5,
       "title": "눈동자",
-      "rate": "1.60%",
+      "rate": "1.40%",
       "date": "2026.06.24",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20242402&source=https://admin.moviechart.co.kr/assets/upload/movie/260615044950_4454.jpg"
     },
     {
       "rank": 6,
-      "title": "군체",
-      "rate": "0.60%",
-      "date": "2026.05.21",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252402&source=https://admin.moviechart.co.kr/assets/upload/movie/260518024744_7372.jpg"
+      "title": "드림 애니멀즈: 더무비",
+      "rate": "0.30%",
+      "date": "2026.07.24",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264665&source=https://admin.moviechart.co.kr/assets/upload/movie/260623001846_5420.jpg"
     },
     {
       "rank": 7,
@@ -60,10 +60,10 @@
     },
     {
       "rank": 9,
-      "title": "드림 애니멀즈: 더무비",
-      "rate": "0.30%",
-      "date": "2026.07.24",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264665&source=https://admin.moviechart.co.kr/assets/upload/movie/260623001846_5420.jpg"
+      "title": "군체",
+      "rate": "0.20%",
+      "date": "2026.05.21",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252402&source=https://admin.moviechart.co.kr/assets/upload/movie/260518024744_7372.jpg"
     },
     {
       "rank": 10,
