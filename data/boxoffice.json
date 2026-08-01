@@ -1,53 +1,53 @@
 {
-  "updated": "2026-07-31 12:33",
+  "updated": "2026-08-01 12:32",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "스파이더맨: 브랜드 뉴 데이",
-      "rate": "66.80%",
+      "rate": "64.40%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262770&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020016_2932.jpg"
     },
     {
       "rank": 2,
       "title": "오디세이",
-      "rate": "16.60%",
+      "rate": "18.30%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
       "rank": 3,
       "title": "호프",
-      "rate": "6.40%",
+      "rate": "6.80%",
       "date": "2026.07.15",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20233219&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001422_4061.jpg"
     },
     {
       "rank": 4,
       "title": "사랑의 하츄핑: 고래보석의 전설",
-      "rate": "3.10%",
+      "rate": "3.90%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262381&source=https://admin.moviechart.co.kr/assets/upload/movie/260716000740_9142.jpg"
     },
     {
       "rank": 5,
       "title": "미니언즈 & 몬스터즈",
-      "rate": "1.10%",
+      "rate": "1.00%",
       "date": "2026.07.15",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261784&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001755_9576.jpg"
     },
     {
       "rank": 6,
       "title": "어떻게 해야 했을까?",
-      "rate": "1.00%",
+      "rate": "0.90%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264148&source=https://admin.moviechart.co.kr/assets/upload/movie/260720012424_1578.jpg"
     },
     {
       "rank": 7,
       "title": "모아나",
-      "rate": "0.70%",
+      "rate": "0.60%",
       "date": "2026.07.08",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259946&source=https://admin.moviechart.co.kr/assets/upload/movie/260701002341_3651.jpg"
     },
@@ -67,10 +67,10 @@
     },
     {
       "rank": 10,
-      "title": "드림 애니멀즈: 더무비",
+      "title": "눈동자",
       "rate": "0.10%",
-      "date": "2026.07.24",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264665&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020708_3510.jpg"
+      "date": "2026.06.24",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20242402&source=https://admin.moviechart.co.kr/assets/upload/movie/260615044950_4454.jpg"
     }
   ]
 }
