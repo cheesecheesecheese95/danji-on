@@ -2,10 +2,6 @@
 const KEY = process.env.DATA4LIBRARY_KEY;
 const BASE = 'http://data4library.kr/api';
 
-// 네이버 Books API
-const NAVER_ID     = process.env.NAVER_CLIENT_ID;
-const NAVER_SECRET = process.env.NAVER_CLIENT_SECRET;
-
 // DMC파크뷰자이 중심 좌표
 const HOME = { lat: 37.5733, lng: 126.9198 };
 
@@ -36,33 +32,21 @@ export default async function handler(req, res) {
 
   const { action, q, isbn } = req.query;
 
-  // ── 1. 도서 검색 (네이버 Books API) ───────────────────
+  // ── 1. 도서 검색 (정보나루 srchBooks API) ───────────────────
   if (action === 'search') {
     if (!q) return res.status(400).json({ error: '검색어를 입력하세요' });
-    if (!NAVER_ID || !NAVER_SECRET) return res.status(500).json({ error: 'NAVER API 키 누락' });
     try {
-      const qs = new URLSearchParams({ d_titl: q, display: 10 });
-      const r = await fetch(`https://openapi.naver.com/v1/search/book_adv?${qs}`, {
-        headers: {
-          'X-Naver-Client-Id': NAVER_ID,
-          'X-Naver-Client-Secret': NAVER_SECRET,
-          'Accept': 'application/json',
-        },
-      });
-      if (!r.ok) throw new Error(`네이버 API 오류 ${r.status}`);
-      const data = await r.json();
-      const books = (data.items || []).map(item => {
-        // isbn 필드: "ISBN10 ISBN13" 또는 "ISBN13" 형식
-        const isbnParts = (item.isbn || '').trim().split(/\s+/);
-        const isbn13 = isbnParts.find(s => s.length === 13) || isbnParts[isbnParts.length - 1] || '';
-        const pubYear = (item.pubdate || '').slice(0, 4);
+      const data = await apiFetch('srchBooks', { keyword: q, pageSize: 10 });
+      const docs = data?.response?.docs || [];
+      const books = docs.map(d => {
+        const doc = d.doc || d;
         return {
-          title:            item.title?.replace(/<[^>]+>/g, '') || '',
-          author:           item.author?.replace(/<[^>]+>/g, '') || '',
-          isbn13,
-          publisher:        item.publisher || '',
-          publication_year: pubYear,
-          bookImageURL:     item.image || '',
+          title:            (doc.bookname || '').replace(/<[^>]+>/g, ''),
+          author:           (doc.authors || '').replace(/<[^>]+>/g, ''),
+          isbn13:           doc.isbn13 || '',
+          publisher:        doc.publisher || '',
+          publication_year: doc.publication_year || '',
+          bookImageURL:     doc.bookImageURL || '',
         };
       }).filter(b => b.isbn13);
       return res.json({ books });
