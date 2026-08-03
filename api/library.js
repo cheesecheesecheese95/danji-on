@@ -42,10 +42,11 @@ export default async function handler(req, res) {
     if (!NAVER_ID || !NAVER_SECRET) return res.status(500).json({ error: 'NAVER API 키 누락' });
     try {
       const qs = new URLSearchParams({ d_titl: q, display: 10 });
-      const r = await fetch(`https://openapi.naver.com/v1/search/book_adv.json?${qs}`, {
+      const r = await fetch(`https://openapi.naver.com/v1/search/book_adv?${qs}`, {
         headers: {
           'X-Naver-Client-Id': NAVER_ID,
           'X-Naver-Client-Secret': NAVER_SECRET,
+          'Accept': 'application/json',
         },
       });
       if (!r.ok) throw new Error(`네이버 API 오류 ${r.status}`);
