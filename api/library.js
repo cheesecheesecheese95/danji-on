@@ -2,9 +2,8 @@
 const KEY = process.env.DATA4LIBRARY_KEY;
 const BASE = 'http://data4library.kr/api';
 
-// 네이버 Books API
-const NAVER_ID     = process.env.NAVER_CLIENT_ID;
-const NAVER_SECRET = process.env.NAVER_CLIENT_SECRET;
+// 카카오 Books API
+const KAKAO_KEY = process.env.KAKAO_REST_KEY;
 
 // DMC파크뷰자이 중심 좌표
 const HOME = { lat: 37.5733, lng: 126.9198 };
@@ -36,31 +35,28 @@ export default async function handler(req, res) {
 
   const { action, q, isbn } = req.query;
 
-  // ── 1. 도서 검색 (네이버 Books API) ───────────────────
+  // ── 1. 도서 검색 (카카오 Books API) ───────────────────
   if (action === 'search') {
     if (!q) return res.status(400).json({ error: '검색어를 입력하세요' });
-    if (!NAVER_ID || !NAVER_SECRET) return res.status(500).json({ error: 'NAVER API 키 누락' });
+    if (!KAKAO_KEY) return res.status(500).json({ error: 'KAKAO_REST_KEY 누락' });
     try {
-      const qs = new URLSearchParams({ query: q, display: 10, sort: 'sim' });
-      const r = await fetch(`https://openapi.naver.com/v1/search/book.json?${qs}`, {
-        headers: {
-          'X-Naver-Client-Id': NAVER_ID,
-          'X-Naver-Client-Secret': NAVER_SECRET,
-        },
+      const qs = new URLSearchParams({ query: q, size: 10, sort: 'accuracy' });
+      const r = await fetch(`https://dapi.kakao.com/v3/search/book?${qs}`, {
+        headers: { 'Authorization': `KakaoAK ${KAKAO_KEY}` },
       });
-      if (!r.ok) throw new Error(`네이버 API 오류 ${r.status}`);
+      if (!r.ok) throw new Error(`카카오 API 오류 ${r.status}`);
       const data = await r.json();
-      const books = (data.items || []).map(item => {
+      const books = (data.documents || []).map(item => {
         const isbnParts = (item.isbn || '').trim().split(/\s+/);
         const isbn13 = isbnParts.find(s => s.length === 13) || isbnParts[isbnParts.length - 1] || '';
-        const pubYear = (item.pubdate || '').slice(0, 4);
+        const pubYear = (item.datetime || '').slice(0, 4);
         return {
           title:            item.title?.replace(/<[^>]+>/g, '') || '',
-          author:           item.author?.replace(/<[^>]+>/g, '') || '',
+          author:           (item.authors || []).join(', '),
           isbn13,
           publisher:        item.publisher || '',
           publication_year: pubYear,
-          bookImageURL:     item.image || '',
+          bookImageURL:     item.thumbnail || '',
         };
       }).filter(b => b.isbn13);
       return res.json({ books });
