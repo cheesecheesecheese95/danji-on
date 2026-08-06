@@ -1,39 +1,39 @@
 {
-  "updated": "2026-08-05 12:13",
+  "updated": "2026-08-06 12:16",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "오디세이",
-      "rate": "47.00%",
+      "rate": "47.10%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
       "rank": 2,
       "title": "스파이더맨: 브랜드 뉴 데이",
-      "rate": "33.30%",
+      "rate": "34.30%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262770&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020016_2932.jpg"
     },
     {
       "rank": 3,
       "title": "사랑의 하츄핑: 고래보석의 전설",
-      "rate": "10.30%",
+      "rate": "8.80%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262381&source=https://admin.moviechart.co.kr/assets/upload/movie/260716000740_9142.jpg"
     },
     {
       "rank": 4,
       "title": "호프",
-      "rate": "2.80%",
+      "rate": "2.60%",
       "date": "2026.07.15",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20233219&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001422_4061.jpg"
     },
     {
       "rank": 5,
       "title": "오케이 마담2",
-      "rate": "2.40%",
+      "rate": "2.50%",
       "date": "2026.08.12",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255484&source=https://admin.moviechart.co.kr/assets/upload/movie/260724060644_6624.jpg"
     },
@@ -60,17 +60,17 @@
     },
     {
       "rank": 9,
+      "title": "다윗",
+      "rate": "0.20%",
+      "date": "2026.07.10",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262902&source=https://admin.moviechart.co.kr/assets/upload/movie/260710041158_4586.jpg"
+    },
+    {
+      "rank": 10,
       "title": "토이 스토리 5",
       "rate": "0.10%",
       "date": "2026.06.17",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259781&source=https://admin.moviechart.co.kr/assets/upload/movie/260615013706_5678.jpg"
-    },
-    {
-      "rank": 10,
-      "title": "다윗",
-      "rate": "0.10%",
-      "date": "2026.07.10",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262902&source=https://admin.moviechart.co.kr/assets/upload/movie/260710041158_4586.jpg"
     }
   ]
 }
