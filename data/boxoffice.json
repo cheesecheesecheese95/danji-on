@@ -1,48 +1,48 @@
 {
-  "updated": "2026-08-08 11:01",
+  "updated": "2026-08-09 11:10",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "오디세이",
-      "rate": "51.30%",
+      "rate": "55.70%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
       "rank": 2,
       "title": "스파이더맨: 브랜드 뉴 데이",
-      "rate": "31.20%",
+      "rate": "27.50%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262770&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020016_2932.jpg"
     },
     {
       "rank": 3,
       "title": "사랑의 하츄핑: 고래보석의 전설",
-      "rate": "8.70%",
+      "rate": "6.80%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262381&source=https://admin.moviechart.co.kr/assets/upload/movie/260716000740_9142.jpg"
     },
     {
       "rank": 4,
       "title": "오케이 마담2",
-      "rate": "2.10%",
+      "rate": "2.60%",
       "date": "2026.08.12",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255484&source=https://admin.moviechart.co.kr/assets/upload/movie/260724060644_6624.jpg"
     },
     {
       "rank": 5,
-      "title": "호프",
-      "rate": "1.90%",
-      "date": "2026.07.15",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20233219&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001422_4061.jpg"
+      "title": "명탐정 코난: 하이웨이의 타천사",
+      "rate": "2.10%",
+      "date": "2026.08.12",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264635&source=https://admin.moviechart.co.kr/assets/upload/movie/260731003604_9411.jpg"
     },
     {
       "rank": 6,
-      "title": "명탐정 코난: 하이웨이의 타천사",
-      "rate": "1.40%",
-      "date": "2026.08.12",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264635&source=https://admin.moviechart.co.kr/assets/upload/movie/260731003604_9411.jpg"
+      "title": "호프",
+      "rate": "1.50%",
+      "date": "2026.07.15",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20233219&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001422_4061.jpg"
     },
     {
       "rank": 7,
