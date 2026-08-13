@@ -1,69 +1,69 @@
 {
-  "updated": "2026-08-12 11:26",
+  "updated": "2026-08-13 11:27",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "오디세이",
-      "rate": "63.10%",
+      "rate": "66.30%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
       "rank": 2,
       "title": "스파이더맨: 브랜드 뉴 데이",
-      "rate": "19.70%",
+      "rate": "19.50%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262770&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020016_2932.jpg"
     },
     {
       "rank": 3,
-      "title": "명탐정 코난: 하이웨이의 타천사",
-      "rate": "5.50%",
-      "date": "2026.08.12",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264635&source=https://admin.moviechart.co.kr/assets/upload/movie/260731003604_9411.jpg"
-    },
-    {
-      "rank": 4,
       "title": "오케이 마담2",
-      "rate": "4.80%",
+      "rate": "3.50%",
       "date": "2026.08.12",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255484&source=https://admin.moviechart.co.kr/assets/upload/movie/260724060644_6624.jpg"
     },
     {
+      "rank": 4,
+      "title": "명탐정 코난: 하이웨이의 타천사",
+      "rate": "3.30%",
+      "date": "2026.08.12",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264635&source=https://admin.moviechart.co.kr/assets/upload/movie/260731003604_9411.jpg"
+    },
+    {
       "rank": 5,
       "title": "사랑의 하츄핑: 고래보석의 전설",
-      "rate": "2.30%",
+      "rate": "2.60%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262381&source=https://admin.moviechart.co.kr/assets/upload/movie/260716000740_9142.jpg"
     },
     {
       "rank": 6,
+      "title": "퍼피 구조대: 더 다이노 무비",
+      "rate": "0.70%",
+      "date": "2026.08.13",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262945&source=https://admin.moviechart.co.kr/assets/upload/movie/260803022346_8947.jpg"
+    },
+    {
+      "rank": 7,
       "title": "호프",
       "rate": "0.60%",
       "date": "2026.07.15",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20233219&source=https://admin.moviechart.co.kr/assets/upload/movie/260703001422_4061.jpg"
     },
     {
-      "rank": 7,
-      "title": "퍼피 구조대: 더 다이노 무비",
-      "rate": "0.40%",
-      "date": "2026.08.13",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262945&source=https://admin.moviechart.co.kr/assets/upload/movie/260803022346_8947.jpg"
-    },
-    {
       "rank": 8,
       "title": "어떻게 해야 했을까?",
-      "rate": "0.40%",
+      "rate": "0.30%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264148&source=https://admin.moviechart.co.kr/assets/upload/movie/260720012424_1578.jpg"
     },
     {
       "rank": 9,
-      "title": "마티 슈프림",
+      "title": "다윗",
       "rate": "0.10%",
-      "date": "2026.07.01",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263530&source=https://admin.moviechart.co.kr/assets/upload/movie/260618002704_4912.jpg"
+      "date": "2026.07.10",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262902&source=https://admin.moviechart.co.kr/assets/upload/movie/260710041158_4586.jpg"
     },
     {
       "rank": 10,
