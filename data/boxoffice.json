@@ -1,25 +1,25 @@
 {
-  "updated": "2026-08-16 10:44",
+  "updated": "2026-08-17 10:42",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "오디세이",
-      "rate": "68.00%",
+      "rate": "69.20%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
       "rank": 2,
       "title": "스파이더맨: 브랜드 뉴 데이",
-      "rate": "17.50%",
+      "rate": "15.60%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262770&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020016_2932.jpg"
     },
     {
       "rank": 3,
       "title": "사랑의 하츄핑: 고래보석의 전설",
-      "rate": "3.40%",
+      "rate": "3.30%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262381&source=https://admin.moviechart.co.kr/assets/upload/movie/260716000740_9142.jpg"
     },
@@ -33,7 +33,7 @@
     {
       "rank": 5,
       "title": "오케이 마담2",
-      "rate": "2.30%",
+      "rate": "2.00%",
       "date": "2026.08.12",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255484&source=https://admin.moviechart.co.kr/assets/upload/movie/260724060644_6624.jpg"
     },
@@ -54,7 +54,7 @@
     {
       "rank": 8,
       "title": "경주기행",
-      "rate": "0.30%",
+      "rate": "0.50%",
       "date": "2026.08.26",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20247458&source=https://admin.moviechart.co.kr/assets/upload/movie/260805004956_2894.jpg"
     },
@@ -68,7 +68,7 @@
     {
       "rank": 10,
       "title": "워페어",
-      "rate": "0.20%",
+      "rate": "0.30%",
       "date": "2026.08.19",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264080&source=https://admin.moviechart.co.kr/assets/upload/movie/260804042734_3656.jpg"
     }
