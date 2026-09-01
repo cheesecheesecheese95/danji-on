@@ -1,62 +1,62 @@
 {
-  "updated": "2026-08-31 14:00",
+  "updated": "2026-09-01 13:38",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "오디세이",
-      "rate": "65.10%",
+      "rate": "60.30%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
       "rank": 2,
       "title": "스파이더맨: 브랜드 뉴 데이",
-      "rate": "4.70%",
+      "rate": "5.30%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262770&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020016_2932.jpg"
     },
     {
       "rank": 3,
       "title": "비광",
-      "rate": "4.40%",
+      "rate": "4.80%",
       "date": "2026.09.02",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20204641&source=https://admin.moviechart.co.kr/assets/upload/movie/260831002407_8809.jpg"
     },
     {
       "rank": 4,
       "title": "경주기행",
-      "rate": "2.40%",
+      "rate": "2.60%",
       "date": "2026.08.26",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20247458&source=https://admin.moviechart.co.kr/assets/upload/movie/260805004956_2894.jpg"
     },
     {
       "rank": 5,
-      "title": "싱 어게인",
-      "rate": "1.70%",
-      "date": "2026.09.02",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264918&source=https://admin.moviechart.co.kr/assets/upload/movie/260814001437_3838.jpg"
-    },
-    {
-      "rank": 6,
       "title": "옵세션",
-      "rate": "1.30%",
+      "rate": "2.20%",
       "date": "2026.09.02",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265146&source=https://admin.moviechart.co.kr/assets/upload/movie/260820010435_4210.jpg"
     },
     {
+      "rank": 6,
+      "title": "싱 어게인",
+      "rate": "2.00%",
+      "date": "2026.09.02",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264918&source=https://admin.moviechart.co.kr/assets/upload/movie/260814001437_3838.jpg"
+    },
+    {
       "rank": 7,
-      "title": "오크 스트리트의 마지막 날",
-      "rate": "1.00%",
-      "date": "2026.08.26",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264557&source=https://admin.moviechart.co.kr/assets/upload/movie/260818021841_3956.jpg"
+      "title": "인 더 그레이",
+      "rate": "0.90%",
+      "date": "2026.09.02",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265573&source=https://admin.moviechart.co.kr/assets/upload/movie/260825002704_1069.jpg"
     },
     {
       "rank": 8,
-      "title": "인 더 그레이",
-      "rate": "0.80%",
-      "date": "2026.09.02",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265573&source=https://admin.moviechart.co.kr/assets/upload/movie/260825002704_1069.jpg"
+      "title": "오크 스트리트의 마지막 날",
+      "rate": "0.60%",
+      "date": "2026.08.26",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264557&source=https://admin.moviechart.co.kr/assets/upload/movie/260818021841_3956.jpg"
     },
     {
       "rank": 9,
@@ -67,10 +67,10 @@
     },
     {
       "rank": 10,
-      "title": "인시디어스: 그들이 넘어왔다",
+      "title": "사진의 얼굴",
       "rate": "0.40%",
-      "date": "2026.08.20",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264035&source=https://admin.moviechart.co.kr/assets/upload/movie/260812001241_9361.jpg"
+      "date": "2026.09.02",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255509&source=https://admin.moviechart.co.kr/assets/upload/movie/260814001911_2355.jpg"
     }
   ]
 }
