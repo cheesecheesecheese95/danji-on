@@ -1,76 +1,76 @@
 {
-  "updated": "2026-09-09 13:13",
+  "updated": "2026-09-10 13:10",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "오디세이",
-      "rate": "39.40%",
+      "rate": "38.50%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
       "rank": 2,
       "title": "인턴",
-      "rate": "9.40%",
+      "rate": "9.30%",
       "date": "2026.09.16",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256308&source=https://admin.moviechart.co.kr/assets/upload/movie/260901015238_4768.jpg"
     },
     {
       "rank": 3,
       "title": "옵세션",
-      "rate": "4.90%",
+      "rate": "5.50%",
       "date": "2026.09.02",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265146&source=https://admin.moviechart.co.kr/assets/upload/movie/260820010435_4210.jpg"
     },
     {
       "rank": 4,
-      "title": "더 드라마",
-      "rate": "3.40%",
-      "date": "2026.09.09",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265423&source=https://admin.moviechart.co.kr/assets/upload/movie/260907044427_9611.jpg"
-    },
-    {
-      "rank": 5,
       "title": "스파이더맨: 브랜드 뉴 데이",
-      "rate": "2.10%",
+      "rate": "3.50%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262770&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020016_2932.jpg"
     },
     {
+      "rank": 5,
+      "title": "더 드라마",
+      "rate": "2.50%",
+      "date": "2026.09.09",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265423&source=https://admin.moviechart.co.kr/assets/upload/movie/260907044427_9611.jpg"
+    },
+    {
       "rank": 6,
       "title": "이누야샤 극장판: 시대를 초월한 마음",
-      "rate": "1.80%",
+      "rate": "1.30%",
       "date": "2026.09.09",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20018158&source=https://admin.moviechart.co.kr/assets/upload/movie/260901013659_4400.jpg"
     },
     {
       "rank": 7,
-      "title": "연옥: 살인마들의 자치구역",
-      "rate": "1.40%",
-      "date": "2026.09.09",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261707&source=https://admin.moviechart.co.kr/assets/upload/movie/260827034139_4681.jpg"
-    },
-    {
-      "rank": 8,
-      "title": "네 얼굴로는 울 수 없어",
-      "rate": "1.30%",
-      "date": "2026.09.09",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265275&source=https://admin.moviechart.co.kr/assets/upload/movie/260907010350_4384.jpg"
-    },
-    {
-      "rank": 9,
       "title": "싱 어게인",
-      "rate": "1.30%",
+      "rate": "1.10%",
       "date": "2026.09.02",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264918&source=https://admin.moviechart.co.kr/assets/upload/movie/260814001437_3838.jpg"
     },
     {
-      "rank": 10,
-      "title": "딥 워터",
-      "rate": "1.20%",
+      "rank": 8,
+      "title": "비광",
+      "rate": "1.00%",
+      "date": "2026.09.02",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20204641&source=https://admin.moviechart.co.kr/assets/upload/movie/260831002407_8809.jpg"
+    },
+    {
+      "rank": 9,
+      "title": "연옥: 살인마들의 자치구역",
+      "rate": "1.00%",
       "date": "2026.09.09",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264915&source=https://admin.moviechart.co.kr/assets/upload/movie/260901014922_6242.jpg"
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261707&source=https://admin.moviechart.co.kr/assets/upload/movie/260827034139_4681.jpg"
+    },
+    {
+      "rank": 10,
+      "title": "네 얼굴로는 울 수 없어",
+      "rate": "1.00%",
+      "date": "2026.09.09",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265275&source=https://admin.moviechart.co.kr/assets/upload/movie/260907010350_4384.jpg"
     }
   ]
 }
