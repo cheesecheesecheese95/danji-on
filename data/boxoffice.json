@@ -1,76 +1,76 @@
 {
-  "updated": "2026-09-20 13:29",
+  "updated": "2026-09-21 13:27",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "오디세이",
-      "rate": "24.10%",
+      "rate": "22.20%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
       "rank": 2,
-      "title": "인턴",
-      "rate": "11.70%",
-      "date": "2026.09.16",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256308&source=https://admin.moviechart.co.kr/assets/upload/movie/260901015238_4768.jpg"
-    },
-    {
-      "rank": 3,
       "title": "타짜: 벨제붑의 노래",
-      "rate": "11.20%",
+      "rate": "13.90%",
       "date": "2026.09.23",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256161&source=https://admin.moviechart.co.kr/assets/upload/movie/260904065951_6995.jpg"
     },
     {
+      "rank": 3,
+      "title": "인턴",
+      "rate": "8.40%",
+      "date": "2026.09.16",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256308&source=https://admin.moviechart.co.kr/assets/upload/movie/260901015238_4768.jpg"
+    },
+    {
       "rank": 4,
       "title": "옵세션",
-      "rate": "3.50%",
+      "rate": "1.90%",
       "date": "2026.09.02",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265146&source=https://admin.moviechart.co.kr/assets/upload/movie/260820010435_4210.jpg"
     },
     {
       "rank": 5,
       "title": "레지던트 이블: 0번째 밤",
-      "rate": "2.20%",
+      "rate": "1.30%",
       "date": "2026.09.17",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263870&source=https://admin.moviechart.co.kr/assets/upload/movie/260914005149_8034.jpg"
     },
     {
       "rank": 6,
       "title": "스파이더맨: 브랜드 뉴 데이",
-      "rate": "1.20%",
+      "rate": "0.70%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262770&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020016_2932.jpg"
     },
     {
       "rank": 7,
       "title": "더 드라마",
-      "rate": "0.50%",
+      "rate": "0.30%",
       "date": "2026.09.09",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265423&source=https://admin.moviechart.co.kr/assets/upload/movie/260907044427_9611.jpg"
     },
     {
       "rank": 8,
-      "title": "이누야샤 극장판: 시대를 초월한 마음",
-      "rate": "0.20%",
-      "date": "2026.09.09",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20018158&source=https://admin.moviechart.co.kr/assets/upload/movie/260901013659_4400.jpg"
+      "title": "포가튼 아일랜드",
+      "rate": "0.10%",
+      "date": "2026.09.23",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264801&source=https://admin.moviechart.co.kr/assets/upload/movie/260831005849_3562.jpg"
     },
     {
       "rank": 9,
       "title": "청년 조용기",
-      "rate": "0.20%",
+      "rate": "0.10%",
       "date": "2026.09.11",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264879&source=https://admin.moviechart.co.kr/assets/upload/movie/260720015339_3303.jpg"
     },
     {
       "rank": 10,
-      "title": "아가미",
-      "rate": "0.20%",
-      "date": "2026.09.09",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20224597&source=https://admin.moviechart.co.kr/assets/upload/movie/260831002517_4394.jpg"
+      "title": "나의 사적인 예술가",
+      "rate": "0.10%",
+      "date": "2026.09.23",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266267&source=https://admin.moviechart.co.kr/assets/upload/movie/260915002037_4330.jpg"
     }
   ]
 }
