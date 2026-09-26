@@ -1,32 +1,32 @@
 {
-  "updated": "2026-09-25 13:28",
+  "updated": "2026-09-26 13:33",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "오디세이",
-      "rate": "18.50%",
+      "rate": "17.80%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
       "rank": 2,
-      "title": "타짜: 벨제붑의 노래",
-      "rate": "12.10%",
-      "date": "2026.09.23",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256161&source=https://admin.moviechart.co.kr/assets/upload/movie/260904065951_6995.jpg"
-    },
-    {
-      "rank": 3,
       "title": "극장판 치이카와: 인어 섬의 비밀",
-      "rate": "12.00%",
+      "rate": "15.30%",
       "date": "2026.09.30",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261807&source=https://admin.moviechart.co.kr/assets/upload/movie/260914070308_2424.jpg"
     },
     {
+      "rank": 3,
+      "title": "타짜: 벨제붑의 노래",
+      "rate": "12.60%",
+      "date": "2026.09.23",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256161&source=https://admin.moviechart.co.kr/assets/upload/movie/260904065951_6995.jpg"
+    },
+    {
       "rank": 4,
       "title": "인턴",
-      "rate": "7.30%",
+      "rate": "6.50%",
       "date": "2026.09.16",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256308&source=https://admin.moviechart.co.kr/assets/upload/movie/260901015238_4768.jpg"
     },
@@ -40,28 +40,28 @@
     {
       "rank": 6,
       "title": "옵세션",
-      "rate": "1.20%",
+      "rate": "1.70%",
       "date": "2026.09.02",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265146&source=https://admin.moviechart.co.kr/assets/upload/movie/260820010435_4210.jpg"
     },
     {
       "rank": 7,
       "title": "레지던트 이블: 0번째 밤",
-      "rate": "0.70%",
+      "rate": "0.80%",
       "date": "2026.09.17",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263870&source=https://admin.moviechart.co.kr/assets/upload/movie/260914005149_8034.jpg"
     },
     {
       "rank": 8,
       "title": "스파이더맨: 브랜드 뉴 데이",
-      "rate": "0.60%",
+      "rate": "0.70%",
       "date": "2026.07.29",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262770&source=https://admin.moviechart.co.kr/assets/upload/movie/260720020016_2932.jpg"
     },
     {
       "rank": 9,
       "title": "바다 탐험대 옥토넛 어보브 앤 비욘드 : 두근두근 대자연 어드벤처",
-      "rate": "0.20%",
+      "rate": "0.30%",
       "date": "2026.09.23",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266051&source=https://admin.moviechart.co.kr/assets/upload/movie/260914005422_2273.jpg"
     },
