@@ -1,25 +1,25 @@
 {
-  "updated": "2026-10-01 14:21",
+  "updated": "2026-10-02 14:09",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "극장판 치이카와: 인어 섬의 비밀",
-      "rate": "39.00%",
+      "rate": "37.70%",
       "date": "2026.09.30",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261807&source=https://admin.moviechart.co.kr/assets/upload/movie/260914070308_2424.jpg"
     },
     {
       "rank": 2,
       "title": "암살자(들)",
-      "rate": "13.80%",
+      "rate": "14.20%",
       "date": "2026.09.23",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255033&source=https://admin.moviechart.co.kr/assets/upload/movie/260825050854_9721.jpg"
     },
     {
       "rank": 3,
       "title": "오디세이",
-      "rate": "10.50%",
+      "rate": "12.10%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
@@ -33,14 +33,14 @@
     {
       "rank": 5,
       "title": "부활남: 더 레드",
-      "rate": "7.80%",
+      "rate": "6.90%",
       "date": "2026.09.30",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20224573&source=https://admin.moviechart.co.kr/assets/upload/movie/260909001310_7061.jpg"
     },
     {
       "rank": 6,
       "title": "가능한 사랑",
-      "rate": "3.80%",
+      "rate": "3.60%",
       "date": "2026.09.23",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20254904&source=https://admin.moviechart.co.kr/assets/upload/movie/260916090056_3324.jpg"
     },
@@ -54,21 +54,21 @@
     {
       "rank": 8,
       "title": "인턴",
-      "rate": "2.30%",
+      "rate": "2.00%",
       "date": "2026.09.16",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256308&source=https://admin.moviechart.co.kr/assets/upload/movie/260901015238_4768.jpg"
     },
     {
       "rank": 9,
       "title": "어벤져스: 엔드게임 앙코르",
-      "rate": "1.90%",
+      "rate": "2.00%",
       "date": "2026.09.23",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266766&source=https://admin.moviechart.co.kr/assets/upload/movie/260921014023_6872.jpg"
     },
     {
       "rank": 10,
       "title": "옵세션",
-      "rate": "1.10%",
+      "rate": "1.20%",
       "date": "2026.09.02",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265146&source=https://admin.moviechart.co.kr/assets/upload/movie/260820010435_4210.jpg"
     }
