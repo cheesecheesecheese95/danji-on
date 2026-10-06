@@ -1,76 +1,76 @@
 {
-  "updated": "2026-10-05 14:08",
+  "updated": "2026-10-06 14:54",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "극장판 치이카와: 인어 섬의 비밀",
-      "rate": "27.10%",
+      "rate": "26.40%",
       "date": "2026.09.30",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261807&source=https://admin.moviechart.co.kr/assets/upload/movie/260914070308_2424.jpg"
     },
     {
       "rank": 2,
-      "title": "암살자(들)",
-      "rate": "18.40%",
-      "date": "2026.09.23",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255033&source=https://admin.moviechart.co.kr/assets/upload/movie/260825050854_9721.jpg"
-    },
-    {
-      "rank": 3,
       "title": "오디세이",
-      "rate": "14.80%",
+      "rate": "17.00%",
       "date": "2026.08.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     },
     {
+      "rank": 3,
+      "title": "암살자(들)",
+      "rate": "15.60%",
+      "date": "2026.09.23",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255033&source=https://admin.moviechart.co.kr/assets/upload/movie/260825050854_9721.jpg"
+    },
+    {
       "rank": 4,
       "title": "타짜: 벨제붑의 노래",
-      "rate": "10.50%",
+      "rate": "7.70%",
       "date": "2026.09.23",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256161&source=https://admin.moviechart.co.kr/assets/upload/movie/260904065951_6995.jpg"
     },
     {
       "rank": 5,
       "title": "부활남: 더 레드",
-      "rate": "6.30%",
+      "rate": "5.20%",
       "date": "2026.09.30",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20224573&source=https://admin.moviechart.co.kr/assets/upload/movie/260909001310_7061.jpg"
     },
     {
       "rank": 6,
       "title": "디거",
-      "rate": "2.80%",
+      "rate": "2.50%",
       "date": "2026.10.03",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264775&source=https://admin.moviechart.co.kr/assets/upload/movie/260923001308_8379.jpg"
     },
     {
       "rank": 7,
-      "title": "어벤져스: 엔드게임 앙코르",
+      "title": "퓨리어스",
       "rate": "1.40%",
-      "date": "2026.09.23",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266766&source=https://admin.moviechart.co.kr/assets/upload/movie/260921014023_6872.jpg"
+      "date": "2026.10.07",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265486&source=https://admin.moviechart.co.kr/assets/upload/movie/260915002517_6313.jpg"
     },
     {
       "rank": 8,
+      "title": "다이노 패밀리: 사고뭉치 공룡 탐험대",
+      "rate": "1.20%",
+      "date": "2026.10.07",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20262729&source=https://admin.moviechart.co.kr/assets/upload/movie/260914010224_6813.jpg"
+    },
+    {
+      "rank": 9,
       "title": "옵세션",
-      "rate": "1.40%",
+      "rate": "1.10%",
       "date": "2026.09.02",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265146&source=https://admin.moviechart.co.kr/assets/upload/movie/260820010435_4210.jpg"
     },
     {
-      "rank": 9,
-      "title": "극장판 래브라도: 망고축제를 지켜라",
-      "rate": "1.30%",
-      "date": "2026.10.03",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266850&source=https://admin.moviechart.co.kr/assets/upload/movie/260928020856_5862.jpg"
-    },
-    {
       "rank": 10,
-      "title": "인턴",
-      "rate": "1.10%",
-      "date": "2026.09.16",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256308&source=https://admin.moviechart.co.kr/assets/upload/movie/260901015238_4768.jpg"
+      "title": "어벤져스: 엔드게임 앙코르",
+      "rate": "0.90%",
+      "date": "2026.09.23",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266766&source=https://admin.moviechart.co.kr/assets/upload/movie/260921014023_6872.jpg"
     }
   ]
 }
