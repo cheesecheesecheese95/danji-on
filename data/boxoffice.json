@@ -1,48 +1,48 @@
 {
-  "updated": "2026-10-22 13:15",
+  "updated": "2026-10-23 13:19",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
       "title": "극장판 치이카와: 인어 섬의 비밀",
-      "rate": "27.50%",
+      "rate": "31.60%",
       "date": "2026.09.30",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261807&source=https://admin.moviechart.co.kr/assets/upload/movie/260914070308_2424.jpg"
     },
     {
       "rank": 2,
       "title": "실낙원",
-      "rate": "10.30%",
+      "rate": "8.40%",
       "date": "2026.10.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250053&source=https://admin.moviechart.co.kr/assets/upload/movie/261008003210_2858.jpg"
     },
     {
       "rank": 3,
       "title": "클레이페이스",
-      "rate": "6.20%",
+      "rate": "5.00%",
       "date": "2026.10.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20267571&source=https://admin.moviechart.co.kr/assets/upload/movie/261014001843_2189.jpg"
     },
     {
       "rank": 4,
+      "title": "타짜: 벨제붑의 노래",
+      "rate": "3.60%",
+      "date": "2026.09.23",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256161&source=https://admin.moviechart.co.kr/assets/upload/movie/260904065951_6995.jpg"
+    },
+    {
+      "rank": 5,
       "title": "베러티",
-      "rate": "6.10%",
+      "rate": "3.40%",
       "date": "2026.10.22",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264015&source=https://admin.moviechart.co.kr/assets/upload/movie/261015001532_9241.jpg"
     },
     {
-      "rank": 5,
+      "rank": 6,
       "title": "여전히 찬란하게",
-      "rate": "3.20%",
+      "rate": "3.00%",
       "date": "2026.10.21",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266189&source=https://admin.moviechart.co.kr/assets/upload/movie/261012005620_1863.jpg"
-    },
-    {
-      "rank": 6,
-      "title": "킬링타임",
-      "rate": "2.80%",
-      "date": "2026.10.21",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20246036&source=https://admin.moviechart.co.kr/assets/upload/movie/261012051010_2111.jpg"
     },
     {
       "rank": 7,
@@ -53,24 +53,24 @@
     },
     {
       "rank": 8,
-      "title": "레위기",
-      "rate": "2.00%",
-      "date": "2026.10.21",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266423&source=https://admin.moviechart.co.kr/assets/upload/movie/261012004919_8783.jpg"
-    },
-    {
-      "rank": 9,
       "title": "룩백",
-      "rate": "1.60%",
+      "rate": "2.50%",
       "date": "2026.10.08",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265062&source=https://admin.moviechart.co.kr/assets/upload/movie/260928021221_7056.jpg"
     },
     {
+      "rank": 9,
+      "title": "킬링타임",
+      "rate": "2.10%",
+      "date": "2026.10.21",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20246036&source=https://admin.moviechart.co.kr/assets/upload/movie/261012051010_2111.jpg"
+    },
+    {
       "rank": 10,
-      "title": "타짜: 벨제붑의 노래",
-      "rate": "1.40%",
-      "date": "2026.09.23",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20256161&source=https://admin.moviechart.co.kr/assets/upload/movie/260904065951_6995.jpg"
+      "title": "오디세이",
+      "rate": "1.60%",
+      "date": "2026.08.05",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20250654&source=https://admin.moviechart.co.kr/assets/upload/movie/260713005608_8212.jpg"
     }
   ]
 }
