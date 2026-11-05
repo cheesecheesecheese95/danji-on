@@ -1,76 +1,76 @@
 {
-  "updated": "2026-11-04 14:49",
+  "updated": "2026-11-05 15:08",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
-      "title": "최종면접",
-      "rate": "18.90%",
-      "date": "2026.11.04",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259894&source=https://admin.moviechart.co.kr/assets/upload/movie/261026070755_4257.jpg"
-    },
-    {
-      "rank": 2,
       "title": "극장판 치이카와: 인어 섬의 비밀",
-      "rate": "14.40%",
+      "rate": "19.90%",
       "date": "2026.09.30",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261807&source=https://admin.moviechart.co.kr/assets/upload/movie/260914070308_2424.jpg"
     },
     {
-      "rank": 3,
-      "title": "극장판 마법소녀 마도카☆마기카〈발푸르기스의 회천〉",
-      "rate": "10.30%",
+      "rank": 2,
+      "title": "최종면접",
+      "rate": "13.20%",
       "date": "2026.11.04",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20267412&source=https://admin.moviechart.co.kr/assets/upload/movie/261104000551_7011.jpg"
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259894&source=https://admin.moviechart.co.kr/assets/upload/movie/261026070755_4257.jpg"
     },
     {
-      "rank": 4,
+      "rank": 3,
       "title": "명탐정 코난: 30호 살인 사건",
-      "rate": "8.40%",
+      "rate": "11.60%",
       "date": "2026.11.05",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20267697&source=https://admin.moviechart.co.kr/assets/upload/movie/261027003041_9686.jpg"
     },
     {
+      "rank": 4,
+      "title": "극장판 마법소녀 마도카☆마기카〈발푸르기스의 회천〉",
+      "rate": "5.80%",
+      "date": "2026.11.04",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20267412&source=https://admin.moviechart.co.kr/assets/upload/movie/261104000551_7011.jpg"
+    },
+    {
       "rank": 5,
       "title": "하트 오브 비스트",
-      "rate": "5.20%",
+      "rate": "5.50%",
       "date": "2026.10.28",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264498&source=https://admin.moviechart.co.kr/assets/upload/movie/261002002149_9142.jpg"
     },
     {
       "rank": 6,
       "title": "수능, 출제의 비밀",
-      "rate": "4.80%",
+      "rate": "3.10%",
       "date": "2026.10.28",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20231795&source=https://admin.moviechart.co.kr/assets/upload/movie/261014002131_9980.jpg"
     },
     {
       "rank": 7,
       "title": "낮과 밤은 서로에게",
-      "rate": "3.30%",
+      "rate": "1.70%",
       "date": "2026.11.04",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20243927&source=https://admin.moviechart.co.kr/assets/upload/movie/261028001231_8214.jpg"
     },
     {
       "rank": 8,
       "title": "욕쟁이 할머니",
-      "rate": "2.10%",
+      "rate": "1.60%",
       "date": "2026.11.04",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261695&source=https://admin.moviechart.co.kr/assets/upload/movie/261026012542_3758.jpg"
     },
     {
       "rank": 9,
       "title": "와일드 호스 나인",
-      "rate": "1.90%",
+      "rate": "1.40%",
       "date": "2026.11.04",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266765&source=https://admin.moviechart.co.kr/assets/upload/movie/261027002404_3082.jpg"
     },
     {
       "rank": 10,
-      "title": "룩백",
-      "rate": "1.30%",
-      "date": "2026.10.08",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265062&source=https://admin.moviechart.co.kr/assets/upload/movie/260928021221_7056.jpg"
+      "title": "암살자(들)",
+      "rate": "1.20%",
+      "date": "2026.09.23",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255033&source=https://admin.moviechart.co.kr/assets/upload/movie/260825050854_9721.jpg"
     }
   ]
 }
