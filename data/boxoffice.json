@@ -1,76 +1,76 @@
 {
-  "updated": "2026-11-22 15:09",
+  "updated": "2026-11-23 16:01",
   "source": "moviechart.co.kr",
   "movies": [
     {
       "rank": 1,
-      "title": "폭설",
-      "rate": "16.70%",
-      "date": "2026.11.18",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20247221&source=https://admin.moviechart.co.kr/assets/upload/movie/261104235732_8342.jpg"
+      "title": "헥스: 마녀왕국",
+      "rate": "10.70%",
+      "date": "2026.11.25",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264608&source=https://admin.moviechart.co.kr/assets/upload/movie/261119003027_3405.jpg"
     },
     {
       "rank": 2,
+      "title": "슬픈 열대",
+      "rate": "10.20%",
+      "date": "2026.11.25",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20244970&source=https://admin.moviechart.co.kr/assets/upload/movie/261110001600_3959.jpg"
+    },
+    {
+      "rank": 3,
       "title": "극장판 치이카와: 인어 섬의 비밀",
-      "rate": "10.00%",
+      "rate": "9.40%",
       "date": "2026.09.30",
       "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20261807&source=https://admin.moviechart.co.kr/assets/upload/movie/260914070308_2424.jpg"
     },
     {
-      "rank": 3,
-      "title": "폴2: 데드포인트",
-      "rate": "2.70%",
-      "date": "2026.11.11",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264957&source=https://admin.moviechart.co.kr/assets/upload/movie/261103000954_3874.jpg"
-    },
-    {
       "rank": 4,
-      "title": "최종면접",
-      "rate": "1.90%",
-      "date": "2026.11.04",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20259894&source=https://admin.moviechart.co.kr/assets/upload/movie/261026070755_4257.jpg"
+      "title": "폭설",
+      "rate": "9.00%",
+      "date": "2026.11.18",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20247221&source=https://admin.moviechart.co.kr/assets/upload/movie/261104235732_8342.jpg"
     },
     {
       "rank": 5,
-      "title": "극장판 마카앤로니: 기억탐험 대소동!",
-      "rate": "1.40%",
-      "date": "2026.11.14",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20267846&source=https://admin.moviechart.co.kr/assets/upload/movie/261106001517_7904.jpg"
+      "title": "인간 초거대 알고리즘: 더 무비",
+      "rate": "5.40%",
+      "date": "2026.11.25",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263866&source=https://admin.moviechart.co.kr/assets/upload/movie/261118000446_2031.jpg"
     },
     {
       "rank": 6,
-      "title": "명탐정 코난: 30호 살인 사건",
-      "rate": "1.20%",
-      "date": "2026.11.05",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20267697&source=https://admin.moviechart.co.kr/assets/upload/movie/261027003041_9686.jpg"
+      "title": "미트 페어런츠 4",
+      "rate": "5.30%",
+      "date": "2026.11.25",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20263271&source=https://admin.moviechart.co.kr/assets/upload/movie/261116003146_2392.jpg"
     },
     {
       "rank": 7,
-      "title": "아름다운 초저녁달",
-      "rate": "1.00%",
-      "date": "2026.11.18",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20265321&source=https://admin.moviechart.co.kr/assets/upload/movie/261111001752_2052.jpg"
+      "title": "완벽한 집",
+      "rate": "3.00%",
+      "date": "2026.11.25",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20257409&source=https://admin.moviechart.co.kr/assets/upload/movie/261111002036_6078.jpg"
     },
     {
       "rank": 8,
-      "title": "극장판 마법소녀 마도카☆마기카〈발푸르기스의 회천〉",
-      "rate": "1.00%",
-      "date": "2026.11.04",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20267412&source=https://admin.moviechart.co.kr/assets/upload/movie/261104000551_7011.jpg"
+      "title": "헝거게임 50번째 추첨의 날",
+      "rate": "2.30%",
+      "date": "2026.11.18",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20267121&source=https://admin.moviechart.co.kr/assets/upload/movie/261123061718_1268.jpg"
     },
     {
       "rank": 9,
-      "title": "암살자(들)",
-      "rate": "0.80%",
-      "date": "2026.09.23",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20255033&source=https://admin.moviechart.co.kr/assets/upload/movie/260825050854_9721.jpg"
+      "title": "고인아파트",
+      "rate": "1.80%",
+      "date": "2026.11.25",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20252688&source=https://admin.moviechart.co.kr/assets/upload/movie/261116002709_4945.jpg"
     },
     {
       "rank": 10,
-      "title": "와일드 호스 나인",
-      "rate": "0.70%",
-      "date": "2026.11.04",
-      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20266765&source=https://admin.moviechart.co.kr/assets/upload/movie/261027002404_3082.jpg"
+      "title": "폴2: 데드포인트",
+      "rate": "1.30%",
+      "date": "2026.11.11",
+      "poster": "https://admin.moviechart.co.kr/thumb?width=178&height=267&m_code=20264957&source=https://admin.moviechart.co.kr/assets/upload/movie/261103000954_3874.jpg"
     }
   ]
 }
